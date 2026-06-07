@@ -1,0 +1,32 @@
+# Local environment variables
+.env
+.env.local
+
+# Python/Backend
+backend/venv/
+backend/__pycache__/
+backend/**/*.pyc
+backend/.pytest_cache/
+venv/
+__pycache__/
+*.pyc
+
+# Node/Frontend
+frontend/node_modules/
+frontend/.expo/
+frontend/dist/
+frontend/web-build/
+frontend/expo-env.d.ts
+frontend/ios/
+frontend/android/
+
+# Keys and sensitive files
+*.pem
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# OS files
+.DS_Store
