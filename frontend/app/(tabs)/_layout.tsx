@@ -1,11 +1,13 @@
+// app/(tabs)/_layout.tsx
 import { Tabs } from 'expo-router';
 import React from 'react';
-import { View, Pressable, Text, Platform } from 'react-native';
+import { Platform } from 'react-native';
 
 import { HapticTab } from '@/components/haptic-tab';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
+import { TutoriaTabBarButton } from '@/src/components/tutoria/TutoriaTabBarButton';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -49,44 +51,7 @@ export default function TabLayout() {
         options={{
           title: 'TutorIA',
           tabBarIcon: ({ color }) => <IconSymbol size={26} name="message.fill" color={color} />,
-          tabBarButton: ({ ref, ...restProps }) => (
-            <Pressable
-              {...restProps}
-              style={{
-                top: -18,
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: 70,
-                height: 70,
-              }}
-            >
-              <View
-                style={{
-                  width: 58,
-                  height: 58,
-                  borderRadius: 29,
-                  backgroundColor: 'white',
-                  borderWidth: 3,
-                  borderColor: '#9A3BEE',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  ...Platform.select({
-                    ios: {
-                      shadowColor: '#9A3BEE',
-                      shadowOffset: { width: 0, height: 4 },
-                      shadowOpacity: 0.3,
-                      shadowRadius: 5,
-                    },
-                    android: {
-                      elevation: 6,
-                    },
-                  }),
-                }}
-              >
-                <Text style={{ fontSize: 30 }}>🦖</Text>
-              </View>
-            </Pressable>
-          ),
+          tabBarButton: (props) => <TutoriaTabBarButton {...props} />,
         }}
       />
       <Tabs.Screen
