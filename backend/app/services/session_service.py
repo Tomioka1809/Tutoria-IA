@@ -84,7 +84,7 @@ async def create_session(db: AsyncSession, session_in: SessionCreate, creator: U
     await create_notification(
         db,
         user_id=db_session.student_id,
-        title="Nueva Sesión Programada",
+        title="Nueva tutoría asignada",
         body=f"Se ha programado una sesión de tutoría para el {db_session.scheduled_at.strftime('%d/%m/%Y a las %H:%M')}.",
         notification_type="session"
     )

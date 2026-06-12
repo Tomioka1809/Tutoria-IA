@@ -1,12 +1,14 @@
-// src/components/notifications/NotificationsHeader.tsx
 import React from 'react';
 import { View, Text, Pressable } from 'react-native';
+import { useRouter } from 'expo-router';
 
 export function NotificationsHeader() {
+  const router = useRouter();
+
   return (
     <View className="px-6 mb-6 flex-row items-center justify-between">
       <View className="flex-row items-center">
-        <Pressable onPress={() => {}} className="mr-3 p-1">
+        <Pressable onPress={() => router.back()} className="mr-3 p-1">
           <Text className="text-xl text-[#26215C]">←</Text>
         </Pressable>
         <Text className="text-[20px] font-bold text-[#111130]">Notificaciones</Text>
