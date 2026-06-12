@@ -2,12 +2,14 @@
 import { useState, useEffect } from 'react';
 import { useAuthStore } from '@/src/store/auth';
 import { useSessionStore } from '@/src/store/session';
+import { useActivityStore } from '@/src/store/activity';
 import client from '@/src/api/client';
 import { User, ServiceType } from '@/src/types';
 
 export function useCalendar() {
   const { user } = useAuthStore();
   const { sessions, fetchSessions, createSession } = useSessionStore();
+  const { activities, addActivity, deleteActivity, clearPastActivities } = useActivityStore();
 
   const [selectedDate, setSelectedDate] = useState<Date>(new Date(2026, 4, 19)); // Defaults to May 19, 2026
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date(2026, 4, 1));
@@ -25,6 +27,8 @@ export function useCalendar() {
 
   useEffect(() => {
     fetchSessions();
+    // Limpiar automáticamente actividades que ya pasaron de fecha/hora al abrir el calendario
+    clearPastActivities();
   }, []);
 
   const fetchTutorData = async () => {
@@ -106,15 +110,70 @@ export function useCalendar() {
     setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1));
   };
 
-  const hasSessions = (day: Date | null) => {
+  // Comprueba si un día tiene sesiones del backend o actividades locales
+  const hasActivities = (day: Date | null) => {
     if (!day) return false;
-    const dayStr = day.toISOString().split('T')[0];
-    return sessions.some((s) => s.scheduled_at.startsWith(dayStr));
+    
+    const year = day.getFullYear();
+    const month = String(day.getMonth() + 1).padStart(2, '0');
+    const date = String(day.getDate()).padStart(2, '0');
+    const dayStr = `${year}-${month}-${date}`;
+
+    const hasLocal = activities.some((act) => act.date === dayStr);
+    const hasBackend = sessions.some((s) => s.scheduled_at.startsWith(dayStr));
+
+    return hasLocal || hasBackend;
   };
 
-  const filteredSessions = sessions.filter((s) => {
-    const selectedStr = selectedDate.toISOString().split('T')[0];
-    return s.scheduled_at.startsWith(selectedStr);
+  // Devuelve la lista unificada y ordenada de actividades locales y sesiones del backend
+  const getUnifiedActivities = () => {
+    // Mapear sesiones de backend al formato común de actividad
+    const mappedSessions = sessions.map((s) => {
+      let type: 'Tutoría Académica' | 'Reunión con Tutor' | 'Sesión de Apoyo Psicológico' | 'Entrega de Tarea' = 'Tutoría Académica';
+      const name = s.service_type?.name || 'Tutoría Académica';
+
+      if (name.includes('Psicológico') || name.includes('Apoyo')) {
+        type = 'Sesión de Apoyo Psicológico';
+      } else if (name.includes('Reunión') || name.includes('Tutor')) {
+        type = 'Reunión con Tutor';
+      } else if (name.includes('Tarea') || name.includes('Entrega')) {
+        type = 'Entrega de Tarea';
+      }
+
+      return {
+        id: `session_${s.id}`,
+        name: s.notes || name,
+        type,
+        date: s.scheduled_at.split('T')[0],
+        time: s.scheduled_at.split('T')[1].substring(0, 5),
+        isBackend: true,
+      };
+    });
+
+    // Mapear actividades locales
+    const mappedLocals = activities.map((act) => ({
+      ...act,
+      isBackend: false,
+    }));
+
+    // Combinar
+    const combined = [...mappedSessions, ...mappedLocals];
+
+    // Ordenar cronológicamente (Fecha y Hora)
+    combined.sort((a, b) => {
+      const timeA = new Date(`${a.date}T${a.time}:00`).getTime();
+      const timeB = new Date(`${b.date}T${b.time}:00`).getTime();
+      return timeA - timeB;
+    });
+
+    return combined;
+  };
+
+  // Filtrar actividades unificadas a partir de la fecha seleccionada en adelante
+  const filteredActivities = getUnifiedActivities().filter((act) => {
+    const actDate = new Date(`${act.date}T00:00:00`);
+    const selDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate());
+    return actDate.getTime() >= selDate.getTime();
   });
 
   return {
@@ -126,8 +185,10 @@ export function useCalendar() {
     weekDays,
     prevMonth,
     nextMonth,
-    hasSessions,
-    filteredSessions,
+    hasActivities,
+    filteredActivities,
+    addActivity,
+    deleteActivity,
     // Modal & Scheduling
     isModalOpen,
     setIsModalOpen,
@@ -147,3 +208,4 @@ export function useCalendar() {
     handleCreateSession,
   };
 }
+

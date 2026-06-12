@@ -1,11 +1,11 @@
 // app/(tabs)/calendar.tsx
-import React from 'react';
+import React, { useState } from 'react';
 import { View } from 'react-native';
 import { useCalendar } from '@/src/components/calendar/useCalendar';
 import { CalendarHeader } from '@/src/components/calendar/CalendarHeader';
 import { CalendarMonthView } from '@/src/components/calendar/CalendarMonthView';
 import { CalendarActivitiesList } from '@/src/components/calendar/CalendarActivitiesList';
-import { ScheduleSessionModal } from '@/src/components/calendar/ScheduleSessionModal';
+import { AddActivityModal } from '@/src/components/calendar/AddActivityModal';
 
 export default function CalendarScreen() {
   const {
@@ -17,65 +17,45 @@ export default function CalendarScreen() {
     weekDays,
     prevMonth,
     nextMonth,
-    hasSessions,
-    filteredSessions,
-    isModalOpen,
-    setIsModalOpen,
-    students,
-    serviceTypes,
-    selectedStudentId,
-    setSelectedStudentId,
-    selectedServiceTypeId,
-    setSelectedServiceTypeId,
-    sessionHour,
-    setSessionHour,
-    sessionNotes,
-    setSessionNotes,
-    isSubmitting,
-    isDataLoading,
-    handleOpenScheduleModal,
-    handleCreateSession,
+    hasActivities,
+    filteredActivities,
+    addActivity,
+    deleteActivity,
   } = useCalendar();
+
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   return (
     <View className="flex-1 bg-[#F5F5FB] pt-16">
-      <CalendarHeader />
+      {/* El fondo se vuelve semi-transparente cuando el modal está abierto para simular desenfoque */}
+      <View className="flex-1" style={{ opacity: isAddModalOpen ? 0.35 : 1 }}>
+        <CalendarHeader />
 
-      <CalendarMonthView
-        currentMonth={currentMonth}
-        prevMonth={prevMonth}
-        nextMonth={nextMonth}
-        weekDays={weekDays}
-        days={days}
+        <CalendarMonthView
+          currentMonth={currentMonth}
+          prevMonth={prevMonth}
+          nextMonth={nextMonth}
+          weekDays={weekDays}
+          days={days}
+          selectedDate={selectedDate}
+          setSelectedDate={setSelectedDate}
+          hasActivities={hasActivities}
+        />
+
+        <CalendarActivitiesList
+          activities={filteredActivities}
+          onAddPress={() => setIsAddModalOpen(true)}
+          onDeletePress={deleteActivity}
+        />
+      </View>
+
+      <AddActivityModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
         selectedDate={selectedDate}
-        setSelectedDate={setSelectedDate}
-        hasSessions={hasSessions}
-      />
-
-      <CalendarActivitiesList
-        userRole={user?.role}
-        filteredSessions={filteredSessions}
-        onAddPress={handleOpenScheduleModal}
-      />
-
-      <ScheduleSessionModal
-        isModalOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        selectedDate={selectedDate}
-        students={students}
-        serviceTypes={serviceTypes}
-        selectedStudentId={selectedStudentId}
-        setSelectedStudentId={setSelectedStudentId}
-        selectedServiceTypeId={selectedServiceTypeId}
-        setSelectedServiceTypeId={setSelectedServiceTypeId}
-        sessionHour={sessionHour}
-        setSessionHour={setSessionHour}
-        sessionNotes={sessionNotes}
-        setSessionNotes={setSessionNotes}
-        isSubmitting={isSubmitting}
-        isDataLoading={isDataLoading}
-        onSubmit={handleCreateSession}
+        onAdd={addActivity}
       />
     </View>
   );
 }
+
