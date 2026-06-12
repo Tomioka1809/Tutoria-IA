@@ -1,18 +1,35 @@
-// src/components/dashboard/DashboardHeader.tsx
 import React from 'react';
 import { View, Text } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface DashboardHeaderProps {
   firstName: string;
 }
 
 export function DashboardHeader({ firstName }: DashboardHeaderProps) {
+  const insets = useSafeAreaInsets();
+  const paddingTop = Math.max(insets.top, 16);
+
   return (
-    <View className="px-6 pt-16 pb-6 bg-[#F5F5FB]">
-      <Text className="text-[32px] font-extrabold text-[#111130] tracking-tight">
+    <View style={{
+      paddingTop: paddingTop + 10,
+      paddingBottom: 12,
+      paddingHorizontal: 24,
+    }}>
+      <Text style={{
+        fontSize: 28,
+        fontWeight: 'bold',
+        color: '#111130',
+        letterSpacing: -0.5,
+      }}>
         ¡Hola, {firstName}! 👋
       </Text>
-      <Text className="text-sm text-[#8E8EA0] mt-1 font-medium">
+      <Text style={{
+        fontSize: 14,
+        color: '#8E8EA0',
+        marginTop: 4,
+        fontWeight: '500',
+      }}>
         ¿Qué quieres aprender hoy?
       </Text>
     </View>

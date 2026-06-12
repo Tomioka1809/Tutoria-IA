@@ -8,15 +8,43 @@ interface StreakCardProps {
 
 export function StreakCard({ currentStreak = 13 }: StreakCardProps) {
   return (
-    <View className="px-6">
-      <Text className="text-[17px] font-bold text-[#1E1E2F] mb-4">Racha de tutorías</Text>
+    <View style={{ paddingHorizontal: 24, marginBottom: 20 }}>
+      <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#1E1E2F', marginBottom: 12 }}>
+        Racha de tutorías
+      </Text>
       
-      <View className="bg-white rounded-3xl p-6 border border-[#EEEDFE] shadow-sm items-center">
-        <Text className="text-5xl mb-4">🔥</Text>
-        <Text className="text-[#F97316] font-extrabold text-2xl tracking-tight text-center">
+      <View style={{
+        backgroundColor: 'white',
+        borderRadius: 16,
+        padding: 20,
+        borderWidth: 1,
+        borderColor: '#EEEDFE',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.05,
+        shadowRadius: 8,
+        elevation: 2,
+        alignItems: 'center',
+      }}>
+        <Text style={{ fontSize: 40, marginBottom: 8, textAlign: 'center' }}>🔥</Text>
+        <Text style={{
+          color: '#F97316',
+          fontWeight: '800',
+          fontSize: 22,
+          letterSpacing: -0.5,
+          textAlign: 'center',
+        }}>
           ¡{currentStreak} días de racha!
         </Text>
-        <Text className="text-[#8E8EA0] text-xs font-semibold text-center mt-2 px-4 leading-4">
+        <Text style={{
+          color: '#8E8EA0',
+          fontSize: 12,
+          fontWeight: '600',
+          textAlign: 'center',
+          marginTop: 6,
+          paddingHorizontal: 16,
+          lineHeight: 16,
+        }}>
           Completa tu siguiente tutoría para aumentar tu racha
         </Text>
       </View>

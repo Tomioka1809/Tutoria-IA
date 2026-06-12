@@ -4,7 +4,7 @@ import { ScrollView, View, Text, ActivityIndicator } from 'react-native';
 import { Conversation } from '@/src/types';
 
 interface MessagesListProps {
-  scrollViewRef: React.RefObject<ScrollView>;
+  scrollViewRef: React.RefObject<ScrollView | null>;
   conversation: Conversation | null;
   isLoading: boolean;
   isSending: boolean;
