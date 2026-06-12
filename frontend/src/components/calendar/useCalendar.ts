@@ -41,7 +41,7 @@ export function useCalendar() {
   // Crea una actividad local o programa una sesión en el backend si es Tutoría Académica
   const addNewActivity = async (activityData: {
     name: string;
-    type: 'Tutoría Académica' | 'Sesión de Apoyo Psicológico' | 'Entrega de Tarea';
+    type: 'Tutoría Académica' | 'Sesión de Apoyo Psicológico' | 'Trabajos';
     date: string;
     time: string;
     studentId?: number;
@@ -157,13 +157,13 @@ export function useCalendar() {
     const mappedSessions = sessions
       .filter((s) => s.status !== 'cancelada')
       .map((s) => {
-        let type: 'Tutoría Académica' | 'Sesión de Apoyo Psicológico' | 'Entrega de Tarea' = 'Tutoría Académica';
+        let type: 'Tutoría Académica' | 'Sesión de Apoyo Psicológico' | 'Trabajos' = 'Tutoría Académica';
         const name = s.service_type?.name || 'Tutoría Académica';
 
         if (name.includes('Psicológico') || name.includes('Apoyo')) {
           type = 'Sesión de Apoyo Psicológico';
-        } else if (name.includes('Tarea') || name.includes('Entrega')) {
-          type = 'Entrega de Tarea';
+        } else if (name.includes('Tarea') || name.includes('Entrega') || name.includes('Trabajo')) {
+          type = 'Trabajos';
         }
 
         return {
@@ -220,5 +220,6 @@ export function useCalendar() {
     cancelBackendSession,
     students,
     isDataLoading,
+    fetchTutorData,
   };
 }

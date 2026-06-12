@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Modal, Pressable, ScrollView } from 'react-native';
-import { Feather, FontAwesome } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 import { User } from '@/src/types';
 
 interface AddActivityModalProps {
@@ -11,7 +11,7 @@ interface AddActivityModalProps {
   students: User[];
   onAdd: (activity: {
     name: string;
-    type: 'Tutoría Académica' | 'Sesión de Apoyo Psicológico' | 'Entrega de Tarea';
+    type: 'Tutoría Académica' | 'Sesión de Apoyo Psicológico' | 'Trabajos';
     date: string;
     time: string;
     studentId?: number;
@@ -29,9 +29,7 @@ export function AddActivityModal({
   const isTutor = userRole === 'tutor' || userRole === 'admin';
   
   const [name, setName] = useState('');
-  
-  // Si el usuario es docente, el valor inicial puede ser 'Tutoría Académica'; de lo contrario, 'Sesión de Apoyo Psicológico'
-  const [type, setType] = useState<'Tutoría Académica' | 'Sesión de Apoyo Psicológico' | 'Entrega de Tarea'>(
+  const [type, setType] = useState<'Tutoría Académica' | 'Sesión de Apoyo Psicológico' | 'Trabajos'>(
     isTutor ? 'Tutoría Académica' : 'Sesión de Apoyo Psicológico'
   );
 
@@ -49,18 +47,22 @@ export function AddActivityModal({
   const [dateStr, setDateStr] = useState(formatDateString(selectedDate));
   const [timeStr, setTimeStr] = useState('10:00'); // Hora por defecto en formato 24h
 
-  // Actualizar la fecha y tipo inicial al abrir o cambiar selección
+  // Sincronizar y limpiar formulario al abrir/cerrar modal
   React.useEffect(() => {
-    setDateStr(formatDateString(selectedDate));
-    setType(isTutor ? 'Tutoría Académica' : 'Sesión de Apoyo Psicológico');
-  }, [selectedDate, isOpen, userRole]);
-
-  // Autoseleccionar primer estudiante cuando se carga la lista de estudiantes
-  React.useEffect(() => {
-    if (students.length > 0 && selectedStudentId === null) {
-      setSelectedStudentId(students[0].id);
+    if (isOpen) {
+      setDateStr(formatDateString(selectedDate));
+      setType(isTutor ? 'Tutoría Académica' : 'Sesión de Apoyo Psicológico');
+      setStudentSearch('');
+      if (students && students.length > 0) {
+        setSelectedStudentId(students[0].id);
+      } else {
+        setSelectedStudentId(null);
+      }
+    } else {
+      setSelectedStudentId(null);
+      setStudentSearch('');
     }
-  }, [students]);
+  }, [isOpen, selectedDate, userRole, students]);
 
   const handleSubmit = () => {
     if (!name.trim()) {
@@ -105,17 +107,17 @@ export function AddActivityModal({
   };
 
   // Filtrar estudiantes por búsqueda
-  const filteredStudents = students.filter((s) =>
-    s.full_name.toLowerCase().includes(studentSearch.toLowerCase())
-  );
+  const filteredStudents = (students || []).filter((s) => {
+    const fullName = s?.full_name || '';
+    return fullName.toLowerCase().includes((studentSearch || '').toLowerCase());
+  });
 
-  // Configuración de los 4 tipos de actividades (se quita Reunión con Tutor y se controla según rol)
+  // Configuración de los tipos de actividades (se quita Reunión con Tutor y se cambia Entrega de Tarea a Trabajos)
   const typesConfig = [
     {
       id: 'Tutoría Académica' as const,
       label: 'Tutoría Académica',
       icon: 'book-open',
-      iconSet: 'Feather' as const,
       bgColor: 'bg-[#F3E8FF]',
       activeBgColor: 'bg-[#9A3BEE]',
       textColor: 'text-[#9A3BEE]',
@@ -124,18 +126,16 @@ export function AddActivityModal({
     {
       id: 'Sesión de Apoyo Psicológico' as const,
       label: 'Apoyo Psicológico',
-      icon: 'heart-o',
-      iconSet: 'FontAwesome' as const,
+      icon: 'heart',
       bgColor: 'bg-[#FCE7F3]',
       activeBgColor: 'bg-[#ec4899]',
       textColor: 'text-[#ec4899]',
       visible: true, // Visible para todos
     },
     {
-      id: 'Entrega de Tarea' as const,
-      label: 'Entrega de Tarea',
+      id: 'Trabajos' as const,
+      label: 'Trabajos',
       icon: 'file-text',
-      iconSet: 'Feather' as const,
       bgColor: 'bg-[#F5F3FF]',
       activeBgColor: 'bg-[#7c3aed]',
       textColor: 'text-[#7c3aed]',
@@ -179,28 +179,30 @@ export function AddActivityModal({
                   .filter((t) => t.visible)
                   .map((item) => {
                     const isActive = type === item.id;
+                    const isFullWidth = item.id === 'Tutoría Académica';
                     return (
                       <Pressable
                         key={item.id}
                         onPress={() => setType(item.id)}
                         className={`p-3 rounded-2xl mb-3 flex-row items-center border ${
+                          isFullWidth ? 'w-full' : 'w-[48%]'
+                        } ${
                           isActive
                             ? `${item.activeBgColor} border-transparent`
                             : `${item.bgColor} border-gray-100`
-                        } ${isTutor ? 'w-[31%]' : 'w-[48%]'}`}
+                        }`}
                       >
                         <View className="mr-2">
                           <Feather
-                            name={item.iconSet === 'Feather' ? (item.icon as any) : 'heart'}
+                            name={item.icon as any}
                             size={14}
                             color={isActive ? '#FFFFFF' : '#4B5563'}
                           />
                         </View>
                         <Text
-                          className={`text-[10px] font-bold flex-1 ${
+                          className={`text-[11px] font-bold flex-1 ${
                             isActive ? 'text-white' : 'text-[#1E1E2F]'
                           }`}
-                          numberOfLines={1}
                         >
                           {item.label}
                         </Text>

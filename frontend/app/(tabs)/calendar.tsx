@@ -10,7 +10,7 @@ import { AddActivityModal } from '@/src/components/calendar/AddActivityModal';
 interface UnifiedActivity {
   id: string;
   name: string;
-  type: 'Tutoría Académica' | 'Sesión de Apoyo Psicológico' | 'Entrega de Tarea';
+  type: 'Tutoría Académica' | 'Sesión de Apoyo Psicológico' | 'Trabajos';
   date: string;
   time: string;
   isBackend: boolean;
@@ -33,6 +33,7 @@ export default function CalendarScreen() {
     deleteActivity,
     cancelBackendSession,
     students,
+    fetchTutorData,
   } = useCalendar();
 
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -72,7 +73,12 @@ export default function CalendarScreen() {
         <CalendarActivitiesList
           activities={filteredActivities}
           userRole={user?.role}
-          onAddPress={() => setIsAddModalOpen(true)}
+          onAddPress={() => {
+            if (user?.role === 'tutor' || user?.role === 'admin') {
+              fetchTutorData();
+            }
+            setIsAddModalOpen(true);
+          }}
           onDeletePress={(activity) => setActivityToDelete(activity)}
         />
       </View>

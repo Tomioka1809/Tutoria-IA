@@ -4,7 +4,7 @@ import { StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 
 interface ExploreHeaderProps {
-  style: StyleProp<ViewStyle>;
+  style: StyleProp<any>;
 }
 
 export function ExploreHeader({ style }: ExploreHeaderProps) {
@@ -13,7 +13,7 @@ export function ExploreHeader({ style }: ExploreHeaderProps) {
       size={310}
       color="#808080"
       name="chevron.left.forwardslash.chevron.right"
-      style={style}
+      style={style as any}
     />
   );
 }

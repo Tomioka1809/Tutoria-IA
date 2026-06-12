@@ -1,6 +1,6 @@
 // src/components/tutoria/TutoriaTabBarButton.tsx
 import React from 'react';
-import { View, Pressable, Text, Platform, GestureResponderEvent } from 'react-native';
+import { View, Pressable, Platform, GestureResponderEvent, Image } from 'react-native';
 
 interface TutoriaTabBarButtonProps {
   children?: React.ReactNode;
@@ -43,7 +43,15 @@ export function TutoriaTabBarButton({ onPress, ...props }: TutoriaTabBarButtonPr
           }),
         }}
       >
-        <Text style={{ fontSize: 30 }}>🦖</Text>
+        <Image
+          source={require('@/assets/images/icon.png')}
+          style={{
+            width: 52,
+            height: 52,
+            borderRadius: 26,
+          }}
+          resizeMode="cover"
+        />
       </View>
     </Pressable>
   );

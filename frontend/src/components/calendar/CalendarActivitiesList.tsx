@@ -6,7 +6,7 @@ import { Feather, FontAwesome } from '@expo/vector-icons';
 interface UnifiedActivity {
   id: string;
   name: string;
-  type: 'Tutoría Académica' | 'Sesión de Apoyo Psicológico' | 'Entrega de Tarea';
+  type: 'Tutoría Académica' | 'Sesión de Apoyo Psicológico' | 'Trabajos';
   date: string;
   time: string;
   isBackend: boolean;
@@ -47,7 +47,7 @@ export function CalendarActivitiesList({
   // Obtener rango de hora (duración 1h por defecto para tutorías, hora fija para tareas)
   const getRangeString = (timeStr: string, type: string) => {
     const startTimeFormatted = formatTime12h(timeStr);
-    if (type === 'Entrega de Tarea') {
+    if (type === 'Trabajos') {
       return startTimeFormatted;
     }
     try {
@@ -109,7 +109,7 @@ export function CalendarActivitiesList({
           iconColor: '#EC4899',
           bgColor: 'bg-[#FCE7F3]',
         };
-      case 'Entrega de Tarea':
+      case 'Trabajos':
         return {
           icon: 'file-text',
           iconSet: 'Feather' as const,
@@ -144,7 +144,7 @@ export function CalendarActivitiesList({
             
             // Un estudiante NO puede eliminar actividades de tutoría académica (del backend)
             // Solo los docentes pueden eliminar tutorías.
-            // Las actividades locales (Apoyo, Tarea) sí las pueden borrar todos.
+            // Las actividades locales (Apoyo, Trabajo) sí las pueden borrar todos.
             const canDelete = !activity.isBackend || isTutor;
 
             return (
