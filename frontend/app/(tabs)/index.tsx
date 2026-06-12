@@ -13,8 +13,8 @@ export default function DashboardScreen() {
 
   return (
     <ScrollView
-      className="flex-1 bg-[#F5F5FB]"
-      contentContainerStyle={{ paddingBottom: 60 }}
+      style={{ flex: 1, backgroundColor: '#F8F7FC' }}
+      contentContainerStyle={{ paddingBottom: 110 }}
       refreshControl={
         <RefreshControl
           refreshing={isLoading}
@@ -26,13 +26,23 @@ export default function DashboardScreen() {
       <DashboardHeader firstName={firstName} />
 
       {/* Action Button: Iniciar Chat */}
-      <View className="px-6 mb-6">
+      <View style={{ paddingHorizontal: 24, marginBottom: 24 }}>
         <Pressable
           onPress={() => router.push('/(tabs)/tutoria')}
-          className="bg-[#9A3BEE] rounded-3xl py-4.5 items-center justify-center shadow-lg shadow-[#9A3BEE]/30"
-          style={{ elevation: 5 }}
+          style={{
+            backgroundColor: '#9A3BEE',
+            borderRadius: 16,
+            paddingVertical: 18,
+            alignItems: 'center',
+            justifyContent: 'center',
+            shadowColor: '#9A3BEE',
+            shadowOffset: { width: 0, height: 4 },
+            shadowOpacity: 0.2,
+            shadowRadius: 6,
+            elevation: 4,
+          }}
         >
-          <Text className="text-white font-bold text-base">Iniciar Chat</Text>
+          <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 16 }}>Iniciar Chat</Text>
         </Pressable>
       </View>
 

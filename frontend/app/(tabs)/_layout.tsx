@@ -1,7 +1,7 @@
 // app/(tabs)/_layout.tsx
-import { Tabs } from 'expo-router';
+import { Tabs, usePathname } from 'expo-router';
 import React from 'react';
-import { Platform } from 'react-native';
+import { Platform, Text } from 'react-native';
 
 import { HapticTab } from '@/components/haptic-tab';
 import { IconSymbol } from '@/components/ui/icon-symbol';
@@ -11,6 +11,7 @@ import { TutoriaTabBarButton } from '@/src/components/tutoria/TutoriaTabBarButto
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const pathname = usePathname();
 
   return (
     <Tabs
@@ -19,11 +20,16 @@ export default function TabLayout() {
         tabBarInactiveTintColor: '#8E8EA0',
         headerShown: false,
         tabBarButton: HapticTab,
+        tabBarLabelStyle: {
+          fontSize: 10,
+          fontWeight: '600',
+          marginTop: 2,
+        },
         tabBarStyle: {
           borderTopWidth: 1,
           borderTopColor: '#EEEDFE',
-          height: Platform.OS === 'ios' ? 88 : 70,
-          paddingBottom: Platform.OS === 'ios' ? 24 : 12,
+          height: Platform.OS === 'ios' ? 88 : 76,
+          paddingBottom: Platform.OS === 'ios' ? 24 : 14,
           paddingTop: 8,
           backgroundColor: 'white',
           position: 'absolute',
@@ -65,7 +71,47 @@ export default function TabLayout() {
         name="profile"
         options={{
           title: 'Perfil',
-          tabBarIcon: ({ color }) => <IconSymbol size={26} name="person.fill" color={color} />,
+          tabBarIcon: ({ color, focused }) => {
+            const isActive = focused || pathname === '/configuracion' || pathname === '/privacidad' || pathname === '/centro-ayuda';
+            return <IconSymbol size={26} name="person.fill" color={isActive ? '#9A3BEE' : '#8E8EA0'} />;
+          },
+          tabBarLabel: ({ focused }) => {
+            const isActive = focused || pathname === '/configuracion' || pathname === '/privacidad' || pathname === '/centro-ayuda';
+            return (
+              <Text style={{
+                fontSize: 10,
+                fontWeight: '600',
+                marginTop: 2,
+                color: isActive ? '#9A3BEE' : '#8E8EA0',
+              }}>
+                Perfil
+              </Text>
+            );
+          }
+        }}
+      />
+      
+      {/* Hide the new configuration screen from tabs */}
+      <Tabs.Screen
+        name="configuracion"
+        options={{
+          href: null,
+        }}
+      />
+      
+      {/* Hide the new privacy screen from tabs */}
+      <Tabs.Screen
+        name="privacidad"
+        options={{
+          href: null,
+        }}
+      />
+      
+      {/* Hide the new help center screen from tabs */}
+      <Tabs.Screen
+        name="centro-ayuda"
+        options={{
+          href: null,
         }}
       />
       

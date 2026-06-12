@@ -2,61 +2,93 @@
 import React from 'react';
 import { View, Text, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
+import Feather from '@expo/vector-icons/Feather';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 const services = [
-  { name: 'Tutoría Académica', icon: '📖', color: 'bg-purple-100 text-purple-600', iconColor: '#9C3FE4' },
-  { name: 'Tutoría Personal', icon: '💙', color: 'bg-blue-100 text-blue-600', iconColor: '#1E90FF' },
-  { name: 'Tutoría Profesional', icon: '💼', color: 'bg-indigo-100 text-indigo-600', iconColor: '#9333EA' },
-  { name: 'Apoyo Psicológico', icon: '🧠', color: 'bg-pink-100 text-pink-500', iconColor: '#EC4899' },
-  { name: 'Bienestar Universitario', icon: '⭐', color: 'bg-cyan-100 text-cyan-600', iconColor: '#06B6D4' },
-  { name: 'Prácticas Preprofesionales', icon: '🚀', color: 'bg-orange-100 text-orange-600', iconColor: '#F97316' },
-  { name: 'Movilidad Estudiantil', icon: '🌐', color: 'bg-sky-100 text-sky-600', iconColor: '#3B82F6' },
-  { name: 'Retroalimentación', icon: '💬', color: 'bg-purple-100 text-purple-600', iconColor: '#A855F7' },
+  { name: 'Tutoría Académica', icon: 'book-open', iconType: 'Feather', bgColor: '#9C3FE4' },
+  { name: 'Tutoría Personal', icon: 'heart', iconType: 'Feather', bgColor: '#3B82F6' },
+  { name: 'Tutoría Profesional', icon: 'briefcase', iconType: 'Feather', bgColor: '#8B5CF6' },
+  { name: 'Apoyo Psicológico', icon: 'brain', iconType: 'MaterialCommunityIcons', bgColor: '#EC4899' },
+  { name: 'Bienestar Universitario', icon: 'star', iconType: 'Feather', bgColor: '#06B6D4' },
+  { name: 'Prácticas Preprofesionales', icon: 'rocket-outline', iconType: 'Ionicons', bgColor: '#F97316' },
+  { name: 'Movilidad Estudiantil', icon: 'globe', iconType: 'Feather', bgColor: '#3B82F6' },
+  { name: 'Retroalimentación', icon: 'message-square', iconType: 'Feather', bgColor: '#9333EA' },
 ];
 
 export function ServicesGrid() {
   const router = useRouter();
 
+  const renderIcon = (type: string, name: string) => {
+    const size = 22;
+    const color = 'white';
+    if (type === 'Feather') {
+      return <Feather name={name as any} size={size} color={color} />;
+    }
+    if (type === 'MaterialCommunityIcons') {
+      return <MaterialCommunityIcons name={name as any} size={size} color={color} />;
+    }
+    if (type === 'Ionicons') {
+      return <Ionicons name={name as any} size={size} color={color} />;
+    }
+    return null;
+  };
+
   return (
-    <View className="px-6 mb-6">
-      <View className="flex-row justify-between items-center mb-4">
-        <Text className="text-[17px] font-bold text-[#1E1E2F]">Explora servicios</Text>
-        <Pressable>
-          <Text className="text-sm font-semibold text-[#9A3BEE]">Ver todas</Text>
-        </Pressable>
+    <View style={{ paddingHorizontal: 24, marginBottom: 24 }}>
+      <View style={{
+        marginBottom: 16,
+      }}>
+        <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#1E1E2F' }}>
+          Explora servicios
+        </Text>
       </View>
 
-      <View className="flex-row flex-wrap justify-between">
+      <View style={{
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
+      }}>
         {services.map((serv, index) => (
           <Pressable
             key={index}
             onPress={() => router.push('/(tabs)/calendar')}
-            className="w-[22%] items-center mb-5"
+            style={{
+              width: '23%',
+              alignItems: 'center',
+              marginBottom: 20,
+            }}
           >
             <View
-              className="w-14 h-14 rounded-[22px] items-center justify-center mb-2 shadow-sm"
               style={{
-                backgroundColor:
-                  serv.name.includes('Académica') ? '#9C3FE4' :
-                  serv.name.includes('Personal') ? '#3B82F6' :
-                  serv.name.includes('Profesional') ? '#8B5CF6' :
-                  serv.name.includes('Psicológico') ? '#EC4899' :
-                  serv.name.includes('Bienestar') ? '#06B6D4' :
-                  serv.name.includes('Prácticas') ? '#F97316' :
-                  serv.name.includes('Movilidad') ? '#3B82F6' : '#9333EA'
+                width: 56,
+                height: 56,
+                borderRadius: 16,
+                backgroundColor: serv.bgColor,
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: 8,
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.08,
+                shadowRadius: 4,
+                elevation: 2,
               }}
             >
-              <Text className="text-white text-2xl font-bold">
-                {serv.name.includes('Académica') ? '📖' :
-                 serv.name.includes('Personal') ? '💙' :
-                 serv.name.includes('Profesional') ? '💼' :
-                 serv.name.includes('Psicológico') ? '🧠' :
-                 serv.name.includes('Bienestar') ? '⭐' :
-                 serv.name.includes('Prácticas') ? '🚀' :
-                 serv.name.includes('Movilidad') ? '🌐' : '💬'}
-              </Text>
+              {renderIcon(serv.iconType, serv.icon)}
             </View>
-            <Text className="text-[10px] font-semibold text-[#4b4b60] text-center leading-3" numberOfLines={2}>
+            <Text 
+              style={{
+                fontSize: 10,
+                fontWeight: '600',
+                color: '#4B4B60',
+                textAlign: 'center',
+                lineHeight: 13,
+                width: '100%',
+              }}
+              numberOfLines={2}
+            >
               {serv.name}
             </Text>
           </Pressable>

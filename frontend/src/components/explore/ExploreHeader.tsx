@@ -13,7 +13,7 @@ export function ExploreHeader({ style }: ExploreHeaderProps) {
       size={310}
       color="#808080"
       name="chevron.left.forwardslash.chevron.right"
-      style={style}
+      style={style as any}
     />
   );
 }
