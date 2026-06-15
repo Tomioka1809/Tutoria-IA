@@ -72,11 +72,11 @@ export default function TabLayout() {
         options={{
           title: 'Perfil',
           tabBarIcon: ({ color, focused }) => {
-            const isActive = focused || pathname === '/configuracion' || pathname === '/privacidad' || pathname === '/centro-ayuda';
+            const isActive = focused || pathname === '/configuracion' || pathname === '/privacidad' || pathname === '/centro-ayuda' || pathname === '/perfil-tutor' || pathname === '/editar-perfil';
             return <IconSymbol size={26} name="person.fill" color={isActive ? '#9A3BEE' : '#8E8EA0'} />;
           },
           tabBarLabel: ({ focused }) => {
-            const isActive = focused || pathname === '/configuracion' || pathname === '/privacidad' || pathname === '/centro-ayuda';
+            const isActive = focused || pathname === '/configuracion' || pathname === '/privacidad' || pathname === '/centro-ayuda' || pathname === '/perfil-tutor' || pathname === '/editar-perfil';
             return (
               <Text style={{
                 fontSize: 10,
@@ -114,7 +114,23 @@ export default function TabLayout() {
           href: null,
         }}
       />
+
+      {/* Hide the tutor profile screen from tabs */}
+      <Tabs.Screen
+        name="perfil-tutor"
+        options={{
+          href: null,
+        }}
+      />
       
+      {/* Hide the edit profile screen from tabs */}
+      <Tabs.Screen
+        name="editar-perfil"
+        options={{
+          href: null,
+        }}
+      />
+
       {/* Hide the old default templates */}
       <Tabs.Screen
         name="explore"
