@@ -35,4 +35,20 @@ client.interceptors.request.use(
   }
 );
 
+// Response interceptor to handle expired or invalid token (401/403)
+client.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+      try {
+        const { useAuthStore } = require('../store/auth');
+        useAuthStore.getState().logout();
+      } catch (e) {
+        // Ignore errors if store is not loaded yet
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
 export default client;

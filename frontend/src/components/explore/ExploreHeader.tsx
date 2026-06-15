@@ -4,7 +4,7 @@ import { StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 
 interface ExploreHeaderProps {
-  style: StyleProp<ViewStyle>;
+  style: StyleProp<any>;
 }
 
 export function ExploreHeader({ style }: ExploreHeaderProps) {
