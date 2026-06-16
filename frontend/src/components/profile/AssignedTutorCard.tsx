@@ -1,6 +1,7 @@
 // src/components/profile/AssignedTutorCard.tsx
 import React from 'react';
 import { View, Text, Pressable } from 'react-native';
+import { useRouter } from 'expo-router';
 import { TutorAssignment } from '@/src/types';
 
 interface AssignedTutorCardProps {
@@ -8,6 +9,7 @@ interface AssignedTutorCardProps {
 }
 
 export function AssignedTutorCard({ assignedTutors }: AssignedTutorCardProps) {
+  const router = useRouter();
   const tutorName = assignedTutors.length > 0 && assignedTutors[0]?.tutor 
     ? assignedTutors[0].tutor.full_name 
     : 'Ing. Ana Torres';
@@ -56,7 +58,7 @@ export function AssignedTutorCard({ assignedTutors }: AssignedTutorCardProps) {
           </View>
         </View>
 
-        <Pressable onPress={() => alert(`Contacto: ${tutorEmail}`)}>
+        <Pressable onPress={() => router.push('/(tabs)/perfil-tutor' as any)}>
           <Text style={{ fontSize: 13, fontWeight: 'bold', color: '#9A3BEE' }}>
             Ver perfil
           </Text>
