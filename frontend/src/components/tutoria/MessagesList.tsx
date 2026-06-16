@@ -3,6 +3,22 @@ import React from 'react';
 import { ScrollView, View, Text, ActivityIndicator } from 'react-native';
 import { Conversation } from '@/src/types';
 
+// Helper function to parse and render bold text marked with **
+const renderFormattedText = (text: string) => {
+  if (!text) return null;
+  const parts = text.split(/\*\*([^*]+)\*\*/g);
+  return parts.map((part, index) => {
+    if (index % 2 === 1) {
+      return (
+        <Text key={index} style={{ fontWeight: 'bold' }}>
+          {part}
+        </Text>
+      );
+    }
+    return part;
+  });
+};
+
 interface MessagesListProps {
   scrollViewRef: React.RefObject<ScrollView | null>;
   conversation: Conversation | null;
@@ -51,7 +67,7 @@ export function MessagesList({
                     isUser ? 'text-white' : 'text-[#26215C] font-medium'
                   }`}
                 >
-                  {msg.content}
+                  {renderFormattedText(msg.content)}
                 </Text>
                 <Text
                   className={`text-[9px] mt-1.5 text-right ${

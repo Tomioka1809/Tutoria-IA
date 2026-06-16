@@ -15,7 +15,10 @@ export const useChatStore = create<ChatState>((set, get) => ({
   isLoading: false,
   isSending: false,
   fetchConversation: async () => {
-    set({ isLoading: true });
+    // Only show full loading spinner during initial load
+    if (!get().conversation) {
+      set({ isLoading: true });
+    }
     try {
       const response = await client.get<Conversation>('/chat/conversation');
       set({ conversation: response.data });
