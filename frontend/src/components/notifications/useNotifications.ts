@@ -73,9 +73,14 @@ export function useNotifications() {
 
         if (actDate.getTime() > now.getTime() && actDate.getTime() <= limit.getTime()) {
           const timeFormatted = formatTime12h(act.time);
+          const isAcademic = act.type === 'Tutoría Académica';
+          const title = isAcademic
+            ? `Recordatorio: Sesión mañana ${timeFormatted}`
+            : `Recordatorio: ${act.name} ${timeFormatted}`;
+
           reminders.push({
             id: `reminder_local_${act.id}`,
-            title: `Recordatorio: Sesión mañana ${timeFormatted}`,
+            title: title,
             body: `Tu actividad "${act.name}" está programada para mañana a las ${timeFormatted}.`,
             type: 'reminder',
             is_read: false,
@@ -98,9 +103,16 @@ export function useNotifications() {
             const timePart = s.scheduled_at.split('T')[1].substring(0, 5);
             const timeFormatted = formatTime12h(timePart);
             const name = s.notes || s.service_type?.name || 'Tutoría Académica';
+            const isAcademic = !s.service_type?.name || 
+                               s.service_type.name.includes('Académica') || 
+                               s.service_type.name.includes('Tutoría');
+            const title = isAcademic
+              ? `Recordatorio: Sesión mañana ${timeFormatted}`
+              : `Recordatorio: ${name} ${timeFormatted}`;
+
             reminders.push({
               id: `reminder_session_${s.id}`,
-              title: `Recordatorio: Sesión mañana ${timeFormatted}`,
+              title: title,
               body: `Tu tutoría "${name}" está programada para mañana a las ${timeFormatted}.`,
               type: 'reminder',
               is_read: false,
