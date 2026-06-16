@@ -1,10 +1,9 @@
 // src/components/profile/ProfileHeader.tsx
 import React from 'react';
-import { View, Text, Pressable } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useRouter } from 'expo-router';
-import Feather from '@expo/vector-icons/Feather';
 import { User } from '@/src/types';
+import { useAuthStore } from '@/src/store/auth';
 
 interface ProfileHeaderProps {
   user: User | null;
@@ -12,9 +11,9 @@ interface ProfileHeaderProps {
 
 export function ProfileHeader({ user }: ProfileHeaderProps) {
   const insets = useSafeAreaInsets();
-  const router = useRouter();
   const paddingTop = Math.max(insets.top, 16);
   const isStudent = user?.role === 'estudiante';
+  const profileImage = useAuthStore((s) => s.profileImage);
 
   return (
     <View style={{
@@ -27,9 +26,6 @@ export function ProfileHeader({ user }: ProfileHeaderProps) {
     }}>
       {/* Top Header Row */}
       <View style={{
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
         marginBottom: 20,
       }}>
         <Text style={{
@@ -39,9 +35,6 @@ export function ProfileHeader({ user }: ProfileHeaderProps) {
         }}>
           Perfil
         </Text>
-        <Pressable onPress={() => router.push('/(tabs)/configuracion' as any)}>
-          <Feather name="settings" size={24} color="white" />
-        </Pressable>
       </View>
       
       {/* Student Card */}
@@ -58,14 +51,28 @@ export function ProfileHeader({ user }: ProfileHeaderProps) {
         elevation: 4,
         marginBottom: isStudent ? 24 : 0,
       }}>
-        {/* Grey Avatar */}
-        <View style={{
-          width: 64,
-          height: 64,
-          borderRadius: 32,
-          backgroundColor: '#CBD5E1',
-          marginRight: 16,
-        }} />
+        {/* Avatar */}
+        {profileImage ? (
+          <Image
+            source={{ uri: profileImage }}
+            style={{
+              width: 64,
+              height: 64,
+              borderRadius: 32,
+              backgroundColor: '#CBD5E1',
+              marginRight: 16,
+            }}
+            resizeMode="cover"
+          />
+        ) : (
+          <View style={{
+            width: 64,
+            height: 64,
+            borderRadius: 32,
+            backgroundColor: '#CBD5E1',
+            marginRight: 16,
+          }} />
+        )}
         
         {/* Student details */}
         <View style={{ flex: 1 }}>
@@ -98,7 +105,7 @@ export function ProfileHeader({ user }: ProfileHeaderProps) {
             fontWeight: '500',
             marginTop: 2,
           }}>
-            VI Semestre
+            {user?.semester || 'VI Semestre'}
           </Text>
         </View>
       </View>
@@ -118,3 +125,4 @@ export function ProfileHeader({ user }: ProfileHeaderProps) {
     </View>
   );
 }
+

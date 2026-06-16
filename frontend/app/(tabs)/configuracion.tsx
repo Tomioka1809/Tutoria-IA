@@ -1,14 +1,16 @@
 import React from 'react';
-import { View, Text, ScrollView, Pressable } from 'react-native';
+import { View, Text, ScrollView, Pressable, Image } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Feather from '@expo/vector-icons/Feather';
 import { useProfile } from '@/src/components/profile/useProfile';
+import { useAuthStore } from '@/src/store/auth';
 
 export default function ConfiguracionScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { user } = useProfile();
+  const profileImage = useAuthStore((s) => s.profileImage);
   const paddingTop = Math.max(insets.top, 16);
 
   return (
@@ -65,14 +67,28 @@ export default function ConfiguracionScreen() {
           elevation: 4,
           marginBottom: -16, // overlap slightly with the bottom boundary
         }}>
-          {/* Grey Avatar */}
-          <View style={{
-            width: 64,
-            height: 64,
-            borderRadius: 32,
-            backgroundColor: '#CBD5E1',
-            marginRight: 16,
-          }} />
+          {/* Avatar */}
+          {profileImage ? (
+            <Image
+              source={{ uri: profileImage }}
+              style={{
+                width: 64,
+                height: 64,
+                borderRadius: 32,
+                backgroundColor: '#CBD5E1',
+                marginRight: 16,
+              }}
+              resizeMode="cover"
+            />
+          ) : (
+            <View style={{
+              width: 64,
+              height: 64,
+              borderRadius: 32,
+              backgroundColor: '#CBD5E1',
+              marginRight: 16,
+            }} />
+          )}
 
           {/* Student details */}
           <View style={{ flex: 1 }}>
@@ -97,7 +113,7 @@ export default function ConfiguracionScreen() {
               fontWeight: '500',
               marginTop: 2,
             }} numberOfLines={1}>
-              {user?.school || 'Ingeniería Informática y de Sistemas'} · VI Semestre
+              {user?.school || 'Ingeniería Informática y de Sistemas'} · {user?.semester || 'VI Semestre'}
             </Text>
           </View>
         </View>
@@ -138,7 +154,7 @@ export default function ConfiguracionScreen() {
               paddingVertical: 14,
               paddingHorizontal: 16,
             }}
-            onPress={() => alert('Editar perfil en desarrollo')}
+            onPress={() => router.push('/(tabs)/editar-perfil' as any)}
           >
             <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
               <View style={{

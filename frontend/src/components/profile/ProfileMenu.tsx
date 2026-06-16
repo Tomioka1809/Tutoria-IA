@@ -26,7 +26,7 @@ export function ProfileMenu({ onLogout }: ProfileMenuProps) {
     {
       name: 'Centro de ayuda',
       icon: 'help-circle' as const,
-      action: () => alert('Centro de ayuda en desarrollo.'),
+      action: () => router.push('/(tabs)/centro-ayuda' as any),
       isDestructive: false,
     },
     {

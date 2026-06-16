@@ -5,6 +5,7 @@ export interface User {
   student_code?: string;
   role: 'estudiante' | 'tutor' | 'admin';
   school?: string;
+  semester?: string;
 }
 
 export interface ServiceType {

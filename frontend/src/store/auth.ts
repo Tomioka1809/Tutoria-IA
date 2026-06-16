@@ -6,7 +6,10 @@ import { User } from '../types';
 interface AuthState {
   token: string | null;
   user: User | null;
+  profileImage: string | null;
   setAuth: (token: string, user: User) => void;
+  updateUser: (partial: Partial<User>) => void;
+  setProfileImage: (uri: string | null) => void;
   logout: () => void;
 }
 
@@ -15,8 +18,14 @@ export const useAuthStore = create<AuthState>()(
     (set) => ({
       token: null,
       user: null,
+      profileImage: null,
       setAuth: (token, user) => set({ token, user }),
-      logout: () => set({ token: null, user: null }),
+      updateUser: (partial) =>
+        set((state) => ({
+          user: state.user ? { ...state.user, ...partial } : state.user,
+        })),
+      setProfileImage: (uri) => set({ profileImage: uri }),
+      logout: () => set({ token: null, user: null, profileImage: null }),
     }),
     {
       name: 'tutoria-auth-storage',
