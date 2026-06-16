@@ -20,6 +20,7 @@ export default function TabLayout() {
         tabBarInactiveTintColor: '#8E8EA0',
         headerShown: false,
         tabBarButton: HapticTab,
+        tabBarHideOnKeyboard: true,
         tabBarLabelStyle: {
           fontSize: 10,
           fontWeight: '600',
@@ -72,11 +73,11 @@ export default function TabLayout() {
         options={{
           title: 'Perfil',
           tabBarIcon: ({ color, focused }) => {
-            const isActive = focused || pathname === '/configuracion' || pathname === '/privacidad' || pathname === '/centro-ayuda';
+            const isActive = focused || pathname === '/configuracion' || pathname === '/privacidad';
             return <IconSymbol size={26} name="person.fill" color={isActive ? '#9A3BEE' : '#8E8EA0'} />;
           },
           tabBarLabel: ({ focused }) => {
-            const isActive = focused || pathname === '/configuracion' || pathname === '/privacidad' || pathname === '/centro-ayuda';
+            const isActive = focused || pathname === '/configuracion' || pathname === '/privacidad';
             return (
               <Text style={{
                 fontSize: 10,
@@ -102,14 +103,6 @@ export default function TabLayout() {
       {/* Hide the new privacy screen from tabs */}
       <Tabs.Screen
         name="privacidad"
-        options={{
-          href: null,
-        }}
-      />
-      
-      {/* Hide the new help center screen from tabs */}
-      <Tabs.Screen
-        name="centro-ayuda"
         options={{
           href: null,
         }}

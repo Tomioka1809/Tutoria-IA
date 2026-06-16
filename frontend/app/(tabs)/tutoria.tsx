@@ -1,6 +1,7 @@
 // app/(tabs)/tutoria.tsx
-import React from 'react';
-import { View, Text, KeyboardAvoidingView, Platform } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { View, Text, KeyboardAvoidingView, Platform, TextInput, Keyboard } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 import { useTutoria } from '@/src/components/tutoria/useTutoria';
 import { TutoriaHeader } from '@/src/components/tutoria/TutoriaHeader';
 import { MessagesList } from '@/src/components/tutoria/MessagesList';
@@ -22,6 +23,36 @@ export default function TutoriaScreen() {
     handleMicPress,
   } = useTutoria();
 
+  const inputRef = useRef<TextInput>(null);
+  const isFocused = useIsFocused();
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
+
+  useEffect(() => {
+    if (isFocused && user?.role === 'estudiante') {
+      const timer = setTimeout(() => {
+        inputRef.current?.focus();
+      }, 150);
+      return () => clearTimeout(timer);
+    }
+  }, [isFocused, user?.role]);
+
+  useEffect(() => {
+    const showEvent = Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow';
+    const hideEvent = Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide';
+
+    const showSubscription = Keyboard.addListener(showEvent, () => {
+      setKeyboardVisible(true);
+    });
+    const hideSubscription = Keyboard.addListener(hideEvent, () => {
+      setKeyboardVisible(false);
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
+
   if (user?.role !== 'estudiante') {
     return (
       <View className="flex-1 bg-[#F5F5FB] justify-center items-center px-6">
@@ -36,9 +67,12 @@ export default function TutoriaScreen() {
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
+      behavior="padding"
+      keyboardVerticalOffset={0}
       className="flex-1 bg-white"
+      style={{
+        paddingBottom: keyboardVisible ? 0 : (Platform.OS === 'ios' ? 88 : 76)
+      }}
     >
       <TutoriaHeader onRefresh={fetchConversation} />
 
@@ -57,6 +91,7 @@ export default function TutoriaScreen() {
         onSend={handleSend}
         onMicPress={handleMicPress}
         isSending={isSending}
+        inputRef={inputRef}
       />
     </KeyboardAvoidingView>
   );

@@ -2,6 +2,7 @@ import json
 import urllib.request
 import urllib.error
 import anyio
+import os
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy.orm import selectinload
@@ -13,8 +14,24 @@ from app.models.conversation import Conversation
 from app.models.message import Message
 from app.core.config import settings
 
+# Load corpus.json at startup
+CORPUS_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "corpus.json")
+corpus_data = None
+try:
+    if os.path.exists(CORPUS_PATH):
+        with open(CORPUS_PATH, "r", encoding="utf-8") as f:
+            corpus_data = json.load(f)
+        print(f"Loaded corpus database successfully from {CORPUS_PATH}")
+    else:
+        print(f"Warning: corpus.json not found at {CORPUS_PATH}")
+except Exception as e:
+    print(f"Error loading corpus.json: {e}")
+
+corpus_str = json.dumps(corpus_data, ensure_ascii=False, indent=2) if corpus_data else "{}"
+
 def call_gemini_sync(api_key: str, payload: dict) -> str:
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={api_key}"
+    # Use v1beta API and gemini-2.5-flash to support systemInstruction
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key}"
     req = urllib.request.Request(
         url,
         data=json.dumps(payload).encode("utf-8"),
@@ -34,7 +51,7 @@ def call_gemini_sync(api_key: str, payload: dict) -> str:
     except urllib.error.HTTPError as e:
         error_msg = e.read().decode('utf-8')
         print(f"Gemini API Error: {error_msg}")
-        return "🦖 ¡Grrr! Parece que no pude comunicarme con los servidores de Google Gemini. Verifica tu API Key."
+        return "🦖 ¡Grrr! Parece que no pude comunicarme con los servidores de Google Gemini. Verifica tu API Key o la cuota del modelo."
     except Exception as e:
         print(f"Gemini API Exception: {e}")
         return "🦖 ¡Ups! Ocurrió un error al intentar conectarme con mi red de conocimiento."
@@ -114,10 +131,15 @@ async def send_chat_message(
             })
             
         system_instruction = (
-            "Eres TutorIA, el tutor académico inteligente de la universidad. Te presentas como un amigable dinosaurio morado. "
+            "Eres TutorIA, el tutor académico inteligente de la universidad UNSAAC. Te presentas como un amigable dinosaurio morado. "
             "Tu objetivo es ayudar a los estudiantes con sus consultas académicas, planes de estudio, reglamentos universitarios y técnicas de estudio. "
-            "Mantén siempre un tono entusiasta, paciente, motivador, alegre y amigable. Utiliza emojis ocasionalmente para ser más cercano (🦖, 📚, ✍️, ✨). "
-            "Si te preguntan algo fuera del ámbito académico o universitario, recuérdales amablemente que tu especialidad es el éxito estudiantil y los temas de la universidad."
+            "Mantén siempre un tono entusiasta, paciente, motivador, alegre y amigable. Utiliza emojis ocasionalmente para ser más cercano (🦖, 📚, ✍️, ✨).\n\n"
+            "Aquí tienes la base de datos oficial (corpus) de la universidad UNSAAC sobre el reglamento de tutoría y servicios:\n"
+            f"{corpus_str}\n\n"
+            "INSTRUCCIONES IMPORTANTES DE RESPUESTA:\n"
+            "1. Intenta responder a la consulta del estudiante utilizando la información de la base de datos oficial (corpus) anterior.\n"
+            "2. Si la respuesta NO se encuentra en la base de datos oficial anterior (por ejemplo, preguntas generales, otros cursos, temas externos, o cualquier otra cosa no detallada en el JSON), debes responder utilizando tus conocimientos generales (como si buscaras en internet).\n"
+            "3. En este último caso (cuando la información no esté en la base de datos oficial), debes aclarar obligatoriamente al inicio de tu respuesta que no tienes esa información en tu base de datos de la universidad, pero que según internet/conocimiento general es de cierta manera. Utiliza frases en español como: 'No tengo esa información en mi base de datos, pero según internet...', 'Esta información no se encuentra en mi base de datos de tutoría, pero según internet...', etc."
         )
         
         payload = {
