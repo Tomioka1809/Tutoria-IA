@@ -26,3 +26,5 @@ typing_extensions==4.15.0
 uvicorn==0.49.0
 email-validator
 python-multipart
+pgvector
+google-genai

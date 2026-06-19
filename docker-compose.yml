@@ -1,9 +1,11 @@
 services:
 
   db:
-    image: postgres:16
+    image: pgvector/pgvector:pg16
     container_name: tutoria_db
     restart: always
+    env_file:
+      - .env
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
