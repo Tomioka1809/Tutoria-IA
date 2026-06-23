@@ -20,7 +20,13 @@ export const useChatStore = create<ChatState>((set, get) => ({
       set({ isLoading: true });
     }
     try {
-      const response = await client.get<Conversation>('/chat/conversation');
+      const response = await client.get<Conversation>('/chat/conversation', {
+        headers: {
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache',
+          'Expires': '0',
+        }
+      });
       set({ conversation: response.data });
     } catch (error) {
       console.error('Failed to fetch chat conversation:', error);
@@ -57,14 +63,11 @@ export const useChatStore = create<ChatState>((set, get) => ({
       // Replace optimistic message and add model response
       set((state) => {
         if (!state.conversation) return {};
-        // Filter out temporary local message and append verified server responses
-        const verifiedMessages = state.conversation.messages.filter(
-          (m) => m.id !== tempUserMsg.id
-        );
+        // Keep the temporary user message and append the bot's response
         return {
           conversation: {
             ...state.conversation,
-            messages: [...verifiedMessages, response.data],
+            messages: [...state.conversation.messages, response.data],
           },
         };
       });

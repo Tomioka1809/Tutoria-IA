@@ -1,6 +1,6 @@
 from pydantic import BaseModel
-from app.schemas.user import UserOut
-from app.schemas.service_type import ServiceTypeOut
+from app.domain.entities.user import UserOut
+from app.domain.entities.service_type import ServiceTypeOut
 
 class TutorAssignmentBase(BaseModel):
     student_id: int

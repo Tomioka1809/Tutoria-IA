@@ -1,0 +1,157 @@
+{
+  "universidad": "UNSAAC",
+  "nombre_completo": "Universidad Nacional de San Antonio Abad del Cusco",
+  "reglamento": "Reglamento General del Servicio en Bibliotecas",
+  "base_legal": [
+    "Constitución",
+    "Ley Universitaria Ley Nº 23733",
+    "Estatuto de la Universidad Nacional San Antonio Abad del Cusco",
+    "D.S. № 033-83-ED",
+    "Ley Nº 24047",
+    "Ley Nº 24708",
+    "D.L. Nº 822-96"
+  ],
+  "servicio_bibliotecas": {
+    "definicion": "La misión de las Bibliotecas de la UNSAAC es proporcionar a la comunidad universitaria recursos documentales y servicios de información de manera eficiente y oportuna, que permitan apoyar los servicios de enseñanza superior universitaria, investigación, difusión y extensión de la cultura.",
+    "caracter": "Dependiente de la Oficina de Servicios Académicos y Vice Rectorado Académico.",
+    "composicion": "Área de Biblioteca Central, Bibliotecas Especializadas de las Facultades y otras existentes.",
+    "modalidades_prestamo": [
+      {
+        "tipo": "Préstamo en Sala",
+        "descripcion": "Fondo bibliográfico de Sala de Referencias, hemeroteca, biblioteca Jesuita, periódicos del Siglo XIX, salas especiales, donaciones, ejemplares únicos y/o de edición agotada.",
+        "dimensiones": []
+      },
+      {
+        "tipo": "Préstamo a domicilio",
+        "descripcion": "El préstamo por usuarios de pregrado es de un libro por vez y por el término de 24 horas. El préstamo de libros a docentes y personal administrativo es hasta dos libros a domicilio, por el término de 05 días calendario máximo.",
+        "dimensiones": []
+      },
+      {
+        "tipo": "Consulta en Estantería Abierta",
+        "descripcion": "Permite a los usuarios tener acceso al fondo bibliográfico disponible en los estantes. La cantidad de lectores promedio para ser atendidos será de 3 a 10, por un tiempo de 02 horas como máximo.",
+        "dimensiones": []
+      }
+    ],
+    "proceso_adquisicion": "La adquisición del acervo documental se realiza por: compra, canje o donación así como recopilación mediante el uso de internet respetando siempre los derechos de autor.",
+    "acreditacion": "Los usuarios internos acreditarán su condición con la presentación del carné de lector. Los usuarios externos se acreditarán con sus respectivos documentos de identidad personal actualizada y con autorización jerárquica."
+  },
+  "estructura_administrativa": {
+    "direccion_biblioteca_central": {
+      "integrantes": [
+        "Director, a cargo de un Profesor Ordinario con conocimientos en Bibliotecología",
+        "Jefe Administrativo, Trabajador de carrera"
+      ],
+      "funciones": [
+        "Velar por la prestación óptima de los servicios",
+        "Centralizar y preservar las bases de datos de la información bibliografía",
+        "Estar en continua coordinación con el Secretario Docente y el Bibliotecario responsable de cada facultad"
+      ]
+    },
+    "bibliotecas_especializadas": {
+      "definicion": "Orgánica, estructural y administrativamente, dependen de las Facultades a las que sirven.",
+      "funciones": [
+        "Brindar calidad y eficiencia en la atención a los usuarios",
+        "Orientar a los usuarios, referente al uso adecuado de los servicios que presta"
+      ]
+    },
+    "supervision": "El Área de Biblioteca Central como órgano principal, tiene funciones técnico-normativas respecto a las Bibliotecas Especializadas."
+  },
+  "sujetos_del_proceso": {
+    "usuarios_internos": "Alumnos de pregrado, Egresados, Graduandos, Alumnos de postgrado, Profesores ordinarios, contratados, Trabajadores.",
+    "usuarios_externos": "Alumnos de otras universidades, Investigadores, Visitantes."
+  },
+  "objetivos_de_la_biblioteca": [
+    "Integrar el acervo documental acorde con los planes y programas de estudio, de investigación y de difusión.",
+    "Brindar el acceso a la información bibliográfica, hemerográfica, documental, electrónica, digitalizada y virtual a la comunidad universitaria y público en general.",
+    "Coadyuvar y fomentar las actividades académicas de enseñanza-aprendizaje, investigación, proyección social, actividades culturales y humanísticas.",
+    "Satisfacer las necesidades de información y documentación de la comunidad científica y universitaria.",
+    "Adecuar los servicios bibliotecarios a los avances de la ciencia y la tecnología."
+  ],
+  "derechos_y_obligaciones": {
+    "derechos": [
+      "Utilizar las salas de lectura para la revisión de las obras a consultar, las veces que lo requieran.",
+      "Solicitar materiales de las diferentes colecciones para consultarlos únicamente dentro de las instalaciones.",
+      "Ser atendidos por el personal de la Biblioteca con amabilidad y respeto.",
+      "Recibir información, orientación y ayuda por parte del personal.",
+      "Presentar, por escrito, sus opiniones, sugerencias y quejas sobre el funcionamiento."
+    ],
+    "obligaciones": [
+      "Conducirse con decoro y respeto tanto con el bibliotecario como con los demás usuarios.",
+      "Mantener el carné de lector en buen estado.",
+      "Responsabilizarse del material bibliográfico que le sea proporcionado para consulta bajo cualquier forma de préstamo.",
+      "No está permitido ingerir alimentos ni bebidas en las salas de consulta.",
+      "Está terminantemente prohibido el uso de celulares."
+    ]
+  },
+  "sanciones_y_faltas": {
+    "frecuencia": "Al incurrir en faltas establecidas en el reglamento.",
+    "responsable": "Autoridad jerárquica y personal de biblioteca.",
+    "indicadores": [
+      "Uso de carné que no le corresponda: suspensión de atención por 3 meses.",
+      "Pérdida de libro: reposición conforme a características, de no restituirse se bloquea la matrícula.",
+      "Daño físico al libro: retención del carné y suspensión hasta su reposición.",
+      "Retiro de material sin autorización: retención del carné y suspensión por 30 días.",
+      "No devolver libro prestado: no podrá optar el grado académico de bachiller ni acceder al título profesional."
+    ],
+    "resultado": "Garantizar la protección, preservación y correcto uso del acervo y mobiliario."
+  },
+  "saludos_y_despedidas": {
+    "saludos": [
+      "Hola, soy el asistente virtual de la Biblioteca de la UNSAAC. ¿En qué puedo ayudarte hoy?",
+      "¡Buenos días! Bienvenido al sistema de bibliotecas. ¿Qué información o material estás buscando?"
+    ],
+    "despedidas": [
+      "Ha sido un placer orientarte. ¡Que disfrutes tu lectura en la UNSAAC!",
+      "Espero haber resuelto tus dudas sobre el préstamo de libros. ¡Hasta pronto!"
+    ],
+    "agradecimientos": [
+      "Con mucho gusto, estamos para apoyar tu investigación y aprendizaje.",
+      "Es un placer ayudarte a encontrar los recursos que necesitas."
+    ],
+    "respuestas_no_entendido": [
+      "Lo siento, no entendí bien tu consulta. ¿Buscas requisitos para el carné, información sobre alguna sala o cómo renovar un préstamo?"
+    ]
+  },
+  "preguntas_frecuentes": [
+    {
+      "pregunta": "¿Qué requisitos necesito para obtener el carné de lector si soy estudiante de pregrado?",
+      "respuesta": "Ser estudiante de pregrado con matricula vigente y presentar el recibo de pago por concepto de carné de lector."
+    },
+    {
+      "pregunta": "¿Puedo llevarme libros de la Biblioteca Jesuita a mi casa?",
+      "respuesta": "No. Libros de la Biblioteca Jesuita, incunables, obras de referencia y tesis no son objeto de préstamo a domicilio."
+    },
+    {
+      "pregunta": "¿Por cuánto tiempo prestan un libro a los alumnos de pregrado?",
+      "respuesta": "El préstamo de documentos de las bibliotecas, por usuarios de pregrado es de un libro por vez y por el término de 24 horas."
+    },
+    {
+      "pregunta": "¿Qué ocurre si pierdo un libro que me prestaron?",
+      "respuesta": "Conlleva a su reposición conforme a las características físicas y contenido del mismo ejemplar. De no restituirse el ejemplar extraviado, el usuario estará impedido de procesar su matrícula en el semestre académico siguiente."
+    },
+    {
+      "pregunta": "¿Cuáles son las salas de la Biblioteca Central?",
+      "respuesta": "Cuenta con Unidad de Procesos Técnicos, Unidad de Circulación Bibliográfica, Referencias, Hemeroteca, Sala Tiflotécnica, Biblioteca Jesuita, Sala de Donaciones, Tesisteca y Sala de Audiovisuales."
+    }
+  ],
+  "salas_y_servicios": {
+    "sala_tiflotecnica": {
+      "descripcion": "Sala para atención de estudiantes con discapacidad visual (baja visión e invidentes)."
+    },
+    "unidad_de_procesos_tecnicos": {
+      "descripcion": "Encargada del procesamiento bibliográfico."
+    },
+    "unidad_de_circulacion_bibliografica": {
+      "descripcion": "Proporciona servicios de información asegurando la organización, control, preservación y resguardo de libros de ciencias puras y aplicadas."
+    },
+    "hemeroteca": {
+      "descripcion": "Destinada a publicaciones periódicas, revistas, documentos e informes."
+    }
+  },
+  "glosario": {
+    "acervo_documental": "Está constituido por libros, colecciones, diccionarios, anuarios, documentos, tesis, libros antiguos, informes, incunables, periódicos, revistas y material digital.",
+    "estanteria_abierta": "Servicio que permite a los usuarios del sistema tener acceso al fondo bibliográfico disponible en los estantes, además de disponer de una sala de consulta.",
+    "carne_de_lector": "Documento emitido por el Centro de Cómputo del Área de Biblioteca Central o medio electrónico que acredita a los usuarios internos.",
+    "sala_tiflotecnica": "Sala para atención de estudiantes con discapacidad visual (baja visión e invidentes)."
+  }
+}

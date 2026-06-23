@@ -10,8 +10,8 @@ from app.infrastructure.database.models.event import Event
 from app.infrastructure.database.models.user import User
 from app.infrastructure.database.models.tutor_assignment import TutorAssignment
 from app.domain.entities.session import SessionCreate, SessionUpdate
-from app.services.streak_service import update_streak_on_session_complete
-from app.services.notification_service import create_notification
+from app.application.use_cases.streak_service import update_streak_on_session_complete
+from app.application.use_cases.notification_service import create_notification
 
 async def get_user_sessions(db: AsyncSession, user: User) -> List[Session]:
     if user.role == "estudiante":

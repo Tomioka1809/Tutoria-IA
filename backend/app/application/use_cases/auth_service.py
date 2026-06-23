@@ -7,8 +7,8 @@ from app.infrastructure.database.models.user import User
 from app.infrastructure.database.models.streak import Streak
 from app.domain.entities.user import UserCreate
 from app.domain.entities.auth import LoginRequest, Token
-from app.core import security
-from app.core.config import settings
+from app.infrastructure.security import security
+from app.infrastructure.config.config import settings
 
 async def register_user(db: AsyncSession, user_in: UserCreate) -> User:
     # Check if user already exists

@@ -12,7 +12,7 @@ from datetime import datetime
 
 from app.infrastructure.database.models.conversation import Conversation
 from app.infrastructure.database.models.message import Message
-from app.core.config import settings
+from app.infrastructure.config.config import settings
 
 # Load corpus.json at startup
 CORPUS_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "corpus.json")

@@ -1,0 +1,302 @@
+[
+  {
+    "id": 1,
+    "pregunta": "¿Cuál es el plazo para el pago de la matrícula en la UNSAAC?",
+    "respuesta": "El pago de la matrícula se realiza hasta el último día hábil del mes de inicio del semestre académico. No obstante, se recomienda efectuarlo dentro de los primeros diez (10) días hábiles para evitar la aplicación de recargos por pagos extemporáneos.",
+    "fuente": "Cronograma Académico 2025-I"
+  },
+  {
+    "id": 2,
+    "pregunta": "¿Qué sucede si un estudiante no paga su matrícula en el plazo establecido?",
+    "respuesta": "Los estudiantes que no realicen el pago de su matrícula en el plazo establecido podrán hacerlo extemporáneamente, previo pago de los derechos complementarios establecidos en el tarifario aprobado por el Consejo Universitario, salvo indicación expresa contraria del Consejo Universitario.",
+    "fuente": "Normas Académicas 2025-I"
+  },
+  {
+    "id": 3,
+    "pregunta": "¿Cuándo se lleva a cabo la matrícula extemporánea?",
+    "respuesta": "La matrícula extemporánea se realiza a partir del décimo primer (11°) día hábil del inicio del semestre académico hasta un día antes de la finalización del período de traslado de asignaturas.",
+    "fuente": "Normas Académicas 2025-I"
+  },
+  {
+    "id": 4,
+    "pregunta": "¿Dónde puedo obtener información sobre el cronograma de pagos y servicios académicos?",
+    "respuesta": "Puedes consultar el cronograma oficial en la página web de la Dirección de Sistemas y Tecnologías de la Información (DISTI) de la UNSAAC, sección 'Transparencia' o 'Servicios Académicos'.",
+    "fuente": "Sitio web oficial UNSAAC"
+  },
+  {
+    "id": 5,
+    "pregunta": "¿Los estudiantes de intercambio deben realizar el pago de matrícula?",
+    "respuesta": "Generalmente, los estudiantes de intercambio académico que vienen a la UNSAAC están exonerados del pago de matrícula y otros derechos académicos en la universidad receptora, según lo estipulado en los convenios de cooperación vigentes.",
+    "fuente": "Oficina de Cooperación y Relaciones Internacionales (OCRI)"
+  },
+  {
+    "id": 6,
+    "pregunta": "¿Cómo puedo solicitar la devolución de un pago indebido realizado en la oficina de Tesorería?",
+    "respuesta": "El estudiante debe presentar un 'Formulario de Solicitud de Devolución de Pagos' ante la Tesorería, adjuntando el comprobante de pago original, una copia de su DNI y una fundamentación de la solicitud.",
+    "fuente": "Procedimientos de Tesorería"
+  },
+  {
+    "id": 7,
+    "pregunta": "¿Los horarios de las asignaturas pueden variar después del periodo de traslado?",
+    "respuesta": "Una vez finalizado el período de traslado de asignaturas y habiéndose publicado el horario definitivo, este no podrá ser modificado, salvo situaciones de fuerza mayor debidamente justificadas y autorizadas por la Dirección.",
+    "fuente": "Normas Académicas 2025-I"
+  },
+  {
+    "id": 8,
+    "pregunta": "¿El pago de matrícula incluye algún seguro estudiantil?",
+    "respuesta": "No. El pago de la matrícula cubre únicamente los derechos académicos. La afiliación al seguro contra accidentes personales es gestionada por la Dirección de Bienestar Universitario a través de una póliza contratada por la universidad.",
+    "fuente": "Dirección de Bienestar Universitario"
+  },
+  {
+    "id": 9,
+    "pregunta": "¿Los estudiantes de pregrado y posgrado tienen los mismos plazos de pago?",
+    "respuesta": "No. Los estudiantes de posgrado (segundas especialidades y maestrías) tienen cronogramas de pago diferenciados, establecidos en sus respectivos reglamentos y calendarios académicos, los cuales pueden variar de los establecidos para pregrado.",
+    "fuente": "Reglamentos de Postgrado"
+  },
+  {
+    "id": 10,
+    "pregunta": "¿Qué debo hacer si presento un problema técnico al realizar el pago en línea?",
+    "respuesta": "Si experimentas problemas con el pago en línea, contacta inmediatamente con el personal de la Mesa de Ayuda Tecnológica (Help Desk) de la DISTI para que puedan brindarte soporte técnico y verificar el estado de la transacción.",
+    "fuente": "Dirección de Sistemas y Tecnologías de la Información (DISTI)"
+  },
+  {
+    "id": 11,
+    "pregunta": "¿Puedo reservar mi matrícula si no podré estudiar este semestre?",
+    "respuesta": "Sí, tienes derecho a reservar tu matrícula hasta por tres (3) años, sean consecutivos o alternos. Debes presentar la solicitud de reserva antes de que finalice el periodo de matrícula oficial del semestre correspondiente.",
+    "fuente": "Reglamento Académico / Ley Universitaria 30220"
+  },
+  {
+    "id": 12,
+    "pregunta": "¿Qué pasa si desapruebo una misma asignatura por tercera vez?",
+    "respuesta": "Según la Ley Universitaria, el estudiante que desapruebe tres veces la misma materia es separado temporalmente por un año. Si al reincorporarse desaprueba por cuarta vez, es separado definitivamente de la universidad.",
+    "fuente": "Ley Universitaria 30220"
+  },
+  {
+    "id": 13,
+    "pregunta": "¿Existe la posibilidad de retirarse de un curso una vez iniciadas las clases?",
+    "respuesta": "Sí, puedes solicitar el retiro de uno o más cursos (retiro parcial) o de todo el semestre (retiro total) dentro de las fechas establecidas en el cronograma académico, para evitar que afecte tu promedio y condición de invicto.",
+    "fuente": "Reglamento de Matrícula"
+  },
+  {
+    "id": 14,
+    "pregunta": "¿Dónde y cómo tramito mi correo institucional?",
+    "respuesta": "El correo institucional se genera automáticamente al matricularte. Si tienes problemas de acceso o necesitas restablecer tu contraseña, debes gestionar el ticket virtual a través de la DISTI o en tu centro de cómputo.",
+    "fuente": "Dirección de Sistemas y Tecnologías de la Información (DISTI)"
+  },
+  {
+    "id": 15,
+    "pregunta": "¿Es obligatorio el estudio de un idioma extranjero para graduarme?",
+    "respuesta": "Sí. Para obtener el grado de Bachiller es indispensable haber aprobado un idioma extranjero (preferentemente inglés) o lengua nativa, en el nivel exigido por el plan de estudios de tu escuela profesional.",
+    "fuente": "Reglamento de Grados y Títulos"
+  },
+  {
+    "id": 16,
+    "pregunta": "¿Qué debo hacer si pierdo mi carné universitario emitido por SUNEDU?",
+    "respuesta": "Debes realizar una denuncia policial por pérdida, abonar el derecho por duplicado en caja de la universidad y presentar la solicitud junto con la denuncia en tu facultad para tramitarlo ante SUNEDU.",
+    "fuente": "Dirección de Registro Académico / SUNEDU"
+  },
+  {
+    "id": 17,
+    "pregunta": "¿Cuáles son los requisitos para obtener el carné de biblioteca de la UNSAAC?",
+    "respuesta": "Ser estudiante con matrícula vigente, presentar el recibo de pago por derecho de carné, una fotografía reciente (o imagen digital) y procesarlo a través del Centro de Cómputo del Área de Biblioteca Central.",
+    "fuente": "Reglamento General del Servicio en Bibliotecas"
+  },
+  {
+    "id": 18,
+    "pregunta": "¿Cuántos libros puedo llevar a casa con el préstamo a domicilio?",
+    "respuesta": "Los estudiantes de pregrado pueden solicitar el préstamo a domicilio de un (1) libro por vez, por un plazo máximo de 24 horas, pudiendo ser renovado si el libro no ha sido solicitado por otro estudiante.",
+    "fuente": "Reglamento General del Servicio en Bibliotecas"
+  },
+  {
+    "id": 19,
+    "pregunta": "¿Qué pasa si me demoro en devolver un libro a la biblioteca?",
+    "respuesta": "En caso de excederse el plazo de préstamo (24 horas para pregrado), se te retendrá el carné de lector por el mismo tiempo en que te hayas excedido en la devolución.",
+    "fuente": "Reglamento General del Servicio en Bibliotecas"
+  },
+  {
+    "id": 20,
+    "pregunta": "¿Qué ocurre si pierdo o deterioro gravemente un libro de la biblioteca?",
+    "respuesta": "Debes reponer un ejemplar original con las mismas o similares características (título, autor, año, edición). Si no lo haces, se bloqueará tu matrícula para el siguiente semestre y no podrás tramitar tu bachillerato.",
+    "fuente": "Reglamento General del Servicio en Bibliotecas"
+  },
+  {
+    "id": 21,
+    "pregunta": "¿Puedo solicitar prestada una Tesis o un libro de la Biblioteca Jesuita para llevar a mi casa?",
+    "respuesta": "No. Las obras de referencia (diccionarios, enciclopedias), incunables, diarios antiguos, libros de la Biblioteca Jesuita y las tesis son estrictamente para consulta en sala, no hay préstamo a domicilio para estos formatos.",
+    "fuente": "Reglamento General del Servicio en Bibliotecas"
+  },
+  {
+    "id": 22,
+    "pregunta": "¿Cuáles son los servicios gratuitos de la Unidad de Salud de la universidad?",
+    "respuesta": "La Unidad de Salud ofrece de forma gratuita para los estudiantes matriculados los servicios de Medicina General, Odontología, Psicología, Obstetricia y tópico/enfermería.",
+    "fuente": "Dirección de Bienestar Universitario"
+  },
+  {
+    "id": 23,
+    "pregunta": "¿El examen médico para los cachorros (ingresantes) es obligatorio?",
+    "respuesta": "Sí, realizar el examen médico, odontológico y psicológico es un requisito estrictamente obligatorio para todos los nuevos ingresantes a fin de completar su perfil universitario.",
+    "fuente": "Dirección de Bienestar Universitario"
+  },
+  {
+    "id": 24,
+    "pregunta": "¿Cuáles son los requisitos principales para acceder al Comedor Universitario?",
+    "respuesta": "Tener matrícula regular vigente, ser evaluado socioeconómicamente por una asistenta social para demostrar necesidad, y se da prioridad a los estudiantes que se encuentran en condición de invictos en sus estudios.",
+    "fuente": "Dirección de Bienestar Universitario"
+  },
+  {
+    "id": 25,
+    "pregunta": "¿A dónde acudo si me siento abrumado, estresado o con problemas de salud mental?",
+    "respuesta": "Debes acudir al Departamento de Psicología y Psicopedagogía de la Dirección de Bienestar Universitario, donde brindan orientación, contención emocional y talleres de manejo de estrés de manera confidencial.",
+    "fuente": "Dirección de Bienestar Universitario"
+  },
+  {
+    "id": 26,
+    "pregunta": "¿La universidad brinda apoyo en caso de emergencia socioeconómica familiar?",
+    "respuesta": "Sí, la Unidad de Asistencia Social evalúa casos de emergencia para orientar e intervenir, pudiendo aplicar exoneraciones, tramitar becas alimentarias u otras asistencias que eviten la deserción del estudiante.",
+    "fuente": "Dirección de Bienestar Universitario"
+  },
+  {
+    "id": 27,
+    "pregunta": "¿Qué es la Tutoría Académica Universitaria?",
+    "respuesta": "Es un proceso permanente de acompañamiento que brinda un docente para orientarte en tus métodos de estudio, inserción universitaria y desarrollo profesional, apoyándote durante toda la carrera.",
+    "fuente": "Reglamento de Tutoría Académica"
+  },
+  {
+    "id": 28,
+    "pregunta": "¿Qué significa tener matrícula condicionada y cómo afecta la tutoría?",
+    "respuesta": "La matrícula condicionada ocurre cuando has desaprobado cursos repetidas veces o tu rendimiento es muy bajo. En este caso, la asignación de un Tutor Académico y la asistencia a sus sesiones son obligatorias.",
+    "fuente": "Reglamento de Tutoría Académica"
+  },
+  {
+    "id": 29,
+    "pregunta": "¿Puedo solicitar el cambio del docente tutor que me fue asignado?",
+    "respuesta": "Sí, cualquier estudiante puede solicitar, de forma razonada, al Comité Tutorial de la Escuela Profesional el cambio de su Tutor Académico. Se resolverá previa audiencia con el tutor.",
+    "fuente": "Reglamento de Tutoría Académica"
+  },
+  {
+    "id": 30,
+    "pregunta": "¿Las conversaciones y problemas personales que le cuento a mi tutor son privados?",
+    "respuesta": "Absolutamente. Los Tutores Académicos tienen el deber legal y ético de confidencialidad respecto a la información privada del estudiante, basándose en la normativa de Protección de Datos Personales.",
+    "fuente": "Reglamento de Tutoría Académica"
+  },
+  {
+    "id": 31,
+    "pregunta": "¿Cuántas veces por semestre debo reunirme obligatoriamente con mi tutor?",
+    "respuesta": "Se requieren al menos tres encuentros mínimos: al comenzar el semestre, después de la primera evaluación parcial y una semana antes de finalizar el semestre académico. Pueden ser más si así lo acuerdan.",
+    "fuente": "Reglamento de Tutoría Académica"
+  },
+  {
+    "id": 32,
+    "pregunta": "¿Desde qué semestre puedo postular a un intercambio estudiantil?",
+    "respuesta": "Para aplicar a la movilidad saliente (nacional o internacional) debes estar cursando al menos el tercer año de tu carrera (sexto semestre) o haber superado el 60% de tus créditos aprobados.",
+    "fuente": "Oficina de Cooperación y Relaciones Internacionales (OCRI)"
+  },
+  {
+    "id": 33,
+    "pregunta": "¿Qué nota promedio necesito para ganar un cupo de intercambio?",
+    "respuesta": "Generalmente se exige pertenecer al Quinto Superior, o como mínimo al Tercio Superior de tu Escuela Profesional, dependiendo de las exigencias específicas de la convocatoria o universidad de destino.",
+    "fuente": "Oficina de Cooperación y Relaciones Internacionales (OCRI)"
+  },
+  {
+    "id": 34,
+    "pregunta": "¿Si me voy de intercambio, la UNSAAC me apoya con el costo de los pasajes?",
+    "respuesta": "Sí, la universidad cuenta con un Reglamento de Subvenciones Económicas mediante el cual puede financiar el costo total o parcial de tus pasajes y seguro médico internacional, dependiendo de la disponibilidad presupuestal.",
+    "fuente": "Oficina de Cooperación y Relaciones Internacionales (OCRI)"
+  },
+  {
+    "id": 35,
+    "pregunta": "¿Qué es la Red Peruana de Universidades (RPU)?",
+    "respuesta": "Es un consorcio de las mejores universidades del Perú (al que pertenece la UNSAAC) que permite a los estudiantes realizar un semestre académico en instituciones como la PUCP, UPCH, UNSA, entre otras, sin pagar matrícula extra.",
+    "fuente": "Oficina de Cooperación y Relaciones Internacionales (OCRI)"
+  },
+  {
+    "id": 36,
+    "pregunta": "¿Cómo certifico mi estado de salud para viajar al extranjero de intercambio?",
+    "respuesta": "Debes adquirir un seguro médico internacional y presentar los exámenes médicos requeridos por la universidad de destino y el país receptor. La unidad de salud de la UNSAAC puede emitir certificados de salud general.",
+    "fuente": "Oficina de Cooperación y Relaciones Internacionales (OCRI)"
+  },
+  {
+    "id": 37,
+    "pregunta": "¿Cómo realizo el trámite de Constancia de Egresado?",
+    "respuesta": "Una vez aprobados todos los créditos de tu plan de estudios, debes solicitarla por Mesa de Partes (física o virtual), adjuntando tus constancias de no adeudo (biblioteca, tesorería, centro de idiomas, laboratorios) y el pago correspondiente.",
+    "fuente": "Dirección de Registro y Servicios Académicos"
+  },
+  {
+    "id": 38,
+    "pregunta": "¿Qué modalidades existen para obtener el Título Profesional?",
+    "respuesta": "Dependiendo de tu Escuela Profesional, las modalidades contempladas por la Ley Universitaria incluyen la sustentación de Tesis y el Trabajo de Suficiencia Profesional. El bachillerato automático solo aplicó bajo ciertas disposiciones transitorias excepcionales.",
+    "fuente": "Reglamento de Grados y Títulos"
+  },
+  {
+    "id": 39,
+    "pregunta": "¿La universidad ofrece un correo electrónico o almacenamiento en la nube gratis?",
+    "respuesta": "Sí, tu cuenta de correo institucional (@unsaac.edu.pe) viene vinculada a licencias educativas, dándote acceso a plataformas de ofimática y almacenamiento en la nube gratuito durante toda tu etapa como estudiante.",
+    "fuente": "Dirección de Sistemas y Tecnologías de la Información (DISTI)"
+  },
+  {
+    "id": 40,
+    "pregunta": "¿Puedo justificar mis faltas a clases si me enfermé?",
+    "respuesta": "Sí, las inasistencias por motivos de salud se justifican dentro de un plazo de 72 horas después de la falta, presentando una solicitud dirigida al Director de Escuela adjuntando el certificado médico oficial (visado por el MINSA o EsSalud).",
+    "fuente": "Normas Académicas"
+  },
+  {
+    "id": 41,
+    "pregunta": "¿Cuál es el límite de inasistencias antes de reprobar un curso?",
+    "respuesta": "Según el Reglamento Académico, el estudiante que acumule un 30% o más de inasistencias injustificadas a las sesiones de clases teóricas o prácticas será automáticamente inhabilitado del curso (nota promocional cero).",
+    "fuente": "Reglamento Académico de Pregrado"
+  },
+  {
+    "id": 42,
+    "pregunta": "¿Dónde se tramita la constancia de tercio o quinto superior?",
+    "respuesta": "Se tramita en la Dirección de Registro y Servicios Académicos, previo pago en Tesorería. Es muy solicitada para postular a becas, intercambios o prácticas preprofesionales.",
+    "fuente": "Dirección de Registro y Servicios Académicos"
+  },
+  {
+    "id": 43,
+    "pregunta": "¿Los certificados de estudios parciales cuestan por ciclo o por el documento total?",
+    "respuesta": "Las tasas se cobran por semestre académico emitido. El tarifario completo se encuentra en el TUPA de la universidad; debes pagar el derecho correspondiente al número de ciclos que deseas certificar.",
+    "fuente": "Oficina de Tesorería / TUPA UNSAAC"
+  },
+  {
+    "id": 44,
+    "pregunta": "¿Si egresé hace muchos años y no tramité mi bachiller, debo actualizar cursos?",
+    "respuesta": "Si ha pasado el tiempo límite establecido por tu facultad (usualmente superior a 3 o 5 años), es posible que requieras pasar por un proceso de actualización académica antes de tramitar tu grado, dependiendo de las normativas de tu Escuela.",
+    "fuente": "Reglamento de Grados y Títulos"
+  },
+  {
+    "id": 45,
+    "pregunta": "¿Quién me otorga la constancia de no adeudo de libros para sacar mi bachiller?",
+    "respuesta": "Para tu expediente de bachiller, la constancia de no ser deudor de material bibliográfico te la emite exclusivamente la Dirección y/o Secretaría del Área de Biblioteca Central.",
+    "fuente": "Reglamento General del Servicio en Bibliotecas"
+  },
+  {
+    "id": 46,
+    "pregunta": "¿Existen cursos de verano o ciclos de nivelación en la universidad?",
+    "respuesta": "La universidad puede programar ciclos extraordinarios (ciclos cero o ciclos de nivelación de verano) para estudiantes que requieren recuperar asignaturas, sujetos a disponibilidad de docentes y aprobación por resolución rectoral.",
+    "fuente": "Normas Académicas"
+  },
+  {
+    "id": 47,
+    "pregunta": "¿A quién me dirijo si un profesor no asiste a dictar clases o hay faltas éticas?",
+    "respuesta": "Debes presentar tu queja formal al Director de Departamento Académico o al Director de Escuela Profesional. También puedes comunicarte con la Defensoría Universitaria de la UNSAAC para la protección de tus derechos.",
+    "fuente": "Defensoría Universitaria / Estatuto Universitario"
+  },
+  {
+    "id": 48,
+    "pregunta": "¿Puedo hacer prácticas preprofesionales en laboratorios de la universidad?",
+    "respuesta": "Sí, diversas facultades, la unidad de salud y centros de investigación de la UNSAAC ofrecen plazas para que sus estudiantes realicen prácticas preprofesionales, validables para su currícula académica.",
+    "fuente": "Direcciones de Escuelas Profesionales"
+  },
+  {
+    "id": 49,
+    "pregunta": "¿Si soy deportista calificado tengo algún beneficio?",
+    "respuesta": "Los deportistas calificados acreditados ante el IPD tienen derechos especiales, como modalidades diferenciadas de ingreso y facilidades para la justificación de inasistencias cuando representan a la universidad en torneos oficiales.",
+    "fuente": "Ley Universitaria 30220 / Estatuto UNSAAC"
+  },
+  {
+    "id": 50,
+    "pregunta": "¿Cómo obtengo asesoría para aplicar a becas internacionales como PRONABEC o Fulbright?",
+    "respuesta": "La Oficina de Cooperación y Relaciones Internacionales (OCRI) brinda asesoría gratuita, charlas informativas y apoyo en la preparación de documentos (como cartas de presentación) para aplicar a dichas becas.",
+    "fuente": "Oficina de Cooperación y Relaciones Internacionales (OCRI)"
+  }
+]

@@ -20,5 +20,5 @@ class Conversation(Base):
         "User", back_populates="conversations"
     )
     messages: Mapped[List["Message"]] = relationship(
-        "Message", back_populates="conversation", cascade="all, delete-orphan"
+        "Message", back_populates="conversation", cascade="all, delete-orphan", order_by="Message.sent_at"
     )

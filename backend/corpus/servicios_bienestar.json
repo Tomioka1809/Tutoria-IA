@@ -1,0 +1,140 @@
+{
+  "universidad": "UNSAAC",
+  "nombre_completo": "Universidad Nacional de San Antonio Abad del Cusco",
+  "organo_responsable": "Dirección de Bienestar Universitario",
+  "base_legal": [
+    "Ley Universitaria 30220",
+    "Estatuto de la Universidad Nacional de San Antonio Abad del Cusco"
+  ],
+  
+  "finalidad_y_objetivos": {
+    "definicion": "La Dirección de Bienestar Universitario es el órgano encargado de planificar, organizar y ejecutar programas, servicios de salud, psicopedagógicos, bienestar, comedor, recreación, deportes en beneficio del estudiantado universitario de la sede central y filial.",
+    "objetivos_estrategicos": [
+      "Contribuir a la formación integral de los estudiantes mediante programas de apoyo y acompañamiento.",
+      "Atender necesidades de salud física y mental de la comunidad universitaria para un rendimiento académico óptimo.",
+      "Brindar asistencia alimentaria y apoyo social a estudiantes en situación de vulnerabilidad socioeconómica.",
+      "Fomentar la práctica del deporte, la cultura y la recreación como parte indispensable del desarrollo humano."
+    ]
+  },
+
+  "estructura_de_servicios": {
+    "unidad_de_salud_y_psicopedagogia": {
+      "dependencia": "Depende orgánicamente de la Dirección de Bienestar Universitario.",
+      "descripcion": "Es la unidad responsable de cuidar y mantener la buena salud física y mental del estudiante universitario.",
+      "departamentos_y_especialidades": [
+        "Servicio de Medicina General",
+        "Servicio de Odontología",
+        "Servicio de Psicología y Psicopedagogía",
+        "Servicio de Obstetricia",
+        "Servicio de Enfermería y Primeros Auxilios"
+      ],
+      "funciones_principales": [
+        "Brindar al estudiantado atención médica, odontológica y psicológica.",
+        "Realizar exámenes médico, odontológico y psicológico a todos los ingresantes.",
+        "Organizar, programar y ejecutar campañas de educación sanitaria y prevención de enfermedades.",
+        "Realizar talleres psicopedagógicos para mejorar las técnicas de estudio y manejo del estrés académico.",
+        "Derivar casos clínicos complejos a centros hospitalarios o redes de salud correspondientes."
+      ]
+    },
+    "unidad_de_comedor_universitario": {
+      "descripcion": "Servicio de asistencia alimentaria destinado a cubrir las necesidades nutricionales de los estudiantes, garantizando alimentación balanceada e higiene.",
+      "criterios_de_acceso": [
+        "Efectuar seguimiento de la situación socio-económica, preferentemente a estudiantes que demuestren dicha necesidad.",
+        "Priorizar la asistencia alimentaria para estudiantes que se encuentren en condición de invictos en sus estudios.",
+        "Evaluación y empadronamiento periódico a cargo de las asistentas sociales."
+      ],
+      "servicios_brindados": [
+        "Desayuno, almuerzo y cena en días laborables y académicos.",
+        "Elaboración de minutas bajo supervisión de profesionales en nutrición.",
+        "Supervisión estricta de las normas de salubridad y manipulación de alimentos."
+      ]
+    },
+    "unidad_de_asistencia_social": {
+      "descripcion": "Área dedicada a evaluar, orientar y acompañar al estudiante en dificultades sociales, familiares o económicas que pongan en riesgo su continuidad universitaria.",
+      "servicios_y_funciones": [
+        "Promover el otorgamiento de becas de estudios o capacitación de los estudiantes.",
+        "Realizar la clasificación socioeconómica para acceder al comedor, albergues u otras exoneraciones.",
+        "Atender situaciones de emergencia social, brindando orientación e intervención familiar.",
+        "Coordinar el seguro contra accidentes personales para los estudiantes."
+      ]
+    },
+    "unidad_de_deportes_y_recreacion": {
+      "descripcion": "Fomenta la integración, la actividad física y el desarrollo de talentos deportivos en la comunidad.",
+      "instalaciones_vinculadas": [
+        "Estadio Universitario de la UNSAAC.",
+        "Lozas y plataformas deportivas en la Ciudad Universitaria de Perayoc."
+      ],
+      "actividades": [
+        "Organización de los Juegos Deportivos Interfacultades e Interescuelas.",
+        "Formación y entrenamiento de las selecciones universitarias (fútbol, vóley, básquet, ajedrez, etc.).",
+        "Talleres libres de artes marciales, danzas y acondicionamiento físico."
+      ]
+    }
+  },
+
+  "beneficiarios": {
+    "estudiantes_de_pregrado": "Son los principales usuarios de los servicios gratuitos de salud, asistencia y deporte, siempre y cuando presenten matrícula vigente.",
+    "ingresantes": "Deben someterse obligatoriamente al examen médico, psicológico y odontológico preventivo.",
+    "estudiantes_vulnerables": "Tienen prioridad en la asignación de vacantes para el comedor y becas, previo estudio socioeconómico."
+  },
+
+  "saludos_y_despedidas": {
+    "saludos": [
+      "¡Hola! Soy el asistente virtual de Bienestar Universitario de la UNSAAC. ¿En qué te puedo ayudar hoy?",
+      "¡Buenos días! Bienvenido/a a la Dirección de Bienestar. ¿Buscas información sobre el comedor, atención médica o asistencia social?",
+      "¡Hola! Estoy aquí para guiarte por los servicios de salud y bienestar de nuestra universidad. ¿Qué necesitas saber?",
+      "¡Bienvenido/a a la UNSAAC! Recuerda que tu salud integral es nuestra prioridad. ¿Tienes alguna consulta?"
+    ],
+    "despedidas": [
+      "Espero haberte ayudado. Recuerda que la Dirección de Bienestar está para apoyarte en toda tu etapa universitaria. ¡Éxitos!",
+      "Ha sido un gusto orientarte. No dudes en visitarnos en el Centro de Salud Universitario si lo necesitas. ¡Hasta pronto!",
+      "Cualquier otra duda sobre el comedor o becas, aquí estaré. ¡Que tengas un excelente semestre académico!",
+      "¡Hasta luego! Cuida mucho tu salud física y mental para rendir al máximo en tus estudios."
+    ],
+    "agradecimientos": [
+      "No hay de qué. Recuerda que todos estos servicios están pensados para tu bienestar.",
+      "¡Con mucho gusto! Estamos aquí para facilitar tu vida universitaria.",
+      "Es un placer ayudarte. Aprovecha los servicios que tu universidad te ofrece."
+    ],
+    "respuestas_no_entendido": [
+      "Disculpa, no me quedó claro si consultas por el Comedor Universitario, el Centro Médico o el área de Deportes. ¿Me lo aclaras?",
+      "No logré entender bien tu pregunta. ¿Podrías ser un poco más específico/a con tu solicitud?",
+      "Lo siento, ¿te refieres a los exámenes médicos para ingresantes o a las becas de asistencia social?"
+    ]
+  },
+
+  "preguntas_frecuentes": [
+    {
+      "pregunta": "¿Qué servicios médicos puedo encontrar en la universidad?",
+      "respuesta": "La Unidad de Salud y Psicopedagogía te ofrece atención gratuita en Medicina General, Odontología, Psicología, Obstetricia y Tópico/Enfermería."
+    },
+    {
+      "pregunta": "¿Cómo puedo acceder al Comedor Universitario?",
+      "respuesta": "Debes pasar por una evaluación y seguimiento socioeconómico realizado por la Unidad de Asistencia Social. Tienen prioridad los estudiantes con mayor necesidad económica y aquellos que se encuentran invictos en sus cursos."
+    },
+    {
+      "pregunta": "¿Es obligatorio el examen médico si soy ingresante?",
+      "respuesta": "Sí, realizar los exámenes médicos, odontológicos y psicológicos es obligatorio para todos los ingresantes y es una función primordial de nuestra unidad de salud."
+    },
+    {
+      "pregunta": "¿A dónde acudo si me siento muy estresado o ansioso por mis cursos?",
+      "respuesta": "Puedes acercarte al Servicio de Psicología y Psicopedagogía de la Dirección de Bienestar Universitario. Ellos te brindarán orientación, soporte emocional y técnicas de manejo de estrés."
+    },
+    {
+      "pregunta": "¿La universidad otorga algún tipo de beca?",
+      "respuesta": "Sí, la Unidad de Asistencia Social se encarga de promover y tramitar becas de estudio y ayudas económicas para estudiantes de bajos recursos que mantengan un buen rendimiento."
+    },
+    {
+      "pregunta": "¿Puedo utilizar el Estadio Universitario si no soy de la selección?",
+      "respuesta": "Sí, las instalaciones deportivas, como el Estadio Universitario, están disponibles para la recreación y los campeonatos de toda la comunidad universitaria, previa coordinación con la Unidad de Deportes."
+    }
+  ],
+
+  "glosario": {
+    "bienestar_universitario": "Órgano universitario encargado de promover la salud integral, el bienestar social y el desarrollo físico y cultural de los estudiantes.",
+    "estudiante_invicto": "Aquel alumno que ha aprobado la totalidad de sus asignaturas matriculadas en el semestre anterior; condición prioritaria para acceder a los beneficios del comedor universitario.",
+    "evaluacion_socioeconomica": "Estudio realizado por las asistentas sociales para determinar el nivel de vulnerabilidad de un estudiante y su aptitud para recibir subsidios o raciones alimentarias.",
+    "psicopedagogia": "Área de la psicología enfocada en optimizar los procesos de enseñanza-aprendizaje y resolver dificultades cognitivas o vocacionales del alumno.",
+    "examen_medico_de_ingresante": "Evaluación de salud integral (medicina, odontología, psicología y laboratorio) que todo nuevo alumno debe superar al iniciar su vida universitaria."
+  }
+}

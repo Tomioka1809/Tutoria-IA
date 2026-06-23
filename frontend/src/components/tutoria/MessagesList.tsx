@@ -3,19 +3,32 @@ import React from 'react';
 import { ScrollView, View, Text, ActivityIndicator } from 'react-native';
 import { Conversation } from '@/src/types';
 
-// Helper function to parse and render bold text marked with **
-const renderFormattedText = (text: string) => {
+// Helper function to parse and render bold text marked with ** and line breaks
+const renderFormattedText = (text: string, isUser: boolean) => {
   if (!text) return null;
-  const parts = text.split(/\*\*([^*]+)\*\*/g);
-  return parts.map((part, index) => {
-    if (index % 2 === 1) {
-      return (
-        <Text key={index} style={{ fontWeight: 'bold' }}>
-          {part}
-        </Text>
-      );
+  const paragraphs = text.split('\n');
+  const textColor = isUser ? 'text-white' : 'text-[#26215C] font-medium';
+  
+  return paragraphs.map((paragraph, pIndex) => {
+    if (!paragraph.trim() && pIndex !== paragraphs.length - 1) {
+      return <View key={pIndex} style={{ height: 8 }} />;
     }
-    return part;
+    
+    const parts = paragraph.split(/\*\*([^*]+)\*\*/g);
+    return (
+      <Text key={pIndex} className={`text-sm leading-5 mb-1 ${textColor}`}>
+        {parts.map((part, index) => {
+          if (index % 2 === 1) {
+            return (
+              <Text key={index} style={{ fontWeight: 'bold' }}>
+                {part}
+              </Text>
+            );
+          }
+          return part;
+        })}
+      </Text>
+    );
   });
 };
 
@@ -62,13 +75,9 @@ export function MessagesList({
                     : 'bg-white border border-[#EEEDFE] rounded-tl-none'
                 }`}
               >
-                <Text
-                  className={`text-sm leading-5 ${
-                    isUser ? 'text-white' : 'text-[#26215C] font-medium'
-                  }`}
-                >
-                  {renderFormattedText(msg.content)}
-                </Text>
+                <View>
+                  {renderFormattedText(msg.content, isUser)}
+                </View>
                 <Text
                   className={`text-[9px] mt-1.5 text-right ${
                     isUser ? 'text-white/60' : 'text-[#26215C]/40'

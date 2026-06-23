@@ -9,69 +9,112 @@ from app.infrastructure.database.models.corpus_chunk import CorpusChunk
 from app.infrastructure.adapters.gemini_adapter import GeminiAdapter
 from app.infrastructure.config.config import settings
 
+def dict_to_text(d):
+    parts = []
+    for k, v in d.items():
+        if isinstance(v, list):
+            # If list of strings
+            if all(isinstance(x, str) for x in v):
+                parts.append(f"{k}: {', '.join(v)}")
+            else:
+                parts.append(f"{k}: {v}")
+        elif isinstance(v, dict):
+            parts.append(f"{k}: {dict_to_text(v)}")
+        else:
+            parts.append(f"{k}: {v}")
+    return ". ".join(parts)
+
 async def seed_database():
     print("Starting database seeding for pgvector RAG...")
     
-    corpus_path = os.path.join(
-        os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
-        "corpus.json"
+    corpus_dir = os.path.join(
+        os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))),
+        "corpus"
     )
     
-    if not os.path.exists(corpus_path):
-        print(f"Error: {corpus_path} not found.")
+    if not os.path.exists(corpus_dir):
+        print(f"Error: {corpus_dir} not found.")
         return
-
-    with open(corpus_path, "r", encoding="utf-8") as f:
-        corpus_data = json.load(f)
 
     # Initialize Gemini Adapter for embeddings
     llm = GeminiAdapter(api_key=settings.GEMINI_API_KEY)
     
-    # Extract meaningful chunks from corpus.json
     chunks_to_insert = []
     
-    # 1. General University Info
-    uni_info = f"{corpus_data.get('universidad')} ({corpus_data.get('nombre_completo')}): {corpus_data.get('reglamento')}. Base legal: {', '.join(corpus_data.get('base_legal', []))}"
-    chunks_to_insert.append({"source": "informacion_general", "text": uni_info})
-    
-    # 2. Tutoria Universitaria
-    tutoria = corpus_data.get("tutoria_universitaria", {})
-    if tutoria:
-        chunks_to_insert.append({
-            "source": "tutoria_definicion",
-            "text": f"Definición de tutoría: {tutoria.get('definicion')} Características: {tutoria.get('caracter')}"
-        })
-        for tipo in tutoria.get("tipos_de_tutoria", []):
-            chunks_to_insert.append({
-                "source": "tipo_tutoria",
-                "text": f"Tipo de Tutoría {tipo['tipo']}: {tipo['descripcion']}. Dimensiones: {', '.join(tipo['dimensiones'])}"
-            })
+    for filename in os.listdir(corpus_dir):
+        if not filename.endswith(".json"):
+            continue
             
-    # 3. Preguntas Frecuentes
-    for faq in corpus_data.get("preguntas_frecuentes", []):
-        chunks_to_insert.append({
-            "source": "faq",
-            "text": f"Pregunta: {faq['pregunta']} Respuesta: {faq['respuesta']}"
-        })
-        
-    # 4. Servicios y Glosario
-    for key, svc in corpus_data.get("servicios_universitarios", {}).items():
-        chunks_to_insert.append({
-            "source": f"servicio_{key}",
-            "text": f"Servicio {key.replace('_', ' ')}: {svc.get('descripcion')}"
-        })
-
-    for term, definition in corpus_data.get("glosario", {}).items():
-        chunks_to_insert.append({
-            "source": "glosario",
-            "text": f"Glosario - {term}: {definition}"
-        })
+        filepath = os.path.join(corpus_dir, filename)
+        with open(filepath, "r", encoding="utf-8") as f:
+            try:
+                data = json.load(f)
+            except json.JSONDecodeError:
+                print(f"Error reading {filename}. Skipping.")
+                continue
+                
+            if isinstance(data, list):
+                # Array of objects
+                for item in data:
+                    if not isinstance(item, dict): continue
+                    
+                    if "pregunta" in item and "respuesta" in item:
+                        text = f"Pregunta: {item['pregunta']} Respuesta: {item['respuesta']}"
+                    elif "termino" in item and "definicion" in item:
+                        text = f"Glosario - {item['termino']}: {item['definicion']}"
+                    else:
+                        text = dict_to_text(item)
+                        
+                    source = item.get("fuente", filename)
+                    chunks_to_insert.append({"source": source, "text": text})
+                    
+            elif isinstance(data, dict):
+                # Dictionary containing different sections
+                general_info = []
+                for k in ["universidad", "nombre_completo", "reglamento", "organo_responsable", "documento"]:
+                    if k in data:
+                        general_info.append(f"{k}: {data[k]}")
+                if "base_legal" in data and isinstance(data["base_legal"], list):
+                    general_info.append(f"base legal: {', '.join(data['base_legal'])}")
+                
+                if general_info:
+                    chunks_to_insert.append({"source": filename, "text": ". ".join(general_info)})
+                
+                for key, value in data.items():
+                    if key in ["universidad", "nombre_completo", "reglamento", "organo_responsable", "documento", "base_legal"]:
+                        continue
+                        
+                    if isinstance(value, list):
+                        if len(value) > 0 and isinstance(value[0], dict):
+                            for item in value:
+                                if "pregunta" in item and "respuesta" in item:
+                                    text = f"Pregunta: {item['pregunta']} Respuesta: {item['respuesta']}"
+                                elif "termino" in item and "definicion" in item:
+                                    text = f"Glosario - {item['termino']}: {item['definicion']}"
+                                else:
+                                    text = f"{key}: {dict_to_text(item)}"
+                                source = item.get("fuente", filename)
+                                chunks_to_insert.append({"source": source, "text": text})
+                        else:
+                            text = f"{key}: {', '.join(str(v) for v in value)}"
+                            chunks_to_insert.append({"source": filename, "text": text})
+                            
+                    elif isinstance(value, dict):
+                        # Chunk each sub-section if it's large, or the whole dict
+                        # Since it could be deeply nested, dict_to_text helps flatten it
+                        text = f"{key}: {dict_to_text(value)}"
+                        chunks_to_insert.append({"source": filename, "text": text})
+                        
+                    else:
+                        text = f"{key}: {value}"
+                        chunks_to_insert.append({"source": filename, "text": text})
 
     async with SessionLocal() as db:
-        # Check if already seeded
+        # Check if already seeded - maybe we want to drop or ignore
+        # Since we modified the seed, we might want to allow re-seeding or just check as before
         result = await db.execute(select(CorpusChunk).limit(1))
         if result.scalars().first():
-            print("Database is already seeded with corpus chunks.")
+            print("Database is already seeded. If you want to re-seed, drop the tables first.")
             return
 
         print(f"Generating embeddings for {len(chunks_to_insert)} chunks...")
@@ -81,7 +124,11 @@ async def seed_database():
             print(f"Processing chunk {i+1}/{len(chunks_to_insert)}...")
             
             # Compute embedding
-            embedding = await llm.compute_embedding(text)
+            try:
+                embedding = await llm.compute_embedding(text)
+            except Exception as e:
+                print(f"Failed to compute embedding for chunk: {e}")
+                continue
             
             # Save to db
             chunk_db = CorpusChunk(

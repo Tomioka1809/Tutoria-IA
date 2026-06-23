@@ -1,0 +1,187 @@
+{
+  "universidad": "UNSAAC",
+  "nombre_completo": "Universidad Nacional de San Antonio Abad del Cusco",
+  "documento": "Glosario General Universitario",
+  "glosario_universitario": [
+    {
+      "termino": "Acervo documental",
+      "definicion": "Conjunto de libros, revistas, tesis, mapas y recursos digitales disponibles en el sistema de bibliotecas para el uso de la comunidad universitaria."
+    },
+    {
+      "termino": "Bachillerato",
+      "definicion": "Grado académico que se obtiene tras culminar el plan de estudios, aprobar un trabajo de investigación (según normativa vigente) y acreditar el dominio de un idioma extranjero o lengua nativa."
+    },
+    {
+      "termino": "Bienestar Universitario",
+      "definicion": "Dirección encargada de promover la salud integral, asistencia social, alimentación y fomento deportivo de los estudiantes."
+    },
+    {
+      "termino": "Carga académica no lectiva",
+      "definicion": "Actividades oficiales de los docentes, como la tutoría académica o investigación, que no implican el dictado de clases en aula."
+    },
+    {
+      "termino": "Carné de Biblioteca",
+      "definicion": "Documento físico o electrónico expedido por el Área de Biblioteca Central que acredita al estudiante para realizar préstamos de material bibliográfico."
+    },
+    {
+      "termino": "Carné Universitario",
+      "definicion": "Documento oficial emitido por la SUNEDU que acredita la condición de estudiante regular y otorga beneficios como el pasaje universitario."
+    },
+    {
+      "termino": "Comedor Universitario",
+      "definicion": "Servicio de asistencia alimentaria de la universidad, priorizado para estudiantes en situación de vulnerabilidad socioeconómica y con condición de invictos."
+    },
+    {
+      "termino": "Comité Tutorial",
+      "definicion": "Órgano de cada escuela profesional encargado de gestionar, organizar, asignar tutores y evaluar el programa de tutorías anualmente."
+    },
+    {
+      "termino": "Constancia de Egresado",
+      "definicion": "Documento que certifica que el estudiante ha aprobado la totalidad de créditos de su plan de estudios y se encuentra expedito para tramitar su bachillerato."
+    },
+    {
+      "termino": "Constancia de No Adeudo",
+      "definicion": "Certificación expedida por áreas como tesorería, biblioteca y laboratorios, que avala que el estudiante no tiene deudas pendientes ni materiales por devolver."
+    },
+    {
+      "termino": "Convenio de Movilidad",
+      "definicion": "Acuerdo interinstitucional que permite a los estudiantes cursar un semestre en otra universidad (nacional o extranjera) exentos del pago de matrícula en la institución de destino."
+    },
+    {
+      "termino": "Crédito académico",
+      "definicion": "Medida del tiempo formativo que exige una asignatura; engloba horas teóricas, prácticas y trabajo independiente del estudiante."
+    },
+    {
+      "termino": "Defensoría Universitaria",
+      "definicion": "Instancia encargada de tutelar los derechos de los miembros de la comunidad universitaria y atender denuncias por faltas éticas o abusos de autoridad."
+    },
+    {
+      "termino": "Deserción estudiantil",
+      "definicion": "Abandono temporal o definitivo de los estudios universitarios, fenómeno que programas como la Tutoría y Asistencia Social buscan prevenir."
+    },
+    {
+      "termino": "DISTI",
+      "definicion": "Dirección de Sistemas y Tecnologías de la Información; responsable de la plataforma virtual, matrículas en línea y correos institucionales."
+    },
+    {
+      "termino": "Estantería abierta",
+      "definicion": "Modalidad de atención en biblioteca que permite a los usuarios acceder directamente a los libros ubicados en los estantes para su revisión in situ."
+    },
+    {
+      "termino": "Estatuto Universitario",
+      "definicion": "Norma interna de máxima jerarquía normativa dentro de la universidad, adaptada a los lineamientos de la Ley Universitaria 30220."
+    },
+    {
+      "termino": "Estudiante invicto",
+      "definicion": "Alumno que ha aprobado la totalidad de las asignaturas en las que se matriculó durante el semestre anterior."
+    },
+    {
+      "termino": "Evaluación socioeconómica",
+      "definicion": "Proceso mediante el cual las asistentas sociales determinan el nivel de vulnerabilidad económica de un estudiante para asignarle beneficios o exoneraciones."
+    },
+    {
+      "termino": "Examen médico de ingresante",
+      "definicion": "Evaluación integral de salud (medicina, odontología, psicología) de carácter obligatorio para todo nuevo alumno al iniciar la universidad."
+    },
+    {
+      "termino": "Hemeroteca",
+      "definicion": "Sección específica de la biblioteca destinada al almacenamiento y consulta de revistas, diarios, boletines y otras publicaciones periódicas."
+    },
+    {
+      "termino": "Incunable",
+      "definicion": "Libro editado desde la invención de la imprenta hasta principios del siglo XVI. Son recursos históricos de la biblioteca sin acceso a préstamo a domicilio."
+    },
+    {
+      "termino": "Matrícula condicionada",
+      "definicion": "Estado del estudiante que ha desaprobado cursos repetidas veces; implica restricciones en la cantidad de créditos a llevar y la obligatoriedad de tener un tutor académico."
+    },
+    {
+      "termino": "Matrícula extemporánea",
+      "definicion": "Proceso de inscripción de cursos que se realiza fuera del plazo regular establecido en el cronograma, sujeto al pago de tasas adicionales."
+    },
+    {
+      "termino": "Mesa de Partes",
+      "definicion": "Ventanilla física o plataforma virtual oficial por donde los estudiantes ingresan solicitudes, oficios y trámites documentarios hacia cualquier área de la universidad."
+    },
+    {
+      "termino": "Movilidad Entrante",
+      "definicion": "Programa a través del cual la universidad recibe a estudiantes de otras instituciones de educación superior para cursar un periodo académico."
+    },
+    {
+      "termino": "Movilidad Saliente",
+      "definicion": "Traslado temporal de un estudiante de la universidad hacia otra institución nacional o extranjera con la que se tenga convenio."
+    },
+    {
+      "termino": "OCRI",
+      "definicion": "Oficina de Cooperación y Relaciones Internacionales; entidad encargada de gestionar los intercambios estudiantiles, convenios y difundir becas de estudios."
+    },
+    {
+      "termino": "Prácticas Preprofesionales",
+      "definicion": "Actividades formativas realizadas por los estudiantes en entornos laborales reales (empresas o instituciones) para aplicar y consolidar los conocimientos de su carrera."
+    },
+    {
+      "termino": "Quinto Superior",
+      "definicion": "Ubicación de rendimiento académico equivalente al 20% de los estudiantes con las calificaciones más altas de su promoción o facultad."
+    },
+    {
+      "termino": "Reserva de Matrícula",
+      "definicion": "Derecho del estudiante a postergar sus estudios temporalmente (hasta por un máximo de tres años) sin perder su vacante en la universidad."
+    },
+    {
+      "termino": "Retiro de curso",
+      "definicion": "Trámite oficial que permite al estudiante anular su inscripción en una o más asignaturas iniciadas las clases, evitando así una calificación reprobatoria en su récord."
+    },
+    {
+      "termino": "RPU (Red Peruana de Universidades)",
+      "definicion": "Consorcio de importantes universidades a nivel nacional que facilita a los alumnos el intercambio estudiantil sin costos adicionales de matrícula."
+    },
+    {
+      "termino": "Sala Tiflotécnica",
+      "definicion": "Ambiente especializado dentro de la biblioteca equipado con tecnología adaptada para estudiantes con discapacidad visual (baja visión e invidentes)."
+    },
+    {
+      "termino": "Semestre Académico",
+      "definicion": "Período regular de estudios establecido en el calendario académico, que generalmente consta de 17 semanas de actividades lectivas y de evaluación."
+    },
+    {
+      "termino": "Subvención económica",
+      "definicion": "Ayuda financiera que la universidad puede otorgar a sus estudiantes destacados en programas de movilidad para cubrir pasajes o seguros médicos."
+    },
+    {
+      "termino": "SUNEDU",
+      "definicion": "Superintendencia Nacional de Educación Superior Universitaria; ente rector encargado del licenciamiento y registro de grados y títulos en el Perú."
+    },
+    {
+      "termino": "Sustentación de Tesis",
+      "definicion": "Defensa oral y pública de un trabajo de investigación original ante un jurado calificador para optar por el Título Profesional."
+    },
+    {
+      "termino": "Tercio Superior",
+      "definicion": "Ubicación de rendimiento que agrupa al 33.3% de los estudiantes con las mejores calificaciones de una promoción o facultad."
+    },
+    {
+      "termino": "Tesorería",
+      "definicion": "Oficina encargada de la recaudación y gestión de los pagos por concepto de tasas, derechos de matrícula, duplicados, constancias y otros servicios administrativos."
+    },
+    {
+      "termino": "Tesisteca",
+      "definicion": "Espacio especializado dentro de la biblioteca destinado a la preservación y consulta de los trabajos de investigación y tesis sustentadas."
+    },
+    {
+      "termino": "Trabajo de Suficiencia Profesional",
+      "definicion": "Modalidad de titulación en la que el egresado acredita y sustenta sus competencias a partir de su experiencia laboral comprobada en su campo de especialidad."
+    },
+    {
+      "termino": "TUPA",
+      "definicion": "Texto Único de Procedimientos Administrativos; documento normativo que detalla los requisitos, costos y plazos de todos los trámites que se realizan en la universidad."
+    },
+    {
+      "termino": "Tutor Académico",
+      "definicion": "Docente encargado de realizar acompañamiento personalizado o grupal para orientar al estudiante en estrategias de aprendizaje, vida universitaria y desarrollo profesional."
+    },
+    {
+      "termino": "Vicerrectorado Académico",
+      "definicion": "Órgano de gobierno encargado de planificar, organizar, dirigir y supervisar todas las actividades formativas, de biblioteca y tutoría de la universidad."
+    }
+  ]
+}

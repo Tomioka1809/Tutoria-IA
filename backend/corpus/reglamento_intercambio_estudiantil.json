@@ -1,0 +1,109 @@
+{
+  "universidad": "UNSAAC",
+  "nombre_completo": "Universidad Nacional de San Antonio Abad del Cusco",
+  "organo_responsable": "Oficina de Cooperación y Relaciones Internacionales (OCRI)",
+  "base_legal": [
+    "Ley Universitaria 30220",
+    "Estatuto de la Universidad Nacional de San Antonio Abad del Cusco",
+    "Resolución N° CU-601-2024-UNSAAC (Reglamento para el Otorgamiento de Subvenciones Económicas para Actividades Académicas y de Investigación Formativa)"
+  ],
+  
+  "finalidad_y_objetivos": {
+    "definicion": "La OCRI (anteriormente Dirección de Cooperación Técnica Internacional) es la encargada de promover la internacionalización de la educación superior, promoviendo experiencias académicas que enriquecen la formación integral de los estudiantes y fortalecen los vínculos de cooperación con instituciones nacionales y extranjeras.",
+    "objetivos_estrategicos": [
+      "Fomentar la movilidad académica de estudiantes y docentes hacia instituciones de prestigio.",
+      "Gestionar y difundir oportunidades de becas internacionales para estudios de pregrado y posgrado.",
+      "Consolidar redes de cooperación universitaria como la Red Peruana de Universidades (RPU)."
+    ]
+  },
+
+  "estructura_de_programas": {
+    "movilidad_academica_saliente": {
+      "descripcion": "El programa de Movilidad Estudiantil Saliente permite cursar un semestre académico en otra universidad nacional o extranjera con la que la UNSAAC tiene un convenio vigente, para que dichos cursos sean reconocidos dentro de su plan de estudios.",
+      "requisitos_generales": [
+        "Ser estudiante regular de la UNSAAC y contar con matrícula vigente.",
+        "Encontrarse cursando del tercer año de estudios hacia adelante (a partir del sexto semestre) o haber completado el 60% de la formación profesional.",
+        "Pertenecer al tercio superior o quinto superior de su carrera, según lo exija la convocatoria específica.",
+        "Presentar ficha de seguimiento de notas e historial académico oficial.",
+        "Redactar una carta de motivación y presentar el Currículum Vitae.",
+        "Contar con pasaporte o documento de identidad vigente y demostrar buena salud mediante un seguro médico estatal, particular o internacional."
+      ],
+      "beneficios_al_estudiante": [
+        "Exoneración del pago de costos académicos en la universidad receptora de destino.",
+        "Los estudiantes de intercambio tienen los mismos derechos que un estudiante regular para hacer uso de los servicios de la universidad de acogida.",
+        "La UNSAAC brinda apoyo económico mediante subvenciones para cubrir el costo de pasajes aéreos o terrestres y el seguro médico, de acuerdo a la disponibilidad presupuestal y aprobación mediante resolución."
+      ]
+    },
+    "movilidad_academica_entrante": {
+      "descripcion": "Programa diseñado para recibir estudiantes de otras instituciones de educación superior nacionales o extranjeras que deseen cursar un semestre en la UNSAAC.",
+      "proceso_de_admision": "Las universidades de procedencia deben remitir oficialmente a la Oficina de Cooperación y Relaciones Internacionales de la UNSAAC la relación de los estudiantes que han sido seleccionados para participar en esta modalidad."
+    },
+    "programa_de_becas_internacionales": {
+      "descripcion": "La OCRI difunde y asiste en la postulación a becas completas o pasantías financiadas por agencias de cooperación exterior y embajadas.",
+      "ejemplos_de_programas_y_alianzas": [
+        "Becas del Gobierno de Francia (MOPGA) para estadías de investigación, título de ingeniero o doctorados en cotutela.",
+        "Ireland Fellows Programme, dirigido a profesionales con título reciente para cursar programas de maestría.",
+        "Becas PRONABEC para intercambio estudiantil internacional."
+      ],
+      "requisitos_especificos_frecuentes": [
+        "Comprensión y dominio de idiomas extranjeros (usualmente inglés o el idioma del país de destino).",
+        "Límites de edad estrictos (por ejemplo, ser menor de 25 años para maestría y menor de 30 para doctorado en algunas convocatorias europeas).",
+        "Cartas de recomendación cargadas directamente por los árbitros o docentes referentes."
+      ]
+    }
+  },
+
+  "saludos_y_despedidas": {
+    "saludos": [
+      "¡Hola! Soy el asistente virtual de Movilidad y Becas de la UNSAAC. ¿A qué país o universidad te gustaría ir de intercambio?",
+      "¡Buenos días! Bienvenido/a a la Oficina de Cooperación y Relaciones Internacionales. ¿Buscas información sobre pasantías, becas o semestre de intercambio?",
+      "¡Hola! Expandir tus horizontes académicos es una excelente decisión. ¿En qué te puedo asesorar hoy?"
+    ],
+    "despedidas": [
+      "Espero haber resuelto tus dudas. ¡Mucho éxito en tu postulación! Recuerda preparar tus documentos con tiempo.",
+      "Ha sido un gusto orientarte. Mantente atento/a a las convocatorias publicadas en la página web de la OCRI. ¡Hasta pronto!",
+      "No dudes en volver si necesitas ayuda con tu carta de motivación o los requisitos. ¡Que tengas un excelente viaje académico!"
+    ],
+    "agradecimientos": [
+      "¡Con mucho gusto! Representar a la UNSAAC en otra universidad es un gran honor.",
+      "Es un placer ayudarte a dar este gran paso en tu formación profesional.",
+      "No hay de qué. Estamos aquí para internacionalizar tu educación."
+    ],
+    "respuestas_no_entendido": [
+      "Disculpa, no logré entender si estás interesado en una beca de posgrado o en un intercambio de pregrado. ¿Podrías detallarlo?",
+      "No me quedó muy clara tu consulta. ¿Buscas los requisitos de la Red Peruana de Universidades o convenios internacionales?",
+      "Lo siento, ¿te refieres a las subvenciones económicas para pasajes o a las exoneraciones de pago en la universidad de destino?"
+    ]
+  },
+
+  "preguntas_frecuentes": [
+    {
+      "pregunta": "¿A partir de qué semestre puedo postular a un intercambio estudiantil?",
+      "respuesta": "Puedes postular si te encuentras cursando del tercer año de estudios en adelante (a partir del sexto semestre) o si has completado el 60% de tu formación profesional."
+    },
+    {
+      "pregunta": "¿La UNSAAC me ayuda con los gastos si gano una vacante de intercambio?",
+      "respuesta": "Sí, de acuerdo al reglamento vigente, la UNSAAC puede otorgar una subvención económica para cubrir los costos de los pasajes aéreos o terrestres y el seguro médico, lo cual se aprueba mediante Resolución Rectoral."
+    },
+    {
+      "pregunta": "¿Tengo que pagar pensión o matrícula en la universidad extranjera o nacional a la que vaya?",
+      "respuesta": "No. Gracias a los convenios de movilidad estudiantil, los estudiantes de intercambio están exonerados del pago de los costos académicos en la universidad de destino."
+    },
+    {
+      "pregunta": "¿Qué nivel de notas necesito para acceder a estos programas?",
+      "respuesta": "Generalmente, debes presentar una constancia que acredite que perteneces al quinto superior o, como mínimo, al tercio superior de tu carrera, dependiendo de la exigencia de la convocatoria."
+    },
+    {
+      "pregunta": "¿La OCRI también ofrece becas para egresados?",
+      "respuesta": "Sí, la OCRI difunde oportunidades de becas para profesionales titulados (dentro de un margen de años de egreso) para realizar estudios de maestría y doctorado en países aliados de la cooperación técnica."
+    }
+  ],
+
+  "glosario": {
+    "movilidad_saliente": "Proceso mediante el cual un estudiante regular de la UNSAAC se traslada temporalmente a otra universidad con convenio para cursar un semestre académico.",
+    "movilidad_entrante": "Estudiantes provenientes de otras instituciones (nacionales o internacionales) que son acogidos por la UNSAAC para realizar un periodo de estudios.",
+    "rpu": "Red Peruana de Universidades, consorcio al que pertenece la UNSAAC y que facilita el intercambio estudiantil a nivel nacional.",
+    "subvencion_economica": "Apoyo financiero brindado por la universidad a los estudiantes de intercambio para solventar estrictamente gastos de traslado (pasajes) y seguros médicos, respaldado por resolución rectoral.",
+    "networking_academico": "Proceso activo de construir y mantener relaciones internacionales que pueden ser cruciales para el desarrollo profesional y especializado del estudiante en movilidad."
+  }
+}
