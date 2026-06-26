@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Modal, Pressable, ScrollView } from 'react-native';
+import { View, Text, TextInput, Modal, Pressable, ScrollView, Platform } from 'react-native';
 import { Feather } from '@expo/vector-icons';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { Picker } from '@react-native-picker/picker';
 import { User } from '@/src/types';
+import { useTheme } from '@/src/theme/ThemeContext';
 
 interface AddActivityModalProps {
   isOpen: boolean;
@@ -11,10 +14,13 @@ interface AddActivityModalProps {
   students: User[];
   onAdd: (activity: {
     name: string;
-    type: 'Tutoría Académica' | 'Sesión de Apoyo Psicológico' | 'Trabajos';
+    type: 'Tutoría Académica' | 'Tutoría Personal' | 'Tutoría Profesional' | 'Trabajos';
     date: string;
     time: string;
-    studentId?: number;
+    studentId?: number | null;
+    status?: string;
+    notes?: string;
+    location?: string;
   }) => void;
 }
 
@@ -26,121 +32,95 @@ export function AddActivityModal({
   students,
   onAdd,
 }: AddActivityModalProps) {
+  const { colors, isDark } = useTheme();
   const isTutor = userRole === 'tutor' || userRole === 'admin';
-  
-  const [name, setName] = useState('');
-  const [type, setType] = useState<'Tutoría Académica' | 'Sesión de Apoyo Psicológico' | 'Trabajos'>(
-    isTutor ? 'Tutoría Académica' : 'Sesión de Apoyo Psicológico'
-  );
 
+  const [name, setName] = useState('');
+  const [type, setType] = useState<'Tutoría Académica' | 'Tutoría Personal' | 'Tutoría Profesional' | 'Trabajos'>('Tutoría Académica');
+
+  const [status, setStatus] = useState('pendiente');
+  const [notes, setNotes] = useState('');
+  const [location, setLocation] = useState('');
+
+  // studentId === null means "A todos"
   const [selectedStudentId, setSelectedStudentId] = useState<number | null>(null);
   const [studentSearch, setStudentSearch] = useState('');
 
-  // Formatear la fecha seleccionada a YYYY-MM-DD
-  const formatDateString = (date: Date) => {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  };
+  // Date and Time
+  const [date, setDate] = useState(selectedDate);
+  const [time, setTime] = useState(new Date(selectedDate.setHours(10, 0, 0, 0)));
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showTimePicker, setShowTimePicker] = useState(false);
 
-  const [dateStr, setDateStr] = useState(formatDateString(selectedDate));
-  const [timeStr, setTimeStr] = useState('10:00'); // Hora por defecto en formato 24h
-
-  // Sincronizar y limpiar formulario al abrir/cerrar modal
+  // Sync on open
   React.useEffect(() => {
     if (isOpen) {
-      setDateStr(formatDateString(selectedDate));
-      setType(isTutor ? 'Tutoría Académica' : 'Sesión de Apoyo Psicológico');
+      const initDate = new Date(selectedDate);
+      setDate(initDate);
+      setTime(new Date(initDate.setHours(10, 0, 0, 0)));
+      setType(isTutor ? 'Tutoría Académica' : 'Trabajos');
+      setStatus('pendiente');
+      setNotes('');
+      setLocation('');
+      setName('');
       setStudentSearch('');
-      if (students && students.length > 0) {
-        setSelectedStudentId(students[0].id);
-      } else {
-        setSelectedStudentId(null);
-      }
-    } else {
-      setSelectedStudentId(null);
-      setStudentSearch('');
+      setSelectedStudentId(null); // Defaults to "A todos"
     }
-  }, [isOpen, selectedDate, userRole, students]);
+  }, [isOpen, selectedDate]);
 
   const handleSubmit = () => {
     if (!name.trim()) {
       alert('Por favor ingresa un nombre para la actividad.');
       return;
     }
-    if (!dateStr.match(/^\d{4}-\d{2}-\d{2}$/)) {
-      alert('Por favor ingresa la fecha en formato AAAA-MM-DD.');
-      return;
-    }
-    if (!timeStr.match(/^\d{2}:\d{2}$/)) {
-      alert('Por favor ingresa la hora en formato HH:MM (24h).');
-      return;
-    }
 
-    if (type === 'Tutoría Académica') {
-      if (!selectedStudentId) {
-        alert('Por favor selecciona un estudiante.');
-        return;
-      }
-      onAdd({
-        name,
-        type,
-        date: dateStr,
-        time: timeStr,
-        studentId: selectedStudentId,
-      });
-    } else {
-      onAdd({
-        name,
-        type,
-        date: dateStr,
-        time: timeStr,
-      });
-    }
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const dateStr = `${year}-${month}-${day}`;
 
-    // Resetear formulario
-    setName('');
-    setStudentSearch('');
-    setTimeStr('10:00');
+    const hours = String(time.getHours()).padStart(2, '0');
+    const minutes = String(time.getMinutes()).padStart(2, '0');
+    const timeStr = `${hours}:${minutes}`;
+
+    onAdd({
+      name,
+      type,
+      date: dateStr,
+      time: timeStr,
+      studentId: selectedStudentId,
+      status,
+      notes,
+      location,
+    });
+
     onClose();
   };
 
-  // Filtrar estudiantes por búsqueda
+  const onDateChange = (event: any, selectedValue?: Date) => {
+    setShowDatePicker(false);
+    if (selectedValue) {
+      setDate(selectedValue);
+    }
+  };
+
+  const onTimeChange = (event: any, selectedValue?: Date) => {
+    setShowTimePicker(false);
+    if (selectedValue) {
+      setTime(selectedValue);
+    }
+  };
+
   const filteredStudents = (students || []).filter((s) => {
     const fullName = s?.full_name || '';
     return fullName.toLowerCase().includes((studentSearch || '').toLowerCase());
   });
 
-  // Configuración de los tipos de actividades (se quita Reunión con Tutor y se cambia Entrega de Tarea a Trabajos)
   const typesConfig = [
-    {
-      id: 'Tutoría Académica' as const,
-      label: 'Tutoría Académica',
-      icon: 'book-open',
-      bgColor: 'bg-[#F3E8FF]',
-      activeBgColor: 'bg-[#9A3BEE]',
-      textColor: 'text-[#9A3BEE]',
-      visible: isTutor, // Solo visible para docentes
-    },
-    {
-      id: 'Sesión de Apoyo Psicológico' as const,
-      label: 'Apoyo Psicológico',
-      icon: 'heart',
-      bgColor: 'bg-[#FCE7F3]',
-      activeBgColor: 'bg-[#ec4899]',
-      textColor: 'text-[#ec4899]',
-      visible: true, // Visible para todos
-    },
-    {
-      id: 'Trabajos' as const,
-      label: 'Trabajos',
-      icon: 'file-text',
-      bgColor: 'bg-[#F5F3FF]',
-      activeBgColor: 'bg-[#7c3aed]',
-      textColor: 'text-[#7c3aed]',
-      visible: true, // Visible para todos
-    },
+    { id: 'Tutoría Académica' as const, label: 'T. Académica', icon: 'book-open', bgColor: 'bg-[#F3E8FF]', activeBgColor: 'bg-primary', textColor: 'text-primary', visible: isTutor },
+    { id: 'Tutoría Personal' as const, label: 'T. Personal', icon: 'user', bgColor: 'bg-[#FCE7F3]', activeBgColor: 'bg-[#ec4899]', textColor: 'text-[#ec4899]', visible: isTutor },
+    { id: 'Tutoría Profesional' as const, label: 'T. Profesional', icon: 'briefcase', bgColor: 'bg-[#E0E7FF]', activeBgColor: 'bg-[#4F46E5]', textColor: 'text-[#4F46E5]', visible: isTutor },
+    { id: 'Trabajos' as const, label: 'Trabajos', icon: 'file-text', bgColor: 'bg-[#F5F3FF]', activeBgColor: 'bg-[#7c3aed]', textColor: 'text-[#7c3aed]', visible: true },
   ];
 
   return (
@@ -148,45 +128,42 @@ export function AddActivityModal({
       <View className="flex-1 bg-black/45 justify-end">
         <Pressable className="absolute inset-0" onPress={onClose} />
         
-        <View className="bg-white rounded-t-[40px] px-6 pt-8 pb-10 shadow-2xl border border-gray-100 max-h-[90%]">
+        <View style={{ backgroundColor: colors.surface }} className=" rounded-t-[40px] px-6 pt-8 pb-10 shadow-2xl border border-gray-100 max-h-[90%]">
           <View className="w-12 h-1 bg-gray-300 rounded-full align-self-center mx-auto mb-6" />
           
           <View className="flex-row justify-between items-center mb-6">
-            <Text className="text-xl font-bold text-[#1E1E2F]">Añadir Actividad</Text>
+            <Text style={{ color: colors.text }} className="text-xl font-bold ">Añadir Actividad</Text>
             <Pressable onPress={onClose}>
-              <Text className="text-[#9A3BEE] font-bold text-sm">Cancelar</Text>
+              <Text className="text-primary font-bold text-sm">Cancelar</Text>
             </Pressable>
           </View>
 
           <ScrollView showsVerticalScrollIndicator={false}>
             {/* Input: Nombre */}
             <View className="mb-4">
-              <Text className="text-xs font-bold text-[#8E8EA0] mb-2 uppercase tracking-wider">Nombre de la actividad</Text>
+              <Text className="text-xs font-bold text-textSecondary mb-2 uppercase tracking-wider">Nombre de la actividad</Text>
               <TextInput
                 value={name}
                 onChangeText={setName}
                 placeholder="Ej. Clase de Álgebra / Tarea de Física"
                 placeholderTextColor="#A1A1AA"
-                className="bg-[#F8F9FA] border border-gray-200 rounded-2xl px-4 py-3.5 text-[#111130] font-semibold"
+                style={{ color: colors.text, backgroundColor: colors.surface }} className=" border border-gray-200 rounded-2xl px-4 py-3.5  font-semibold"
               />
             </View>
 
-            {/* Selector: Tipo de Actividad (filtrado por rol) */}
+            {/* Selector: Tipo de Actividad */}
             <View className="mb-4">
-              <Text className="text-xs font-bold text-[#8E8EA0] mb-2 uppercase tracking-wider">Tipo de Actividad</Text>
+              <Text className="text-xs font-bold text-textSecondary mb-2 uppercase tracking-wider">Tipo de Actividad</Text>
               <View className="flex-row flex-wrap justify-between">
                 {typesConfig
                   .filter((t) => t.visible)
                   .map((item) => {
                     const isActive = type === item.id;
-                    const isFullWidth = item.id === 'Tutoría Académica';
                     return (
                       <Pressable
                         key={item.id}
                         onPress={() => setType(item.id)}
-                        className={`p-3 rounded-2xl mb-3 flex-row items-center border ${
-                          isFullWidth ? 'w-full' : 'w-[48%]'
-                        } ${
+                        className={`p-3 rounded-2xl mb-3 flex-row items-center border w-[48%] ${
                           isActive
                             ? `${item.activeBgColor} border-transparent`
                             : `${item.bgColor} border-gray-100`
@@ -200,9 +177,8 @@ export function AddActivityModal({
                           />
                         </View>
                         <Text
-                          className={`text-[11px] font-bold flex-1 ${
-                            isActive ? 'text-white' : 'text-[#1E1E2F]'
-                          }`}
+                          className={`text-[11px] font-bold flex-1`}
+                          style={{ color: isActive ? '#FFFFFF' : colors.text }}
                         >
                           {item.label}
                         </Text>
@@ -212,22 +188,22 @@ export function AddActivityModal({
               </View>
             </View>
 
-            {/* Apartado para seleccionar estudiante (Solo si es Tutoría Académica) */}
-            {type === 'Tutoría Académica' && isTutor && (
-              <View className="mb-4 bg-[#F5F3FF] border border-[#9A3BEE]/20 rounded-2xl p-4">
-                <Text className="text-xs font-bold text-[#9A3BEE] mb-2 uppercase tracking-wider">
+            {/* Apartado para seleccionar estudiante */}
+            {type.includes('Tutoría') && isTutor && (
+              <View className="mb-4 bg-[#F5F3FF] border border-primary/20 rounded-2xl p-4">
+                <Text style={{ color: isDark ? '#FFFFFF' : colors.primary }} className="text-xs font-bold mb-2 uppercase tracking-wider">
                   Asignar Estudiante
                 </Text>
                 
                 {/* Buscador de estudiantes */}
-                <View className="flex-row items-center bg-white border border-gray-200 rounded-xl px-3 py-1.5 mb-3 shadow-sm">
-                  <Feather name="search" size={14} color="#8E8EA0" className="mr-2" />
+                <View style={{ backgroundColor: colors.surface }} className="flex-row items-center  border border-gray-200 rounded-xl px-3 py-1.5 mb-3 shadow-sm">
+                  <Feather name="search" size={14} color={colors.textSecondary} className="mr-2" />
                   <TextInput
                     value={studentSearch}
                     onChangeText={setStudentSearch}
                     placeholder="Buscar estudiante..."
                     placeholderTextColor="#A1A1AA"
-                    className="flex-1 text-xs font-semibold text-[#111130] p-0"
+                    style={{ color: colors.text }} className="flex-1 text-xs font-semibold  p-0"
                   />
                 </View>
 
@@ -235,8 +211,22 @@ export function AddActivityModal({
                 <ScrollView 
                   style={{ maxHeight: 110 }} 
                   nestedScrollEnabled={true}
-                  className="bg-white/70 rounded-xl p-1"
+                  className="bg-surface/70 rounded-xl p-1"
                 >
+                  <Pressable
+                    onPress={() => setSelectedStudentId(null)}
+                    className={`flex-row items-center justify-between p-2.5 rounded-lg mb-1 ${
+                      selectedStudentId === null ? 'bg-primary/10' : 'bg-transparent'
+                    }`}
+                  >
+                    <Text className={`text-xs font-semibold`} style={{ color: selectedStudentId === null ? (isDark ? '#FFFFFF' : colors.primary) : colors.text, fontWeight: selectedStudentId === null ? 'bold' : 'normal' }}>
+                      A todos (Sesión Grupal)
+                    </Text>
+                    {selectedStudentId === null && (
+                      <Feather name="users" size={12} color={colors.primary} />
+                    )}
+                  </Pressable>
+
                   {filteredStudents.length > 0 ? (
                     filteredStudents.map((student) => {
                       const isSelected = selectedStudentId === student.id;
@@ -245,58 +235,121 @@ export function AddActivityModal({
                           key={student.id}
                           onPress={() => setSelectedStudentId(student.id)}
                           className={`flex-row items-center justify-between p-2.5 rounded-lg mb-1 ${
-                            isSelected ? 'bg-[#9A3BEE]/10' : 'bg-transparent'
+                            isSelected ? 'bg-primary/10' : 'bg-transparent'
                           }`}
                         >
-                          <Text className={`text-xs font-semibold ${
-                            isSelected ? 'text-[#9A3BEE] font-bold' : 'text-[#1E1E2F]'
-                          }`}>
+                          <Text className={`text-xs font-semibold`} style={{ color: isSelected ? (isDark ? '#FFFFFF' : colors.primary) : colors.text, fontWeight: isSelected ? 'bold' : 'normal' }}>
                             {student.full_name}
                           </Text>
                           {isSelected && (
-                            <Feather name="check" size={12} color="#9A3BEE" />
+                            <Feather name="check" size={12} color={colors.primary} />
                           )}
                         </Pressable>
                       );
                     })
                   ) : (
-                    <Text className="text-center text-[11px] text-[#8E8EA0] py-4">
-                      No se encontraron estudiantes
+                    <Text className="text-center text-[11px] text-textSecondary py-4">
+                      No se encontraron más estudiantes
                     </Text>
                   )}
                 </ScrollView>
               </View>
             )}
 
-            {/* Grid: Fecha y Hora */}
-            <View className="flex-row justify-between mb-6">
+            {/* Grid: Fecha y Hora con Selectores */}
+            <View className="flex-row justify-between mb-4">
               <View className="w-[48%]">
-                <Text className="text-xs font-bold text-[#8E8EA0] mb-2 uppercase tracking-wider">Fecha (AAAA-MM-DD)</Text>
-                <TextInput
-                  value={dateStr}
-                  onChangeText={setDateStr}
-                  placeholder="2026-05-19"
-                  placeholderTextColor="#A1A1AA"
-                  className="bg-[#F8F9FA] border border-gray-200 rounded-2xl px-4 py-3.5 text-[#111130] font-semibold text-center"
-                />
+                <Text className="text-xs font-bold text-textSecondary mb-2 uppercase tracking-wider">Fecha</Text>
+                <Pressable
+                  onPress={() => setShowDatePicker(true)}
+                  style={{ backgroundColor: colors.surface }} className=" border border-gray-200 rounded-2xl px-4 py-3.5 flex-row justify-between items-center"
+                >
+                  <Text style={{ color: colors.text }} className=" font-semibold">
+                    {date.toLocaleDateString()}
+                  </Text>
+                  <Feather name="calendar" size={16} color={colors.textSecondary} />
+                </Pressable>
+                {showDatePicker && (
+                  <DateTimePicker
+                    value={date}
+                    mode="date"
+                    display="default"
+                    onChange={onDateChange}
+                  />
+                )}
               </View>
 
               <View className="w-[48%]">
-                <Text className="text-xs font-bold text-[#8E8EA0] mb-2 uppercase tracking-wider">Hora (HH:MM)</Text>
+                <Text className="text-xs font-bold text-textSecondary mb-2 uppercase tracking-wider">Hora</Text>
+                <Pressable
+                  onPress={() => setShowTimePicker(true)}
+                  style={{ backgroundColor: colors.surface }} className=" border border-gray-200 rounded-2xl px-4 py-3.5 flex-row justify-between items-center"
+                >
+                  <Text style={{ color: colors.text }} className=" font-semibold">
+                    {time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  </Text>
+                  <Feather name="clock" size={16} color={colors.textSecondary} />
+                </Pressable>
+                {showTimePicker && (
+                  <DateTimePicker
+                    value={time}
+                    mode="time"
+                    is24Hour={true}
+                    display="spinner"
+                    onChange={onTimeChange}
+                  />
+                )}
+              </View>
+            </View>
+
+            {/* Estado y Lugar */}
+            <View className="flex-row justify-between mb-4">
+              <View className="w-[48%]">
+                <Text className="text-xs font-bold text-textSecondary mb-2 uppercase tracking-wider">Estado</Text>
+                <View style={{ backgroundColor: colors.surface }} className=" border border-gray-200 rounded-2xl overflow-hidden">
+                  <Picker
+                    selectedValue={status}
+                    onValueChange={(itemValue) => setStatus(itemValue)}
+                    style={{ height: 50, color: colors.text }}
+                  >
+                    <Picker.Item label="Pendiente" value="pendiente" />
+                    <Picker.Item label="Programada" value="programada" />
+                    <Picker.Item label="Completada" value="completada" />
+                    <Picker.Item label="Cancelada" value="cancelada" />
+                  </Picker>
+                </View>
+              </View>
+              <View className="w-[48%]">
+                <Text className="text-xs font-bold text-textSecondary mb-2 uppercase tracking-wider">Lugar</Text>
                 <TextInput
-                  value={timeStr}
-                  onChangeText={setTimeStr}
-                  placeholder="10:00"
+                  value={location}
+                  onChangeText={setLocation}
+                  placeholder="Ej. Aula 102"
                   placeholderTextColor="#A1A1AA"
-                  className="bg-[#F8F9FA] border border-gray-200 rounded-2xl px-4 py-3.5 text-[#111130] font-semibold text-center"
+                  style={{ color: colors.text, backgroundColor: colors.surface }} className=" border border-gray-200 rounded-2xl px-4 py-[13px]  font-semibold h-[50px]"
                 />
               </View>
+            </View>
+
+            {/* Notas */}
+            <View className="mb-6">
+              <Text className="text-xs font-bold text-textSecondary mb-2 uppercase tracking-wider">Notas adicionales</Text>
+              <TextInput
+                value={notes}
+                onChangeText={setNotes}
+                placeholder="Tema a tratar, recordatorios..."
+                placeholderTextColor="#A1A1AA"
+                multiline
+                numberOfLines={3}
+                textAlignVertical="top"
+                style={{ color: colors.text, backgroundColor: colors.surface }} className=" border border-gray-200 rounded-2xl px-4 py-3.5  font-semibold h-24"
+              />
             </View>
 
             {/* Botón de Submit */}
             <Pressable
               onPress={handleSubmit}
-              className="bg-[#9A3BEE] rounded-2xl py-4 items-center justify-center shadow-lg shadow-[#9A3BEE]/25 mb-4"
+              className="bg-primary rounded-2xl py-4 items-center justify-center shadow-lg shadow-[#9A3BEE]/25 mb-4"
             >
               <Text className="text-white font-bold text-base">Guardar Actividad</Text>
             </Pressable>

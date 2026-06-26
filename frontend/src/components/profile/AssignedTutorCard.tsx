@@ -3,13 +3,19 @@ import React from 'react';
 import { View, Text, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
 import { TutorAssignment } from '@/src/types';
+import { useAuthStore } from '@/src/store/auth';
+import { useTheme } from '@/src/theme/ThemeContext';
 
 interface AssignedTutorCardProps {
   assignedTutors: TutorAssignment[];
 }
 
 export function AssignedTutorCard({ assignedTutors }: AssignedTutorCardProps) {
+  const { colors } = useTheme();
   const router = useRouter();
+  const user = useAuthStore((state) => state.user);
+  const routePrefix = user?.role === 'tutor' ? '/(tutor)' : user?.role === 'admin' ? '/(admin)' : '/(estudiante)';
+  
   const tutorName = assignedTutors.length > 0 && assignedTutors[0]?.tutor 
     ? assignedTutors[0].tutor.full_name 
     : 'Ing. Ana Torres';
@@ -25,11 +31,11 @@ export function AssignedTutorCard({ assignedTutors }: AssignedTutorCardProps) {
       marginBottom: 24,
     }}>
       <View style={{
-        backgroundColor: 'white',
+        backgroundColor: colors.surface,
         borderRadius: 24,
         padding: 16,
         borderWidth: 1,
-        borderColor: '#EEEDFE',
+        borderColor: colors.border,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.05,
@@ -49,17 +55,17 @@ export function AssignedTutorCard({ assignedTutors }: AssignedTutorCardProps) {
             marginRight: 12,
           }} />
           <View style={{ flex: 1 }}>
-            <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#1E1E2F' }}>
+            <Text style={{ fontSize: 15, fontWeight: 'bold', color: colors.text }}>
               {tutorName}
             </Text>
-            <Text style={{ fontSize: 12, color: '#8E8EA0', marginTop: 2, fontWeight: '500' }}>
+            <Text style={{ fontSize: 12, color: colors.textSecondary, marginTop: 2, fontWeight: '500' }}>
               Docente Tutor
             </Text>
           </View>
         </View>
 
-        <Pressable onPress={() => router.push('/(tabs)/perfil-tutor' as any)}>
-          <Text style={{ fontSize: 13, fontWeight: 'bold', color: '#9A3BEE' }}>
+        <Pressable onPress={() => router.push(`${routePrefix}/perfil-tutor` as any)}>
+          <Text style={{ fontSize: 13, fontWeight: 'bold', color: colors.primary }}>
             Ver perfil
           </Text>
         </Pressable>

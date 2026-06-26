@@ -1,7 +1,9 @@
-// app/(tabs)/tutoria.tsx
+// app/(tutor)/tutoria.tsx
 import React, { useEffect, useRef, useState } from 'react';
+import { useTheme } from '@/src/theme/ThemeContext';
 import { View, Text, KeyboardAvoidingView, Platform, TextInput, Keyboard } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
+import { useRouter } from 'expo-router';
 import { useTutoria } from '@/src/components/tutoria/useTutoria';
 import { TutoriaHeader } from '@/src/components/tutoria/TutoriaHeader';
 import { MessagesList } from '@/src/components/tutoria/MessagesList';
@@ -9,6 +11,8 @@ import { QuickActionsPanel } from '@/src/components/tutoria/QuickActionsPanel';
 import { MessageInputBar } from '@/src/components/tutoria/MessageInputBar';
 
 export default function TutoriaScreen() {
+  const { colors } = useTheme();
+  const router = useRouter();
   const {
     user,
     conversation,
@@ -20,7 +24,7 @@ export default function TutoriaScreen() {
     scrollViewRef,
     handleSend,
     handleQuickAction,
-    handleMicPress,
+    resetConversation,
   } = useTutoria();
 
   const inputRef = useRef<TextInput>(null);
@@ -28,7 +32,7 @@ export default function TutoriaScreen() {
   const [keyboardVisible, setKeyboardVisible] = useState(false);
 
   useEffect(() => {
-    if (isFocused && user?.role === 'estudiante') {
+    if (isFocused && (user?.role === 'estudiante' || user?.role === 'tutor')) {
       const timer = setTimeout(() => {
         inputRef.current?.focus();
       }, 150);
@@ -53,28 +57,17 @@ export default function TutoriaScreen() {
     };
   }, []);
 
-  if (user?.role !== 'estudiante') {
-    return (
-      <View className="flex-1 bg-[#F5F5FB] justify-center items-center px-6">
-        <Text className="text-4xl mb-4">🦖</Text>
-        <Text className="text-lg font-bold text-[#26215C] text-center">TutorIA Chatbot</Text>
-        <Text className="text-sm text-[#26215C]/60 text-center mt-2">
-          El chatbot TutorIA está disponible exclusivamente para estudiantes con el fin de resolver consultas académicas.
-        </Text>
-      </View>
-    );
-  }
-
   return (
     <KeyboardAvoidingView
       behavior="padding"
       keyboardVerticalOffset={0}
-      className="flex-1 bg-white"
+      className="flex-1"
       style={{
+        backgroundColor: colors.surface,
         paddingBottom: keyboardVisible ? 0 : (Platform.OS === 'ios' ? 88 : 76)
       }}
     >
-      <TutoriaHeader onRefresh={fetchConversation} />
+      <TutoriaHeader onRefresh={resetConversation} onBackPress={() => router.back()} />
 
       <MessagesList
         scrollViewRef={scrollViewRef}
@@ -83,13 +76,12 @@ export default function TutoriaScreen() {
         isSending={isSending}
       />
 
-      <QuickActionsPanel onActionPress={handleQuickAction} />
+      <QuickActionsPanel onActionPress={handleQuickAction} userRole={user?.role} />
 
       <MessageInputBar
         inputText={inputText}
         setInputText={setInputText}
         onSend={handleSend}
-        onMicPress={handleMicPress}
         isSending={isSending}
         inputRef={inputRef}
       />

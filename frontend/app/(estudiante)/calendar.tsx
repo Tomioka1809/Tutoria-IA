@@ -1,23 +1,31 @@
-// app/(tabs)/calendar.tsx
+// app/(estudiante)/calendar.tsx
 import React, { useState } from 'react';
+import { useTheme } from '@/src/theme/ThemeContext';
 import { View, Text, Modal, Pressable } from 'react-native';
 import { useCalendar } from '@/src/components/calendar/useCalendar';
 import { CalendarHeader } from '@/src/components/calendar/CalendarHeader';
 import { CalendarMonthView } from '@/src/components/calendar/CalendarMonthView';
 import { CalendarActivitiesList } from '@/src/components/calendar/CalendarActivitiesList';
 import { AddActivityModal } from '@/src/components/calendar/AddActivityModal';
+import { ActivityDetailsModal } from '@/src/components/calendar/ActivityDetailsModal';
 
 interface UnifiedActivity {
   id: string;
   name: string;
-  type: 'Tutoría Académica' | 'Sesión de Apoyo Psicológico' | 'Trabajos';
+  type: string;
   date: string;
   time: string;
   isBackend: boolean;
   rawId: number;
+  status?: string;
+  notes?: string;
+  location?: string;
+  tutorName?: string;
+  studentName?: string;
 }
 
 export default function CalendarScreen() {
+  const { colors } = useTheme();
   const {
     user,
     selectedDate,
@@ -31,19 +39,20 @@ export default function CalendarScreen() {
     filteredActivities,
     addNewActivity,
     deleteActivity,
-    cancelBackendSession,
+    changeBackendSessionStatus,
     students,
     fetchTutorData,
   } = useCalendar();
 
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [activityToDelete, setActivityToDelete] = useState<UnifiedActivity | null>(null);
+  const [activityToView, setActivityToView] = useState<UnifiedActivity | null>(null);
 
   const handleDeleteConfirm = async () => {
     if (!activityToDelete) return;
 
     if (activityToDelete.isBackend) {
-      await cancelBackendSession(activityToDelete.rawId);
+      await changeBackendSessionStatus(activityToDelete.rawId, 'cancelada');
     } else {
       deleteActivity(activityToDelete.id);
     }
@@ -51,10 +60,10 @@ export default function CalendarScreen() {
     setActivityToDelete(null);
   };
 
-  const isAnyModalOpen = isAddModalOpen || activityToDelete !== null;
+  const isAnyModalOpen = isAddModalOpen || activityToDelete !== null || activityToView !== null;
 
   return (
-    <View className="flex-1 bg-[#F5F5FB] pt-16">
+    <View style={{ backgroundColor: colors.background }} className="flex-1  pt-16">
       {/* El fondo se vuelve semi-transparente cuando hay un modal abierto */}
       <View className="flex-1" style={{ opacity: isAnyModalOpen ? 0.35 : 1 }}>
         <CalendarHeader />
@@ -79,6 +88,7 @@ export default function CalendarScreen() {
             }
             setIsAddModalOpen(true);
           }}
+          onViewPress={(activity) => setActivityToView(activity)}
           onDeletePress={(activity) => setActivityToDelete(activity)}
         />
       </View>
@@ -93,14 +103,21 @@ export default function CalendarScreen() {
         onAdd={addNewActivity}
       />
 
+      {/* Modal de Detalles de Actividad */}
+      <ActivityDetailsModal
+        activity={activityToView}
+        onClose={() => setActivityToView(null)}
+        userRole={user?.role}
+      />
+
       {/* Ventana flotante/modal de confirmación de eliminación */}
       <Modal visible={activityToDelete !== null} animationType="fade" transparent={true}>
         <View className="flex-1 bg-black/45 justify-center items-center">
-          <View className="bg-white rounded-3xl p-6 w-[85%] max-w-[340px] shadow-2xl border border-gray-100">
-            <Text className="text-lg font-bold text-[#1E1E2F] text-center mb-2">
+          <View style={{ backgroundColor: colors.surface }} className=" rounded-3xl p-6 w-[85%] max-w-[340px] shadow-2xl border border-gray-100">
+            <Text style={{ color: colors.text }} className="text-lg font-bold  text-center mb-2">
               Confirmar eliminación
             </Text>
-            <Text className="text-sm text-[#8E8EA0] text-center mb-6">
+            <Text className="text-sm text-textSecondary text-center mb-6">
               ¿Deseas borrar la actividad "{activityToDelete?.name}"?
             </Text>
 

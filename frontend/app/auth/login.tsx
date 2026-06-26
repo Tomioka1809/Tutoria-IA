@@ -5,8 +5,13 @@ import { useAuthStore } from '../../src/store/auth';
 import client from '../../src/api/client';
 import { ThemedText } from '../../components/themed-text';
 import { ThemedView } from '../../components/themed-view';
+import { useTranslation } from 'react-i18next';
+import { useTheme } from '@/src/theme/ThemeContext';
 
 export default function LoginScreen() {
+  const { t } = useTranslation();
+  const { colors } = useTheme();
+  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -16,13 +21,12 @@ export default function LoginScreen() {
 
   const handleLogin = async () => {
     if (!email || !password) {
-      setError('Por favor, ingresa tu correo y contraseña.');
+      setError(t('auth.login.emptyFields') || 'Por favor, ingresa tu correo y contraseña.');
       return;
     }
     setError('');
     setIsLoading(true);
     try {
-      // 1. Get OAuth2 form data
       const formData = new FormData();
       formData.append('username', email.trim().toLowerCase());
       formData.append('password', password);
@@ -34,21 +38,25 @@ export default function LoginScreen() {
       });
       const { access_token } = response.data;
 
-      // 2. Fetch user details
       const userResponse = await client.get('/auth/me', {
         headers: {
           Authorization: `Bearer ${access_token}`,
         },
       });
 
-      // 3. Set auth state
       setAuth(access_token, userResponse.data);
-      router.replace('/(tabs)');
+      if (userResponse.data.role === 'admin') {
+        router.replace('/(admin)');
+      } else if (userResponse.data.role === 'tutor') {
+        router.replace('/(tutor)');
+      } else {
+        router.replace('/(estudiante)');
+      }
     } catch (e: any) {
       console.error(e);
       setError(
         e.response?.data?.detail || 
-        'Error de conexión. Revisa tus credenciales o si el servidor está activo.'
+        (t('auth.login.error') || 'Error de conexión. Revisa tus credenciales.')
       );
     } finally {
       setIsLoading(false);
@@ -58,70 +66,82 @@ export default function LoginScreen() {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      className="flex-1 bg-[#EEEDFE]"
+      style={{ flex: 1, backgroundColor: colors.background }}
     >
       <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }} className="px-6">
         <View className="items-center mb-8">
           <Text className="text-5xl mb-2">🦖</Text>
-          <Text className="text-3xl font-bold text-[#26215C] font-semibold">TutorIA</Text>
-          <Text className="text-sm text-[#7F77DD] text-center mt-1">
-            Tu tutor inteligente en tu bolsillo
+          <Text style={{ color: colors.text, fontSize: 30, fontWeight: 'bold' }}>TutorIA</Text>
+          <Text style={{ color: colors.primary, fontSize: 14, textAlign: 'center', marginTop: 4 }}>
+            {t('auth.login.subtitle') || 'Tu tutor inteligente en tu bolsillo'}
           </Text>
         </View>
 
-        <View className="bg-white rounded-3xl p-6 shadow-md border border-[#7F77DD]/20">
-          <Text className="text-xl font-bold text-[#26215C] mb-6 text-center">Iniciar Sesión</Text>
+        <View style={{ backgroundColor: colors.surface, borderRadius: 24, padding: 24, shadowColor: '#000', shadowOffset: {width:0,height:2}, shadowOpacity:0.1, elevation:4 }}>
+          <Text style={{ color: colors.text, fontSize: 20, fontWeight: 'bold', marginBottom: 24, textAlign: 'center' }}>
+            {t('auth.login.title') || 'Iniciar Sesión'}
+          </Text>
           
           {error ? (
-            <View className="bg-red-50 border border-red-200 rounded-xl p-3 mb-4">
-              <Text className="text-red-600 text-xs text-center">{error}</Text>
+            <View style={{ backgroundColor: colors.danger + '20', borderColor: colors.danger + '40', borderWidth: 1, borderRadius: 12, padding: 12, marginBottom: 16 }}>
+              <Text style={{ color: colors.danger, fontSize: 12, textAlign: 'center' }}>{error}</Text>
             </View>
           ) : null}
 
           <View className="mb-4">
-            <Text className="text-xs text-[#26215C] font-semibold mb-2 ml-1">Correo Electrónico</Text>
+            <Text style={{ color: colors.text, fontSize: 12, fontWeight: '600', marginBottom: 8, marginLeft: 4 }}>
+              {t('auth.login.email') || 'Correo Electrónico'}
+            </Text>
             <TextInput
               value={email}
               onChangeText={setEmail}
-              placeholder="ejemplo@correo.com"
+              placeholder={t('auth.login.emailPlaceholder') || 'ejemplo@correo.com'}
               keyboardType="email-address"
               autoCapitalize="none"
-              className="bg-[#EEEDFE]/50 border border-[#7F77DD]/30 rounded-xl px-4 py-3 text-[#26215C]"
-              placeholderTextColor="#26215C/40"
+              style={{ backgroundColor: colors.background, borderColor: colors.border, borderWidth: 1, borderRadius: 12, paddingHorizontal: 16, paddingVertical: 12, color: colors.text }}
+              placeholderTextColor={colors.textSecondary}
             />
           </View>
 
           <View className="mb-6">
-            <Text className="text-xs text-[#26215C] font-semibold mb-2 ml-1">Contraseña</Text>
+            <Text style={{ color: colors.text, fontSize: 12, fontWeight: '600', marginBottom: 8, marginLeft: 4 }}>
+              {t('auth.login.password') || 'Contraseña'}
+            </Text>
             <TextInput
               value={password}
               onChangeText={setPassword}
               placeholder="••••••••"
               secureTextEntry
               autoCapitalize="none"
-              className="bg-[#EEEDFE]/50 border border-[#7F77DD]/30 rounded-xl px-4 py-3 text-[#26215C]"
-              placeholderTextColor="#26215C/40"
+              style={{ backgroundColor: colors.background, borderColor: colors.border, borderWidth: 1, borderRadius: 12, paddingHorizontal: 16, paddingVertical: 12, color: colors.text }}
+              placeholderTextColor={colors.textSecondary}
             />
           </View>
 
           <Pressable
             onPress={handleLogin}
             disabled={isLoading}
-            className={`bg-[#7F77DD] rounded-xl py-3 items-center justify-center shadow-sm ${isLoading ? 'opacity-80' : ''}`}
+            style={{ backgroundColor: colors.primary, borderRadius: 12, paddingVertical: 12, alignItems: 'center', justifyContent: 'center', opacity: isLoading ? 0.8 : 1 }}
           >
             {isLoading ? (
               <ActivityIndicator color="white" />
             ) : (
-              <Text className="text-white font-bold text-base">Ingresar</Text>
+              <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 16 }}>
+                {t('auth.login.button') || 'Ingresar'}
+              </Text>
             )}
           </Pressable>
         </View>
 
         <View className="flex-row justify-center mt-6">
-          <Text className="text-sm text-[#26215C]">¿No tienes una cuenta? </Text>
+          <Text style={{ fontSize: 14, color: colors.text }}>
+            {t('auth.login.noAccount') || '¿No tienes una cuenta? '}
+          </Text>
           <Link href="/auth/register" asChild>
             <Pressable>
-              <Text className="text-sm font-bold text-[#7F77DD]">Regístrate aquí</Text>
+              <Text style={{ fontSize: 14, fontWeight: 'bold', color: colors.primary }}>
+                {t('auth.login.registerLink') || 'Regístrate aquí'}
+              </Text>
             </Pressable>
           </Link>
         </View>

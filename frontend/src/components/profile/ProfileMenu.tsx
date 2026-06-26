@@ -3,30 +3,36 @@ import React from 'react';
 import { View, Text, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
 import Feather from '@expo/vector-icons/Feather';
+import { useAuthStore } from '@/src/store/auth';
+import { useTheme } from '@/src/theme/ThemeContext';
 
 interface ProfileMenuProps {
   onLogout: () => void;
 }
 
 export function ProfileMenu({ onLogout }: ProfileMenuProps) {
+  const { colors } = useTheme();
   const router = useRouter();
+  const user = useAuthStore((state) => state.user);
+  const routePrefix = user?.role === 'tutor' ? '/(tutor)' : user?.role === 'admin' ? '/(admin)' : '/(estudiante)';
+
   const menuItems = [
     {
       name: 'Configuración',
       icon: 'settings' as const,
-      action: () => router.push('/(tabs)/configuracion' as any),
+      action: () => router.push(`${routePrefix}/configuracion` as any),
       isDestructive: false,
     },
     {
       name: 'Privacidad',
       icon: 'lock' as const,
-      action: () => router.push('/(tabs)/privacidad' as any),
+      action: () => router.push(`${routePrefix}/privacidad` as any),
       isDestructive: false,
     },
     {
       name: 'Centro de ayuda',
       icon: 'help-circle' as const,
-      action: () => router.push('/(tabs)/centro-ayuda' as any),
+      action: () => router.push(`${routePrefix}/centro-ayuda` as any),
       isDestructive: false,
     },
     {
@@ -41,22 +47,22 @@ export function ProfileMenu({ onLogout }: ProfileMenuProps) {
     <View style={{ paddingHorizontal: 24 }}>
       {menuItems.map((item, index) => {
         const iconBgColor = item.isDestructive ? '#FEE2E2' : '#F1F5F9';
-        const iconColor = item.isDestructive ? '#EF4444' : '#4B5563';
-        const textColor = item.isDestructive ? '#EF4444' : '#1E1E2F';
-        const arrowColor = item.isDestructive ? '#EF4444' : '#94A3B8';
+        const iconColor = item.isDestructive ? colors.danger : '#4B5563';
+        const textColor = item.isDestructive ? colors.danger : colors.text;
+        const arrowColor = item.isDestructive ? colors.danger : '#94A3B8';
 
         return (
           <Pressable
             key={index}
             onPress={item.action}
             style={{
-              backgroundColor: 'white',
+              backgroundColor: colors.surface,
               borderRadius: 20,
               paddingVertical: 14,
               paddingHorizontal: 16,
               marginBottom: 12,
               borderWidth: 1,
-              borderColor: '#EEEDFE',
+              borderColor: colors.border,
               shadowColor: '#000',
               shadowOffset: { width: 0, height: 2 },
               shadowOpacity: 0.04,

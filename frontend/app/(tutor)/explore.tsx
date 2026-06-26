@@ -1,5 +1,6 @@
-// app/(tabs)/explore.tsx
+// app/(tutor)/explore.tsx
 import React from 'react';
+import { useTheme } from '@/src/theme/ThemeContext';
 import { Image } from 'expo-image';
 import { ExternalLink } from '@/components/external-link';
 import ParallaxScrollView from '@/components/parallax-scroll-view';
@@ -10,6 +11,7 @@ import { ExploreHeader } from '@/src/components/explore/ExploreHeader';
 import { CollapsibleSection } from '@/src/components/explore/CollapsibleSection';
 
 export default function TabTwoScreen() {
+  const { colors } = useTheme();
   const { styles, Fonts, Platform } = useExplore();
 
   return (
@@ -32,11 +34,11 @@ export default function TabTwoScreen() {
       <CollapsibleSection title="File-based routing">
         <ThemedText>
           This app has two screens:{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/explore.tsx</ThemedText>
+          <ThemedText type="defaultSemiBold">app/(tutor)/index.tsx</ThemedText> and{' '}
+          <ThemedText type="defaultSemiBold">app/(tutor)/explore.tsx</ThemedText>
         </ThemedText>
         <ThemedText>
-          The layout file in <ThemedText type="defaultSemiBold">app/(tabs)/_layout.tsx</ThemedText>{' '}
+          The layout file in <ThemedText type="defaultSemiBold">app/(tutor)/_layout.tsx</ThemedText>{' '}
           sets up the tab navigator.
         </ThemedText>
         <ExternalLink href="https://docs.expo.dev/router/introduction">

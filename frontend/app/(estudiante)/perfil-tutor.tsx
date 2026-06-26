@@ -1,69 +1,74 @@
-// app/(tabs)/perfil-tutor.tsx
+// app/(estudiante)/perfil-tutor.tsx
 import React from 'react';
 import { View, Text, ScrollView, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Feather from '@expo/vector-icons/Feather';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { useTheme } from '@/src/theme/ThemeContext';
+
+import { useProfile } from '@/src/components/profile/useProfile';
 
 const PURPLE = '#9A3BEE';
 const PURPLE_LIGHT = '#F3E8FF';
 
-/* ─── Datos del tutor (estáticos por ahora) ───────────────── */
-const TUTOR = {
-  name: 'Ing. Ana Torres',
-  role: 'Docente Tutor',
-  email: 'ana.torres@unsaac.edu.pe',
-  school: 'Ingeniería Informática y de Sistemas',
-  specialty: 'Tutoría académica y acompañamiento estudiantil',
-  schedule: 'Lunes a viernes, 9:00 AM - 1:00 PM',
-  modality: 'Presencial y virtual',
-  description:
-    'Brinda orientación académica, seguimiento del progreso y acompañamiento durante el semestre.',
-};
-
-/* ─── Filas de información ────────────────────────────────── */
-const infoRows = [
-  {
-    iconName: 'mail' as const,
-    label: 'Correo institucional',
-    value: TUTOR.email,
-  },
-  {
-    iconName: 'award' as const,
-    label: 'Escuela / área',
-    value: TUTOR.school,
-  },
-  {
-    iconName: 'star' as const,
-    label: 'Especialidad',
-    value: TUTOR.specialty,
-  },
-  {
-    iconName: 'clock' as const,
-    label: 'Horario de atención',
-    value: TUTOR.schedule,
-  },
-  {
-    iconName: 'monitor' as const,
-    label: 'Modalidad',
-    value: TUTOR.modality,
-  },
-  {
-    iconName: 'file-text' as const,
-    label: 'Breve descripción',
-    value: TUTOR.description,
-  },
-];
-
 export default function PerfilTutorScreen() {
+  const { colors } = useTheme();
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const paddingTop = Math.max(insets.top, 16);
+  
+  const { assignedTutors } = useProfile();
+  const tutorData = assignedTutors.length > 0 ? assignedTutors[0]?.tutor : null;
+  
+  const TUTOR = {
+    name: tutorData?.full_name || 'Cargando...',
+    role: 'Docente Tutor',
+    email: tutorData?.email || 'Cargando...',
+    school: tutorData?.expertise_areas || 'No especificada',
+    specialty: 'Tutoría académica y acompañamiento estudiantil',
+    schedule: 'Lunes a viernes (Previa cita)',
+    modality: 'Presencial y virtual',
+    description: 'Brinda orientación académica, seguimiento del progreso y acompañamiento durante el semestre.',
+  };
+  
+  /* ─── Filas de información ────────────────────────────────── */
+  const infoRows = [
+    {
+      iconName: 'mail' as const,
+      label: 'Correo institucional',
+      value: TUTOR.email,
+    },
+    {
+      iconName: 'award' as const,
+      label: 'Áreas de experiencia',
+      value: TUTOR.school,
+    },
+    {
+      iconName: 'star' as const,
+      label: 'Especialidad',
+      value: TUTOR.specialty,
+    },
+    {
+      iconName: 'clock' as const,
+      label: 'Horario de atención',
+      value: TUTOR.schedule,
+    },
+    {
+      iconName: 'monitor' as const,
+      label: 'Modalidad',
+      value: TUTOR.modality,
+    },
+    {
+      iconName: 'file-text' as const,
+      label: 'Breve descripción',
+      value: TUTOR.description,
+    },
+  ];
 
   return (
     <ScrollView
-      style={{ flex: 1, backgroundColor: '#F8F7FC' }}
+      style={{ flex: 1, backgroundColor: colors.background }}
       contentContainerStyle={{ paddingBottom: 130 }}
       showsVerticalScrollIndicator={false}
     >
@@ -81,7 +86,7 @@ export default function PerfilTutorScreen() {
         {/* Fila: flecha + título */}
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Pressable
-            onPress={() => router.replace('/(tabs)/profile' as any)}
+            onPress={() => router.replace('/(estudiante)/profile' as any)}
             style={{ marginRight: 16 }}
             hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
           >
@@ -97,7 +102,7 @@ export default function PerfilTutorScreen() {
       <View style={{ paddingHorizontal: 20, marginTop: -36, marginBottom: 20 }}>
         <View
           style={{
-            backgroundColor: 'white',
+            backgroundColor: colors.surface,
             borderRadius: 24,
             padding: 20,
             flexDirection: 'row',
@@ -120,7 +125,7 @@ export default function PerfilTutorScreen() {
             }}
           />
           <View style={{ flex: 1 }}>
-            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#111130' }}>
+            <Text style={{ fontSize: 18, fontWeight: 'bold', color: colors.text }}>
               {TUTOR.name}
             </Text>
             <Text style={{ fontSize: 13, color: '#8E8EA0', marginTop: 4, fontWeight: '500' }}>
@@ -134,10 +139,10 @@ export default function PerfilTutorScreen() {
       <View style={{ paddingHorizontal: 20, marginBottom: 16 }}>
         <View
           style={{
-            backgroundColor: 'white',
+            backgroundColor: colors.surface,
             borderRadius: 24,
             borderWidth: 1,
-            borderColor: '#EEEDFE',
+            borderColor: colors.border,
             shadowColor: '#000',
             shadowOffset: { width: 0, height: 2 },
             shadowOpacity: 0.04,
@@ -174,7 +179,7 @@ export default function PerfilTutorScreen() {
                 </View>
                 {/* Textos */}
                 <View style={{ flex: 1 }}>
-                  <Text style={{ fontSize: 14, fontWeight: '700', color: '#1E1E2F', marginBottom: 3 }}>
+                  <Text style={{ fontSize: 14, fontWeight: '700', color: colors.text, marginBottom: 3 }}>
                     {row.label}
                   </Text>
                   <Text style={{ fontSize: 13, color: '#8E8EA0', lineHeight: 18 }}>
@@ -187,7 +192,7 @@ export default function PerfilTutorScreen() {
                 <View
                   style={{
                     height: 1,
-                    backgroundColor: '#F3F4F6',
+                    backgroundColor: colors.border,
                     marginLeft: 72,
                     marginRight: 16,
                   }}

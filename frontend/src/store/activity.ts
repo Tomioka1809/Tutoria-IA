@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export interface Activity {
   id: string;
   name: string;
-  type: 'Tutoría Académica' | 'Sesión de Apoyo Psicológico' | 'Trabajos';
+  type: string;
   date: string; // Formato YYYY-MM-DD
   time: string; // Formato HH:MM (24h)
 }

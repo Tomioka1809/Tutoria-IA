@@ -6,6 +6,12 @@ export interface User {
   role: 'estudiante' | 'tutor' | 'admin';
   school?: string;
   semester?: string;
+  current_semester?: number;
+  academic_status?: string;
+  tutor_code?: string;
+  phone_number?: string;
+  expertise_areas?: string;
+  office_location?: string;
 }
 
 export interface ServiceType {
@@ -31,8 +37,10 @@ export interface Session {
   tutor_id: number;
   service_type_id: number;
   scheduled_at: string;
-  status: 'pendiente' | 'confirmada' | 'completada' | 'cancelada';
+  status: string;
   notes?: string;
+  title?: string;
+  location?: string;
   student: { id: number; full_name: string; email: string };
   tutor: { id: number; full_name: string; email: string };
   service_type: { id: number; name: string; icon?: string };

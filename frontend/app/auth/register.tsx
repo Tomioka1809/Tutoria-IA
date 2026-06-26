@@ -2,14 +2,30 @@ import React, { useState } from 'react';
 import { View, TextInput, Text, Pressable, ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { useRouter, Link } from 'expo-router';
 import client from '../../src/api/client';
+import { useTranslation } from 'react-i18next';
+import { useTheme } from '@/src/theme/ThemeContext';
 
 export default function RegisterScreen() {
+  const { t } = useTranslation();
+  const { colors } = useTheme();
+
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
-  const [studentCode, setStudentCode] = useState('');
-  const [school, setSchool] = useState('');
-  const [role, setRole] = useState<'estudiante' | 'tutor'>('estudiante');
   const [password, setPassword] = useState('');
+  const [role, setRole] = useState<'estudiante' | 'tutor'>('estudiante');
+
+  // Profile Fields
+  const [phoneNumber, setPhoneNumber] = useState('');
+  
+  // Student
+  const [studentCode, setStudentCode] = useState('');
+  const [currentSemester, setCurrentSemester] = useState('');
+  const [academicStatus, setAcademicStatus] = useState('');
+
+  // Tutor
+  const [tutorCode, setTutorCode] = useState('');
+  const [expertiseAreas, setExpertiseAreas] = useState('');
+  const [officeLocation, setOfficeLocation] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -17,11 +33,11 @@ export default function RegisterScreen() {
 
   const handleRegister = async () => {
     if (!fullName || !email || !password) {
-      setError('Por favor, ingresa tu nombre completo, correo y contraseña.');
+      setError(t('auth.register.emptyFields') || 'Por favor, ingresa tu nombre completo, correo y contraseña.');
       return;
     }
     if (password.length < 6) {
-      setError('La contraseña debe tener al menos 6 caracteres.');
+      setError(t('auth.register.passwordLength') || 'La contraseña debe tener al menos 6 caracteres.');
       return;
     }
     setError('');
@@ -30,10 +46,19 @@ export default function RegisterScreen() {
       await client.post('/auth/register', {
         full_name: fullName.trim(),
         email: email.trim().toLowerCase(),
-        student_code: studentCode.trim() || undefined,
-        school: school.trim() || undefined,
-        role: role,
         password: password,
+        role: role,
+        phone_number: phoneNumber.trim() || undefined,
+        
+        // Student
+        student_code: role === 'estudiante' ? (studentCode.trim() || undefined) : undefined,
+        current_semester: role === 'estudiante' && currentSemester ? parseInt(currentSemester, 10) : undefined,
+        academic_status: role === 'estudiante' ? (academicStatus.trim() || undefined) : undefined,
+        
+        // Tutor
+        tutor_code: role === 'tutor' ? (tutorCode.trim() || undefined) : undefined,
+        expertise_areas: role === 'tutor' ? (expertiseAreas.trim() || undefined) : undefined,
+        office_location: role === 'tutor' ? (officeLocation.trim() || undefined) : undefined,
       });
 
       setSuccess(true);
@@ -44,143 +69,217 @@ export default function RegisterScreen() {
       console.error(e);
       setError(
         e.response?.data?.detail || 
-        'Hubo un problema al crear la cuenta. Intenta de nuevo.'
+        (t('auth.register.error') || 'Hubo un problema al crear la cuenta. Intenta de nuevo.')
       );
     } finally {
       setIsLoading(false);
     }
   };
 
+  const inputStyle = { backgroundColor: colors.background, borderColor: colors.border, borderWidth: 1, borderRadius: 12, paddingHorizontal: 16, paddingVertical: 10, color: colors.text };
+  const labelStyle = { color: colors.text, fontSize: 12, fontWeight: '600' as const, marginBottom: 4, marginLeft: 4 };
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      className="flex-1 bg-[#EEEDFE]"
+      style={{ flex: 1, backgroundColor: colors.background }}
     >
       <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }} className="px-6 py-12">
         <View className="items-center mb-6">
           <Text className="text-4xl mb-1">🦖</Text>
-          <Text className="text-2xl font-bold text-[#26215C]">Crear Cuenta</Text>
-          <Text className="text-xs text-[#7F77DD] text-center mt-1">
-            Únete a TutorIA y potencia tu aprendizaje
+          <Text style={{ color: colors.text, fontSize: 24, fontWeight: 'bold' }}>
+            {t('auth.register.title') || 'Crear Cuenta'}
+          </Text>
+          <Text style={{ color: colors.primary, fontSize: 12, textAlign: 'center', marginTop: 4 }}>
+            {t('auth.register.subtitle') || 'Únete a TutorIA y potencia tu aprendizaje'}
           </Text>
         </View>
 
-        <View className="bg-white rounded-3xl p-6 shadow-md border border-[#7F77DD]/20">
+        <View style={{ backgroundColor: colors.surface, borderRadius: 24, padding: 24, shadowColor: '#000', shadowOffset: {width:0,height:2}, shadowOpacity:0.1, elevation:4 }}>
           {success ? (
-            <View className="bg-green-50 border border-green-200 rounded-xl p-4 mb-4 items-center">
-              <Text className="text-green-600 font-bold mb-1 text-center">¡Registro exitoso!</Text>
-              <Text className="text-green-600 text-xs text-center">Redirigiéndote al inicio de sesión...</Text>
+            <View style={{ backgroundColor: colors.success + '20', borderColor: colors.success + '40', borderWidth: 1, borderRadius: 12, padding: 16, marginBottom: 16, alignItems: 'center' }}>
+              <Text style={{ color: colors.success, fontWeight: 'bold', marginBottom: 4 }}>
+                {t('auth.register.successTitle') || '¡Registro exitoso!'}
+              </Text>
+              <Text style={{ color: colors.success, fontSize: 12 }}>
+                {t('auth.register.successMsg') || 'Redirigiéndote al inicio de sesión...'}
+              </Text>
             </View>
           ) : null}
 
           {error ? (
-            <View className="bg-red-50 border border-red-200 rounded-xl p-3 mb-4">
-              <Text className="text-red-600 text-xs text-center">{error}</Text>
+            <View style={{ backgroundColor: colors.danger + '20', borderColor: colors.danger + '40', borderWidth: 1, borderRadius: 12, padding: 12, marginBottom: 16 }}>
+              <Text style={{ color: colors.danger, fontSize: 12, textAlign: 'center' }}>{error}</Text>
             </View>
           ) : null}
 
           <View className="mb-3">
-            <Text className="text-xs text-[#26215C] font-semibold mb-1 ml-1">Nombre Completo</Text>
+            <Text style={labelStyle}>{t('auth.register.fullName') || 'Nombre Completo'}</Text>
             <TextInput
               value={fullName}
               onChangeText={setFullName}
               placeholder="Juan Pérez"
-              className="bg-[#EEEDFE]/50 border border-[#7F77DD]/30 rounded-xl px-4 py-2.5 text-[#26215C]"
-              placeholderTextColor="#26215C/40"
+              style={inputStyle}
+              placeholderTextColor={colors.textSecondary}
             />
           </View>
 
           <View className="mb-3">
-            <Text className="text-xs text-[#26215C] font-semibold mb-1 ml-1">Correo Electrónico</Text>
+            <Text style={labelStyle}>{t('auth.register.email') || 'Correo Electrónico'}</Text>
             <TextInput
               value={email}
               onChangeText={setEmail}
               placeholder="juan.perez@universidad.edu"
               keyboardType="email-address"
               autoCapitalize="none"
-              className="bg-[#EEEDFE]/50 border border-[#7F77DD]/30 rounded-xl px-4 py-2.5 text-[#26215C]"
-              placeholderTextColor="#26215C/40"
+              style={inputStyle}
+              placeholderTextColor={colors.textSecondary}
             />
           </View>
 
           {/* Role selection tab */}
           <View className="mb-3">
-            <Text className="text-xs text-[#26215C] font-semibold mb-2 ml-1">Rol</Text>
-            <View className="flex-row bg-[#EEEDFE]/50 border border-[#7F77DD]/30 rounded-xl p-1">
+            <Text style={labelStyle}>{t('auth.register.role') || 'Rol'}</Text>
+            <View style={{ flexDirection: 'row', backgroundColor: colors.background, borderColor: colors.border, borderWidth: 1, borderRadius: 12, padding: 4 }}>
               <Pressable
                 onPress={() => setRole('estudiante')}
-                className={`flex-1 py-2 rounded-lg items-center ${role === 'estudiante' ? 'bg-[#7F77DD]' : ''}`}
+                style={{ flex: 1, paddingVertical: 8, borderRadius: 8, alignItems: 'center', backgroundColor: role === 'estudiante' ? colors.primary : 'transparent' }}
               >
-                <Text className={`font-semibold text-xs ${role === 'estudiante' ? 'text-white' : 'text-[#26215C]/60'}`}>
-                  Estudiante
+                <Text style={{ fontWeight: '600', fontSize: 12, color: role === 'estudiante' ? 'white' : colors.textSecondary }}>
+                  {t('auth.register.student') || 'Estudiante'}
                 </Text>
               </Pressable>
               <Pressable
                 onPress={() => setRole('tutor')}
-                className={`flex-1 py-2 rounded-lg items-center ${role === 'tutor' ? 'bg-[#7F77DD]' : ''}`}
+                style={{ flex: 1, paddingVertical: 8, borderRadius: 8, alignItems: 'center', backgroundColor: role === 'tutor' ? colors.primary : 'transparent' }}
               >
-                <Text className={`font-semibold text-xs ${role === 'tutor' ? 'text-white' : 'text-[#26215C]/60'}`}>
-                  Tutor
+                <Text style={{ fontWeight: '600', fontSize: 12, color: role === 'tutor' ? 'white' : colors.textSecondary }}>
+                  {t('auth.register.tutor') || 'Tutor'}
                 </Text>
               </Pressable>
             </View>
           </View>
 
-          {role === 'estudiante' ? (
-            <View className="mb-3">
-              <Text className="text-xs text-[#26215C] font-semibold mb-1 ml-1">Código de Estudiante (Opcional)</Text>
-              <TextInput
-                value={studentCode}
-                onChangeText={setStudentCode}
-                placeholder="202612345"
-                className="bg-[#EEEDFE]/50 border border-[#7F77DD]/30 rounded-xl px-4 py-2.5 text-[#26215C]"
-                placeholderTextColor="#26215C/40"
-              />
-            </View>
-          ) : null}
-
           <View className="mb-3">
-            <Text className="text-xs text-[#26215C] font-semibold mb-1 ml-1">Facultad / Escuela (Opcional)</Text>
+            <Text style={labelStyle}>{t('auth.register.phone') || 'Teléfono (Opcional)'}</Text>
             <TextInput
-              value={school}
-              onChangeText={setSchool}
-              placeholder="Ingeniería de Sistemas"
-              className="bg-[#EEEDFE]/50 border border-[#7F77DD]/30 rounded-xl px-4 py-2.5 text-[#26215C]"
-              placeholderTextColor="#26215C/40"
+              value={phoneNumber}
+              onChangeText={setPhoneNumber}
+              placeholder="+51 987654321"
+              keyboardType="phone-pad"
+              style={inputStyle}
+              placeholderTextColor={colors.textSecondary}
             />
           </View>
 
+          {role === 'estudiante' ? (
+            <>
+              <View className="mb-3">
+                <Text style={labelStyle}>{t('auth.register.studentCode') || 'Código de Estudiante'}</Text>
+                <TextInput
+                  value={studentCode}
+                  onChangeText={setStudentCode}
+                  placeholder="202612345"
+                  style={inputStyle}
+                  placeholderTextColor={colors.textSecondary}
+                />
+              </View>
+              <View className="mb-3">
+                <Text style={labelStyle}>{t('auth.register.semester') || 'Semestre Actual (Opcional)'}</Text>
+                <TextInput
+                  value={currentSemester}
+                  onChangeText={setCurrentSemester}
+                  placeholder="Ej: 5"
+                  keyboardType="numeric"
+                  style={inputStyle}
+                  placeholderTextColor={colors.textSecondary}
+                />
+              </View>
+              <View className="mb-3">
+                <Text style={labelStyle}>{t('auth.register.academicStatus') || 'Estado Académico (Opcional)'}</Text>
+                <TextInput
+                  value={academicStatus}
+                  onChangeText={setAcademicStatus}
+                  placeholder="Regular, Observado..."
+                  style={inputStyle}
+                  placeholderTextColor={colors.textSecondary}
+                />
+              </View>
+            </>
+          ) : null}
+
+          {role === 'tutor' ? (
+            <>
+              <View className="mb-3">
+                <Text style={labelStyle}>{t('auth.register.tutorCode') || 'Código de Tutor'}</Text>
+                <TextInput
+                  value={tutorCode}
+                  onChangeText={setTutorCode}
+                  placeholder="T-202612"
+                  style={inputStyle}
+                  placeholderTextColor={colors.textSecondary}
+                />
+              </View>
+              <View className="mb-3">
+                <Text style={labelStyle}>{t('auth.register.expertise') || 'Áreas de Especialidad (Opcional)'}</Text>
+                <TextInput
+                  value={expertiseAreas}
+                  onChangeText={setExpertiseAreas}
+                  placeholder="Matemáticas, Física..."
+                  style={inputStyle}
+                  placeholderTextColor={colors.textSecondary}
+                />
+              </View>
+              <View className="mb-3">
+                <Text style={labelStyle}>{t('auth.register.office') || 'Ubicación de Oficina (Opcional)'}</Text>
+                <TextInput
+                  value={officeLocation}
+                  onChangeText={setOfficeLocation}
+                  placeholder="Pabellón A, Aula 102"
+                  style={inputStyle}
+                  placeholderTextColor={colors.textSecondary}
+                />
+              </View>
+            </>
+          ) : null}
+
           <View className="mb-5">
-            <Text className="text-xs text-[#26215C] font-semibold mb-1 ml-1">Contraseña</Text>
+            <Text style={labelStyle}>{t('auth.register.password') || 'Contraseña'}</Text>
             <TextInput
               value={password}
               onChangeText={setPassword}
               placeholder="Mínimo 6 caracteres"
               secureTextEntry
               autoCapitalize="none"
-              className="bg-[#EEEDFE]/50 border border-[#7F77DD]/30 rounded-xl px-4 py-2.5 text-[#26215C]"
-              placeholderTextColor="#26215C/40"
+              style={inputStyle}
+              placeholderTextColor={colors.textSecondary}
             />
           </View>
 
           <Pressable
             onPress={handleRegister}
             disabled={isLoading || success}
-            className={`bg-[#7F77DD] rounded-xl py-3 items-center justify-center shadow-sm ${isLoading ? 'opacity-80' : ''}`}
+            style={{ backgroundColor: colors.primary, borderRadius: 12, paddingVertical: 12, alignItems: 'center', justifyContent: 'center', opacity: (isLoading || success) ? 0.8 : 1 }}
           >
             {isLoading ? (
               <ActivityIndicator color="white" />
             ) : (
-              <Text className="text-white font-bold text-base">Registrarse</Text>
+              <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 16 }}>
+                {t('auth.register.button') || 'Registrarse'}
+              </Text>
             )}
           </Pressable>
         </View>
 
         <View className="flex-row justify-center mt-6">
-          <Text className="text-sm text-[#26215C]">¿Ya tienes una cuenta? </Text>
+          <Text style={{ fontSize: 14, color: colors.text }}>
+            {t('auth.register.hasAccount') || '¿Ya tienes una cuenta? '}
+          </Text>
           <Link href="/auth/login" asChild>
             <Pressable>
-              <Text className="text-sm font-bold text-[#7F77DD]">Inicia sesión</Text>
+              <Text style={{ fontSize: 14, fontWeight: 'bold', color: colors.primary }}>
+                {t('auth.register.loginLink') || 'Inicia sesión'}
+              </Text>
             </Pressable>
           </Link>
         </View>

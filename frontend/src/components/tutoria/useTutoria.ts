@@ -6,12 +6,12 @@ import { useAuthStore } from '@/src/store/auth';
 
 export function useTutoria() {
   const { user } = useAuthStore();
-  const { conversation, fetchConversation, sendMessage, isLoading, isSending } = useChatStore();
+  const { conversation, fetchConversation, sendMessage, isLoading, isSending, resetConversation } = useChatStore();
   const [inputText, setInputText] = useState('');
   const scrollViewRef = useRef<ScrollView>(null);
 
   useEffect(() => {
-    if (user?.role === 'estudiante') {
+    if (user?.role === 'estudiante' || user?.role === 'tutor') {
       fetchConversation();
     }
   }, []);
@@ -49,6 +49,6 @@ export function useTutoria() {
     scrollViewRef,
     handleSend,
     handleQuickAction,
-    handleMicPress,
+    resetConversation,
   };
 }

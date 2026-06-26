@@ -1,6 +1,6 @@
-from sqlalchemy import String, Integer
+from sqlalchemy import String, Integer, Boolean
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from typing import List, TYPE_CHECKING
+from typing import List, TYPE_CHECKING, Optional
 from app.infrastructure.database.base_class import Base
 
 if TYPE_CHECKING:
@@ -10,17 +10,64 @@ if TYPE_CHECKING:
     from app.infrastructure.database.models.streak import Streak
     from app.infrastructure.database.models.notification import Notification
     from app.infrastructure.database.models.conversation import Conversation
+    from app.infrastructure.database.models.profiles import StudentProfile, TutorProfile, AdminProfile
 
 class User(Base):
     __tablename__ = "users"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
-    full_name: Mapped[str] = mapped_column(String(255), nullable=False)
     email: Mapped[str] = mapped_column(String(255), unique=True, index=True, nullable=False)
     password_hash: Mapped[str] = mapped_column(String(255), nullable=False)
-    student_code: Mapped[str] = mapped_column(String(50), nullable=True)
     role: Mapped[str] = mapped_column(String(50), default="estudiante", nullable=False) # estudiante | tutor | admin
-    school: Mapped[str] = mapped_column(String(255), nullable=True)
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
+
+    # Profile Relationships
+    student_profile: Mapped[Optional["StudentProfile"]] = relationship("StudentProfile", back_populates="user", uselist=False, cascade="all, delete-orphan")
+    tutor_profile: Mapped[Optional["TutorProfile"]] = relationship("TutorProfile", back_populates="user", uselist=False, cascade="all, delete-orphan")
+    admin_profile: Mapped[Optional["AdminProfile"]] = relationship("AdminProfile", back_populates="user", uselist=False, cascade="all, delete-orphan")
+
+    @property
+    def full_name(self) -> str:
+        if self.student_profile: return self.student_profile.full_name
+        if self.tutor_profile: return self.tutor_profile.full_name
+        if self.admin_profile: return self.admin_profile.full_name
+        return ""
+
+    @property
+    def student_code(self) -> Optional[str]:
+        if self.student_profile: return self.student_profile.student_code
+        return None
+
+    @property
+    def tutor_code(self) -> Optional[str]:
+        if self.tutor_profile: return self.tutor_profile.tutor_code
+        return None
+
+    @property
+    def expertise_areas(self) -> Optional[str]:
+        if self.tutor_profile: return self.tutor_profile.expertise_areas
+        return None
+
+    @property
+    def office_location(self) -> Optional[str]:
+        if self.tutor_profile: return self.tutor_profile.office_location
+        return None
+
+    @property
+    def current_semester(self) -> Optional[int]:
+        if self.student_profile: return self.student_profile.current_semester
+        return None
+
+    @property
+    def academic_status(self) -> Optional[str]:
+        if self.student_profile: return self.student_profile.academic_status
+        return None
+
+    @property
+    def phone_number(self) -> Optional[str]:
+        if self.student_profile: return self.student_profile.phone_number
+        if self.tutor_profile: return self.tutor_profile.phone_number
+        return None
 
     # Relationships
     # As tutor or student assignments

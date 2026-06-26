@@ -1,0 +1,52 @@
+{
+  "auth": {
+    "login": {
+      "emptyFields": "Please enter your email and password.",
+      "error": "Connection error. Check your credentials.",
+      "subtitle": "Your smart tutor in your pocket",
+      "title": "Sign In",
+      "email": "Email Address",
+      "emailPlaceholder": "example@email.com",
+      "password": "Password",
+      "button": "Sign In",
+      "noAccount": "Don't have an account? ",
+      "registerLink": "Register here"
+    },
+    "register": {
+      "emptyFields": "Please enter your full name, email and password.",
+      "passwordLength": "Password must be at least 6 characters.",
+      "error": "There was a problem creating the account. Try again.",
+      "title": "Create Account",
+      "subtitle": "Join TutorIA and boost your learning",
+      "successTitle": "Registration successful!",
+      "successMsg": "Redirecting to sign in...",
+      "fullName": "Full Name",
+      "email": "Email Address",
+      "role": "Role",
+      "student": "Student",
+      "tutor": "Tutor",
+      "phone": "Phone Number (Optional)",
+      "studentCode": "Student Code",
+      "semester": "Current Semester (Optional)",
+      "academicStatus": "Academic Status (Optional)",
+      "tutorCode": "Tutor Code",
+      "expertise": "Expertise Areas (Optional)",
+      "office": "Office Location (Optional)",
+      "password": "Password",
+      "button": "Sign Up",
+      "hasAccount": "Already have an account? ",
+      "loginLink": "Sign in"
+    }
+  },
+  "tabs": {
+    "home": "Home",
+    "calendar": "Calendar",
+    "notifications": "Notifications",
+    "profile": "Profile",
+    "dashboard": "Dashboard",
+    "users": "Users",
+    "assignments": "Assignments",
+    "content": "Content",
+    "settings": "Settings"
+  }
+}

@@ -2,21 +2,28 @@
 import React from 'react';
 import { View, Text, ScrollView, Pressable } from 'react-native';
 import { Feather, FontAwesome } from '@expo/vector-icons';
+import { useTheme } from '@/src/theme/ThemeContext';
 
 interface UnifiedActivity {
   id: string;
   name: string;
-  type: 'Tutoría Académica' | 'Sesión de Apoyo Psicológico' | 'Trabajos';
+  type: string;
   date: string;
   time: string;
   isBackend: boolean;
   rawId: number;
+  status?: string;
+  notes?: string;
+  location?: string;
+  tutorName?: string;
+  studentName?: string;
 }
 
 interface CalendarActivitiesListProps {
   activities: UnifiedActivity[];
   userRole?: string;
   onAddPress: () => void;
+  onViewPress?: (activity: UnifiedActivity) => void;
   onDeletePress: (activity: UnifiedActivity) => void;
 }
 
@@ -24,9 +31,11 @@ export function CalendarActivitiesList({
   activities,
   userRole,
   onAddPress,
+  onViewPress,
   onDeletePress,
 }: CalendarActivitiesListProps) {
   const isTutor = userRole === 'tutor' || userRole === 'admin';
+  const { colors } = useTheme();
 
   // Formatear 24h a 12h AM/PM
   const formatTime12h = (time24: string) => {
@@ -94,44 +103,50 @@ export function CalendarActivitiesList({
 
   // Mapeo de estilos y configuración de cada tipo de actividad
   const getActivityStyle = (type: string) => {
-    switch (type) {
-      case 'Tutoría Académica':
-        return {
-          icon: 'book-open',
-          iconSet: 'Feather' as const,
-          iconColor: '#9A3BEE',
-          bgColor: 'bg-[#F3E8FF]',
-        };
-      case 'Sesión de Apoyo Psicológico':
-        return {
-          icon: 'heart-o',
-          iconSet: 'FontAwesome' as const,
-          iconColor: '#EC4899',
-          bgColor: 'bg-[#FCE7F3]',
-        };
-      case 'Trabajos':
-        return {
-          icon: 'file-text',
-          iconSet: 'Feather' as const,
-          iconColor: '#7C3AED',
-          bgColor: 'bg-[#F5F3FF]',
-        };
-      default:
-        return {
-          icon: 'book-open',
-          iconSet: 'Feather' as const,
-          iconColor: '#9A3BEE',
-          bgColor: 'bg-[#F3E8FF]',
-        };
+    if (type === 'Tutoría Académica') {
+      return {
+        icon: 'book-open',
+        iconSet: 'Feather' as const,
+        iconColor: colors.primary,
+        bgColor: 'bg-[#F3E8FF]',
+      };
+    } else if (type === 'Tutoría Personal' || type === 'Sesión de Apoyo Psicológico') {
+      return {
+        icon: 'user',
+        iconSet: 'Feather' as const,
+        iconColor: '#EC4899',
+        bgColor: 'bg-[#FCE7F3]',
+      };
+    } else if (type === 'Tutoría Profesional') {
+      return {
+        icon: 'briefcase',
+        iconSet: 'Feather' as const,
+        iconColor: '#4F46E5',
+        bgColor: 'bg-[#E0E7FF]',
+      };
+    } else if (type === 'Trabajos') {
+      return {
+        icon: 'file-text',
+        iconSet: 'Feather' as const,
+        iconColor: '#7C3AED',
+        bgColor: 'bg-[#F5F3FF]',
+      };
+    } else {
+      return {
+        icon: 'book-open',
+        iconSet: 'Feather' as const,
+        iconColor: colors.primary,
+        bgColor: 'bg-[#F3E8FF]',
+      };
     }
   };
 
   return (
     <View className="flex-1 px-6">
       <View className="flex-row justify-between items-center mb-4">
-        <Text className="text-[#1E1E2F] font-bold text-base">Próximas actividades</Text>
+        <Text style={{ color: colors.text }} className=" font-bold text-base">Próximas actividades</Text>
         <Pressable onPress={onAddPress} className="flex-row items-center">
-          <Text className="text-sm font-bold text-[#9A3BEE]">+ Añadir</Text>
+          <Text className="text-sm font-bold" style={{ color: colors.primary }}>+ Añadir</Text>
         </Pressable>
       </View>
 
@@ -148,9 +163,10 @@ export function CalendarActivitiesList({
             const canDelete = !activity.isBackend || isTutor;
 
             return (
-              <View
+              <Pressable
                 key={activity.id}
-                className="bg-white border border-[#EEEDFE] rounded-3xl p-4 mb-3 shadow-sm flex-row items-center justify-between"
+                onPress={() => onViewPress && onViewPress(activity)}
+                style={{ backgroundColor: colors.surface }} className=" border border-border rounded-3xl p-4 mb-3 shadow-sm flex-row items-center justify-between"
               >
                 <View className="flex-row items-center flex-1">
                   {/* Contenedor del Icono */}
@@ -164,10 +180,10 @@ export function CalendarActivitiesList({
 
                   {/* Textos: Nombre y Horarios */}
                   <View className="flex-1 mr-2">
-                    <Text className="text-sm font-bold text-[#1E1E2F]" numberOfLines={1}>
+                    <Text style={{ color: colors.text }} className="text-sm font-bold " numberOfLines={1}>
                       {activity.name}
                     </Text>
-                    <Text className="text-xs text-[#8E8EA0] mt-1 font-medium">
+                    <Text className="text-xs text-textSecondary mt-1 font-medium">
                       {dateDisplay}, {timeRange}
                     </Text>
                   </View>
@@ -179,19 +195,19 @@ export function CalendarActivitiesList({
                     onPress={() => onDeletePress(activity)}
                     className="p-2 hit-slop-8"
                   >
-                    <Feather name="trash-2" size={16} color="#EF4444" />
+                    <Feather name="trash-2" size={16} color={colors.danger} />
                   </Pressable>
                 )}
-              </View>
+              </Pressable>
             );
           })
         ) : (
-          <View className="items-center justify-center py-12 px-4 bg-white/50 border border-dashed border-[#EEEDFE] rounded-3xl">
-            <Feather name="calendar" size={36} color="#8E8EA0" />
-            <Text className="text-sm font-bold text-[#1E1E2F] mt-3 text-center">
+          <View style={{ backgroundColor: colors.surface }} className="items-center justify-center py-12 px-4 /50 border border-dashed border-border rounded-3xl">
+            <Feather name="calendar" size={36} color={colors.textSecondary} />
+            <Text style={{ color: colors.text }} className="text-sm font-bold  mt-3 text-center">
               No tienes actividades programadas
             </Text>
-            <Text className="text-xs text-[#8E8EA0] mt-1 text-center">
+            <Text className="text-xs text-textSecondary mt-1 text-center">
               ¡Presiona "+ Añadir" para agendar tu primera actividad!
             </Text>
           </View>

@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { User } from '../types';
+import client from '../api/client';
 
 interface AuthState {
   token: string | null;
@@ -9,13 +10,15 @@ interface AuthState {
   profileImage: string | null;
   setAuth: (token: string, user: User) => void;
   updateUser: (partial: Partial<User>) => void;
+  updateProfile: (partial: Partial<User>) => Promise<void>;
+  changePassword: (currentPassword: string, newPassword: string) => Promise<boolean>;
   setProfileImage: (uri: string | null) => void;
   logout: () => void;
 }
 
 export const useAuthStore = create<AuthState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       token: null,
       user: null,
       profileImage: null,
@@ -24,6 +27,24 @@ export const useAuthStore = create<AuthState>()(
         set((state) => ({
           user: state.user ? { ...state.user, ...partial } : state.user,
         })),
+      updateProfile: async (partial) => {
+        try {
+          const res = await client.put<User>('/auth/profile', partial);
+          set({ user: res.data });
+        } catch (error) {
+          console.error('Failed to update profile:', error);
+          throw error;
+        }
+      },
+      changePassword: async (current_password, new_password) => {
+        try {
+          await client.put('/auth/change-password', { current_password, new_password });
+          return true;
+        } catch (error) {
+          console.error('Failed to change password:', error);
+          return false;
+        }
+      },
       setProfileImage: (uri) => set({ profileImage: uri }),
       logout: () => set({ token: null, user: null, profileImage: null }),
     }),

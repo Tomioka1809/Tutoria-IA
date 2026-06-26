@@ -8,6 +8,7 @@ from app.infrastructure.database.session import SessionLocal
 from app.infrastructure.database.models.corpus_chunk import CorpusChunk
 from app.infrastructure.adapters.gemini_adapter import GeminiAdapter
 from app.infrastructure.config.config import settings
+from app.infrastructure.database.models.motivational_quote import MotivationalQuote
 
 def dict_to_text(d):
     parts = []

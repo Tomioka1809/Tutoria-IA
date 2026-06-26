@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from app.infrastructure.api.v1.endpoints import auth, sessions, events, streaks, notifications, chat, tutors
+from app.infrastructure.api.v1.endpoints import auth, sessions, events, streaks, notifications, chat, tutors, admin, quotes, quiz
 
 api_router = APIRouter()
 
@@ -11,3 +11,6 @@ api_router.include_router(streaks.router, prefix="/streaks", tags=["streaks"])
 api_router.include_router(notifications.router, prefix="/notifications", tags=["notifications"])
 api_router.include_router(chat.router, prefix="/chat", tags=["chat"])
 api_router.include_router(tutors.router, prefix="/tutors", tags=["tutors"])
+api_router.include_router(admin.router, prefix="/admin", tags=["admin"])
+api_router.include_router(quotes.router, prefix="/quotes", tags=["quotes"])
+api_router.include_router(quiz.router, prefix="/quiz", tags=["quiz"])

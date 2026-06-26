@@ -11,3 +11,5 @@ from app.infrastructure.database.models.notification import Notification  # noqa
 from app.infrastructure.database.models.conversation import Conversation  # noqa
 from app.infrastructure.database.models.message import Message  # noqa
 from app.infrastructure.database.models.corpus_chunk import CorpusChunk  # noqa
+from app.infrastructure.database.models.profiles import StudentProfile, TutorProfile, AdminProfile  # noqa
+from app.infrastructure.database.models.motivational_quote import MotivationalQuote  # noqa

@@ -1,10 +1,11 @@
-// app/(tabs)/centro-ayuda.tsx
+// app/(estudiante)/centro-ayuda.tsx
 import React from 'react';
 import { View, Text, ScrollView, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Feather from '@expo/vector-icons/Feather';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { useTheme } from '@/src/theme/ThemeContext';
 
 const PURPLE = '#9A3BEE';
 const PURPLE_LIGHT = '#F3E8FF';
@@ -31,13 +32,14 @@ const faqItems = [
 ];
 
 export default function CentroAyudaScreen() {
+  const { colors } = useTheme();
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const paddingTop = Math.max(insets.top, 16);
 
   return (
     <ScrollView
-      style={{ flex: 1, backgroundColor: '#F8F7FC' }}
+      style={{ flex: 1, backgroundColor: colors.background }}
       contentContainerStyle={{ paddingBottom: 130 }}
       showsVerticalScrollIndicator={false}
     >
@@ -62,7 +64,7 @@ export default function CentroAyudaScreen() {
           }}
         >
           <Pressable
-            onPress={() => router.replace('/(tabs)/profile' as any)}
+            onPress={() => router.replace('/(estudiante)/profile' as any)}
             style={{ marginRight: 16 }}
             hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
           >
@@ -98,7 +100,7 @@ export default function CentroAyudaScreen() {
         {/* Tarjeta principal superpuesta */}
         <View
           style={{
-            backgroundColor: 'white',
+            backgroundColor: colors.surface,
             borderRadius: 24,
             padding: 20,
             flexDirection: 'row',
@@ -126,7 +128,7 @@ export default function CentroAyudaScreen() {
           </View>
 
           <View style={{ flex: 1 }}>
-            <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#111130' }}>
+            <Text style={{ fontSize: 16, fontWeight: 'bold', color: colors.text }}>
               ¿Necesitas ayuda?
             </Text>
             <Text
@@ -151,10 +153,10 @@ export default function CentroAyudaScreen() {
       <View style={{ paddingHorizontal: 24, marginBottom: 16 }}>
         <View
           style={{
-            backgroundColor: 'white',
+            backgroundColor: colors.surface,
             borderRadius: 24,
             borderWidth: 1,
-            borderColor: '#EEEDFE',
+            borderColor: colors.border,
             shadowColor: '#000',
             shadowOffset: { width: 0, height: 2 },
             shadowOpacity: 0.04,
@@ -174,13 +176,13 @@ export default function CentroAyudaScreen() {
             }}
           >
             <Ionicons name="help-circle-outline" size={22} color={PURPLE} style={{ marginRight: 10 }} />
-            <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#111130' }}>
+            <Text style={{ fontSize: 16, fontWeight: 'bold', color: colors.text }}>
               Preguntas frecuentes
             </Text>
           </View>
 
           {/* Divisor */}
-          <View style={{ height: 1, backgroundColor: '#F3F4F6', marginHorizontal: 16 }} />
+          <View style={{ height: 1, backgroundColor: colors.border, marginHorizontal: 16 }} />
 
           {faqItems.map((item, index) => (
             <View key={index}>
@@ -197,7 +199,7 @@ export default function CentroAyudaScreen() {
                       marginRight: 10,
                     }}
                   />
-                  <Text style={{ fontSize: 14, fontWeight: '700', color: '#1E1E2F', flex: 1 }}>
+                  <Text style={{ fontSize: 14, fontWeight: '700', color: colors.text, flex: 1 }}>
                     {item.question}
                   </Text>
                 </View>
@@ -209,7 +211,7 @@ export default function CentroAyudaScreen() {
                 </View>
               </View>
               {index < faqItems.length - 1 && (
-                <View style={{ height: 1, backgroundColor: '#F3F4F6', marginHorizontal: 16 }} />
+                <View style={{ height: 1, backgroundColor: colors.border, marginHorizontal: 16 }} />
               )}
             </View>
           ))}
@@ -220,10 +222,10 @@ export default function CentroAyudaScreen() {
       <View style={{ paddingHorizontal: 24, marginBottom: 16 }}>
         <View
           style={{
-            backgroundColor: 'white',
+            backgroundColor: colors.surface,
             borderRadius: 24,
             borderWidth: 1,
-            borderColor: '#EEEDFE',
+            borderColor: colors.border,
             shadowColor: '#000',
             shadowOffset: { width: 0, height: 2 },
             shadowOpacity: 0.04,
@@ -249,12 +251,12 @@ export default function CentroAyudaScreen() {
           </View>
 
           <View style={{ flex: 1 }}>
-            <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#111130', marginBottom: 8 }}>
+            <Text style={{ fontSize: 16, fontWeight: 'bold', color: colors.text, marginBottom: 8 }}>
               Soporte
             </Text>
-            <InfoRow label="Correo:" value="soporte@tutoria.unsaac.edu.pe" />
-            <InfoRow label="Atención:" value="Lunes a viernes" />
-            <InfoRow label="Horario:" value="8:00 AM - 5:00 PM" />
+            <InfoRow label="Correo:" value="soporte@tutoria.unsaac.edu.pe" colors={colors} />
+            <InfoRow label="Atención:" value="Lunes a viernes" colors={colors} />
+            <InfoRow label="Horario:" value="8:00 AM - 5:00 PM" colors={colors} />
           </View>
         </View>
       </View>
@@ -263,10 +265,10 @@ export default function CentroAyudaScreen() {
       <View style={{ paddingHorizontal: 24, marginBottom: 16 }}>
         <View
           style={{
-            backgroundColor: 'white',
+            backgroundColor: colors.surface,
             borderRadius: 24,
             borderWidth: 1,
-            borderColor: '#EEEDFE',
+            borderColor: colors.border,
             shadowColor: '#000',
             shadowOffset: { width: 0, height: 2 },
             shadowOpacity: 0.04,
@@ -292,7 +294,7 @@ export default function CentroAyudaScreen() {
           </View>
 
           <View style={{ flex: 1 }}>
-            <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#111130', marginBottom: 8 }}>
+            <Text style={{ fontSize: 16, fontWeight: 'bold', color: colors.text, marginBottom: 8 }}>
               Guía rápida
             </Text>
             <BulletText text="Actualiza tu perfil desde Configuración." />
@@ -306,7 +308,7 @@ export default function CentroAyudaScreen() {
       <View style={{ paddingHorizontal: 24, marginBottom: 8 }}>
         <View
           style={{
-            backgroundColor: 'white',
+            backgroundColor: colors.surface,
             borderRadius: 20,
             borderWidth: 1,
             borderColor: '#FFE8D6',
@@ -333,7 +335,7 @@ export default function CentroAyudaScreen() {
           >
             <Ionicons name="information-circle-outline" size={26} color={ORANGE} />
           </View>
-          <Text style={{ fontSize: 13, color: '#1E1E2F', flex: 1, lineHeight: 18 }}>
+          <Text style={{ fontSize: 13, color: colors.text, flex: 1, lineHeight: 18 }}>
             Si tienes problemas con tu cuenta, comunícate con soporte institucional.
           </Text>
         </View>
@@ -344,10 +346,10 @@ export default function CentroAyudaScreen() {
 
 /* ── Componentes auxiliares ───────────────────────────────── */
 
-function InfoRow({ label, value }: { label: string; value: string }) {
+function InfoRow({ label, value, colors }: { label: string; value: string; colors: any }) {
   return (
     <View style={{ flexDirection: 'row', marginBottom: 4, flexWrap: 'wrap' }}>
-      <Text style={{ fontSize: 13, fontWeight: '700', color: '#1E1E2F', marginRight: 4 }}>
+      <Text style={{ fontSize: 13, fontWeight: '700', color: colors.text, marginRight: 4 }}>
         {label}
       </Text>
       <Text style={{ fontSize: 13, color: '#8E8EA0', flex: 1 }}>{value}</Text>

@@ -2,12 +2,14 @@
 import React from 'react';
 import { ScrollView, View, Text, ActivityIndicator } from 'react-native';
 import { Conversation } from '@/src/types';
+import { useTheme } from '@/src/theme/ThemeContext';
 
 // Helper function to parse and render bold text marked with ** and line breaks
-const renderFormattedText = (text: string, isUser: boolean) => {
+const renderFormattedText = (text: string, isUser: boolean, colors: any, isDark: boolean) => {
   if (!text) return null;
   const paragraphs = text.split('\n');
-  const textColor = isUser ? 'text-white' : 'text-[#26215C] font-medium';
+  const textColor = isUser ? 'text-white' : 'font-medium';
+  const inlineTextColor = isUser ? '#FFFFFF' : (isDark ? '#F3F4F6' : colors.text);
   
   return paragraphs.map((paragraph, pIndex) => {
     if (!paragraph.trim() && pIndex !== paragraphs.length - 1) {
@@ -16,7 +18,7 @@ const renderFormattedText = (text: string, isUser: boolean) => {
     
     const parts = paragraph.split(/\*\*([^*]+)\*\*/g);
     return (
-      <Text key={pIndex} className={`text-sm leading-5 mb-1 ${textColor}`}>
+      <Text key={pIndex} className={`text-sm leading-5 mb-1 ${textColor}`} style={{ color: inlineTextColor }}>
         {parts.map((part, index) => {
           if (index % 2 === 1) {
             return (
@@ -45,15 +47,16 @@ export function MessagesList({
   isLoading,
   isSending,
 }: MessagesListProps) {
+  const { colors, isDark } = useTheme();
   return (
     <ScrollView
       ref={scrollViewRef}
-      className="flex-1 bg-[#F5F5FB] px-6 pt-4"
+      style={{ backgroundColor: colors.background }} className="flex-1  px-6 pt-4"
       contentContainerStyle={{ paddingBottom: 24 }}
       showsVerticalScrollIndicator={false}
     >
       {isLoading ? (
-        <ActivityIndicator size="large" color="#9A3BEE" className="mt-12" />
+        <ActivityIndicator size="large" color={colors.primary} className="mt-12" />
       ) : (
         conversation?.messages.map((msg) => {
           const isUser = msg.role === 'user';
@@ -63,7 +66,7 @@ export function MessagesList({
               className={`flex-row mb-4 ${isUser ? 'justify-end' : 'justify-start'}`}
             >
               {!isUser ? (
-                <View className="w-8 h-8 rounded-full bg-white items-center justify-center border border-[#7F77DD]/20 mr-2 self-end shadow-sm">
+                <View style={{ backgroundColor: colors.surface }} className="w-8 h-8 rounded-full  items-center justify-center border border-primary/20 mr-2 self-end shadow-sm">
                   <Text className="text-base">🦖</Text>
                 </View>
               ) : null}
@@ -71,17 +74,21 @@ export function MessagesList({
               <View
                 className={`max-w-[75%] rounded-3xl px-4 py-3 shadow-sm ${
                   isUser
-                    ? 'bg-[#9A3BEE] rounded-tr-none'
-                    : 'bg-white border border-[#EEEDFE] rounded-tl-none'
+                    ? 'rounded-tr-none'
+                    : 'rounded-tl-none'
                 }`}
+                style={
+                  isUser
+                    ? { backgroundColor: isDark ? '#7C3AED' : colors.primary }
+                    : { backgroundColor: isDark ? '#2D2D3D' : colors.surface, borderColor: colors.border, borderWidth: 1 }
+                }
               >
                 <View>
-                  {renderFormattedText(msg.content, isUser)}
+                  {renderFormattedText(msg.content, isUser, colors, isDark)}
                 </View>
                 <Text
-                  className={`text-[9px] mt-1.5 text-right ${
-                    isUser ? 'text-white/60' : 'text-[#26215C]/40'
-                  }`}
+                  className={`text-[9px] mt-1.5 text-right ${isUser ? 'text-white/60' : ''}`}
+                  style={!isUser ? { color: isDark ? 'rgba(255,255,255,0.4)' : 'rgba(17,17,48,0.4)' } : undefined}
                 >
                   {new Date(msg.sent_at).toLocaleTimeString([], {
                     hour: '2-digit',
@@ -96,11 +103,11 @@ export function MessagesList({
 
       {isSending ? (
         <View className="flex-row mb-4 justify-start items-center">
-          <View className="w-8 h-8 rounded-full bg-white items-center justify-center border border-[#7F77DD]/20 mr-2 shadow-sm">
+          <View style={{ backgroundColor: colors.surface }} className="w-8 h-8 rounded-full  items-center justify-center border border-primary/20 mr-2 shadow-sm">
             <Text className="text-base">🦖</Text>
           </View>
-          <View className="bg-white border border-[#7F77DD]/10 rounded-2xl rounded-tl-none px-4 py-3 shadow-sm">
-            <Text className="text-xs text-[#26215C]/50 font-semibold italic">🦖 TutorIA está pensando...</Text>
+          <View style={{ backgroundColor: colors.surface }} className=" border border-primary/10 rounded-2xl rounded-tl-none px-4 py-3 shadow-sm">
+            <Text className="text-xs font-semibold italic" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(17,17,48,0.5)' }}>🦖 TutorIA está pensando...</Text>
           </View>
         </View>
       ) : null}

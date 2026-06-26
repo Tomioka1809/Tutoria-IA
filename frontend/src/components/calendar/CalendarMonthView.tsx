@@ -1,5 +1,6 @@
 // src/components/calendar/CalendarMonthView.tsx
 import React from 'react';
+import { useTheme } from '@/src/theme/ThemeContext';
 import { View, Text, Pressable } from 'react-native';
 
 interface CalendarMonthViewProps {
@@ -23,26 +24,27 @@ export function CalendarMonthView({
   setSelectedDate,
   hasActivities,
 }: CalendarMonthViewProps) {
+  const { colors, isDark } = useTheme();
   const today = new Date();
 
   return (
-    <View className="bg-white rounded-3xl mx-6 p-4 shadow-sm border border-[#7F77DD]/5 mb-6">
+    <View style={{ backgroundColor: colors.surface }} className=" rounded-3xl mx-6 p-4 shadow-sm border border-primary/5 mb-6">
       <View className="flex-row justify-center items-center mb-4">
         <Pressable onPress={prevMonth} className="px-4 py-2">
-          <Text className="text-base text-[#8E8EA0]">◀</Text>
+          <Text className="text-base text-textSecondary">◀</Text>
         </Pressable>
-        <Text className="text-[17px] font-extrabold text-[#111130] mx-4 capitalize">
+        <Text style={{ color: colors.text }} className="text-[17px] font-extrabold  mx-4 capitalize">
           {currentMonth.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' })}
         </Text>
         <Pressable onPress={nextMonth} className="px-4 py-2">
-          <Text className="text-base text-[#8E8EA0]">▶</Text>
+          <Text className="text-base text-textSecondary">▶</Text>
         </Pressable>
       </View>
 
       {/* Days of Week Header */}
       <View className="flex-row justify-between mb-2 px-2">
         {weekDays.map((wd) => (
-          <Text key={wd} className="w-[12%] text-center text-xs font-bold text-[#8E8EA0]">
+          <Text key={wd} className="w-[12%] text-center text-xs font-bold text-textSecondary">
             {wd}
           </Text>
         ))}
@@ -73,22 +75,24 @@ export function CalendarMonthView({
           // 3. Actividad programada (y no hoy): contorno/circunferencia morada
           let containerClass = "w-[14.28%] aspect-square justify-center items-center rounded-full my-0.5 ";
           let textClass = "text-sm font-semibold ";
+          let textColor = colors.text; // Default to theme text color
 
           if (isToday) {
-            containerClass += "bg-[#9A3BEE]";
-            textClass += "text-white font-bold";
+            containerClass += "bg-primary";
+            textColor = '#FFFFFF'; // White text for today bubble
+            textClass += "font-bold";
           } else if (isSelected) {
-            containerClass += "bg-[#9A3BEE]/15 border border-[#9A3BEE]/35";
-            textClass += "text-[#9A3BEE] font-bold";
+            containerClass += "bg-primary/15 border border-primary/35";
+            textColor = isDark ? '#FFFFFF' : colors.primary; 
+            textClass += "font-bold";
             if (hasAct) {
-              containerClass += " border-2 border-[#9A3BEE]";
+              containerClass += " border-2 border-primary";
             }
           } else if (hasAct) {
-            containerClass += "border-2 border-[#9A3BEE] bg-transparent";
-            textClass += "text-[#111130] font-bold";
+            containerClass += "border-2 border-primary bg-transparent";
+            textClass += "font-bold";
           } else {
             containerClass += "bg-transparent";
-            textClass += "text-[#111130]";
           }
 
           return (
@@ -97,7 +101,7 @@ export function CalendarMonthView({
               onPress={() => setSelectedDate(day)}
               className={containerClass}
             >
-              <Text className={textClass}>
+              <Text className={textClass} style={{ color: textColor }}>
                 {day.getDate()}
               </Text>
             </Pressable>

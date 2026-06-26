@@ -17,8 +17,10 @@ class Session(Base):
     tutor_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
     service_type_id: Mapped[int] = mapped_column(ForeignKey("service_types.id", ondelete="CASCADE"), nullable=False)
     scheduled_at: Mapped[datetime] = mapped_column(DateTime, nullable=False)
-    status: Mapped[str] = mapped_column(String(50), default="pendiente", nullable=False) # pendiente | confirmada | completada | cancelada
+    status: Mapped[str] = mapped_column(String(50), default="pendiente", nullable=False) # pendiente | programada | completada | ausente | cancelada
+    title: Mapped[str] = mapped_column(String(200), nullable=True)
     notes: Mapped[str] = mapped_column(String(1000), nullable=True)
+    location: Mapped[str] = mapped_column(String(200), nullable=True)
 
     # Relationships
     student: Mapped["User"] = relationship(

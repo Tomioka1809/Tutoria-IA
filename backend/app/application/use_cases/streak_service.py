@@ -45,3 +45,11 @@ async def update_streak_on_session_complete(db: AsyncSession, student_id: int) -
     await db.commit()
     await db.refresh(streak)
     return streak
+
+async def reset_streak_on_session_absent(db: AsyncSession, student_id: int) -> Streak:
+    streak = await get_student_streak(db, student_id)
+    streak.current_streak = 0
+    db.add(streak)
+    await db.commit()
+    await db.refresh(streak)
+    return streak

@@ -1,14 +1,21 @@
 import axios from 'axios';
 import Constants from 'expo-constants';
+import { Platform } from 'react-native';
 
 // Auto-detect host IP for physical device connection, default to localhost for simulators
 const hostUri = Constants.expoConfig?.hostUri;
-const ip = hostUri ? hostUri.split(':')[0] : 'localhost';
+let ip = '192.168.18.27'; // Force hardcode LAN IP as fallback
+
+if (hostUri) {
+  ip = hostUri.split(':')[0];
+}
 
 export const API_URL = `http://${ip}:8000/api/v1`;
+console.log('===> INIT API_URL:', API_URL);
 
 const client = axios.create({
   baseURL: API_URL,
+  timeout: 60000, // 60 seconds timeout to allow LLM processing
   headers: {
     'Content-Type': 'application/json',
   },

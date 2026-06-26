@@ -1,4 +1,4 @@
-// app/(tabs)/editar-perfil.tsx
+// app/(tutor)/editar-perfil.tsx
 import React, { useState, useRef, useCallback } from 'react';
 import {
   View,
@@ -18,33 +18,35 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Feather from '@expo/vector-icons/Feather';
 import * as ImagePicker from 'expo-image-picker';
 import { useAuthStore } from '@/src/store/auth';
+import { useTheme } from '@/src/theme/ThemeContext';
 
 export default function EditarPerfilScreen() {
+  const { colors } = useTheme();
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const paddingTop = Math.max(insets.top, 16);
   // Bottom tab bar height — keep button above it
   const tabBarHeight = Platform.OS === 'ios' ? 88 : 76;
 
-  const { user, updateUser, profileImage, setProfileImage } = useAuthStore();
+  const { user, updateProfile, profileImage, setProfileImage } = useAuthStore();
 
   // ── Form state ────────────────────────────────────────────────
-  // We capture the store values ONCE per screen visit (via useFocusEffect)
-  // so user edits are never overwritten by reactive effects.
   const [nombre, setNombre] = useState('');
   const [codigo, setCodigo] = useState('');
-  const [carrera, setCarrera] = useState('');
-  const [semestre, setSemestre] = useState('');
+  const [celular, setCelular] = useState('');
+  const [experiencia, setExperiencia] = useState('');
+  const [oficina, setOficina] = useState('');
   const [pendingImage, setPendingImage] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
   // Each time the screen comes into focus, reset fields to current store values
   useFocusEffect(
     useCallback(() => {
-      setNombre(user?.full_name ?? 'Sebastián Quispe');
-      setCodigo(user?.student_code ?? '2123456');
-      setCarrera(user?.school ?? 'Ingeniería Informática y de Sistemas');
-      setSemestre(user?.semester ?? 'VI Semestre');
+      setNombre(user?.full_name ?? '');
+      setCodigo(user?.tutor_code ?? '');
+      setCelular(user?.phone_number ?? '');
+      setExperiencia(user?.expertise_areas ?? '');
+      setOficina(user?.office_location ?? '');
       setPendingImage(profileImage);
     }, [user, profileImage])
   );
@@ -71,7 +73,7 @@ export default function EditarPerfilScreen() {
   };
 
   // ── Save ──────────────────────────────────────────────────────
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!nombre.trim()) {
       Alert.alert('Campo requerido', 'El nombre no puede estar vacío.');
       return;
@@ -80,39 +82,35 @@ export default function EditarPerfilScreen() {
       Alert.alert('Campo requerido', 'El código no puede estar vacío.');
       return;
     }
-    if (!carrera.trim()) {
-      Alert.alert('Campo requerido', 'La carrera no puede estar vacía.');
-      return;
-    }
-    if (!semestre.trim()) {
-      Alert.alert('Campo requerido', 'El semestre no puede estar vacío.');
-      return;
-    }
 
     setSaving(true);
 
-    // Update global store — persisted via AsyncStorage (Zustand persist middleware)
-    updateUser({
-      full_name: nombre.trim(),
-      student_code: codigo.trim(),
-      school: carrera.trim(),
-      semester: semestre.trim(),
-    });
-    setProfileImage(pendingImage);
-
-    setSaving(false);
-
-    Alert.alert('¡Listo!', 'Perfil actualizado correctamente.', [
-      {
-        text: 'OK',
-        onPress: () => router.replace('/(tabs)/configuracion' as any),
-      },
-    ]);
+    try {
+      await updateProfile({
+        full_name: nombre.trim(),
+        tutor_code: codigo.trim(),
+        phone_number: celular.trim(),
+        expertise_areas: experiencia.trim(),
+        office_location: oficina.trim(),
+      });
+      setProfileImage(pendingImage);
+      
+      Alert.alert('¡Listo!', 'Perfil actualizado correctamente.', [
+        {
+          text: 'OK',
+          onPress: () => router.replace('/(tutor)/configuracion' as any),
+        },
+      ]);
+    } catch (error) {
+      Alert.alert('Error', 'No se pudo actualizar el perfil. Intenta de nuevo.');
+    } finally {
+      setSaving(false);
+    }
   };
 
   // ── Render ────────────────────────────────────────────────────
   return (
-    <View style={{ flex: 1, backgroundColor: '#F8F7FC' }}>
+    <View style={{ flex: 1, backgroundColor: colors.background }}>
       <ScrollView
         contentContainerStyle={{
           paddingBottom: tabBarHeight + 24,
@@ -123,7 +121,7 @@ export default function EditarPerfilScreen() {
         {/* ── Purple Header ───────────────────────────────────── */}
         <View
           style={{
-            backgroundColor: '#9A3BEE',
+            backgroundColor: colors.primary,
             paddingTop: paddingTop + 16,
             paddingBottom: 80,
             paddingHorizontal: 24,
@@ -133,7 +131,7 @@ export default function EditarPerfilScreen() {
         >
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Pressable
-              onPress={() => router.replace('/(tabs)/configuracion' as any)}
+              onPress={() => router.replace('/(tutor)/configuracion' as any)}
               style={{ marginRight: 16, padding: 4 }}
               hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
             >
@@ -152,12 +150,12 @@ export default function EditarPerfilScreen() {
           </View>
         </View>
 
-        {/* ── White Card ──────────────────────────────────────── */}
+        {/* ── Surface Card ──────────────────────────────────────── */}
         <View
           style={{
             marginHorizontal: 20,
             marginTop: -52,
-            backgroundColor: 'white',
+            backgroundColor: colors.surface,
             borderRadius: 28,
             paddingHorizontal: 24,
             paddingBottom: 28,
@@ -176,27 +174,27 @@ export default function EditarPerfilScreen() {
               {pendingImage ? (
                 <Image
                   source={{ uri: pendingImage }}
-                  style={styles.avatar}
+                  style={[styles.avatar, { borderColor: colors.surface }]}
                   resizeMode="cover"
                 />
               ) : (
-                <View style={[styles.avatar, { backgroundColor: '#CBD5E1' }]} />
+                <View style={[styles.avatar, { backgroundColor: '#CBD5E1', borderColor: colors.surface }]} />
               )}
 
               {/* Pencil button */}
               <Pressable
                 onPress={handlePickImage}
-                style={styles.pencilBtn}
+                style={[styles.pencilBtn, { backgroundColor: colors.surface, borderColor: colors.border }]}
                 hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
               >
-                <Feather name="edit-2" size={14} color="#9A3BEE" />
+                <Feather name="edit-2" size={14} color={colors.primary} />
               </Pressable>
             </View>
             <Text
               style={{
                 marginTop: 12,
                 fontSize: 12,
-                color: '#9A3BEE',
+                color: colors.primary,
                 fontWeight: '600',
               }}
             >
@@ -208,9 +206,8 @@ export default function EditarPerfilScreen() {
 
           {/* Nombre */}
           <View style={styles.fieldGroup}>
-            <Text style={styles.label}>Nombre</Text>
-            <TextInput
-              style={styles.input}
+            <Text style={[styles.label, { color: colors.text }]}>Nombre</Text>
+            <TextInput style={[styles.input, { color: colors.text, backgroundColor: colors.background, borderColor: colors.border }]}
               value={nombre}
               onChangeText={setNombre}
               placeholder="Ingresa tu nombre"
@@ -222,9 +219,8 @@ export default function EditarPerfilScreen() {
 
           {/* Código */}
           <View style={styles.fieldGroup}>
-            <Text style={styles.label}>Código</Text>
-            <TextInput
-              style={styles.input}
+            <Text style={[styles.label, { color: colors.text }]}>Código</Text>
+            <TextInput style={[styles.input, { color: colors.text, backgroundColor: colors.background, borderColor: colors.border }]}
               value={codigo}
               onChangeText={setCodigo}
               placeholder="Ingresa tu código"
@@ -234,66 +230,107 @@ export default function EditarPerfilScreen() {
             />
           </View>
 
-          {/* Carrera */}
+          {/* Celular */}
           <View style={styles.fieldGroup}>
-            <Text style={styles.label}>Carrera</Text>
-            <TextInput
-              style={styles.input}
-              value={carrera}
-              onChangeText={setCarrera}
-              placeholder="Ingresa tu carrera"
+            <Text style={[styles.label, { color: colors.text }]}>Celular</Text>
+            <TextInput style={[styles.input, { color: colors.text, backgroundColor: colors.background, borderColor: colors.border }]}
+              value={celular}
+              onChangeText={setCelular}
+              placeholder="Ingresa tu celular"
               placeholderTextColor="#C4C4D4"
+              keyboardType="phone-pad"
               returnKeyType="next"
-              autoCorrect={false}
             />
           </View>
 
-          {/* Semestre */}
+          {/* Área de experiencia */}
+          <View style={styles.fieldGroup}>
+            <Text style={[styles.label, { color: colors.text }]}>Área de experiencia</Text>
+            <TextInput style={[styles.input, { color: colors.text, backgroundColor: colors.background, borderColor: colors.border }]}
+              value={experiencia}
+              onChangeText={setExperiencia}
+              placeholder="Ej. Redes, Base de Datos..."
+              placeholderTextColor="#C4C4D4"
+              returnKeyType="next"
+            />
+          </View>
+
+          {/* Oficina */}
           <View style={{ marginBottom: 28 }}>
-            <Text style={styles.label}>Semestre</Text>
-            <TextInput
-              style={styles.input}
-              value={semestre}
-              onChangeText={setSemestre}
-              placeholder="Ej: VI Semestre"
+            <Text style={[styles.label, { color: colors.text }]}>Ubicación de Oficina</Text>
+            <TextInput style={[styles.input, { color: colors.text, backgroundColor: colors.background, borderColor: colors.border }]}
+              value={oficina}
+              onChangeText={setOficina}
+              placeholder="Ej. Pabellón B - 2do Piso"
               placeholderTextColor="#C4C4D4"
               returnKeyType="done"
             />
           </View>
 
-          {/* ── Guardar cambios ─────────────────────────────── */}
-          <Pressable
-            onPress={handleSave}
-            disabled={saving}
-            style={({ pressed }) => ({
-              backgroundColor: pressed ? '#7B2FD4' : '#9A3BEE',
-              borderRadius: 16,
-              paddingVertical: 17,
-              alignItems: 'center',
-              justifyContent: 'center',
-              shadowColor: '#9A3BEE',
-              shadowOffset: { width: 0, height: 4 },
-              shadowOpacity: 0.35,
-              shadowRadius: 10,
-              elevation: 6,
-              opacity: saving ? 0.7 : 1,
-            })}
-          >
-            {saving ? (
-              <ActivityIndicator color="white" size="small" />
-            ) : (
+          {/* ── Botones de acción ─────────────────────────────── */}
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 8 }}>
+            <Pressable
+              onPress={() => router.replace('/(tutor)/configuracion' as any)}
+              disabled={saving}
+              style={({ pressed }) => ({
+                flex: 1,
+                backgroundColor: colors.background,
+                borderWidth: 1,
+                borderColor: colors.border,
+                borderRadius: 16,
+                paddingVertical: 17,
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginRight: 10,
+                opacity: pressed ? 0.7 : 1,
+              })}
+            >
               <Text
                 style={{
                   fontSize: 16,
                   fontWeight: 'bold',
-                  color: 'white',
+                  color: colors.textSecondary,
                   letterSpacing: 0.5,
                 }}
               >
-                Guardar cambios
+                Cancelar
               </Text>
-            )}
-          </Pressable>
+            </Pressable>
+
+            <Pressable
+              onPress={handleSave}
+              disabled={saving}
+              style={({ pressed }) => ({
+                flex: 1,
+                backgroundColor: pressed ? '#7B2FD4' : colors.primary,
+                borderRadius: 16,
+                paddingVertical: 17,
+                alignItems: 'center',
+                justifyContent: 'center',
+                shadowColor: colors.primary,
+                shadowOffset: { width: 0, height: 4 },
+                shadowOpacity: 0.35,
+                shadowRadius: 10,
+                elevation: 6,
+                opacity: saving ? 0.7 : 1,
+              })}
+            >
+              {saving ? (
+                <ActivityIndicator color="white" size="small" />
+              ) : (
+                <Text
+                  style={{
+                    fontSize: 16,
+                    fontWeight: 'bold',
+                    color: 'white',
+                    letterSpacing: 0.5,
+                  }}
+                >
+                  Confirmar
+                </Text>
+              )}
+            </Pressable>
+          </View>
         </View>
       </ScrollView>
     </View>
@@ -333,7 +370,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 14,
     fontWeight: '700',
-    color: '#1E1E2F',
+    /* color dynamically applied */
     marginBottom: 8,
   },
   input: {
@@ -344,6 +381,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: Platform.OS === 'ios' ? 14 : 11,
     fontSize: 15,
-    color: '#1E1E2F',
+    /* color dynamically applied */
   },
 });

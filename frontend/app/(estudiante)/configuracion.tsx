@@ -5,8 +5,10 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Feather from '@expo/vector-icons/Feather';
 import { useProfile } from '@/src/components/profile/useProfile';
 import { useAuthStore } from '@/src/store/auth';
+import { useTheme } from '@/src/theme/ThemeContext';
 
 export default function ConfiguracionScreen() {
+  const { colors } = useTheme();
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { user } = useProfile();
@@ -15,13 +17,13 @@ export default function ConfiguracionScreen() {
 
   return (
     <ScrollView
-      style={{ flex: 1, backgroundColor: '#F8F7FC' }}
+      style={{ flex: 1, backgroundColor: colors.background }}
       contentContainerStyle={{ paddingBottom: 130 }}
       showsVerticalScrollIndicator={false}
     >
       {/* Header Container */}
       <View style={{
-        backgroundColor: '#9A3BEE',
+        backgroundColor: colors.primary,
         paddingTop: paddingTop + 16,
         paddingBottom: 48,
         paddingHorizontal: 24,
@@ -37,7 +39,7 @@ export default function ConfiguracionScreen() {
         }}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Pressable 
-              onPress={() => router.replace('/(tabs)/profile' as any)} 
+              onPress={() => router.replace('/(estudiante)/profile' as any)} 
               style={{ marginRight: 16 }}
             >
               <Feather name="arrow-left" size={24} color="white" />
@@ -55,7 +57,7 @@ export default function ConfiguracionScreen() {
 
         {/* Student Card */}
         <View style={{
-          backgroundColor: 'white',
+          backgroundColor: colors.surface,
           borderRadius: 24,
           padding: 20,
           flexDirection: 'row',
@@ -95,13 +97,13 @@ export default function ConfiguracionScreen() {
             <Text style={{
               fontSize: 18,
               fontWeight: 'bold',
-              color: '#111130',
+              color: colors.text,
             }}>
               {user?.full_name || 'Sebastián Quispe'}
             </Text>
             <Text style={{
               fontSize: 13,
-              color: '#8E8EA0',
+              color: colors.textSecondary,
               fontWeight: '500',
               marginTop: 4,
             }}>
@@ -109,7 +111,7 @@ export default function ConfiguracionScreen() {
             </Text>
             <Text style={{
               fontSize: 12,
-              color: '#8E8EA0',
+              color: colors.textSecondary,
               fontWeight: '500',
               marginTop: 2,
             }} numberOfLines={1}>
@@ -127,17 +129,17 @@ export default function ConfiguracionScreen() {
         <Text style={{
           fontSize: 16,
           fontWeight: 'bold',
-          color: '#111130',
+          color: colors.text,
           marginBottom: 12,
         }}>
           Cuenta
         </Text>
 
         <View style={{
-          backgroundColor: 'white',
+          backgroundColor: colors.surface,
           borderRadius: 24,
           borderWidth: 1,
-          borderColor: '#EEEDFE',
+          borderColor: colors.border,
           shadowColor: '#000',
           shadowOffset: { width: 0, height: 2 },
           shadowOpacity: 0.04,
@@ -154,7 +156,7 @@ export default function ConfiguracionScreen() {
               paddingVertical: 14,
               paddingHorizontal: 16,
             }}
-            onPress={() => router.push('/(tabs)/editar-perfil' as any)}
+            onPress={() => router.push('/(estudiante)/editar-perfil' as any)}
           >
             <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
               <View style={{
@@ -166,13 +168,13 @@ export default function ConfiguracionScreen() {
                 justifyContent: 'center',
                 marginRight: 16,
               }}>
-                <Feather name="user" size={20} color="#9A3BEE" />
+                <Feather name="user" size={20} color={colors.primary} />
               </View>
               <View style={{ flex: 1 }}>
-                <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#1E1E2F' }}>
+                <Text style={{ fontSize: 15, fontWeight: 'bold', color: colors.text }}>
                   Editar perfil
                 </Text>
-                <Text style={{ fontSize: 12, color: '#8E8EA0', marginTop: 2 }}>
+                <Text style={{ fontSize: 12, color: colors.textSecondary, marginTop: 2 }}>
                   Datos personales y académicos
                 </Text>
               </View>
@@ -181,7 +183,7 @@ export default function ConfiguracionScreen() {
           </Pressable>
 
           {/* Divider */}
-          <View style={{ height: 1, backgroundColor: '#F3F4F6', marginLeft: 72 }} />
+          <View style={{ height: 1, backgroundColor: colors.border, marginLeft: 72 }} />
 
           {/* Option: Cambiar Contraseña */}
           <Pressable
@@ -204,13 +206,13 @@ export default function ConfiguracionScreen() {
                 justifyContent: 'center',
                 marginRight: 16,
               }}>
-                <Feather name="lock" size={20} color="#9A3BEE" />
+                <Feather name="lock" size={20} color={colors.primary} />
               </View>
               <View style={{ flex: 1 }}>
-                <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#1E1E2F' }}>
+                <Text style={{ fontSize: 15, fontWeight: 'bold', color: colors.text }}>
                   Cambiar contraseña
                 </Text>
-                <Text style={{ fontSize: 12, color: '#8E8EA0', marginTop: 2 }}>
+                <Text style={{ fontSize: 12, color: colors.textSecondary, marginTop: 2 }}>
                   Actualiza tu clave de acceso
                 </Text>
               </View>
@@ -225,17 +227,17 @@ export default function ConfiguracionScreen() {
         <Text style={{
           fontSize: 16,
           fontWeight: 'bold',
-          color: '#111130',
+          color: colors.text,
           marginBottom: 12,
         }}>
           Preferencias
         </Text>
 
         <View style={{
-          backgroundColor: 'white',
+          backgroundColor: colors.surface,
           borderRadius: 24,
           borderWidth: 1,
-          borderColor: '#EEEDFE',
+          borderColor: colors.border,
           shadowColor: '#000',
           shadowOffset: { width: 0, height: 2 },
           shadowOpacity: 0.04,
@@ -264,14 +266,14 @@ export default function ConfiguracionScreen() {
                 justifyContent: 'center',
                 marginRight: 16,
               }}>
-                <Feather name="globe" size={20} color="#9A3BEE" />
+                <Feather name="globe" size={20} color={colors.primary} />
               </View>
-              <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#1E1E2F' }}>
+              <Text style={{ fontSize: 15, fontWeight: 'bold', color: colors.text }}>
                 Idioma
               </Text>
             </View>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Text style={{ fontSize: 14, color: '#8E8EA0', marginRight: 8 }}>
+              <Text style={{ fontSize: 14, color: colors.textSecondary, marginRight: 8 }}>
                 Español
               </Text>
               <Feather name="chevron-right" size={20} color="#94A3B8" />
@@ -279,7 +281,7 @@ export default function ConfiguracionScreen() {
           </Pressable>
 
           {/* Divider */}
-          <View style={{ height: 1, backgroundColor: '#F3F4F6', marginLeft: 72 }} />
+          <View style={{ height: 1, backgroundColor: colors.border, marginLeft: 72 }} />
 
           {/* Option: Tema */}
           <Pressable
@@ -302,14 +304,14 @@ export default function ConfiguracionScreen() {
                 justifyContent: 'center',
                 marginRight: 16,
               }}>
-                <Feather name="sun" size={20} color="#9A3BEE" />
+                <Feather name="sun" size={20} color={colors.primary} />
               </View>
-              <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#1E1E2F' }}>
+              <Text style={{ fontSize: 15, fontWeight: 'bold', color: colors.text }}>
                 Tema
               </Text>
             </View>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Text style={{ fontSize: 14, color: '#8E8EA0', marginRight: 8 }}>
+              <Text style={{ fontSize: 14, color: colors.textSecondary, marginRight: 8 }}>
                 Claro
               </Text>
               <Feather name="chevron-right" size={20} color="#94A3B8" />
@@ -323,17 +325,17 @@ export default function ConfiguracionScreen() {
         <Text style={{
           fontSize: 16,
           fontWeight: 'bold',
-          color: '#111130',
+          color: colors.text,
           marginBottom: 12,
         }}>
           Información
         </Text>
 
         <View style={{
-          backgroundColor: 'white',
+          backgroundColor: colors.surface,
           borderRadius: 24,
           borderWidth: 1,
-          borderColor: '#EEEDFE',
+          borderColor: colors.border,
           shadowColor: '#000',
           shadowOffset: { width: 0, height: 2 },
           shadowOpacity: 0.04,
@@ -362,13 +364,13 @@ export default function ConfiguracionScreen() {
                 justifyContent: 'center',
                 marginRight: 16,
               }}>
-                <Feather name="info" size={20} color="#9A3BEE" />
+                <Feather name="info" size={20} color={colors.primary} />
               </View>
               <View style={{ flex: 1 }}>
-                <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#1E1E2F' }}>
+                <Text style={{ fontSize: 15, fontWeight: 'bold', color: colors.text }}>
                   Acerca de TutorIA
                 </Text>
-                <Text style={{ fontSize: 12, color: '#8E8EA0', marginTop: 2 }}>
+                <Text style={{ fontSize: 12, color: colors.textSecondary, marginTop: 2 }}>
                   Versión 1.0.0
                 </Text>
               </View>

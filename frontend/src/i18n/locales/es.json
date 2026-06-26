@@ -1,0 +1,52 @@
+{
+  "auth": {
+    "login": {
+      "emptyFields": "Por favor, ingresa tu correo y contraseña.",
+      "error": "Error de conexión. Revisa tus credenciales.",
+      "subtitle": "Tu tutor inteligente en tu bolsillo",
+      "title": "Iniciar Sesión",
+      "email": "Correo Electrónico",
+      "emailPlaceholder": "ejemplo@correo.com",
+      "password": "Contraseña",
+      "button": "Ingresar",
+      "noAccount": "¿No tienes una cuenta? ",
+      "registerLink": "Regístrate aquí"
+    },
+    "register": {
+      "emptyFields": "Por favor, ingresa tu nombre completo, correo y contraseña.",
+      "passwordLength": "La contraseña debe tener al menos 6 caracteres.",
+      "error": "Hubo un problema al crear la cuenta. Intenta de nuevo.",
+      "title": "Crear Cuenta",
+      "subtitle": "Únete a TutorIA y potencia tu aprendizaje",
+      "successTitle": "¡Registro exitoso!",
+      "successMsg": "Redirigiéndote al inicio de sesión...",
+      "fullName": "Nombre Completo",
+      "email": "Correo Electrónico",
+      "role": "Rol",
+      "student": "Estudiante",
+      "tutor": "Tutor",
+      "phone": "Teléfono (Opcional)",
+      "studentCode": "Código de Estudiante",
+      "semester": "Semestre Actual (Opcional)",
+      "academicStatus": "Estado Académico (Opcional)",
+      "tutorCode": "Código de Tutor",
+      "expertise": "Áreas de Especialidad (Opcional)",
+      "office": "Ubicación de Oficina (Opcional)",
+      "password": "Contraseña",
+      "button": "Registrarse",
+      "hasAccount": "¿Ya tienes una cuenta? ",
+      "loginLink": "Inicia sesión"
+    }
+  },
+  "tabs": {
+    "home": "Inicio",
+    "calendar": "Calendario",
+    "notifications": "Notificaciones",
+    "profile": "Perfil",
+    "dashboard": "Dashboard",
+    "users": "Usuarios",
+    "assignments": "Asignaciones",
+    "content": "Contenido",
+    "settings": "Ajustes"
+  }
+}

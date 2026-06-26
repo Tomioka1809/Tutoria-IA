@@ -30,6 +30,8 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
         finally:
             await session.close()
 
+from sqlalchemy.orm import selectinload
+
 async def get_current_user(
     db: AsyncSession = Depends(get_db), token: str = Depends(reusable_oauth2)
 ) -> User:
@@ -51,8 +53,16 @@ async def get_current_user(
             headers={"WWW-Authenticate": "Bearer"},
         )
     
-    # Query user from database
-    result = await db.execute(select(User).where(User.id == int(user_id)))
+    # Query user from database with profiles
+    result = await db.execute(
+        select(User)
+        .options(
+            selectinload(User.student_profile),
+            selectinload(User.tutor_profile),
+            selectinload(User.admin_profile)
+        )
+        .where(User.id == int(user_id))
+    )
     user = result.scalars().first()
     if not user:
         raise HTTPException(

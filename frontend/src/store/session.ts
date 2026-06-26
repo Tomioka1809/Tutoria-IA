@@ -7,15 +7,18 @@ interface SessionState {
   isLoading: boolean;
   fetchSessions: () => Promise<void>;
   createSession: (sessionData: {
-    student_id: number;
+    student_id?: number;
     tutor_id: number;
     service_type_id: number;
     scheduled_at: string;
     notes?: string;
+    location?: string;
+    status?: string;
+    title?: string;
   }) => Promise<Session>;
   updateSessionStatus: (
     sessionId: number,
-    status: 'confirmada' | 'completada' | 'cancelada',
+    status: string,
     notes?: string
   ) => Promise<void>;
 }

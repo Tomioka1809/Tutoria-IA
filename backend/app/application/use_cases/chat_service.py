@@ -130,16 +130,52 @@ async def send_chat_message(
                 "parts": [{"text": msg.content}]
             })
             
+        from app.infrastructure.database.models.tutor_assignment import TutorAssignment
+        from app.infrastructure.database.models.session import Session
+        from app.infrastructure.database.models.user import User
+        
+        # Fetch tutor
+        assignment_result = await db.execute(
+            select(TutorAssignment)
+            .where(TutorAssignment.student_id == student_id)
+            .options(selectinload(TutorAssignment.tutor).selectinload(User.tutor_profile))
+        )
+        assignment = assignment_result.scalars().first()
+        
+        student_context = "CONTEXTO ESPECÍFICO DEL ESTUDIANTE ACTUAL (Usa esta información si el estudiante pregunta por su tutor o sus actividades):\n"
+        if assignment and assignment.tutor:
+            tutor_name = assignment.tutor.tutor_profile.full_name if assignment.tutor.tutor_profile else "No definido"
+            student_context += f"- El tutor asignado del estudiante es: {tutor_name} (Correo: {assignment.tutor.email}).\n"
+        else:
+            student_context += "- El estudiante aún no tiene un tutor asignado.\n"
+            
+        # Fetch upcoming sessions
+        sessions_result = await db.execute(
+            select(Session)
+            .where(Session.student_id == student_id, Session.status == "programada")
+            .order_by(Session.scheduled_at.asc())
+        )
+        upcoming_sessions = sessions_result.scalars().all()
+        
+        if upcoming_sessions:
+            student_context += "- Sus próximas tutorías/actividades programadas son:\n"
+            for s in upcoming_sessions:
+                title = s.title or "Actividad"
+                student_context += f"  * '{title}' programada para el {s.scheduled_at.strftime('%d/%m/%Y a las %H:%M')} (Lugar: {s.location or 'No definido'}).\n"
+        else:
+            student_context += "- No tiene actividades ni tutorías programadas próximamente.\n"
+
         system_instruction = (
             "Eres TutorIA, el tutor académico inteligente de la universidad UNSAAC. Te presentas como un amigable dinosaurio morado. "
             "Tu objetivo es ayudar a los estudiantes con sus consultas académicas, planes de estudio, reglamentos universitarios y técnicas de estudio. "
             "Mantén siempre un tono entusiasta, paciente, motivador, alegre y amigable. Utiliza emojis ocasionalmente para ser más cercano (🦖, 📚, ✍️, ✨).\n\n"
             "Aquí tienes la base de datos oficial (corpus) de la universidad UNSAAC sobre el reglamento de tutoría y servicios:\n"
             f"{corpus_str}\n\n"
+            f"{student_context}\n"
             "INSTRUCCIONES IMPORTANTES DE RESPUESTA:\n"
-            "1. Intenta responder a la consulta del estudiante utilizando la información de la base de datos oficial (corpus) anterior.\n"
-            "2. Si la respuesta NO se encuentra en la base de datos oficial anterior (por ejemplo, preguntas generales, otros cursos, temas externos, o cualquier otra cosa no detallada en el JSON), debes responder utilizando tus conocimientos generales (como si buscaras en internet).\n"
-            "3. En este último caso (cuando la información no esté en la base de datos oficial), debes aclarar obligatoriamente al inicio de tu respuesta que no tienes esa información en tu base de datos de la universidad, pero que según internet/conocimiento general es de cierta manera. Utiliza frases en español como: 'No tengo esa información en mi base de datos, pero según internet...', 'Esta información no se encuentra en mi base de datos de tutoría, pero según internet...', etc."
+            "1. Intenta responder a la consulta del estudiante utilizando la información de la base de datos oficial o el contexto específico del estudiante.\n"
+            "2. Si la respuesta NO se encuentra en la base de datos oficial anterior o en el contexto del estudiante, debes responder utilizando tus conocimientos generales (como si buscaras en internet).\n"
+            "3. En este último caso, debes aclarar obligatoriamente al inicio de tu respuesta que no tienes esa información en tu base de datos, pero que según internet/conocimiento general es de cierta manera."
         )
         
         payload = {

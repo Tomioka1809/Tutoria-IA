@@ -10,7 +10,7 @@ from app.infrastructure.database.models.event import Event
 from app.infrastructure.database.models.user import User
 from app.infrastructure.database.models.tutor_assignment import TutorAssignment
 from app.domain.entities.session import SessionCreate, SessionUpdate
-from app.application.use_cases.streak_service import update_streak_on_session_complete
+from app.application.use_cases.streak_service import update_streak_on_session_complete, reset_streak_on_session_absent
 from app.application.use_cases.notification_service import create_notification
 
 async def get_user_sessions(db: AsyncSession, user: User) -> List[Session]:
@@ -19,8 +19,12 @@ async def get_user_sessions(db: AsyncSession, user: User) -> List[Session]:
             select(Session)
             .where(Session.student_id == user.id)
             .options(
-                selectinload(Session.student),
-                selectinload(Session.tutor),
+                selectinload(Session.student).selectinload(User.student_profile),
+                selectinload(Session.student).selectinload(User.tutor_profile),
+                selectinload(Session.student).selectinload(User.admin_profile),
+                selectinload(Session.tutor).selectinload(User.tutor_profile),
+                selectinload(Session.tutor).selectinload(User.student_profile),
+                selectinload(Session.tutor).selectinload(User.admin_profile),
                 selectinload(Session.service_type),
             )
             .order_by(Session.scheduled_at.desc())
@@ -31,8 +35,12 @@ async def get_user_sessions(db: AsyncSession, user: User) -> List[Session]:
             select(Session)
             .where(Session.tutor_id == user.id)
             .options(
-                selectinload(Session.student),
-                selectinload(Session.tutor),
+                selectinload(Session.student).selectinload(User.student_profile),
+                selectinload(Session.student).selectinload(User.tutor_profile),
+                selectinload(Session.student).selectinload(User.admin_profile),
+                selectinload(Session.tutor).selectinload(User.tutor_profile),
+                selectinload(Session.tutor).selectinload(User.student_profile),
+                selectinload(Session.tutor).selectinload(User.admin_profile),
                 selectinload(Session.service_type),
             )
             .order_by(Session.scheduled_at.desc())
@@ -42,15 +50,19 @@ async def get_user_sessions(db: AsyncSession, user: User) -> List[Session]:
         result = await db.execute(
             select(Session)
             .options(
-                selectinload(Session.student),
-                selectinload(Session.tutor),
+                selectinload(Session.student).selectinload(User.student_profile),
+                selectinload(Session.student).selectinload(User.tutor_profile),
+                selectinload(Session.student).selectinload(User.admin_profile),
+                selectinload(Session.tutor).selectinload(User.tutor_profile),
+                selectinload(Session.tutor).selectinload(User.student_profile),
+                selectinload(Session.tutor).selectinload(User.admin_profile),
                 selectinload(Session.service_type),
             )
             .order_by(Session.scheduled_at.desc())
         )
         return list(result.scalars().all())
 
-async def create_session(db: AsyncSession, session_in: SessionCreate, creator: User) -> Session:
+async def create_session(db: AsyncSession, session_in: SessionCreate, creator: User):
     # Ensure creator is tutor or admin
     if creator.role not in ["tutor", "admin"]:
         raise HTTPException(
@@ -58,46 +70,75 @@ async def create_session(db: AsyncSession, session_in: SessionCreate, creator: U
             detail="Only tutors or admins can schedule tutoring sessions.",
         )
         
-    db_session = Session(
-        student_id=session_in.student_id,
-        tutor_id=session_in.tutor_id,
-        service_type_id=session_in.service_type_id,
-        scheduled_at=session_in.scheduled_at,
-        status="pendiente",
-        notes=session_in.notes,
-    )
-    db.add(db_session)
-    await db.flush() # Populate ID
+    student_ids_to_schedule = []
     
-    # Automatically create a calendar event linked to this session
-    event = Event(
-        created_by=creator.id,
-        session_id=db_session.id,
-        title=f"Tutoría Programada",
-        starts_at=db_session.scheduled_at,
-        ends_at=db_session.scheduled_at + timedelta(hours=1), # Default 1 hour
-        type="tutoria"
-    )
-    db.add(event)
+    if session_in.student_id is None:
+        # Fetch all students assigned to this tutor
+        assignment_result = await db.execute(
+            select(TutorAssignment).where(TutorAssignment.tutor_id == session_in.tutor_id)
+        )
+        assignments = assignment_result.scalars().all()
+        student_ids_to_schedule = [a.student_id for a in assignments]
+        
+        if not student_ids_to_schedule:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="No students assigned to this tutor to schedule a group session.",
+            )
+    else:
+        student_ids_to_schedule = [session_in.student_id]
+        
+    created_sessions = []
     
-    # Notify the student
-    await create_notification(
-        db,
-        user_id=db_session.student_id,
-        title="Nueva tutoría asignada",
-        body=f"Se ha programado una sesión de tutoría para el {db_session.scheduled_at.strftime('%d/%m/%Y a las %H:%M')}.",
-        notification_type="session"
-    )
-    
+    for s_id in student_ids_to_schedule:
+        db_session = Session(
+            student_id=s_id,
+            tutor_id=session_in.tutor_id,
+            service_type_id=session_in.service_type_id,
+            scheduled_at=session_in.scheduled_at,
+            status=session_in.status,
+            title=session_in.title,
+            notes=session_in.notes,
+            location=session_in.location,
+        )
+        db.add(db_session)
+        await db.flush() # Populate ID
+        
+        # Automatically create a calendar event linked to this session
+        event = Event(
+            created_by=creator.id,
+            session_id=db_session.id,
+            title=session_in.title or f"Tutoría Programada",
+            starts_at=db_session.scheduled_at,
+            ends_at=db_session.scheduled_at + timedelta(hours=1), # Default 1 hour
+            type="tutoria"
+        )
+        db.add(event)
+        
+        # Notify the student
+        await create_notification(
+            db,
+            user_id=db_session.student_id,
+            title="Nueva tutoría asignada",
+            body=f"Se ha programado una sesión de tutoría para el {db_session.scheduled_at.strftime('%d/%m/%Y a las %H:%M')}.",
+            notification_type="session"
+        )
+        created_sessions.append(db_session.id)
+        
     await db.commit()
     
-    # Reload with relationships
+    # Reload with relationships for the first created session as response
+    # The frontend only expects a single SessionOut back. We return the first one.
     result = await db.execute(
         select(Session)
-        .where(Session.id == db_session.id)
+        .where(Session.id == created_sessions[0])
         .options(
-            selectinload(Session.student),
-            selectinload(Session.tutor),
+            selectinload(Session.student).selectinload(User.student_profile),
+            selectinload(Session.student).selectinload(User.tutor_profile),
+            selectinload(Session.student).selectinload(User.admin_profile),
+            selectinload(Session.tutor).selectinload(User.tutor_profile),
+            selectinload(Session.tutor).selectinload(User.student_profile),
+            selectinload(Session.tutor).selectinload(User.admin_profile),
             selectinload(Session.service_type),
         )
     )
@@ -108,8 +149,12 @@ async def update_session(db: AsyncSession, session_id: int, session_in: SessionU
         select(Session)
         .where(Session.id == session_id)
         .options(
-            selectinload(Session.student),
-            selectinload(Session.tutor),
+            selectinload(Session.student).selectinload(User.student_profile),
+            selectinload(Session.student).selectinload(User.tutor_profile),
+            selectinload(Session.student).selectinload(User.admin_profile),
+            selectinload(Session.tutor).selectinload(User.tutor_profile),
+            selectinload(Session.tutor).selectinload(User.student_profile),
+            selectinload(Session.tutor).selectinload(User.admin_profile),
             selectinload(Session.service_type),
         )
     )
@@ -150,6 +195,12 @@ async def update_session(db: AsyncSession, session_id: int, session_in: SessionU
     if session_in.notes is not None:
         session.notes = session_in.notes
         
+    if session_in.title is not None:
+        session.title = session_in.title
+        
+    if session_in.location is not None:
+        session.location = session_in.location
+        
     db.add(session)
     await db.flush()
     
@@ -166,6 +217,18 @@ async def update_session(db: AsyncSession, session_id: int, session_in: SessionU
             body=f"Has completado tu sesión de tutoría. Tu racha actual es de {streak.current_streak} semestres.",
             notification_type="streak"
         )
+    elif session.status == "ausente" and old_status != "ausente":
+        # Reset student's streak
+        await reset_streak_on_session_absent(db, session.student_id)
+        
+        # Notify student about broken streak
+        await create_notification(
+            db,
+            user_id=session.student_id,
+            title="Inasistencia a Tutoría",
+            body="Se ha registrado tu inasistencia a la sesión. Tu racha ha vuelto a 0.",
+            notification_type="streak"
+        )
     elif session.status == "cancelada" and old_status != "cancelada":
         # Notify recipient about cancellation
         recipient_id = session.student_id if user.id == session.tutor_id else session.tutor_id
@@ -179,6 +242,4 @@ async def update_session(db: AsyncSession, session_id: int, session_in: SessionU
         
     await db.commit()
     
-    # Refresh and return
-    await db.refresh(session)
     return session

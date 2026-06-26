@@ -17,9 +17,21 @@ class UserRepositoryPort(ABC):
     async def create(self, user_in: UserCreate, hashed_password: str) -> Any:
         pass
 
+    @abstractmethod
+    async def update(self, user_id: int, user_in: UserUpdate) -> Optional[Any]:
+        pass
+
+    @abstractmethod
+    async def update_password(self, user_id: int, new_password_hash: str) -> bool:
+        pass
+
 class ChatRepositoryPort(ABC):
     @abstractmethod
-    async def get_or_create_conversation(self, student_id: int) -> Any:
+    async def get_or_create_conversation(self, user_id: int) -> Any:
+        pass
+
+    @abstractmethod
+    async def reset_conversation(self, user_id: int) -> None:
         pass
 
     @abstractmethod

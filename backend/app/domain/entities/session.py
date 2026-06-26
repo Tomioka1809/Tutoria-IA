@@ -5,20 +5,23 @@ from app.domain.entities.user import UserOut
 from app.domain.entities.service_type import ServiceTypeOut
 
 class SessionBase(BaseModel):
-    student_id: int
     tutor_id: int
     service_type_id: int
     scheduled_at: datetime
     status: str = "pendiente" # pendiente | confirmada | completada | cancelada
+    title: Optional[str] = None
     notes: Optional[str] = None
+    location: Optional[str] = None
 
 class SessionCreate(SessionBase):
-    pass
+    student_id: Optional[int] = None
 
 class SessionUpdate(BaseModel):
     scheduled_at: Optional[datetime] = None
     status: Optional[str] = None # pendiente | confirmada | completada | cancelada
+    title: Optional[str] = None
     notes: Optional[str] = None
+    location: Optional[str] = None
 
 class SessionOut(BaseModel):
     id: int
@@ -27,7 +30,9 @@ class SessionOut(BaseModel):
     service_type_id: int
     scheduled_at: datetime
     status: str
+    title: Optional[str]
     notes: Optional[str]
+    location: Optional[str]
     student: UserOut
     tutor: UserOut
     service_type: ServiceTypeOut

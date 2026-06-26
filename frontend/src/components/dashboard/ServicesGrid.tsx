@@ -1,24 +1,28 @@
 // src/components/dashboard/ServicesGrid.tsx
 import React from 'react';
-import { View, Text, Pressable } from 'react-native';
+import { useTheme } from '@/src/theme/ThemeContext';
+import { View, Text, Pressable, Linking } from 'react-native';
 import { useRouter } from 'expo-router';
 import Feather from '@expo/vector-icons/Feather';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { useAuthStore } from '@/src/store/auth';
 
 const services = [
-  { name: 'Tutoría Académica', icon: 'book-open', iconType: 'Feather', bgColor: '#9C3FE4' },
-  { name: 'Tutoría Personal', icon: 'heart', iconType: 'Feather', bgColor: '#3B82F6' },
-  { name: 'Tutoría Profesional', icon: 'briefcase', iconType: 'Feather', bgColor: '#8B5CF6' },
-  { name: 'Apoyo Psicológico', icon: 'brain', iconType: 'MaterialCommunityIcons', bgColor: '#EC4899' },
-  { name: 'Bienestar Universitario', icon: 'star', iconType: 'Feather', bgColor: '#06B6D4' },
-  { name: 'Prácticas Preprofesionales', icon: 'rocket-outline', iconType: 'Ionicons', bgColor: '#F97316' },
-  { name: 'Movilidad Estudiantil', icon: 'globe', iconType: 'Feather', bgColor: '#3B82F6' },
-  { name: 'Retroalimentación', icon: 'message-square', iconType: 'Feather', bgColor: '#9333EA' },
+  { name: 'Tutoría Académica', icon: 'book-open', iconType: 'Feather', bgColor: '#9C3FE4', url: 'https://www.unsaac.edu.pe/' },
+  { name: 'Tutoría Personal', icon: 'heart', iconType: 'Feather', bgColor: '#3B82F6', url: 'https://www.unsaac.edu.pe/' },
+  { name: 'Tutoría Profesional', icon: 'briefcase', iconType: 'Feather', bgColor: '#8B5CF6', url: 'https://www.unsaac.edu.pe/' },
+  { name: 'Apoyo Psicológico', icon: 'brain', iconType: 'MaterialCommunityIcons', bgColor: '#EC4899', url: 'https://www.unsaac.edu.pe/' },
+  { name: 'Bienestar Universitario', icon: 'star', iconType: 'Feather', bgColor: '#06B6D4', url: 'https://www.unsaac.edu.pe/' },
+  { name: 'Prácticas Preprofesionales', icon: 'rocket-outline', iconType: 'Ionicons', bgColor: '#F97316', url: 'https://www.unsaac.edu.pe/' },
+  { name: 'Movilidad Estudiantil', icon: 'globe', iconType: 'Feather', bgColor: '#3B82F6', url: 'https://www.unsaac.edu.pe/' },
+  { name: 'Retroalimentación', icon: 'message-square', iconType: 'Feather', bgColor: '#9333EA', url: null },
 ];
 
 export function ServicesGrid() {
+  const { colors } = useTheme();
   const router = useRouter();
+  const user = useAuthStore((state) => state.user);
 
   const renderIcon = (type: string, name: string) => {
     const size = 22;
@@ -35,12 +39,22 @@ export function ServicesGrid() {
     return null;
   };
 
+  const handlePress = (serv: any) => {
+    if (serv.name === 'Retroalimentación') {
+      router.push('/(estudiante)/retroalimentacion-quiz' as any);
+    } else if (serv.url) {
+      Linking.openURL(serv.url).catch((err) => {
+        console.error("Failed to open URL:", err);
+      });
+    }
+  };
+
   return (
     <View style={{ paddingHorizontal: 24, marginBottom: 24 }}>
       <View style={{
         marginBottom: 16,
       }}>
-        <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#1E1E2F' }}>
+        <Text style={{ fontSize: 17, fontWeight: 'bold', color: colors.text }}>
           Explora servicios
         </Text>
       </View>
@@ -53,7 +67,7 @@ export function ServicesGrid() {
         {services.map((serv, index) => (
           <Pressable
             key={index}
-            onPress={() => router.push('/(tabs)/calendar')}
+            onPress={() => handlePress(serv)}
             style={{
               width: '23%',
               alignItems: 'center',
@@ -82,7 +96,7 @@ export function ServicesGrid() {
               style={{
                 fontSize: 10,
                 fontWeight: '600',
-                color: '#4B4B60',
+                color: colors.textSecondary,
                 textAlign: 'center',
                 lineHeight: 13,
                 width: '100%',

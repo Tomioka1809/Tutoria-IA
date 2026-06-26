@@ -27,8 +27,12 @@ async def get_assigned_tutors(
         select(TutorAssignment)
         .where(TutorAssignment.student_id == current_user.id)
         .options(
-            selectinload(TutorAssignment.student),
-            selectinload(TutorAssignment.tutor),
+            selectinload(TutorAssignment.student).selectinload(User.student_profile),
+            selectinload(TutorAssignment.student).selectinload(User.tutor_profile),
+            selectinload(TutorAssignment.student).selectinload(User.admin_profile),
+            selectinload(TutorAssignment.tutor).selectinload(User.tutor_profile),
+            selectinload(TutorAssignment.tutor).selectinload(User.student_profile),
+            selectinload(TutorAssignment.tutor).selectinload(User.admin_profile),
             selectinload(TutorAssignment.service_type),
         )
     )
@@ -46,7 +50,14 @@ async def get_assigned_students(
     result = await db.execute(
         select(TutorAssignment)
         .where(TutorAssignment.tutor_id == current_user.id)
-        .options(selectinload(TutorAssignment.student))
+        .options(
+            selectinload(TutorAssignment.student).selectinload(User.student_profile),
+            selectinload(TutorAssignment.student).selectinload(User.tutor_profile),
+            selectinload(TutorAssignment.student).selectinload(User.admin_profile),
+            selectinload(TutorAssignment.tutor).selectinload(User.tutor_profile),
+            selectinload(TutorAssignment.tutor).selectinload(User.student_profile),
+            selectinload(TutorAssignment.tutor).selectinload(User.admin_profile),
+        )
     )
     assignments = result.scalars().all()
     # Extract unique student user profiles

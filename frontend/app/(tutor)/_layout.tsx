@@ -1,23 +1,24 @@
-// app/(tabs)/_layout.tsx
+// app/(tutor)/_layout.tsx
 import { Tabs, usePathname } from 'expo-router';
 import React from 'react';
 import { Platform, Text } from 'react-native';
 
 import { HapticTab } from '@/components/haptic-tab';
 import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
 import { TutoriaTabBarButton } from '@/src/components/tutoria/TutoriaTabBarButton';
+import { useTranslation } from 'react-i18next';
+import { useTheme } from '@/src/theme/ThemeContext';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
   const pathname = usePathname();
+  const { t } = useTranslation();
+  const { colors } = useTheme();
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: '#9A3BEE',
-        tabBarInactiveTintColor: '#8E8EA0',
+        tabBarActiveTintColor: colors.primary,
+        tabBarInactiveTintColor: colors.textSecondary,
         headerShown: false,
         tabBarButton: HapticTab,
         tabBarHideOnKeyboard: true,
@@ -28,11 +29,11 @@ export default function TabLayout() {
         },
         tabBarStyle: {
           borderTopWidth: 1,
-          borderTopColor: '#EEEDFE',
+          borderTopColor: colors.border,
           height: Platform.OS === 'ios' ? 88 : 76,
           paddingBottom: Platform.OS === 'ios' ? 24 : 14,
           paddingTop: 8,
-          backgroundColor: 'white',
+          backgroundColor: colors.surface,
           position: 'absolute',
           bottom: 0,
           left: 0,
@@ -42,14 +43,14 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Inicio',
+          title: t('tabs.home') || 'Inicio',
           tabBarIcon: ({ color }) => <IconSymbol size={26} name="house.fill" color={color} />,
         }}
       />
       <Tabs.Screen
         name="calendar"
         options={{
-          title: 'Calendario',
+          title: t('tabs.calendar') || 'Calendario',
           tabBarIcon: ({ color }) => <IconSymbol size={26} name="calendar" color={color} />,
         }}
       />
@@ -64,17 +65,17 @@ export default function TabLayout() {
       <Tabs.Screen
         name="notifications"
         options={{
-          title: 'Notificaciones',
+          title: t('tabs.notifications') || 'Notificaciones',
           tabBarIcon: ({ color }) => <IconSymbol size={26} name="bell.fill" color={color} />,
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
-          title: 'Perfil',
+          title: t('tabs.profile') || 'Perfil',
           tabBarIcon: ({ color, focused }) => {
             const isActive = focused || pathname === '/configuracion' || pathname === '/privacidad' || pathname === '/centro-ayuda' || pathname === '/perfil-tutor' || pathname === '/editar-perfil';
-            return <IconSymbol size={26} name="person.fill" color={isActive ? '#9A3BEE' : '#8E8EA0'} />;
+            return <IconSymbol size={26} name="person.fill" color={isActive ? colors.primary : colors.textSecondary} />;
           },
           tabBarLabel: ({ focused }) => {
             const isActive = focused || pathname === '/configuracion' || pathname === '/privacidad' || pathname === '/centro-ayuda' || pathname === '/perfil-tutor' || pathname === '/editar-perfil';
@@ -83,62 +84,22 @@ export default function TabLayout() {
                 fontSize: 10,
                 fontWeight: '600',
                 marginTop: 2,
-                color: isActive ? '#9A3BEE' : '#8E8EA0',
+                color: isActive ? colors.primary : colors.textSecondary,
               }}>
-                Perfil
+                {t('tabs.profile') || 'Perfil'}
               </Text>
             );
           }
         }}
       />
       
-      {/* Hide the new configuration screen from tabs */}
-      <Tabs.Screen
-        name="configuracion"
-        options={{
-          href: null,
-        }}
-      />
-      
-      {/* Hide the new privacy screen from tabs */}
-      <Tabs.Screen
-        name="privacidad"
-        options={{
-          href: null,
-        }}
-      />
-      
-      {/* Hide the new help center screen from tabs */}
-      <Tabs.Screen
-        name="centro-ayuda"
-        options={{
-          href: null,
-        }}
-      />
-
-      {/* Hide the tutor profile screen from tabs */}
-      <Tabs.Screen
-        name="perfil-tutor"
-        options={{
-          href: null,
-        }}
-      />
-      
-      {/* Hide the edit profile screen from tabs */}
-      <Tabs.Screen
-        name="editar-perfil"
-        options={{
-          href: null,
-        }}
-      />
-
-      {/* Hide the old default templates */}
-      <Tabs.Screen
-        name="explore"
-        options={{
-          href: null,
-        }}
-      />
+      {/* Hidden Screens */}
+      <Tabs.Screen name="configuracion" options={{ href: null }} />
+      <Tabs.Screen name="privacidad" options={{ href: null }} />
+      <Tabs.Screen name="centro-ayuda" options={{ href: null }} />
+      <Tabs.Screen name="perfil-tutor" options={{ href: null }} />
+      <Tabs.Screen name="editar-perfil" options={{ href: null }} />
+      <Tabs.Screen name="explore" options={{ href: null }} />
     </Tabs>
   );
 }

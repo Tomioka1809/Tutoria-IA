@@ -4,12 +4,14 @@ import { View, Text, Image } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { User } from '@/src/types';
 import { useAuthStore } from '@/src/store/auth';
+import { useTheme } from '@/src/theme/ThemeContext';
 
 interface ProfileHeaderProps {
   user: User | null;
 }
 
 export function ProfileHeader({ user }: ProfileHeaderProps) {
+  const { colors } = useTheme();
   const insets = useSafeAreaInsets();
   const paddingTop = Math.max(insets.top, 16);
   const isStudent = user?.role === 'estudiante';
@@ -17,7 +19,7 @@ export function ProfileHeader({ user }: ProfileHeaderProps) {
 
   return (
     <View style={{
-      backgroundColor: '#9A3BEE',
+      backgroundColor: colors.primary,
       paddingTop: paddingTop + 16,
       paddingBottom: isStudent ? 48 : 24,
       paddingHorizontal: 24,
@@ -39,7 +41,7 @@ export function ProfileHeader({ user }: ProfileHeaderProps) {
       
       {/* Student Card */}
       <View style={{
-        backgroundColor: 'white',
+        backgroundColor: colors.surface,
         borderRadius: 24,
         padding: 20,
         flexDirection: 'row',
@@ -74,39 +76,52 @@ export function ProfileHeader({ user }: ProfileHeaderProps) {
           }} />
         )}
         
-        {/* Student details */}
+        {/* Student/Tutor details */}
         <View style={{ flex: 1 }}>
           <Text style={{
             fontSize: 18,
             fontWeight: 'bold',
-            color: '#111130',
+            color: colors.text,
           }}>
             {user?.full_name || 'Sebastián Quispe'}
           </Text>
           <Text style={{
             fontSize: 13,
-            color: '#8E8EA0',
+            color: colors.textSecondary,
             fontWeight: '500',
             marginTop: 4,
           }}>
-            Código: {user?.student_code || '2123456'}
+            Código: {isStudent ? (user?.student_code || '2123456') : (user?.tutor_code || 'T-212345')}
           </Text>
-          <Text style={{
-            fontSize: 12,
-            color: '#8E8EA0',
-            fontWeight: '500',
-            marginTop: 2,
-          }} numberOfLines={1}>
-            {user?.school || 'Ingeniería Informática y de Sistemas'}
-          </Text>
-          <Text style={{
-            fontSize: 11,
-            color: '#8E8EA0',
-            fontWeight: '500',
-            marginTop: 2,
-          }}>
-            {user?.semester || 'VI Semestre'}
-          </Text>
+          {isStudent ? (
+            <>
+              <Text style={{
+                fontSize: 12,
+                color: colors.textSecondary,
+                fontWeight: '500',
+                marginTop: 2,
+              }} numberOfLines={1}>
+                {user?.email || 'estudiante@unsaac.edu.pe'}
+              </Text>
+              <Text style={{
+                fontSize: 11,
+                color: colors.textSecondary,
+                fontWeight: '500',
+                marginTop: 2,
+              }}>
+                Semestre: {user?.current_semester || 'No especificado'}
+              </Text>
+            </>
+          ) : (
+            <Text style={{
+              fontSize: 12,
+              color: colors.textSecondary,
+              fontWeight: '500',
+              marginTop: 2,
+            }} numberOfLines={1}>
+              {user?.email || 'tutor@unsaac.edu.pe'}
+            </Text>
+          )}
         </View>
       </View>
 
@@ -115,7 +130,7 @@ export function ProfileHeader({ user }: ProfileHeaderProps) {
         <Text style={{
           fontSize: 16,
           fontWeight: 'bold',
-          color: '#111130',
+          color: colors.text,
           marginTop: 8,
           marginBottom: 4,
         }}>

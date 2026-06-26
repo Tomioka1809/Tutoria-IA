@@ -1,5 +1,6 @@
 // src/components/notifications/NotificationItem.tsx
 import React from 'react';
+import { useTheme } from '@/src/theme/ThemeContext';
 import { View, Text, Pressable } from 'react-native';
 import { Notification } from '@/src/types';
 
@@ -9,15 +10,16 @@ interface NotificationItemProps {
 }
 
 export function NotificationItem({ notification, onPress }: NotificationItemProps) {
+  const { colors, isDark } = useTheme();
   // Determinar color e icono según título o tipo
   let iconStr = '🔔';
   let iconBg = 'bg-[#F3E8FF]';
-  let titleColor = 'text-[#1E1E2F]';
+  let titleColor = isDark ? '#FFFFFF' : colors.text;
 
   if (notification.title.includes('Cancelada') || notification.title.includes('cancelada')) {
     iconStr = '❌';
     iconBg = 'bg-[#FFEAEA]';
-    titleColor = 'text-[#EF4444]';
+    titleColor = colors.danger;
   } else if (notification.title.includes('Recordatorio')) {
     iconStr = '📅';
     iconBg = 'bg-[#F3E8FF]';
@@ -58,21 +60,21 @@ export function NotificationItem({ notification, onPress }: NotificationItemProp
   return (
     <Pressable
       onPress={onPress}
-      className="bg-white border border-[#EEEDFE] rounded-3xl p-4 mb-3 shadow-sm flex-row items-center"
+      style={{ backgroundColor: colors.surface }} className=" border border-border rounded-3xl p-4 mb-3 shadow-sm flex-row items-center"
     >
       <View className={`w-12 h-12 rounded-[20px] items-center justify-center mr-4 ${iconBg}`}>
         <Text className="text-xl">{iconStr}</Text>
       </View>
 
       <View className="flex-1">
-        <Text className={`text-sm font-bold ${titleColor}`}>{notification.title}</Text>
-        <Text className="text-xs text-[#8E8EA0] mt-1 font-medium">
+        <Text className="text-sm font-bold" style={{ color: titleColor }}>{notification.title}</Text>
+        <Text className="text-xs text-textSecondary mt-1 font-medium">
           {formatRelativeTime(notification.created_at)}
         </Text>
       </View>
 
       {!notification.is_read ? (
-        <View className="w-2.5 h-2.5 rounded-full bg-[#9A3BEE] ml-2" />
+        <View className="w-2.5 h-2.5 rounded-full bg-primary ml-2" />
       ) : null}
     </Pressable>
   );

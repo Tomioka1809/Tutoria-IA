@@ -8,6 +8,7 @@ interface ChatState {
   isSending: boolean;
   fetchConversation: () => Promise<void>;
   sendMessage: (content: string) => Promise<void>;
+  resetConversation: () => Promise<void>;
 }
 
 export const useChatStore = create<ChatState>((set, get) => ({
@@ -89,6 +90,16 @@ export const useChatStore = create<ChatState>((set, get) => ({
       }));
     } finally {
       set({ isSending: false });
+    }
+  },
+  resetConversation: async () => {
+    set({ isLoading: true });
+    try {
+      await client.delete('/chat/conversation');
+      await get().fetchConversation();
+    } catch (error) {
+      console.error('Failed to reset chat conversation:', error);
+      set({ isLoading: false });
     }
   },
 }));

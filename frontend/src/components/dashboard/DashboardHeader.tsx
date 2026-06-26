@@ -1,12 +1,14 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTheme } from '@/src/theme/ThemeContext';
 
 interface DashboardHeaderProps {
   firstName: string;
 }
 
 export function DashboardHeader({ firstName }: DashboardHeaderProps) {
+  const { colors } = useTheme();
   const insets = useSafeAreaInsets();
   const paddingTop = Math.max(insets.top, 16);
 
@@ -19,14 +21,14 @@ export function DashboardHeader({ firstName }: DashboardHeaderProps) {
       <Text style={{
         fontSize: 28,
         fontWeight: 'bold',
-        color: '#111130',
+        color: colors.text,
         letterSpacing: -0.5,
       }}>
         ¡Hola, {firstName}! 👋
       </Text>
       <Text style={{
         fontSize: 14,
-        color: '#8E8EA0',
+        color: colors.textSecondary,
         marginTop: 4,
         fontWeight: '500',
       }}>

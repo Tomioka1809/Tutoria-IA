@@ -41,16 +41,16 @@ export function useCalendar() {
   // Crea una actividad local o programa una sesión en el backend si es Tutoría Académica
   const addNewActivity = async (activityData: {
     name: string;
-    type: 'Tutoría Académica' | 'Sesión de Apoyo Psicológico' | 'Trabajos';
+    type: 'Tutoría Académica' | 'Tutoría Personal' | 'Tutoría Profesional' | 'Trabajos';
     date: string;
     time: string;
-    studentId?: number;
+    studentId?: number | null;
+    status?: string;
+    notes?: string;
+    location?: string;
   }) => {
-    if (activityData.type === 'Tutoría Académica') {
-      if (!activityData.studentId) {
-        alert('Por favor selecciona un estudiante.');
-        return;
-      }
+    if (activityData.type.includes('Tutoría')) {
+      // studentId can be null, which means "A todos"
       try {
         const scheduledAtStr = `${activityData.date}T${activityData.time}:00`;
         
@@ -58,11 +58,11 @@ export function useCalendar() {
         let serviceTypeId = 1;
         try {
           const serviceRes = await client.get('/tutors/service-types');
-          const academicService = serviceRes.data.find(
-            (s: any) => s.name.includes('Académica') || s.name.includes('Tutoría')
+          const matchedService = serviceRes.data.find(
+            (s: any) => s.name.toLowerCase() === activityData.type.toLowerCase()
           );
-          if (academicService) {
-            serviceTypeId = academicService.id;
+          if (matchedService) {
+            serviceTypeId = matchedService.id;
           } else if (serviceRes.data.length > 0) {
             serviceTypeId = serviceRes.data[0].id;
           }
@@ -71,11 +71,14 @@ export function useCalendar() {
         }
 
         await createSession({
-          student_id: activityData.studentId,
+          student_id: activityData.studentId || undefined,
           tutor_id: user!.id,
           service_type_id: serviceTypeId,
           scheduled_at: scheduledAtStr,
-          notes: activityData.name,
+          status: activityData.status || 'pendiente',
+          title: activityData.name,
+          notes: activityData.notes,
+          location: activityData.location,
         });
         alert('¡Tutoría programada con éxito!');
         fetchSessions(); // Recargar sesiones del backend
@@ -94,15 +97,15 @@ export function useCalendar() {
     }
   };
 
-  // Cancela una sesión de tutoría en el backend
-  const cancelBackendSession = async (sessionId: number) => {
+  // Cambia el estado de una sesión de tutoría
+  const changeBackendSessionStatus = async (sessionId: number, newStatus: string) => {
     try {
-      await updateSessionStatus(sessionId, 'cancelada');
-      alert('¡Tutoría cancelada con éxito!');
+      await updateSessionStatus(sessionId, newStatus);
+      alert('¡Estado actualizado con éxito!');
       fetchSessions(); // Recargar sesiones
     } catch (error) {
       console.error(error);
-      alert('Hubo un error al cancelar la tutoría.');
+      alert('Hubo un error al actualizar el estado.');
     }
   };
 
@@ -157,23 +160,30 @@ export function useCalendar() {
     const mappedSessions = sessions
       .filter((s) => s.status !== 'cancelada')
       .map((s) => {
-        let type: 'Tutoría Académica' | 'Sesión de Apoyo Psicológico' | 'Trabajos' = 'Tutoría Académica';
+        let type: 'Tutoría Académica' | 'Tutoría Personal' | 'Tutoría Profesional' | 'Trabajos' = 'Tutoría Académica';
         const name = s.service_type?.name || 'Tutoría Académica';
 
-        if (name.includes('Psicológico') || name.includes('Apoyo')) {
-          type = 'Sesión de Apoyo Psicológico';
+        if (name.includes('Personal')) {
+          type = 'Tutoría Personal';
+        } else if (name.includes('Profesional')) {
+          type = 'Tutoría Profesional';
         } else if (name.includes('Tarea') || name.includes('Entrega') || name.includes('Trabajo')) {
           type = 'Trabajos';
         }
 
         return {
           id: `session_${s.id}`,
-          name: s.notes || name,
+          name: s.title || s.notes || name,
           type,
           date: s.scheduled_at.split('T')[0],
           time: s.scheduled_at.split('T')[1].substring(0, 5),
           isBackend: true,
-          rawId: s.id, // ID numérico para peticiones backend
+          rawId: s.id,
+          status: s.status,
+          notes: s.notes,
+          location: s.location,
+          tutorName: s.tutor?.full_name,
+          studentName: s.student?.full_name,
         };
       });
 
@@ -217,7 +227,7 @@ export function useCalendar() {
     filteredActivities,
     addNewActivity,
     deleteActivity,
-    cancelBackendSession,
+    changeBackendSessionStatus,
     students,
     isDataLoading,
     fetchTutorData,
