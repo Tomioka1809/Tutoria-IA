@@ -28,45 +28,45 @@ class User(Base):
 
     @property
     def full_name(self) -> str:
-        if self.student_profile: return self.student_profile.full_name
-        if self.tutor_profile: return self.tutor_profile.full_name
-        if self.admin_profile: return self.admin_profile.full_name
+        if 'student_profile' in self.__dict__ and self.student_profile: return self.student_profile.full_name
+        if 'tutor_profile' in self.__dict__ and self.tutor_profile: return self.tutor_profile.full_name
+        if 'admin_profile' in self.__dict__ and self.admin_profile: return self.admin_profile.full_name
         return ""
 
     @property
     def student_code(self) -> Optional[str]:
-        if self.student_profile: return self.student_profile.student_code
+        if 'student_profile' in self.__dict__ and self.student_profile: return self.student_profile.student_code
         return None
 
     @property
     def tutor_code(self) -> Optional[str]:
-        if self.tutor_profile: return self.tutor_profile.tutor_code
+        if 'tutor_profile' in self.__dict__ and self.tutor_profile: return self.tutor_profile.tutor_code
         return None
 
     @property
     def expertise_areas(self) -> Optional[str]:
-        if self.tutor_profile: return self.tutor_profile.expertise_areas
+        if 'tutor_profile' in self.__dict__ and self.tutor_profile: return self.tutor_profile.expertise_areas
         return None
 
     @property
     def office_location(self) -> Optional[str]:
-        if self.tutor_profile: return self.tutor_profile.office_location
+        if 'tutor_profile' in self.__dict__ and self.tutor_profile: return self.tutor_profile.office_location
         return None
 
     @property
     def current_semester(self) -> Optional[int]:
-        if self.student_profile: return self.student_profile.current_semester
+        if 'student_profile' in self.__dict__ and self.student_profile: return self.student_profile.current_semester
         return None
 
     @property
     def academic_status(self) -> Optional[str]:
-        if self.student_profile: return self.student_profile.academic_status
+        if 'student_profile' in self.__dict__ and self.student_profile: return self.student_profile.academic_status
         return None
 
     @property
     def phone_number(self) -> Optional[str]:
-        if self.student_profile: return self.student_profile.phone_number
-        if self.tutor_profile: return self.tutor_profile.phone_number
+        if 'student_profile' in self.__dict__ and self.student_profile: return self.student_profile.phone_number
+        if 'tutor_profile' in self.__dict__ and self.tutor_profile: return self.tutor_profile.phone_number
         return None
 
     # Relationships

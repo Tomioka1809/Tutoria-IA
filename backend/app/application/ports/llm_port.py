@@ -3,7 +3,13 @@ from typing import List, Dict
 
 class LLMPort(ABC):
     @abstractmethod
-    async def generate_response(self, system_instruction: str, history: List[Dict], user_message: str) -> str:
+    async def generate_response(
+        self, 
+        system_instruction: str, 
+        history: List[Dict], 
+        user_message: str,
+        tools: List = None
+    ) -> str:
         """
         Generates a chat response asymmetrically.
         history expects [{"role": "user"|"model", "parts": [{"text": "..."}]}] format or similar.

@@ -14,7 +14,7 @@ export function useTutoria() {
     if (user?.role === 'estudiante' || user?.role === 'tutor') {
       fetchConversation();
     }
-  }, []);
+  }, [user?.id, user?.role]);
 
   useEffect(() => {
     if (scrollViewRef.current) {

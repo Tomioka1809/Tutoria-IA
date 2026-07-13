@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { ScrollView, Pressable, Text, View, RefreshControl, ActivityIndicator, Modal } from 'react-native';
 import { useRouter, useFocusEffect } from 'expo-router';
 import { useDashboard } from '@/src/components/dashboard/useDashboard';
@@ -17,13 +17,31 @@ export default function DashboardScreen() {
   const [students, setStudents] = useState<any[]>([]);
   const [loadingStudents, setLoadingStudents] = useState(true);
 
+  const [periods, setPeriods] = useState<string[]>([]);
+  const [selectedPeriod, setSelectedPeriod] = useState<string>('');
+
   const [selectedStudent, setSelectedStudent] = useState<any>(null);
   const [modalVisible, setModalVisible] = useState(false);
 
-  const fetchStudents = async () => {
+  const fetchPeriods = async () => {
+    try {
+      const res = await client.get('/tutors/periods', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setPeriods(res.data);
+      if (res.data.length > 0 && !selectedPeriod) {
+        setSelectedPeriod(res.data[0]);
+      }
+    } catch (e) {
+      console.error('Failed to load academic periods', e);
+    }
+  };
+
+  const fetchStudents = async (period?: string) => {
     setLoadingStudents(true);
     try {
       const res = await client.get('/tutors/students', {
+        params: period ? { academic_period: period } : {},
         headers: { Authorization: `Bearer ${token}` }
       });
       setStudents(res.data);
@@ -36,13 +54,26 @@ export default function DashboardScreen() {
 
   useFocusEffect(
     useCallback(() => {
-      fetchStudents();
+      fetchPeriods();
     }, [])
   );
 
+  useEffect(() => {
+    if (selectedPeriod) {
+      fetchStudents(selectedPeriod);
+    } else {
+      fetchStudents();
+    }
+  }, [selectedPeriod]);
+
   const handleRefresh = async () => {
     onRefresh();
-    await fetchStudents();
+    await fetchPeriods();
+    if (selectedPeriod) {
+      await fetchStudents(selectedPeriod);
+    } else {
+      await fetchStudents();
+    }
   };
 
   const openStudentDetails = (student: any) => {
@@ -91,6 +122,48 @@ export default function DashboardScreen() {
         <Text style={{ fontSize: 18, fontWeight: 'bold', color: colors.text, marginBottom: 12 }}>
           Mis Alumnos Asignados
         </Text>
+
+        {periods.length > 0 && (
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{ paddingBottom: 16 }}
+          >
+            {periods.map((p) => {
+              const isSelected = selectedPeriod === p;
+              return (
+                <Pressable
+                  key={p}
+                  onPress={() => setSelectedPeriod(p)}
+                  style={{
+                    backgroundColor: isSelected ? colors.primary : colors.surface,
+                    paddingHorizontal: 16,
+                    paddingVertical: 8,
+                    borderRadius: 20,
+                    marginRight: 8,
+                    borderWidth: 1,
+                    borderColor: isSelected ? colors.primary : colors.border,
+                    shadowColor: isSelected ? colors.primary : '#000',
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowOpacity: isSelected ? 0.2 : 0.05,
+                    shadowRadius: 3,
+                    elevation: 2,
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: isSelected ? 'white' : colors.text,
+                      fontWeight: isSelected ? 'bold' : 'normal',
+                      fontSize: 14,
+                    }}
+                  >
+                    {p}
+                  </Text>
+                </Pressable>
+              );
+            })}
+          </ScrollView>
+        )}
         
         {loadingStudents ? (
           <ActivityIndicator color={colors.primary} style={{ marginTop: 20 }} />

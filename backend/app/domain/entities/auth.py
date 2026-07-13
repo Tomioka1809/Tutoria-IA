@@ -11,3 +11,11 @@ class TokenPayload(BaseModel):
 class LoginRequest(BaseModel):
     username: EmailStr
     password: str
+
+class ForgotPasswordRequest(BaseModel):
+    email: EmailStr
+
+class ResetPasswordRequest(BaseModel):
+    email: EmailStr
+    token: str
+    new_password: str
