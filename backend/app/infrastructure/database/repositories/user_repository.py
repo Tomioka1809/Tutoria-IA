@@ -36,51 +36,55 @@ class UserRepository(UserRepositoryPort):
         return result.scalars().first()
 
     async def create(self, user_in: UserCreate, hashed_password: str, is_active: bool = True) -> User:
-        db_user = User(
-            email=user_in.email,
-            password_hash=hashed_password,
-            role=user_in.role,
-            is_active=is_active,
-        )
-        
-        if user_in.role == "estudiante":
-            db_user.student_profile = StudentProfile(
-                full_name=user_in.full_name,
-                student_code=user_in.student_code or "",
-                current_semester=user_in.current_semester,
-                phone_number=user_in.phone_number,
-                academic_status=user_in.academic_status
+        try:
+            db_user = User(
+                email=user_in.email,
+                password_hash=hashed_password,
+                role=user_in.role,
+                is_active=is_active,
             )
-        elif user_in.role == "tutor":
-            db_user.tutor_profile = TutorProfile(
-                full_name=user_in.full_name,
-                tutor_code=user_in.tutor_code or "",
-                phone_number=user_in.phone_number,
-                max_capacity=user_in.max_capacity,
-                expertise_areas=user_in.expertise_areas,
-                office_location=user_in.office_location
-            )
-        elif user_in.role == "admin":
-            db_user.admin_profile = AdminProfile(
-                full_name=user_in.full_name,
-                administrative_position=user_in.administrative_position
-            )
+            
+            if user_in.role == "estudiante":
+                db_user.student_profile = StudentProfile(
+                    full_name=user_in.full_name,
+                    student_code=user_in.student_code or "",
+                    current_semester=user_in.current_semester,
+                    phone_number=user_in.phone_number,
+                    academic_status=user_in.academic_status
+                )
+            elif user_in.role == "tutor":
+                db_user.tutor_profile = TutorProfile(
+                    full_name=user_in.full_name,
+                    tutor_code=user_in.tutor_code or "",
+                    phone_number=user_in.phone_number,
+                    max_capacity=user_in.max_capacity,
+                    expertise_areas=user_in.expertise_areas,
+                    office_location=user_in.office_location
+                )
+            elif user_in.role == "admin":
+                db_user.admin_profile = AdminProfile(
+                    full_name=user_in.full_name,
+                    administrative_position=user_in.administrative_position
+                )
 
-        self.db.add(db_user)
-        await self.db.commit()
-        await self.db.refresh(db_user)
-        
-        # Reload with relationships
-        result = await self.db.execute(
-            select(User)
-            .options(
-                selectinload(User.student_profile),
-                selectinload(User.tutor_profile),
-                selectinload(User.admin_profile)
+            self.db.add(db_user)
+            await self.db.commit()
+            await self.db.refresh(db_user)
+            
+            # Reload with relationships
+            result = await self.db.execute(
+                select(User)
+                .options(
+                    selectinload(User.student_profile),
+                    selectinload(User.tutor_profile),
+                    selectinload(User.admin_profile)
+                )
+                .where(User.id == db_user.id)
             )
-            .where(User.id == db_user.id)
-        )
-        return result.scalars().first()
+            return result.scalars().first()
+        except Exception as e:
+            await self.db.rollback()
+            raise e
 
     async def update(self, user_id: int, user_in: UserUpdate) -> Optional[User]:
         user = await self.get_by_id(user_id)

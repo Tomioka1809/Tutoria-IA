@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Text, Pressable, ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import { View, TextInput, Text, Pressable, ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView, Alert } from 'react-native';
 import { useRouter, Link } from 'expo-router';
 import { useAuthStore } from '../../src/store/auth';
 import client from '../../src/api/client';
@@ -53,11 +53,17 @@ export default function LoginScreen() {
         router.replace('/(estudiante)');
       }
     } catch (e: any) {
-      console.error(e);
-      setError(
-        e.response?.data?.detail || 
-        (t('auth.login.error') || 'Error de conexión. Revisa tus credenciales.')
-      );
+      let errorMessage = 'Error de conexión. Revisa tus credenciales.';
+      if (!e.response) {
+        errorMessage = 'No se pudo conectar con el servidor. Verifica tu conexión a internet.';
+      } else if (e.response.status === 401) {
+        errorMessage = e.response.data?.detail || 'Correo o contraseña incorrectos.';
+      } else if (e.response.data?.detail) {
+        errorMessage = e.response.data.detail;
+      }
+      
+      Alert.alert('Error de Inicio de Sesión', errorMessage);
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
     }

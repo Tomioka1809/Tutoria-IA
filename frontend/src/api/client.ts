@@ -46,7 +46,9 @@ client.interceptors.request.use(
 client.interceptors.response.use(
   (response) => response,
   async (error) => {
-    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+    const url = error.config?.url ?? '';
+    const isAuthRoute = url.includes('/auth/login') || url.includes('/auth/register');
+    if (!isAuthRoute && error.response && (error.response.status === 401 || error.response.status === 403)) {
       try {
         const { useAuthStore } = require('../store/auth');
         useAuthStore.getState().logout();

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Text, Pressable, ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import { View, TextInput, Text, Pressable, ActivityIndicator, KeyboardAvoidingView, Platform, ScrollView, Alert } from 'react-native';
 import { useRouter, Link } from 'expo-router';
 import client from '../../src/api/client';
 import { useTranslation } from 'react-i18next';
@@ -66,11 +66,19 @@ export default function RegisterScreen() {
         router.replace('/auth/login');
       }, 2000);
     } catch (e: any) {
-      console.error(e);
-      setError(
-        e.response?.data?.detail || 
-        (t('auth.register.error') || 'Hubo un problema al crear la cuenta. Intenta de nuevo.')
-      );
+      let errorMessage = 'Hubo un problema al crear la cuenta. Intenta de nuevo.';
+      if (!e.response) {
+        errorMessage = 'No se pudo conectar con el servidor. Verifica tu conexión a internet.';
+      } else if (e.response.status === 409) {
+        errorMessage = 'Este correo ya está registrado.';
+      } else if (e.response.status === 422) {
+        errorMessage = 'Los datos ingresados son inválidos o están incompletos.';
+      } else if (e.response.data?.detail) {
+        errorMessage = e.response.data.detail;
+      }
+      
+      Alert.alert('Error de Registro', errorMessage);
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
     }
