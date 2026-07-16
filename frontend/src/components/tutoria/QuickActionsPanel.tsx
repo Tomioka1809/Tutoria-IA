@@ -46,7 +46,7 @@ export function QuickActionsPanel({ onActionPress, userRole }: QuickActionsPanel
         </>
       )}
       <Pressable
-        onPress={() => onActionPress('¿Dónde encuentro los reglamentos universitarios?')}
+        onPress={() => onActionPress('¿Cuáles son los reglamentos de tutoría y de intercambio estudiantil?')}
         style={{ backgroundColor: colors.surface }} className=" border border-border rounded-2xl px-4 py-2.5 mb-2 flex-row items-center shadow-sm"
       >
         <Text className="text-xs font-semibold" style={{ color: colors.text }}>📄 Reglamentos</Text>

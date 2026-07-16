@@ -1,0 +1,124 @@
+{
+  "universidad": "UNSAAC",
+  "escuela_profesional": "Ingeniería Informática y de Sistemas",
+  "documento": "Plan de Estudios y Malla Curricular 2025",
+  "resumen": {
+    "total_cursos": 59,
+    "total_creditos": 220,
+    "estudios_generales": "10 cursos (37 créditos)",
+    "estudios_especificos": "25 cursos (94 créditos)",
+    "estudios_especialidad": "20 cursos (75 créditos)",
+    "actividades_extracurriculares": "3 cursos (6 créditos)",
+    "practicas_pre_profesionales": "1 curso (8 créditos)"
+  },
+  "preguntas_frecuentes": [
+    {
+      "pregunta": "¿Cuántos créditos y cursos en total tiene la carrera de Ingeniería Informática y de Sistemas bajo la malla curricular 2025?",
+      "respuesta": "Bajo la **malla curricular 2025**, la carrera de Ingeniería Informática y de Sistemas en la UNSAAC tiene un total de **59 cursos** y **220 créditos** académicos."
+    },
+    {
+      "pregunta": "¿Qué cursos se llevan en el primer semestre bajo la malla curricular 2025 y cuáles son sus créditos?",
+      "respuesta": "En el **Primer Semestre** (Estudios Generales) de la malla curricular 2025 se llevan 6 cursos (total de 22 créditos):\n* **QUG01 Química General** (4 créditos, sin requisitos)\n* **MEG01 Álgebra y Geometría Analítica** (4 créditos, sin requisitos)\n* **HIG01 Historia Crítica del Perú e Identidad Nacional** (3 créditos, sin requisitos)\n* **FIG01 Física I** (4 créditos, sin requisitos)\n* **CBG01 Ecología y Medio Ambiente** (3 créditos, sin requisitos)\n* **MEG02 Cálculo I** (4 créditos, sin requisitos)"
+    },
+    {
+      "pregunta": "¿Qué cursos se llevan en el segundo semestre bajo la malla curricular 2025 y cuáles son sus requisitos?",
+      "respuesta": "En el **Segundo Semestre** de la malla curricular 2025 se llevan 6 cursos (total de 21 créditos):\n* **LCG01 Lingüística y Comunicación Humana** (4 créditos, sin requisitos)\n* **MEG03 Estadística General** (4 créditos, sin requisitos)\n* **IFG01 Pensamiento Computacional e Inteligencia Artificial** (3 créditos, sin requisitos)\n* **MEG04 Cálculo II** (4 créditos, prerrequisito: **MEG02 Cálculo I**)\n* **IFI01 Fundamentos de Programación** (3 créditos, sin requisitos)\n* **MEI04 Matemáticas Discretas I** (4 créditos, prerrequisito: **MEG01 Álgebra y Geometría Analítica**)"
+    },
+    {
+      "pregunta": "¿Qué cursos se llevan en el tercer semestre bajo la malla curricular 2025 y cuáles son sus requisitos?",
+      "respuesta": "En el **Tercer Semestre** de la malla curricular 2025 se llevan 6 cursos (total de 20 créditos):\n* **IFI02 Algoritmos y Estructuras de Datos I** (4 créditos, prerrequisitos: **IFI01 Fundamentos de Programación** e **IFG01 Pensamiento Computacional e Inteligencia Artificial**)\n* **IFI03 Programación I** (2 créditos, prerrequisito: **IFI01 Fundamentos de Programación**)\n* **MEI05 Álgebra Lineal Computacional** (4 créditos, prerrequisito: **MEG01 Álgebra y Geometría Analítica**)\n* **FII02 Física Aplicada a la Informática** (4 créditos, prerrequisito: **FIG01 Física I**)\n* **MEI06 Matemática Discreta II** (4 créditos, prerrequisito: **MEI04 Matemáticas Discretas I**)\n* **MEI09 Cálculo III** (4 créditos, prerrequisito: **MEG04 Cálculo II**)"
+    },
+    {
+      "pregunta": "¿Qué cursos se llevan en el cuarto semestre bajo la malla curricular 2025 y cuáles son sus requisitos?",
+      "respuesta": "En el **Cuarto Semestre** de la malla curricular 2025 se llevan 6 cursos (total de 20 créditos):\n* **IFI04 Algoritmos y Estructuras de Datos II** (4 créditos, prerrequisitos: **IFI02** e **IFI03**)\n* **IFI05 Programación II** (2 créditos, prerrequisitos: **IFI02** e **IFI03**)\n* **ADI01 Organización y Dirección de Empresas** (4 créditos, prerrequisito: **60 Créditos aprobados**)\n* **ELI01 Electrónica y Diseño Digital** (4 créditos, prerrequisito: **FII02 Física Aplicada a la Informática**)\n* **IFI07 Modelos Probabilísticos** (4 créditos, prerrequisitos: **MEI06** y **MEG03**)\n* **MEI08 Ecuaciones Diferenciales** (4 créditos, prerrequisito: **MEI09 Cálculo III**)"
+    },
+    {
+      "pregunta": "¿Qué cursos se llevan en el quinto semestre bajo la malla curricular 2025 y cuáles son sus requisitos?",
+      "respuesta": "En el **Quinto Semestre** de la malla curricular 2025 se llevan 6 cursos (total de 20 créditos):\n* **IFI08 Análisis y Diseño de Algoritmos** (4 créditos, prerrequisito: **IFI04 Algoritmos y Estructuras de Datos II**)\n* **IFI09 Programación III** (2 créditos, prerrequisito: **IFI05 Programación II**)\n* **IFI10 Análisis y Diseño de Sistemas de Información** (4 créditos, prerrequisitos: **IFI04** y **ADI01**)\n* **IFI11 Organización y Arquitectura del Computador** (4 créditos, prerrequisito: **ELI01 Electrónica y Diseño Digital**)\n* **IFI12 Métodos Numéricos** (4 créditos, prerrequisito: **MEI08 Ecuaciones Diferenciales**)\n* **IFI13 Teoría de la Computación** (4 créditos, prerrequisito: **IFI04 Algoritmos y Estructuras de Datos II**)"
+    },
+    {
+      "pregunta": "¿Qué cursos se llevan en el sexto semestre bajo la malla curricular 2025 y cuáles son sus requisitos?",
+      "respuesta": "En el **Sexto Semestre** de la malla curricular 2025 se llevan 6 cursos (total de 22 créditos):\n* **IFI14 Inteligencia Artificial** (4 créditos, prerrequisito: **MEI05 Álgebra Lineal Computacional**)\n* **IFI15 Fundamentos y Diseño de Base de Datos** (4 créditos, prerrequisito: **IFI10 Análisis y Diseño de Sistemas de Información**)\n* **IFI16 Sistemas Operativos** (4 créditos, prerrequisito: **IFI11 Organización y Arquitectura del Computador**)\n* **IFI17 Modelado y Simulación** (4 créditos, prerrequisitos: **IFI07 Modelos Probabilísticos** e **IFI12 Métodos Numéricos**)\n* **EUI01 Deporte** (Actividad Extracurricular, 2 créditos, prerrequisito: **100 Créditos aprobados**)\n* **Electivo de Especialidad I** (4 créditos)"
+    },
+    {
+      "pregunta": "¿Qué cursos se llevan en el séptimo semestre bajo la malla curricular 2025 y cuáles son sus requisitos?",
+      "respuesta": "En el **Séptimo Semestre** de la malla curricular 2025 se llevan 6 cursos (total de 22 créditos):\n* **IFI19 Aprendizaje Automático** (4 créditos, prerrequisito: **IFI14 Inteligencia Artificial**)\n* **IFI20 Metodología y Desarrollo de Software** (5 créditos, prerrequisito: **IFI15 Fundamentos y Diseño de Base de Datos**)\n* **IFI21 Redes de Computadoras I** (4 créditos, prerrequisito: **IFI16 Sistemas Operativos**)\n* **IFI22 Ciencia de Datos** (3 créditos, prerrequisito: **IFI14 Inteligencia Artificial**)\n* **IFI23 Proyección Social** (Actividad Extracurricular, 2 créditos, prerrequisito: **120 Créditos aprobados**)\n* **Electivo de Especialidad II** (4 créditos)"
+    },
+    {
+      "pregunta": "¿Qué cursos se llevan en el octavo semestre bajo la malla curricular 2025 y cuáles son sus requisitos?",
+      "respuesta": "En el **Octavo Semestre** de la malla curricular 2025 se llevan 5 cursos (total de 18 créditos):\n* **IFI24 Programación Paralela y Distribuida** (4 créditos, prerrequisitos: **IFI21 Redes I** e **IFI08 Análisis de Algoritmos**)\n* **IFI25 Aprendizaje Profundo** (4 créditos, prerrequisito: **IFI19 Aprendizaje Automático**)\n* **IFI26 Ingeniería de Software I** (4 créditos, prerrequisito: **IFI20 Metodología de Software**)\n* **IFI27 Redes de Computadoras II** (4 créditos, prerrequisito: **IFI21 Redes de Computadoras I**)\n* **IFI28 Formulación de Proyectos de Tecnologías de la Información** (3 créditos, prerrequisito: **IFI20 Metodología de Software**)\n* **Electivo de Especialidad III** (3 créditos)"
+    },
+    {
+      "pregunta": "¿Qué cursos se llevan en el noveno semestre bajo la malla curricular 2025 y cuáles son sus requisitos?",
+      "respuesta": "En el **Noveno Semestre** de la malla curricular 2025 se llevan 4 cursos (total de 18 créditos):\n* **IFI29 Seminario de Investigación** (3 créditos, prerrequisito: **170 Créditos aprobados**)\n* **IFI30 Ingeniería de Software II** (4 créditos, prerrequisito: **IFI26 Ingeniería de Software I**)\n* **IFI31 Sistemas Internet de las Cosas** (4 créditos, prerrequisitos: **IFI27 Redes II** e **IFI19 Aprendizaje Automático**)\n* **IFI32 Ciberseguridad** (4 créditos, prerrequisito: **IFI27 Redes de Computadoras II**)\n* **Electivo de Especialidad IV** (4 créditos)\n* **Electivo de Especialidad V** (3 créditos)"
+    },
+    {
+      "pregunta": "¿Qué cursos se llevan en el décimo semestre bajo la malla curricular 2025 y cuáles son sus requisitos?",
+      "respuesta": "En el **Décimo Semestre** de la malla curricular 2025 se llevan 5 cursos (total de 22 créditos):\n* **IFI33 Trabajo de Investigación** (4 créditos, prerrequisito: **IFI29 Seminario de Investigación**)\n* **IFI34 Desarrollo de Proyectos de Ingeniería de Software** (4 créditos, prerrequisitos: **IFI28** e **IFI30**)\n* **IFI35 Administración de Tecnologías de la Información** (4 créditos, prerrequisito: **IFI32 Ciberseguridad**)\n* **IFI18 Debate** (Actividad Extracurricular, 2 créditos, prerrequisito: **180 Créditos aprobados**)\n* **IFI66 Prácticas Pre Profesionales** (8 créditos, prerrequisito: **180 Créditos aprobados**)"
+    },
+    {
+      "pregunta": "¿Cuáles son los requisitos de las Prácticas Pre Profesionales bajo la malla curricular 2025?",
+      "respuesta": "Bajo la **malla curricular 2025**, las **Prácticas Pre Profesionales** (código **IFI66**) otorgan **8 créditos**, corresponden al décimo semestre y requieren obligatoriamente haber aprobado un mínimo de **180 créditos** académicos en la carrera de Ingeniería Informática y de Sistemas."
+    },
+    {
+      "pregunta": "¿Qué cursos electivos de especialidad están disponibles en la carrera bajo la malla curricular 2025?",
+      "respuesta": "Bajo la malla curricular 2025, la carrera ofrece diversos **cursos electivos** de especialidad:\n* **Desarrollo de Aplicaciones Web** (IFI40, 3 créditos, requisito: IFI26)\n* **Desarrollo de Aplicaciones Móviles** (IFI41, 4 créditos, requisito: IFI26)\n* **Compiladores** (IFI45, 4 créditos, requisito: IFI13)\n* **Redes Complejas** (IFI42, 4 créditos, requisito: IFI08)\n* **Procesamiento de Lenguaje Natural** (IFI43, 3 créditos, requisito: IFI25)\n* **Computación Gráfica I** (IFI44, 3 créditos, requisitos: IFI04, IFI05)\n* **Visión Computacional** (IFI48, 4 créditos, requisito: IFI25)\n* **Inteligencia Artificial Robótica** (IFI49, 4 créditos, requisito: IFI14)\n* **Bioinformática** (IFI50, 4 créditos, requisito: IFI19)\n* **Innovación y Emprendimiento** (IFI51, 3 créditos, requisito: ADI01)\n* **Blockchain** (IFI55, 3 créditos, requisitos: IFI26, IFI27)\n* **Algoritmos Avanzados** (IFI57, 4 créditos, requisito: IFI13)\n* **Computación Cuántica** (IFI58, 4 créditos, requisito: IFI57)\n* **Investigación Operativa** (MEI65, 4 créditos, requisito: MEI05)\n* **Ingeniería de Software III** (IFI65, 4 créditos, requisito: IFI30)"
+    }
+  ],
+  "detalle_cursos": [
+    { "codigo": "QUG01", "nombre": "Química General", "creditos": 4, "semestre": 1, "horas_teoria": 3, "horas_practica": 2, "requisitos": [] },
+    { "codigo": "MEG01", "nombre": "Álgebra y Geometría Analítica", "creditos": 4, "semestre": 1, "horas_teoria": 3, "horas_practica": 2, "requisitos": [] },
+    { "codigo": "HIG01", "nombre": "Historia Crítica del Perú e Identidad Nacional", "creditos": 3, "semestre": 1, "horas_teoria": 2, "horas_practica": 2, "requisitos": [] },
+    { "codigo": "FIG01", "nombre": "Física I", "creditos": 4, "semestre": 1, "horas_teoria": 3, "horas_practica": 2, "requisitos": [] },
+    { "codigo": "CBG01", "nombre": "Ecología y Medio Ambiente", "creditos": 3, "semestre": 1, "horas_teoria": 2, "horas_practica": 2, "requisitos": [] },
+    { "codigo": "MEG02", "nombre": "Cálculo I", "creditos": 4, "semestre": 1, "horas_teoria": 3, "horas_practica": 2, "requisitos": [] },
+    { "codigo": "LCG01", "nombre": "Lingüística y Comunicación Humana", "creditos": 4, "semestre": 2, "horas_teoria": 3, "horas_practica": 2, "requisitos": [] },
+    { "codigo": "MEG03", "nombre": "Estadística General", "creditos": 4, "semestre": 2, "horas_teoria": 3, "horas_practica": 2, "requisitos": [] },
+    { "codigo": "IFG01", "nombre": "Pensamiento Computacional e Inteligencia Artificial", "creditos": 3, "semestre": 2, "horas_teoria": 2, "horas_practica": 2, "requisitos": [] },
+    { "codigo": "MEG04", "nombre": "Cálculo II", "creditos": 4, "semestre": 2, "horas_teoria": 3, "horas_practica": 2, "requisitos": ["MEG02"] },
+    { "codigo": "IFI01", "nombre": "Fundamentos de Programación", "creditos": 3, "semestre": 2, "horas_teoria": 2, "horas_practica": 2, "requisitos": [] },
+    { "codigo": "MEI04", "nombre": "Matemáticas Discretas I", "creditos": 4, "semestre": 2, "horas_teoria": 3, "horas_practica": 2, "requisitos": ["MEG01"] },
+    { "codigo": "IFI02", "nombre": "Algoritmos y Estructuras de Datos I", "creditos": 4, "semestre": 3, "horas_teoria": 3, "horas_practica": 2, "requisitos": ["IFI01", "IFG01"] },
+    { "codigo": "IFI03", "nombre": "Programación I", "creditos": 2, "semestre": 3, "horas_teoria": 0, "horas_practica": 4, "requisitos": ["IFI01"] },
+    { "codigo": "MEI05", "nombre": "Álgebra Lineal Computacional", "creditos": 4, "semestre": 3, "horas_teoria": 3, "horas_practica": 2, "requisitos": ["MEG01"] },
+    { "codigo": "FII02", "nombre": "Física Aplicada a la Informática", "creditos": 4, "semestre": 3, "horas_teoria": 3, "horas_practica": 2, "requisitos": ["FIG01"] },
+    { "codigo": "MEI06", "nombre": "Matemática Discreta II", "creditos": 4, "semestre": 3, "horas_teoria": 3, "horas_practica": 2, "requisitos": ["MEI04"] },
+    { "codigo": "MEI09", "nombre": "Cálculo III", "creditos": 4, "semestre": 3, "horas_teoria": 3, "horas_practica": 2, "requisitos": ["MEG04"] },
+    { "codigo": "IFI04", "nombre": "Algoritmos y Estructuras de Datos II", "creditos": 4, "semestre": 4, "horas_teoria": 3, "horas_practica": 2, "requisitos": ["IFI02", "IFI03"] },
+    { "codigo": "IFI05", "nombre": "Programación II", "creditos": 2, "semestre": 4, "horas_teoria": 0, "horas_practica": 4, "requisitos": ["IFI02", "IFI03"] },
+    { "codigo": "ADI01", "nombre": "Organización y Dirección de Empresas", "creditos": 4, "semestre": 4, "horas_teoria": 3, "horas_practica": 2, "requisitos": ["60 Créditos"] },
+    { "codigo": "ELI01", "nombre": "Electrónica y Diseño Digital", "creditos": 4, "semestre": 4, "horas_teoria": 3, "horas_practica": 2, "requisitos": ["FII02"] },
+    { "codigo": "IFI07", "nombre": "Modelos Probabilísticos", "creditos": 4, "semestre": 4, "horas_teoria": 3, "horas_practica": 2, "requisitos": ["MEI06", "MEG03"] },
+    { "codigo": "MEI08", "nombre": "Ecuaciones Diferenciales", "creditos": 4, "semestre": 4, "horas_teoria": 3, "horas_practica": 2, "requisitos": ["MEI09"] },
+    { "codigo": "IFI08", "nombre": "Análisis y Diseño de Algoritmos", "creditos": 4, "semestre": 5, "horas_teoria": 3, "horas_practica": 2, "requisitos": ["IFI04"] },
+    { "codigo": "IFI09", "nombre": "Programación III", "creditos": 2, "semestre": 5, "horas_teoria": 0, "horas_practica": 4, "requisitos": ["IFI05"] },
+    { "codigo": "IFI10", "nombre": "Análisis y Diseño de Sistemas de Información", "creditos": 4, "semestre": 5, "horas_teoria": 3, "horas_practica": 2, "requisitos": ["IFI04", "ADI01"] },
+    { "codigo": "IFI11", "nombre": "Organización y Arquitectura del Computador", "creditos": 4, "semestre": 5, "horas_teoria": 3, "horas_practica": 2, "requisitos": ["ELI01"] },
+    { "codigo": "IFI12", "nombre": "Métodos Numéricos", "creditos": 4, "semestre": 5, "horas_teoria": 3, "horas_practica": 2, "requisitos": ["MEI08"] },
+    { "codigo": "IFI13", "nombre": "Teoría de la Computación", "creditos": 4, "semestre": 5, "horas_teoria": 3, "horas_practica": 2, "requisitos": ["IFI04"] },
+    { "codigo": "IFI14", "nombre": "Inteligencia Artificial", "creditos": 4, "semestre": 6, "horas_teoria": 3, "horas_practica": 2, "requisitos": ["MEI05"] },
+    { "codigo": "IFI15", "nombre": "Fundamentos y Diseño de Base de Datos", "creditos": 4, "semestre": 6, "horas_teoria": 3, "horas_practica": 2, "requisitos": ["IFI10"] },
+    { "codigo": "IFI16", "nombre": "Sistemas Operativos", "creditos": 4, "semestre": 6, "horas_teoria": 3, "horas_practica": 2, "requisitos": ["IFI11"] },
+    { "codigo": "IFI17", "nombre": "Modelado y Simulación", "creditos": 4, "semestre": 6, "horas_teoria": 3, "horas_practica": 2, "requisitos": ["IFI07", "IFI12"] },
+    { "codigo": "EUI01", "nombre": "Deporte", "creditos": 2, "semestre": 6, "horas_teoria": 0, "horas_practica": 4, "requisitos": ["100 Créditos"] },
+    { "codigo": "IFI19", "nombre": "Aprendizaje Automático", "creditos": 4, "semestre": 7, "horas_teoria": 3, "horas_practica": 2, "requisitos": ["IFI14"] },
+    { "codigo": "IFI20", "nombre": "Metodología y Desarrollo de Software", "creditos": 5, "semestre": 7, "horas_teoria": 3, "horas_practica": 4, "requisitos": ["IFI15"] },
+    { "codigo": "IFI21", "nombre": "Redes de Computadoras I", "creditos": 4, "semestre": 7, "horas_teoria": 3, "horas_practica": 2, "requisitos": ["IFI16"] },
+    { "codigo": "IFI22", "nombre": "Ciencia de Datos", "creditos": 3, "semestre": 7, "horas_teoria": 2, "horas_practica": 2, "requisitos": ["IFI14"] },
+    { "codigo": "IFI23", "nombre": "Proyección Social", "creditos": 2, "semestre": 7, "horas_teoria": 0, "horas_practica": 4, "requisitos": ["120 Créditos"] },
+    { "codigo": "IFI24", "nombre": "Programación Paralela y Distribuida", "creditos": 4, "semestre": 8, "horas_teoria": 3, "horas_practica": 2, "requisitos": ["IFI21", "IFI08"] },
+    { "codigo": "IFI25", "nombre": "Aprendizaje Profundo", "creditos": 4, "semestre": 8, "horas_teoria": 3, "horas_practica": 2, "requisitos": ["IFI19"] },
+    { "codigo": "IFI26", "nombre": "Ingeniería de Software I", "creditos": 4, "semestre": 8, "horas_teoria": 3, "horas_practica": 2, "requisitos": ["IFI20"] },
+    { "codigo": "IFI27", "nombre": "Redes de Computadoras II", "creditos": 4, "semestre": 8, "horas_teoria": 3, "horas_practica": 2, "requisitos": ["IFI21"] },
+    { "codigo": "IFI28", "nombre": "Formulación de Proyectos de Tecnologías de la Información", "creditos": 3, "semestre": 8, "horas_teoria": 2, "horas_practica": 2, "requisitos": ["IFI20"] },
+    { "codigo": "IFI29", "nombre": "Seminario de Investigación", "creditos": 3, "semestre": 9, "horas_teoria": 2, "horas_practica": 2, "requisitos": ["170 Créditos"] },
+    { "codigo": "IFI30", "nombre": "Ingeniería de Software II", "creditos": 4, "semestre": 9, "horas_teoria": 3, "horas_practica": 2, "requisitos": ["IFI26"] },
+    { "codigo": "IFI31", "nombre": "Sistemas Internet de las Cosas", "creditos": 4, "semestre": 9, "horas_teoria": 3, "horas_practica": 2, "requisitos": ["IFI27", "IFI19"] },
+    { "codigo": "IFI32", "nombre": "Ciberseguridad", "creditos": 4, "semestre": 9, "horas_teoria": 3, "horas_practica": 2, "requisitos": ["IFI27"] },
+    { "codigo": "IFI33", "nombre": "Trabajo de Investigación", "creditos": 4, "semestre": 10, "horas_teoria": 3, "horas_practica": 2, "requisitos": ["IFI29"] },
+    { "codigo": "IFI34", "nombre": "Desarrollo de Proyectos de Ingeniería de Software", "creditos": 4, "semestre": 10, "horas_teoria": 3, "horas_practica": 2, "requisitos": ["IFI28", "IFI30"] },
+    { "codigo": "IFI35", "nombre": "Administración de Tecnologías de la Información", "creditos": 4, "semestre": 10, "horas_teoria": 3, "horas_practica": 2, "requisitos": ["IFI32"] },
+    { "codigo": "IFI18", "nombre": "Debate", "creditos": 2, "semestre": 10, "horas_teoria": 0, "horas_practica": 4, "requisitos": ["180 Créditos"] },
+    { "codigo": "IFI66", "nombre": "Prácticas Pre Profesionales", "creditos": 8, "semestre": 10, "horas_teoria": 0, "horas_practica": 16, "requisitos": ["180 Créditos"] }
+  ]
+}

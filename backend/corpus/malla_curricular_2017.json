@@ -1,0 +1,109 @@
+{
+  "universidad": "UNSAAC",
+  "escuela_profesional": "Ingeniería Informática y de Sistemas",
+  "documento": "Plan de Estudios y Malla Curricular 2017",
+  "resumen": {
+    "total_cursos": 62,
+    "total_creditos": 219,
+    "estudios_generales": "10 cursos",
+    "practica_pre_profesional": "1 curso (9 créditos)"
+  },
+  "preguntas_frecuentes": [
+    {
+      "pregunta": "¿Cuántos créditos y cursos en total tiene la carrera de Ingeniería Informática y de Sistemas bajo la malla curricular 2017?",
+      "respuesta": "Bajo la **malla curricular 2017**, la carrera de Ingeniería Informática y de Sistemas en la UNSAAC consta de un total de **62 asignaturas** y **219 créditos** necesarios para completar el plan de estudios."
+    },
+    {
+      "pregunta": "¿Qué cursos se llevan en el primer ciclo bajo la malla curricular 2017?",
+      "respuesta": "En el **Primer Ciclo** de la malla curricular 2017 se llevan 6 cursos (total de 21 créditos):\n* **FP901 Filosofía y Ética** (3 créditos)\n* **DR901 Constitución Política y DD.HH.** (3 créditos)\n* **AS901 Sociedad y Cultura** (3 créditos)\n* **ME901 Matemática I** (4 créditos)\n* **ED901 Estrategias de Aprendizaje Autónomo** (4 créditos)\n* **LC901 Redacción de Textos** (4 créditos)"
+    },
+    {
+      "pregunta": "¿Qué cursos se llevan en el segundo ciclo bajo la malla curricular 2017?",
+      "respuesta": "En el **Segundo Ciclo** de la malla curricular 2017 se llevan 6 cursos (total de 22 créditos):\n* **IF468 Fundamentos de Programación** (4 créditos, sin requisitos)\n* **ME307 Matemáticas Discretas I** (4 créditos, sin requisitos)\n* **FI902 Física I** (4 créditos, sin requisitos)\n* **ME903 Cálculo I** (4 créditos, sin requisitos)\n* **IF902 Tecnología de la Información y Comunicación** (4 créditos, sin requisitos)\n* **FP902 Liderazgo y Habilidades Sociales** (3 créditos, sin requisitos)"
+    },
+    {
+      "pregunta": "¿Qué cursos se llevan en el tercer ciclo bajo la malla curricular 2017?",
+      "respuesta": "En el **Tercer Ciclo** de la malla curricular 2017 se llevan 6 cursos (total de 22 créditos):\n* **IF450 Abstracción de Datos y Objetos** (4 créditos, prerrequisito: **IF468 Fundamentos de Programación**)\n* **IF351 Álgebra Lineal Computacional** (4 créditos, prerrequisito: **ME901 Matemática I**)\n* **IF370 Física Aplicada a la Informática** (4 créditos, prerrequisito: **FI902 Física I**)\n* **ME350 Cálculo II** (4 créditos, prerrequisito: **ME903 Cálculo I**)\n* **ME352 Probabilidades y Estadística** (4 créditos, prerrequisito: **ME901 Matemática I**)\n* **IF451 Programación I** (2 créditos, prerrequisito: **IF468 Fundamentos de Programación**)"
+    },
+    {
+      "pregunta": "¿Qué cursos se llevan en el cuarto ciclo bajo la malla curricular 2017?",
+      "respuesta": "En el **Cuarto Ciclo** de la malla curricular 2017 se llevan 6 cursos (total de 22 créditos):\n* **IF452 Algoritmos y Estructura de Datos** (4 créditos, prerrequisitos: **IF450** e **IF451**)\n* **ME354 Investigación Operativa** (4 créditos, prerrequisito: **IF351 Álgebra Lineal Computacional**)\n* **ME355 Matemática Discreta II** (4 créditos, prerrequisito: **ME307 Matemáticas Discretas I**)\n* **LI371 Electrónica y Diseño Digital** (3 créditos, prerrequisito: **IF370 Física Aplicada a la Informática**)\n* **IF480 Administración de Tecnologías de la Información** (3 créditos, sin requisitos)\n* **IF453 Programación II** (2 créditos, prerrequisito: **IF451 Programación I**)\n* También incluye Actividades Extracurriculares (2 créditos)."
+    },
+    {
+      "pregunta": "¿Qué cursos se llevan en el quinto ciclo bajo la malla curricular 2017?",
+      "respuesta": "En el **Quinto Ciclo** de la malla curricular 2017 se llevan 6 cursos (total de 22 créditos):\n* **IF650 Modelos Probabilísticos** (4 créditos, prerrequisitos: **ME352** y **ME355**)\n* **IF454 Teoría de la Computación** (3 créditos, prerrequisito: **IF452 Algoritmos y Estructura de Datos**)\n* **IF610 Análisis y Diseño de Sistemas de Información** (4 créditos, prerrequisitos: **IF452** e **IF480**)\n* **IF550 Organización y Arquitectura del Computador** (4 créditos, prerrequisito: **LI371 Electrónica y Diseño Digital**)\n* **IF481 Ingeniería Económica** (3 créditos, sin requisitos)\n* **ME359 Ecuaciones Diferenciales** (4 créditos, prerrequisito: **ME350 Cálculo II**)"
+    },
+    {
+      "pregunta": "¿Qué cursos se llevan en el sexto ciclo bajo la malla curricular 2017?",
+      "respuesta": "En el **Sexto Ciclo** de la malla curricular 2017 se llevan 6 cursos (total de 22 créditos):\n* **IF455 Algoritmos Paralelos y Distribuidos** (3 créditos, prerrequisitos: **IF550** e **IF452**)\n* **IF611 Metodología de Desarrollo de Software** (3 créditos, prerrequisito: **IF610 Análisis y Diseño de Sistemas**)\n* **IF612 Fundamentos y Diseño de Bases de Datos** (4 créditos, prerrequisito: **IF610 Análisis y Diseño de Sistemas**)\n* **IF551 Sistemas Operativos** (4 créditos, prerrequisito: **IF550 Organización y Arquitectura**)\n* **IF457 Métodos Numéricos** (3 créditos, prerrequisito: **ME359 Ecuaciones Diferenciales**)\n* Asignatura de Especialidad (4 créditos)"
+    },
+    {
+      "pregunta": "¿Qué cursos se llevan en el séptimo ciclo bajo la malla curricular 2017?",
+      "respuesta": "En el **Séptimo Ciclo** de la malla curricular 2017 se llevan 6 cursos (total de 22 créditos):\n* **IF456 Algoritmos Avanzados** (4 créditos, prerrequisito: **IF452 Algoritmos y Estructura de Datos**)\n* **IF651 Inteligencia Artificial** (4 créditos, sin requisitos específicos mapeados)\n* **IF613 Desarrollo de Software I** (2 créditos, prerrequisitos: **IF612** e **IF611**)\n* **IF552 Redes de Computadoras I** (4 créditos, prerrequisito: **IF551 Sistemas Operativos**)\n* Asignaturas de Especialidad y Actividades Extracurriculares (total de 8 créditos)."
+    },
+    {
+      "pregunta": "¿Qué cursos se llevan en el octavo ciclo bajo la malla curricular 2017?",
+      "respuesta": "En el **Octavo Ciclo** de la malla curricular 2017 se llevan 5 cursos (total de 22 créditos):\n* **IF710 Seminario de Investigación I** (3 créditos, prerrequisito: **170 créditos**)\n* **IF652 Aprendizaje Automático** (4 créditos, prerrequisito: **IF651 Inteligencia Artificial**)\n* **IF614 Ingeniería de Software I** (4 créditos, prerrequisito: **IF613 Desarrollo de Software I**)\n* **IF482 Planeamiento y Dirección Estratégica de TI** (3 créditos, sin requisitos específicos)\n* Asignaturas de Especialidad y Actividades Extracurriculares (total de 8 créditos)."
+    },
+    {
+      "pregunta": "¿Qué cursos se llevan en el noveno ciclo bajo la malla curricular 2017?",
+      "respuesta": "En el **Noveno Ciclo** de la malla curricular 2017 se llevan 6 cursos (total de 22 créditos):\n* **IF483 Formulación de Proyectos TI** (3 créditos, prerrequisito: **IF614 Ingeniería de Software I** o similar)\n* Múltiples Asignaturas de Especialidad (total de 19 créditos)."
+    },
+    {
+      "pregunta": "¿Qué cursos se llevan en el décimo ciclo bajo la malla curricular 2017?",
+      "respuesta": "En el **Décimo Ciclo** de la malla curricular 2017 se llevan 6 cursos (total de 22 créditos):\n* **IF711 Seminario de Investigación II** (3 créditos, prerrequisito: **IF710 Seminario de Investigación I**)\n* **Práctica Pre Profesional** (9 créditos, prerrequisito: **180 créditos**)\n* Asignaturas de Especialidad adicionales."
+    },
+    {
+      "pregunta": "¿Cuáles son los requisitos de las Prácticas Pre Profesionales bajo la malla curricular 2017?",
+      "respuesta": "Bajo la **malla curricular 2017**, las Prácticas Pre Profesionales otorgan **9 créditos** y requieren haber aprobado un mínimo de **180 créditos** académicos."
+    }
+  ],
+  "detalle_cursos": [
+    { "codigo": "FP901", "nombre": "Filosofía y Ética", "creditos": 3, "semestre": 1, "requisitos": [] },
+    { "codigo": "DR901", "nombre": "Constitución Política y DD.HH.", "creditos": 3, "semestre": 1, "requisitos": [] },
+    { "codigo": "AS901", "nombre": "Sociedad y Cultura", "creditos": 3, "semestre": 1, "requisitos": [] },
+    { "codigo": "ME901", "nombre": "Matemática I", "creditos": 4, "semestre": 1, "requisitos": [] },
+    { "codigo": "ED901", "nombre": "Estrategias de Aprendizaje Autónomo", "creditos": 4, "semestre": 1, "requisitos": [] },
+    { "codigo": "LC901", "nombre": "Redacción de Textos", "creditos": 4, "semestre": 1, "requisitos": [] },
+    { "codigo": "IF468", "nombre": "Fundamentos de Programación", "creditos": 4, "semestre": 2, "requisitos": [] },
+    { "codigo": "ME307", "nombre": "Matemáticas Discretas I", "creditos": 4, "semestre": 2, "requisitos": [] },
+    { "codigo": "FI902", "nombre": "Física I", "creditos": 4, "semestre": 2, "requisitos": [] },
+    { "codigo": "ME903", "nombre": "Cálculo I", "creditos": 4, "semestre": 2, "requisitos": [] },
+    { "codigo": "IF902", "nombre": "Tecnología de la Información y Comunicación", "creditos": 4, "semestre": 2, "requisitos": [] },
+    { "codigo": "FP902", "nombre": "Liderazgo y Habilidades Sociales", "creditos": 3, "semestre": 2, "requisitos": [] },
+    { "codigo": "IF450", "nombre": "Abstracción de Datos y Objetos", "creditos": 4, "semestre": 3, "requisitos": ["IF468"] },
+    { "codigo": "IF351", "nombre": "Álgebra Lineal Computacional", "creditos": 4, "semestre": 3, "requisitos": ["ME901"] },
+    { "codigo": "IF370", "nombre": "Física Aplicada a la Informática", "creditos": 4, "semestre": 3, "requisitos": ["FI902"] },
+    { "codigo": "ME350", "nombre": "Cálculo II", "creditos": 4, "semestre": 3, "requisitos": ["ME903"] },
+    { "codigo": "ME352", "nombre": "Probabilidades y Estadística", "creditos": 4, "semestre": 3, "requisitos": ["ME901"] },
+    { "codigo": "IF451", "nombre": "Programación I", "creditos": 2, "semestre": 3, "requisitos": ["IF468"] },
+    { "codigo": "IF452", "nombre": "Algoritmos y Estructura de Datos", "creditos": 4, "semestre": 4, "requisitos": ["IF450", "IF451"] },
+    { "codigo": "ME354", "nombre": "Investigación Operativa", "creditos": 4, "semestre": 4, "requisitos": ["IF351"] },
+    { "codigo": "ME355", "nombre": "Matemática Discreta II", "creditos": 4, "semestre": 4, "requisitos": ["ME307"] },
+    { "codigo": "LI371", "nombre": "Electrónica y Diseño Digital", "creditos": 3, "semestre": 4, "requisitos": ["IF370"] },
+    { "codigo": "IF480", "nombre": "Administración de Tecnologías de la Información", "creditos": 3, "semestre": 4, "requisitos": [] },
+    { "codigo": "IF453", "nombre": "Programación II", "creditos": 2, "semestre": 4, "requisitos": ["IF451"] },
+    { "codigo": "IF650", "nombre": "Modelos Probabilísticos", "creditos": 4, "semestre": 5, "requisitos": ["ME352", "ME355"] },
+    { "codigo": "IF454", "nombre": "Teoría de la Computación", "creditos": 3, "semestre": 5, "requisitos": ["IF452"] },
+    { "codigo": "IF610", "nombre": "Análisis y Diseño de Sistemas de Información", "creditos": 4, "semestre": 5, "requisitos": ["IF452", "IF480"] },
+    { "codigo": "IF550", "nombre": "Organización y Arquitectura del Computador", "creditos": 4, "semestre": 5, "requisitos": ["LI371"] },
+    { "codigo": "IF481", "nombre": "Ingeniería Económica", "creditos": 3, "semestre": 5, "requisitos": [] },
+    { "codigo": "ME359", "nombre": "Ecuaciones Diferenciales", "creditos": 4, "semestre": 5, "requisitos": ["ME350"] },
+    { "codigo": "IF455", "nombre": "Algoritmos Paralelos y Distribuidos", "creditos": 3, "semestre": 6, "requisitos": ["IF550", "IF452"] },
+    { "codigo": "IF611", "nombre": "Metodología de Desarrollo de Software", "creditos": 3, "semestre": 6, "requisitos": ["IF610"] },
+    { "codigo": "IF612", "nombre": "Fundamentos y Diseño de Bases de Datos", "creditos": 4, "semestre": 6, "requisitos": ["IF610"] },
+    { "codigo": "IF551", "nombre": "Sistemas Operativos", "creditos": 4, "semestre": 6, "requisitos": ["IF550"] },
+    { "codigo": "IF457", "nombre": "Métodos Numéricos", "creditos": 3, "semestre": 6, "requisitos": ["ME359"] },
+    { "codigo": "IF456", "nombre": "Algoritmos Avanzados", "creditos": 4, "semestre": 7, "requisitos": ["IF452"] },
+    { "codigo": "IF651", "nombre": "Inteligencia Artificial", "creditos": 4, "semestre": 7, "requisitos": [] },
+    { "codigo": "IF613", "nombre": "Desarrollo de Software I", "creditos": 2, "semestre": 7, "requisitos": ["IF612", "IF611"] },
+    { "codigo": "IF552", "nombre": "Redes de Computadoras I", "creditos": 4, "semestre": 7, "requisitos": ["IF551"] },
+    { "codigo": "IF710", "nombre": "Seminario de Investigación I", "creditos": 3, "semestre": 8, "requisitos": ["170 créditos"] },
+    { "codigo": "IF652", "nombre": "Aprendizaje Automático", "creditos": 4, "semestre": 8, "requisitos": ["IF651"] },
+    { "codigo": "IF614", "nombre": "Ingeniería de Software I", "creditos": 4, "semestre": 8, "requisitos": ["IF613"] },
+    { "codigo": "IF482", "nombre": "Planeamiento y Dirección Estratégica de TI", "creditos": 3, "semestre": 8, "requisitos": [] },
+    { "codigo": "IF483", "nombre": "Formulación de Proyectos TI", "creditos": 3, "semestre": 9, "requisitos": ["IF614"] },
+    { "codigo": "IF711", "nombre": "Seminario de Investigación II", "creditos": 3, "semestre": 10, "requisitos": ["IF710"] },
+    { "codigo": "IFI66_2017", "nombre": "Práctica Pre Profesional", "creditos": 9, "semestre": 10, "requisitos": ["180 créditos"] }
+  ]
+}

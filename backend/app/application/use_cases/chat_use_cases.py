@@ -47,8 +47,22 @@ class ChatUseCase:
                 "parts": [{"text": msg.content}]
             })
             
-        # 1. Embed user query
-        query_embedding = await self.llm.compute_embedding(user_content)
+        # RAG Query Expansion/Rewriting for short follow-up messages
+        prev_user_content = ""
+        # history_msgs[-1] is the current user message because it was saved at line 35.
+        for i in range(len(history_msgs) - 2, -1, -1):
+            if history_msgs[i].role == "user":
+                prev_user_content = history_msgs[i].content
+                break
+        
+        # If current query is short (e.g. <= 4 words) and there is a previous user query, combine them to preserve context
+        if prev_user_content and len(user_content.split()) <= 4:
+            rag_query = f"{prev_user_content} {user_content}"
+        else:
+            rag_query = user_content
+
+        # 1. Embed RAG query
+        query_embedding = await self.llm.compute_embedding(rag_query)
         
         # 2. Search corpus in pgvector
         similar_chunks = await self.corpus_repo.search_similar(query_embedding, limit=3)
@@ -221,17 +235,26 @@ class ChatUseCase:
             "Eres TutorIA, el tutor académico inteligente de la universidad UNSAAC. Te presentas como un amigable dinosaurio morado. "
             "Tu objetivo es ayudar a los estudiantes y tutores con sus consultas académicas, planes de estudio, reglamentos universitarios, "
             "técnicas de estudio y gestión de sus horarios.\n"
-            "Mantén siempre un tono entusiasta, paciente, motivador, alegre y amigable. Utiliza emojis ocasionalmente para ser más cercano (🦖, 📚, ✍️, ✨).\n\n"
-            f"La fecha y hora actual del servidor es: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}.\n\n"
+            "Mantén un tono entusiasta, paciente y amigable, pero sé conciso, directo y profesional.\n\n"
+            f"La fecha y hora actual del servidor es: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}.\n"
+            "DIRECTIVA DE FECHAS Y SEMESTRES: Para preguntas sobre el cronograma o calendario académico (exámenes, fin de clases, inicio, etc.):\n"
+            "- Si la fecha actual está entre el 30 de marzo de 2026 y el 20 de agosto de 2026, asume por defecto que se refiere al semestre 2026-I (salvo que el usuario especifique otro).\n"
+            "- Si la fecha actual es posterior al 20 de agosto de 2026 (por ejemplo, en septiembre) y hasta el 12 de enero de 2027, asume por defecto que se refiere al semestre 2026-II.\n"
+            "- Sé dinámico y adapta tu respuesta si el usuario pregunta explícitamente por un semestre en particular.\n\n"
             "Tienes acceso a herramientas en tiempo real para obtener información específica del usuario. "
             "Si la consulta del usuario requiere conocer sus tutores asignados, estudiantes asignados, o sus horarios/actividades del calendario, "
             "DEBES invocar la herramienta correspondiente para dar una respuesta precisa basada en datos reales de la base de datos.\n\n"
             "Aquí tienes fragmentos relevantes de la base de datos oficial (corpus) de la universidad UNSAAC sobre el reglamento de tutoría y servicios:\n"
             f"{corpus_context}\n\n"
-            "INSTRUCCIONES IMPORTANTES DE RESPUESTA:\n"
-            "1. Intenta responder a la consulta del estudiante/tutor utilizando la información de la base de datos oficial (corpus) anterior o los datos recuperados por las herramientas.\n"
-            "2. Si la respuesta NO se encuentra en la base de datos oficial anterior ni en los datos de las herramientas, debes responder utilizando tus conocimientos generales.\n"
-            "3. En este último caso, debes aclarar obligatoriamente al inicio de tu respuesta que no tienes esa información en tu base de datos oficial, pero que según internet/conocimiento general es de cierta manera."
+            "REGLAS OBLIGATORIAS DE FORMATO Y CONCISIÓN:\n"
+            "1. Sé conciso y ve al grano inmediatamente. Evita introducciones con relleno (como '¡Qué buena pregunta! Es fundamental...' o similares) y despedidas repetitivas. Responde de forma directa pero amigable.\n"
+            "2. Si la consulta requiere datos específicos recuperados por las herramientas (como quién es su tutor, estudiantes asignados o próximas tutorías), debes mostrar esa información CLAVE en viñetas claras al principio de tu respuesta. Ejemplo:\n"
+            "   * **Tutor Asignado:** Nombre del Tutor\n"
+            "   * **Email de Contacto:** correo@unsaac.edu.pe\n"
+            "3. Utiliza un máximo de 2 emojis en todo el mensaje. No satures la respuesta con emojis.\n"
+            "4. Utiliza negrita (`**`) únicamente para destacar datos críticos (nombres, fechas, requisitos importantes). No pongas párrafos enteros en negrita.\n"
+            "5. Si la consulta es sobre reglamentos o servicios generales, resume la respuesta en máximo 1 o 2 párrafos cortos y precisos.\n"
+            "6. Si la respuesta NO se encuentra en la base de datos oficial ni en los datos de las herramientas, responde usando tus conocimientos generales e inicia aclarando obligatoriamente que no cuentas con esa información en la base de datos de la universidad. Ejemplo: 'No tengo esa información en mi base de datos de la universidad, pero según internet...'"
         )
         
         # 3. Generate response via Gemini using function calling
