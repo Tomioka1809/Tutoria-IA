@@ -1,0 +1,623 @@
+
+- Acurio Usca, Nila
+  - 110071: Munive Salas, Ciro
+  - 184197: Fernandez Baca Castro, Lucian Neptali
+  - 210920: Bueno Lescano, Andric Jeremy
+  - 215783: Conde Sallo, Johan Mihail
+  - 221945: Alvarez Catunta, Angel Ismael
+  - 225554: Zapata Vilca, Brandon Olmer
+  - 240776: Monzon Carayhua, Diego Fernando
+  - 241441: Mora Mamani, Cristhofer Antony
+  - 241442: Oroche Ccuito, Juan Hipolito
+  - 242128: Chacon Blanco, Lucas Remo
+  - 253437: Rodriguez Tunque, Eduardo Franco
+  - 262383: Jalire Castillo, Christian Josue
+
+- Aguirre Carbajal, Doris
+  - 193817: Huaman Ccoto, Shanet
+  - 242223: Cutipa Condori, Elvira
+  - 246186: Contreras Pinto, Zahid Anthony
+  - 246191: Huahuasoncco Garcia, Jair Humberto
+  - 250884: Gamero Quispe, Eitrin Rimane
+  - 251810: Coarity Apaza, Jose Christopher
+  - 251811: Espejo Chullunquia, Leonel Hernan
+  - 251812: Huaccanqui Velasquez, Duvan Rodrigo
+  - 252311: Condori Huillca, Alexander
+  - 252312: Flores Carlo, Roy Anderson
+  - 252313: Hancco Arisaca, Ilimani
+
+- Alzamora Paredes, Robert
+  - 182727: Ccahuantico Ninameza, Luis Fernando
+  - 200825: Mendoza Mayta, Andre Marcelo
+  - 210922: Ccasa Ccahuana, Flor Deliz
+  - 210924: Cusi Diaz, Ibeth Janela Del Pilar
+  - 211858: Meza Challco, Dylan Patrick
+  - 211860: Muñoz Centeno, Milder
+  - 231449: Zevallos Yanqui, Andy Jefferson
+  - 241443: Quispe Chaco, Rudy Fernando
+  - 246183: Calvo Quispe, Luis Adriano
+  - 246184: Capra Morales, Fabricio Jhojan
+  - 246185: Cconcho Castellanos, Marco Antonio
+  - 254156: Tintaya Ccoa, Ruth Sheyla
+
+- Baca Cardenas, Lino
+  - 164257: Quispe Rimachi, Romario
+  - 183485: Sullca Aquino, Jose Antonio
+  - 184194: Condorcahua Ayllone, Ferdinan Junior
+  - 210413: Sanchez Enciso, Horus Hugo
+  - 215326: Huayhua Huamani, Jhon Eber
+  - 216061: Huillca Diaz, Jose Luis
+  - 224870: Huaman Quispe, Jose Alfredo
+  - 224871: Luicho Quispe, Jhoel Alex
+  - 225421: Huanca Alcca, Jhon William
+  - 240775: Hurtado Quispe, Rodrigo
+  - 245579: Qquenta Qquelcca, Jhoel
+
+- Candia Oviedo, Dennis
+  - 134403: Callapiña Castilla, Ciro Gabriel
+  - 141002: Chino Choquenaira, Wilfredo
+  - 171569: Quispe Hancco, Fernando
+  - 182977: La Torre Franco, Jacobo Neptaly
+  - 210937: Motta Mendoza, Pavel Alvaro
+  - 215817: Chavez Luna, Bryan Sebastian
+  - 230249: Ccansaya Corrales, Yhasmin Graciela
+  - 231907: Quispe Pinares, Renzo Sebastian
+  - 234892: Ayte Noa, Alvaro Alonso
+  - 240443: Arias Salas, Emerson
+  - 240772: Auccacusi Quispe Ynga, Andres Aparicio
+  - 262382: Huaycho Condori, Daniel Alexander
+
+- Carbajal Luna, Julio
+  - 141632: Polo Chura, Marco Rosauro
+  - 184193: Ccoscco Chahua, Yeison Emerson
+  - 220548: Casafranca Benavides, Elvis Jair
+  - 230602: Guzman Papel, Chanin Awki
+  - 231542: Meza Huaman, Luis Rey
+  - 231816: Quispe Teves, Jorge Luis
+  - 231868: Perez Cahuana, Gabriel
+  - 242108: Velasquez Aguilar, Alex Fernando
+  - 246197: Mescco Conde, Trisano
+  - 246198: Morales Valeriano, Victor Joseph Yuri
+  - 260867: Tinta Dueñas, Carlos Mateo
+  - 261272: Condori Halanocca, Jano Stip
+
+- Carrasco Poblete, Edwin
+  - 145003: Barazorda Cuellar, Hector Paolo
+  - 151696: Quispe Huamanttupa, Alfredo
+  - 192426: Niño De Guzman Conde, Wendel Yovan
+  - 204792: Achahuanco Valenza, Andree
+  - 215719: Choque Mamani, Brayan Isau
+  - 221540: Quispe Herrera, Oliver Anthony
+  - 225417: Arapa Salazar, Marco Antonio
+  - 241566: Quispe Hermoza, Roberto Carlos
+  - 241663: Quispe Hancco, Jhair
+  - 245581: Quispe Juscca, Paul Dante
+  - 246205: Quispe Machaca, Crhistiano Ronaldho
+  - 252320: Tecse Lloclla, Pedro Angel
+
+- Ccacyahuillca Bejar, Hans
+  - 111276: Aguilar Quispe, Yon
+  - 182917: Mamani Gabriel, Bruce Maximo
+  - 210927: Enriquez Aramburu, Jeliel
+  - 225491: Salazar Delgado, David Willkerson
+  - 230601: Farfan Gomez, Gisel Dayana
+  - 231453: Llactahuamani Ayala, Adriel Alfredo
+  - 234895: Mujica Peralta, André Gustavo
+  - 241447: Taipe Tunquipa, Alex Kennedy
+  - 251290: Sapacayo Huiñocana, Cesar Abraham
+  - 253438: Salas Tambohuacso, Sebastian
+  - 254108: Huaraya Barrientos, Yefersson
+
+- Chavez Centeno, Javier
+  - 192423: Lopez Barazorda, Jhon Anthony
+  - 200785: Olarte Bautista, Cesar Ciro
+  - 215882: Cruz Ccanchi, Eddy Arnold
+  - 220213: Pumaccahua Huallpa, Patrick Michael
+  - 220214: Vargas Zegarra, Marco Antonio Axel
+  - 230971: Mendoza Quispe, Jose Daniel
+  - 231446: Merma Ccarhuarupay, Adel Alejandro
+  - 241438: Choquehuanca Mamani, Juan Nilton
+  - 245576: Huarancca Carhuarupay, Juan Manuel
+  - 246193: Huaman Paucar, Cristian Alexander
+  - 261274: Huarhua Quispe, Amgely Libertad
+
+- Choque Soto, Vanessa
+  - 050495: Valderrama Llanos, Rene Emilio
+  - 200858: Quispe Condori, Manuel Eduardo
+  - 211358: Quispe Huillca, Joham Esau
+  - 220547: Aranibar Rojas, Axel Barnaby
+  - 225239: Vargas Quispe, Juan Carlos
+  - 225455: Jamanccay Montañez, Zidani
+  - 231535: Huillca Casa, Erik
+  - 240445: Condori Lima, Crhistian
+  - 242104: Cochama Mamani, Keidy Sharmely
+  - 245577: Jaimes Sallo, Rafael
+  - 260863: Huachaca Chumpe, Grimaldo Mauricio
+
+- Chullo Llave, Boris
+  - 171571: Roa Limachi, Jhon Nilson
+  - 184206: Meza Zamalloa, Marcus Geuseppe
+  - 195048: Labra Huaita, Nayeli Constantina
+  - 215784: Cruz Yucra, Lucero Esmeralda
+  - 215786: Leon Maldonado, Jose Carlos
+  - 221448: Gil Figueroa, Heidan Toribio
+  - 221461: Uscapi Baez, Cristofer
+  - 225359: Rodriguez Oviedo, Julio Fernando
+  - 231444: Magaña Osorio, Jhoel Fabrizzio
+  - 242103: Chacon Condori, Gladys Eliana
+  - 254142: Ccasa Ccahuana, Jose Antony
+
+- Cosio Loaiza, Stephan
+  - 161809: Puma Condori, Richard Braulio
+  - 200886: Salcedo Ataulluco, Mirco Sair
+  - 215948: Quentasi Juachin, Jose Francisco
+  - 221986: Quispe Castillo, Brayan Rodrigo
+  - 224872: Medma Canlla, Luis David
+  - 224873: Merma Flores, Joseph Smith
+  - 224874: Quispe Merma, Timoteo
+  - 225423: Masco Rodriguez, Juan Daniel
+  - 225425: Ramos Aguirre, Luis Alejandro
+  - 242136: Huarhua Enciso, Neysa Dayana
+  - 261795: Huachuñahuinlla Camargo, Edwin Andree
+
+- Cutipa Arapa, Efraina
+  - 140984: Ccapatinta Qqueccaño, Dennis Moises
+  - 161534: Zegarra Rojas, Jorge Enrique
+  - 164246: Pacha Quispe, Jean Marco
+  - 200341: Sanchez Chacon, Elbert Cesar
+  - 215422: Quispe Machaca, Jhon Jesus
+  - 221444: Ccori Taco, Esmaydes
+  - 230173: Paucar Hancco, Franz Aldair
+  - 231443: Huanto Ayma, Gerald Benjamin
+  - 231448: Yuca Chipana, Kaled Salvador
+  - 235395: Quispe Castilla, Diego Alonso
+  - 241448: Ttito Quispe, Jhoel Andres
+
+- Diaz Caceres, Lisha
+  - 150400: Ochoa Mamani, Ricardo
+  - 164244: Molocho Condori, Brayan Vladymir
+  - 182069: Cabrera Tupayachi, Diego Manuel
+  - 211265: Cabeza Huillca, Flavio Antony
+  - 215939: Camala Tapara, Dante Elbys
+  - 221443: Calderon Rodriguez, Andre Alfredo
+  - 225418: Baez Monge, Michael Augusto
+  - 230251: Delgado Huamputupa, Dominic Jair
+  - 235390: Champi Condori, Yordy Wilfredo
+  - 241875: Mantilla Condorhuaman, Frederick Nisha
+  - 261803: Rosa Huanca, Jhon Anderson
+
+- Dueñas Bustinza, Dario
+  - 231469: Ccama Pacco, Frank Moises
+  - 242205: Casazola Leon, Daniel
+  - 250491: Bernales Alvarez, Rodrigo
+  - 250492: Cabrera Huaman, Juan Jose
+  - 250881: Bolivar Alegre, Alfred Smit
+  - 250882: Ccahuaya Quispe, Adrian Fabricio
+  - 250883: Champi Pareja, Diego Mauricio
+  - 251283: Alata Arce, Saul Rodrigo
+  - 251284: Challco Montufar, Deivis Alexander
+  - 251809: Barrios Kcala, Deyvid Rivaldo
+  - 261793: Alegre Cotohuanca, Mayra Dayana
+
+- Dueñas De La Cruz, Henry
+  - 103179: Yaranga Achahui, Aldo
+  - 200332: Cusacani Gonzales, Gerald Antonio
+  - 204809: Torres Mendoza, Raul
+  - 225461: Quispe Llavilla, Jhon Andherson
+  - 231866: Colque Quispe, Fidel Enrique
+  - 231929: Quispe Vargas, Abel
+  - 232317: Chuchon Valdez, Erick Sebastian
+  - 235389: Caballero Zegarra, Steffano Ricardo
+  - 235393: Puente De La Vega Miranda, Rodrigo
+  - 245893: Quejia Huari, Eddy Fernando
+  - 262380: Gamez Rojas, Walter Rodrigo
+
+- Dueñas Jimenez, Ray
+  - 081561: Huacani De La Cruz, Dany Darwin
+  - 121938: Mendoza Leon, Jose Alberto
+  - 154630: Yucra Valdez, Yefer Yoselin
+  - 174941: Choquenaira Garcia, Ronal Franklin
+  - 220650: Huaman Tairo, Emmi Daniela
+  - 230604: Suca Hancco, Elvis Raul
+  - 235433: Huanqque Ccanchillo, Jhon Carlos
+  - 250494: Chavez Machaca, Wily Royer
+  - 250495: Huanca Oviedo, Antony Albert
+  - 251285: Checca Ccolqque, Dennis Yeison
+  - 252317: Roque Huaman, Rodrigo Alonso
+
+- Falcon Huallpa, Elida
+  - 211311: Mayta Ttito, Will Edson
+  - 215275: Cochama Bornas, Orlando
+  - 215733: Quispe Chura, Jhon Efrain
+  - 216062: Muñoz Rosas, Ramiro
+  - 220552: Quispe Checya, Joan Gonzalo
+  - 221451: Rodríguez Ccoyto, Jairo Jaser
+  - 230603: Santos Pillco, Eduardo Jhosef
+  - 230973: Sota Escalante, Baruc
+  - 242107: Lizaraso Huaman, Michael Alexander
+  - 242157: Paz Leva, Cesar Raul
+  - 245580: Quispe Chui, Beltran
+
+- Flores Pacheco, Lino
+  - 112207: Ibarra Castillo, Waldo Erick
+  - 174449: Saire Bustamante, Edmil Jampier
+  - 193109: Colque Galindo, Jean Franco
+  - 210178: Luna Ccapa, Carlos Willian
+  - 224869: Gallegos Ballon, Luis Fernando
+  - 225422: Mamani Palomino, Augusto Fernando
+  - 235394: Puma Sullcapuma, Lym Kurth
+  - 241383: Yupanqui Huanca, Juan Josue
+  - 245572: Hancco Checya, Sayry Daniel
+  - 246202: Quispe Ballon, Alvaro Omar
+  - 260458: Valencias Quispe, Eduardo Leonardo
+  - 261273: Espirilla Pinto, Leonardo Axel
+
+- Gamarra Salas, Jisbaj
+  - 141005: Flores Montoya, Nilthon Jair
+  - 143833: Melo Gutierrez, Raul Elver
+  - 164248: Puma Potocino, Jose Francisco
+  - 174521: Roque Roque, Denis Paul
+  - 174910: Cusi Huaylla, Miguel Angel
+  - 175054: Farfan Vasquez, Emanuel
+  - 194522: Mamani Mescco, Luis Anthony
+  - 210180: Villalobos Usca, Anghelo Jhulino
+  - 211355: Auccacusi Huanca, Paul Andre
+  - 260457: Tito Quispe, Diego
+  - 261801: Quispe Canales, Carlos Eduardo
+
+- Huillca Huallparimachi, Raul
+  - 211862: Quispe Arqque, Etner Yury
+  - 220551: Quesada Mamani, Rodrigo Andre
+  - 231903: Nuñez Bravo, Josseph Fabrizio
+  - 231924: Cuti Zevallos, Kael Alfredo
+  - 234897: Ramos Camacho, Jherson Maddox
+  - 240632: Yupanqui Yupanqui, George Bryan Smith
+  - 240793: Ascue Gonzalo, Willyams Maykhol Andree
+  - 241508: Eguiluz Huallpa, Jose Luis
+  - 241563: Huisa Yucra, Eddison
+  - 246192: Huaman Baca, Luis Fernando
+  - 246195: Huanca Quispe, Erick Jeampiers
+
+- Ibarra Zambrano, Waldo
+  - 141158: Saire Hancco, Cesar Andersson
+  - 145213: Condori Huillca, Lider
+  - 171952: Ramos Mamani, Yovana
+  - 194526: Quispe Salas, Jose Alexander
+  - 210930: Huaman Berrio, Franz Paul
+  - 215273: Ccansaya Chaiza, Ronald Ytali
+  - 220963: Surco Cutipa, Luis Adrian
+  - 245564: Alvarez Condori, Julio Hernesto
+  - 250498: Vargas Farfan, Gabriela Carmen
+  - 250890: Yupanqui Arocutipa, Misael Jaret
+  - 261794: Coa Zegarra, Rodrigo Marcelo
+
+- Irpanoca Cusimayta, Maritza
+  - 021501: Condori Contreras, Alain Armando
+  - 210369: Ttito Huaman, Jack Eliezer
+  - 211818: Yapo Huaraya, Fran Jhoel
+  - 215940: Clemente Lopez, Orlando
+  - 221452: Toledo Bernal, Max Erixon
+  - 225465: Vasquez Mamani, Raul Franshesco
+  - 241436: Chacon Hancco, Jeyson Joseph
+  - 241440: Miranda Totocayo, Jose Omar
+  - 242132: Condori Condori, Josué Daniel
+  - 245570: Choquecahua Gutierrez, Kevin Heli
+  - 251924: Duran Carbajal, Angel
+
+- Medina Miranda, Karelia
+  - 182913: Huahualuque Vargas, Jhamil Jhonatan
+  - 192430: Ttito Quispe, Abelardo
+  - 200946: Ninancuro Huarayo, Diego Shaid
+  - 204805: Pumaccahua Cusihuaman, Christian
+  - 211363: Yucra Mendoza, Lisbeth
+  - 234893: Huaman Farfan, Chanin Fernando
+  - 246199: Navarro Estrada, Harid Fausto
+  - 246200: Papel Condori, Andrew Amir
+  - 246201: Paucar Charalla, Antony Pavel
+  - 253214: Ferro Mescco, Jahdiel Isbaq
+  - 260866: Ninantay González, Pier Apolo
+
+- Medrano Valencia, Ivan
+  - 114136: Almiron Gonzales, Juan Raiser
+  - 211057: Chavez Pinto, Johan Raul
+  - 215917: Charalla Ccama, Gian Franco
+  - 220212: Noa Aller, Ingrid Rosario
+  - 230253: Mamani Condori, Franklin Gilberto
+  - 230970: Mamani Flores, Natan
+  - 234899: Tunque Mamani, Diego Abraham
+  - 240444: Chipa Altamirano, Lurancy Marilu
+  - 241437: Chillca Andagua, Jefferson
+  - 246208: Rojas Martinez, Michael Omy
+  - 246209: Sallo Ccahuana, Juan Carlos
+
+- Montoya Cubas, Carlos
+  - 183525: Lozano Quispe, Brayan Arnold
+  - 204318: Bellido Armuto, Abel Enrique
+  - 210411: Ramos Alvarez, Ismael Gerson
+  - 210412: Romero Bernal, Jhamsid
+  - 211816: Ticona Jancco, Ronaldo
+  - 220554: Ulloa Parque, Frank Wilder
+  - 220581: Gutierrez Cueva, Luis Angel
+  - 245571: Estrella Vilca, Diego Stephano
+  - 245573: Holguino Nuñez, Max Sihuar
+  - 246189: Gutierrez Celos, Jhael
+  - 253427: Cordova Castro, Miguel Ángel
+
+- Monzon Condori, Luis
+  - 145009: Ychu Valencia, Miguel Humberto
+  - 204321: Nieto Barrientos, Yishar Piero
+  - 210926: Duran Huaman, Yelsin Magibel
+  - 210929: Gutierrez Alfaro, Ronald Einar
+  - 211859: Moreano Villena, Miguel Angel
+  - 215788: Peralta Oros, Kevin Daniel
+  - 215791: Sotelo Quispe, Julio Cesar
+  - 220610: Quispe Locumber, Aldo
+  - 245569: Berna Huanaco, Willy Alvaro
+  - 260453: Jara Saraya, Jhon Aldo
+  - 261270: Calla Cabrera, Leonel Ogmandino
+
+- Ormeño Ayala, Yeshica
+  - 210934: Mamani Salcedo, Lizeth Carla
+  - 210936: Montañez Medina, Daniel
+  - 211855: Huacho Cruz, David Ali
+  - 215272: Apaza Mamani, Giancarlo
+  - 215790: Rocca Ccotohuanca, Flor Maria
+  - 224875: Ricasca Miranda, Emanuel Javier
+  - 241445: Romero Paredes, Hugo Ricardo
+  - 246210: Sota Solorzano, Royer
+  - 251815: Sayre Condori, Jhon Alexis
+  - 251816: Sicos Alcca, Gabriel Omar
+  - 262379: Cusihuaman Blanco, Frank Deivid
+  - 262381: Gonza Zapata, Sadhu Jeffrey
+
+- Pacheco Vasquez, Esther
+  - 103647: Quispe Aroni, Jesus Adel
+  - 192420: Guevara Delgado, Tirssa Ivonne
+  - 210939: Pantoja Olave, Gustavo
+  - 210940: Pumachoque Choquenaira, Jhon Esau
+  - 215279: Ramos Condori, Lucero Estefany
+  - 221445: Chillihuani Huaman, Rivaldo Franco
+  - 225419: Barrientos Huillca, Oscar David
+  - 230605: Tinco Huaman, Daniela Rosario
+  - 231894: Fernández Puente De La Vega, Camila Alexandra
+  - 240447: Quispe Chura, Oscar Alex
+  - 240449: Yucra Huaman, Roy Arturo
+
+- Palma Ttito, Luis
+  - 170438: Mamani Zanabria, Jefersson
+  - 210409: Castilla Vargas, Dayana Angela
+  - 215780: Alegria Mendoza, Jesus Augusto
+  - 221612: Ccaña Suri, Henry Alexis
+  - 225426: Rodriguez Huaylla, Richard
+  - 230972: Rivera Solorzano, Carlos Rodrigo
+  - 231989: Morocco Amanca, Albert Erik
+  - 245574: Huaman Copara, Qoyllur Alondra
+  - 253420: Alarcon Chura, Jose Alfredo
+  - 260451: Condorapa Tanca, Gian Frank
+  - 261271: Campos Puma, Josep Anthony
+  - 262378: Colqque Tapara, Angel Jhosep
+
+- Palomino Olivera, Emilio
+  - 154635: Condori Huillca, Jose Antonio
+  - 184213: Zavala Ttito, Dorian Roger
+  - 195050: Lozano Llacctahuaman, Medaly
+  - 215277: Halanocca Surco, Jhon Kevin
+  - 221949: Quispe Huanca, Andy Yoseph
+  - 221950: Quispe Quispe, Celia
+  - 230250: Cuba Castillo, Nohemi Sharit
+  - 231441: Cruz Cahuana, Zara Saida
+  - 242102: Bayona Osorio, Rafael
+  - 260454: Nina Macedo, Digema Kely
+  - 261269: Arancibia Cruz, Enrique Praxides
+  - 261797: Nible Baca, Cristhian Smith
+
+- Peñaloza Figueroa, Manuel Aurelio
+  - 120893: Porroa Sivana, Yeni Ruth
+  - 220549: Llancaya Tapia, Aracely
+  - 241660: Peña Fernandez, Nilton
+  - 252376: Yucra Mamani, Yeremy Anderson
+  - 253429: García Condori, Corwin Arturo
+  - 254065: Mozo Nuñez, Anibal
+  - 260450: Chaman Huanca, Jack Fabrissio
+  - 260452: Cutipa Tecsi, Wilberth
+  - 260865: Mayta Cruz, Cesar David
+  - 261798: Oviedo Huaman, Rashmir Alexander
+  - 261800: Quispe Alvarez, Jorge Daniel
+  - 262376: Calderon Quispe, Josue
+
+- Pillco Quispe, Jose
+  - 200822: Estacio Medrano, Amilcar
+  - 200865: Yana Cuno, Ian Piero
+  - 204800: Muñoz Castillo, George Ivanok
+  - 211359: Quispe Ventura, Ian Logan Will
+  - 231447: Montalvo Solorzano, Rosy Aurely
+  - 231454: Velarde Delgado, Sebastian Juvenal
+  - 240446: Cuadros Morales, Coral Bridney Wayra
+  - 240774: Diaz Pumalloclla, Jonh Jeremi
+  - 241439: Crispin Melo, Ross Margarita
+  - 242105: Diaz Gutierrez, Lizardo Ronaldinho
+  - 245575: Huaman Fernandez, Luis Fernando
+
+- Quispe Onofre, Carlos
+  - 182975: Huaylla Peredo, Ruben Dario
+  - 210179: Prieto Cardoso, David Fernando
+  - 215714: Ancasi Aymachoque, Luz Diana
+  - 220119: Araoz Lupinta, David
+  - 225416: Ancco Ancalla, Mirian Lucero
+  - 231863: Alvarez Vargas, Ander Gabriel
+  - 231864: Cañihua Paz, Peython Leoncio
+  - 231865: Castro Pari, Rayneld Fidel
+  - 241701: Quispe Condori, Johan Emerson
+  - 246203: Quispe Crispin, Carlos Daniel
+  - 261804: Soncco Quispe, Joeri Andree
+
+- Quispe Sota, Julio
+  - 241529: Rodas Dorado, Joaquin
+  - 241547: Ortogorin Condori, Brayan Jesus
+  - 241879: Quiñones Espirilla, Roly Galileo
+  - 245898: Salas Vilca, Carlos Eduardo
+  - 246204: Quispe Llamacchima, Edison
+  - 251775: Quispe Coronel, Yoset Wilson
+  - 251858: Torre Cano, Joe Guillermo
+  - 251884: Zuñiga Castro, Fabrizzio Roberto
+  - 251942: Arce Llanos, Dreik Mervin Samuel
+  - 251944: Aviles Uscamaita, Jhon Antoni
+  - 260864: Mamani Torres, Adriano Alvaro
+
+- Rozas Huacho, Javier
+  - 204798: Huaracallo Arenas, Lino Zeynt
+  - 210944: Uscapi Pucho, Diego Edu
+  - 211356: Palacios Durand, Oriol Fernando
+  - 215841: Samata Quispe, Juendeniz
+  - 222067: Corampa Palacios, Aracely Fiorela
+  - 231445: Mayhuire Chacon, Brenda Lucia
+  - 231867: Melo Cajahuillca, Mario Gabriel
+  - 242218: Sumire Ccahuana, Mid Sam Jafet
+  - 245582: Singuña Ayma, Raul Fabian
+  - 245583: Soto Achapuma, Evelyn Belissa
+  - 260861: Auccapure Ninantay, Maximo Elioth
+  - 261802: Roque Molleapaza, David Franco
+
+- Segundo Carpio, Liseth
+  - 251836: Alca Caballero, Neil Rodrigo
+  - 253431: Mamani Huamani, Jorge Mijael
+  - 254011: Flores Mamani, Eddy Fernando
+  - 254012: Huaman Ovalle, Rut Caterin
+  - 254013: Huamani Laura, Mirian Milagros
+  - 254014: Letona Carlos, Luisa Alexandra
+  - 254015: Mayorga Pacheco, Danilo
+  - 254016: Palomino Cuba, Julbert Illapu
+  - 254017: Peña Huarco, Luis Fernando
+  - 254018: Quispe Jancco, Jairo Edward
+  - 261796: Huillca Saire, Victor Manuel
+
+- Soncco Alvarez, Jose
+  - 154636: Palomino Auquitayasi, Jose Ramiro
+  - 192190: Zuñiga Sara, Carlos Daniel
+  - 204322: Zuloaga Ccopa, Nilson Leonel
+  - 220555: Villavicencio Seguil, Edu Piero
+  - 220962: Salluca Chile, Sandro Alexander
+  - 221989: Ramos Alata, Hernan Washington
+  - 225555: Zavala Uchupe, Maricielo Antonieta
+  - 234898: Suca Hilares, Gabriel Caleb
+  - 253425: Ccalta Arce, George David
+  - 254010: Condori Huisa, Elisban
+  - 260455: Paniagua Ticona, Joel Ludwing
+
+- Sosa Jauregui, Victor
+  - 251893: Ccorimanya Ccapa, Aron Matusalen
+  - 251923: Daza Tintaya, Any Estefani
+  - 251929: Levita Jaimes, Josue
+  - 251935: Saire Bustamante, Dafne Amira
+  - 251938: Velasquez Huillca, Jose Carlos
+  - 252443: Loaiza Ferro, Rubi Esmeralda
+  - 252450: Quintanilla Yuca, Siwar Amaru Sheynev
+  - 253423: Callonza Pizarro, Antony Adriano
+  - 254005: Borda Ccana, Andree Fernando
+  - 254006: Caceres Quispe, Jesus Mateo
+  - 261275: Paravecino Loaiza, Ruben Rafael
+
+- Ticona Pari, Guzman
+  - 160337: Vitorino Marin, Efrain
+  - 204796: Farfan Luna, Jannira Alison
+  - 210435: Ticona Quispe, Isel Yuliana
+  - 224867: Bustinza Quispe, Jose Manuel
+  - 224868: Cancinas Cardenas, Denis Jair
+  - 225420: Callañaupa Salcedo, Joseph Jesus
+  - 225452: Gallegos Silva, Marco Abel
+  - 230969: Huaman Sutta, Jose Javier
+  - 231442: Florez Vega, Yamir Wagner
+  - 240773: Ccohua Auccacusi, Joel Fernando
+  - 260862: Cruz Churata, Juan Carlos
+
+- Ugarte Rojas, Hector
+  - 195036: Guevara Cusi, Adriel Mithuar
+  - 210923: Ccoyo Mejia, Brandon
+  - 215725: Higuera Halanocca, Brayan Antoni
+  - 215781: Berrios Thea, Alex
+  - 215782: Ccoa Perez, Patrick Paul
+  - 221446: Diaz Misme, Pamela
+  - 222085: Canal Acevedo, Francesco Gabriel
+  - 230252: Lazo Florez, Yely
+  - 260459: Yepez Fernandez, Luisinho
+  - 262377: Champi Quispe, Belinda Grisel
+  - 262385: Palomino Llalla, Angie Dayana
+
+- Venegas Vergara, Maria
+  - 253428: Delgado Ocampo, Willyvan
+  - 253430: Huamani Salazar, Maximo Alejandro
+  - 253432: Meza Ccorihuaman, Edmilson Jens
+  - 253433: Morante Morales, Stefano Magno
+  - 253434: Pari Tellez, Carlos Daniel
+  - 253435: Peña Hermoza, Anderson Bernardino
+  - 253436: Phocco Hancco, Crhistian Basty
+  - 254007: Cano Nuñez, Rolando
+  - 254008: Ccana Aitara, Diego Nicolas
+  - 254009: Ccolqque Barragan, Sheyla Araceli
+  - 262386: Surco Ccahuana, Jhon Wilberth
+
+- Vera Olivera, Harley
+  - 210921: Ccama Enriquez, Carolay
+  - 220553: Supa Cusipaucar, Yeferson
+  - 241446: Sanchez Garcia, Jose Samuel
+  - 241532: Ttito Florez, Jhojan Jefferson
+  - 246207: Rayme Checya, Breyner Samir
+  - 246266: Sune Rocca, Pedro Pablo
+  - 251814: Quispe Huaman, Nils Jerson Edward
+  - 252315: Quintanilla Serrano, Josue
+  - 252316: Quispe Ccapa, Alexander
+  - 261799: Puma Limachi, Ronal
+  - 262384: Jancco Champi, Diego Sebastian
+
+- Villafuerte Serna, Rony
+  - 191978: Quispe Mamani, Domingo De Guzman
+  - 210928: Estrada Cuyto, Brandon Paolo
+  - 215274: Choquemaqui Chinchercoma, Fredy Jhon
+  - 220961: Mogrovejo Ccorimanya, Luis Ángel
+  - 221447: Farfan Carrion, Joseph Matthew
+  - 221450: Quispe Nina, Alexys
+  - 235388: Apaza Choqque, Daniel
+  - 235392: Mita Puma, Jose Snayder
+  - 241444: Quispe Quispe, Leo Franco
+  - 245565: Ancco Quispe, Jose Luis
+  - 245566: Aroni Perez, Marco Antonio
+  - 245567: Baca Pauccar, Elmer Leonel
+
+- Villalba Villalba, Tany
+  - 220235: Maita Cusi, Crhistofer
+  - 234688: Machacca Palomino, Leonardo
+  - 242226: Jalanocca Cansaya, Yack Elisban
+  - 250496: Lloclla Amache, Abraham Alfredo
+  - 250497: Pacheco Coronel, Patricia
+  - 250887: Mesicano Huaman, Edwin Paolo Kaique
+  - 250888: Parhuayo Zea, Lucia Andrea
+  - 251286: Paccotagia Salas, Rodrigo
+  - 251287: Pinto Armacta, Higinio Jhunior
+  - 251813: Mamani Ccama, Cesar Arturo
+  - 252314: Laurel Huaman, Luis Humberto
+
+- Zamalloa Paro, Willian
+  - 182897: Calderon Garmendia, Joseph Timothy
+  - 194892: Soncco Luque, Max Alex
+  - 211959: Ccasa Pocohuanca, Ludvika Arleth
+  - 215278: Huisa Mamani, Juan Gabriel
+  - 220964: Torres Bautista, Ronil Nilo
+  - 231538: Morocco Pinto, Yhojan Hilario
+  - 240777: Ramos Vilca, Gabriel Inkari
+  - 252318: Surco Ccahuana, Jhon Smit
+  - 252319: Tarraga Taiña, Roy Rudecindo
+  - 252321: Torres Cama, Merelin Rubi
+  - 253426: Ccapatinta Huillca, Paolo Gabriel
+
+- Zuñiga Rojas, Gabriela
+  - 164563: Carpio Hermoza, Haider Alex
+  - 174905: Aguilar Mainicta, Gian Marco
+  - 200878: Huahuachampi Hinojosa, Zahid
+  - 210938: Palacios Yapo, Alain Anthony
+  - 215270: Alegria Sallo, Daniel
+  - 215271: Alvaro Mendoza, Victor Anibal
+  - 231861: Accostupa Alcca, Diana Azumi
+  - 231862: Achahui Jimenez, Eduardo Sebastian
+  - 235387: Aguero Huaman, Nelson
+  - 240771: Aparicio Aguilar, Jair Samin
+  - 260860: Aucapuri Corimanya, Carlos Miguel
