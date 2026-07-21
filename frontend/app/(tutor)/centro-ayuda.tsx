@@ -6,6 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Feather from '@expo/vector-icons/Feather';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useTheme } from '@/src/theme/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 const PURPLE = '#9A3BEE';
 const PURPLE_LIGHT = '#F3E8FF';
@@ -16,26 +17,16 @@ const CYAN_LIGHT = '#ECFEFF';
 const ORANGE = '#F97316';
 const ORANGE_LIGHT = '#FFF7ED';
 
-const faqItems = [
-  {
-    question: '¿Cómo reservo una tutoría?',
-    answer: 'Puedes revisar la disponibilidad desde Calendario o desde el servicio correspondiente.',
-  },
-  {
-    question: '¿Cómo contacto a mi tutor?',
-    answer: 'Desde tu módulo de tutoría o por las sesiones programadas en la app.',
-  },
-  {
-    question: '¿Dónde veo mis notificaciones?',
-    answer: 'En la sección Notificaciones del menú inferior.',
-  },
-];
-
 export default function CentroAyudaScreen() {
   const { colors } = useTheme();
+  const { t } = useTranslation();
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const paddingTop = Math.max(insets.top, 16);
+  const faqItems = [1, 2, 3].map((item) => ({
+    question: t(`help.question${item}`),
+    answer: t(`help.answer${item}`),
+  }));
 
   return (
     <ScrollView
@@ -79,7 +70,7 @@ export default function CentroAyudaScreen() {
               flex: 1,
             }}
           >
-            Centro de ayuda
+            {t('help.title')}
           </Text>
 
           <View
@@ -129,7 +120,7 @@ export default function CentroAyudaScreen() {
 
           <View style={{ flex: 1 }}>
             <Text style={{ fontSize: 16, fontWeight: 'bold', color: colors.text }}>
-              ¿Necesitas ayuda?
+              {t('help.needHelp')}
             </Text>
             <Text
               style={{
@@ -140,7 +131,7 @@ export default function CentroAyudaScreen() {
                 lineHeight: 17,
               }}
             >
-              Encuentra información útil sobre el uso de TutorIA y los servicios de tutoría.
+              {t('help.description')}
             </Text>
           </View>
         </View>
@@ -177,7 +168,7 @@ export default function CentroAyudaScreen() {
           >
             <Ionicons name="help-circle-outline" size={22} color={PURPLE} style={{ marginRight: 10 }} />
             <Text style={{ fontSize: 16, fontWeight: 'bold', color: colors.text }}>
-              Preguntas frecuentes
+              {t('help.faq')}
             </Text>
           </View>
 
@@ -252,11 +243,11 @@ export default function CentroAyudaScreen() {
 
           <View style={{ flex: 1 }}>
             <Text style={{ fontSize: 16, fontWeight: 'bold', color: colors.text, marginBottom: 8 }}>
-              Soporte
+              {t('help.support')}
             </Text>
-            <InfoRow label="Correo:" value="soporte@tutoria.unsaac.edu.pe" colors={colors} />
-            <InfoRow label="Atención:" value="Lunes a viernes" colors={colors} />
-            <InfoRow label="Horario:" value="8:00 AM - 5:00 PM" colors={colors} />
+            <InfoRow label={t('help.email')} value="soporte@tutoria.unsaac.edu.pe" colors={colors} />
+            <InfoRow label={t('help.service')} value={t('help.weekdays')} colors={colors} />
+            <InfoRow label={t('help.hours')} value="8:00 AM - 5:00 PM" colors={colors} />
           </View>
         </View>
       </View>
@@ -295,11 +286,11 @@ export default function CentroAyudaScreen() {
 
           <View style={{ flex: 1 }}>
             <Text style={{ fontSize: 16, fontWeight: 'bold', color: colors.text, marginBottom: 8 }}>
-              Guía rápida
+              {t('help.quickGuide')}
             </Text>
-            <BulletText text="Actualiza tu perfil desde Configuración." />
-            <BulletText text="Revisa tus sesiones en Calendario." />
-            <BulletText text="Usa TutorIA para resolver dudas académicas." />
+            <BulletText text={t('help.guideProfile')} />
+            <BulletText text={t('help.guideCalendar')} />
+            <BulletText text={t('help.guideTutorIA')} />
           </View>
         </View>
       </View>
@@ -336,7 +327,7 @@ export default function CentroAyudaScreen() {
             <Ionicons name="information-circle-outline" size={26} color={ORANGE} />
           </View>
           <Text style={{ fontSize: 13, color: colors.text, flex: 1, lineHeight: 18 }}>
-            Si tienes problemas con tu cuenta, comunícate con soporte institucional.
+            {t('help.supportNotice')}
           </Text>
         </View>
       </View>

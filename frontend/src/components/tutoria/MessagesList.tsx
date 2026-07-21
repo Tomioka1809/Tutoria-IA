@@ -3,6 +3,7 @@ import React from 'react';
 import { ScrollView, View, Text, ActivityIndicator } from 'react-native';
 import { Conversation } from '@/src/types';
 import { useTheme } from '@/src/theme/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 // Helper function to parse and render bold text marked with ** and line breaks
 const renderFormattedText = (text: string, isUser: boolean, colors: any, isDark: boolean) => {
@@ -48,6 +49,7 @@ export function MessagesList({
   isSending,
 }: MessagesListProps) {
   const { colors, isDark } = useTheme();
+  const { t } = useTranslation();
   return (
     <ScrollView
       ref={scrollViewRef}
@@ -107,7 +109,7 @@ export function MessagesList({
             <Text className="text-base">🦖</Text>
           </View>
           <View style={{ backgroundColor: colors.surface }} className=" border border-primary/10 rounded-2xl rounded-tl-none px-4 py-3 shadow-sm">
-            <Text className="text-xs font-semibold italic" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(17,17,48,0.5)' }}>🦖 TutorIA está pensando...</Text>
+            <Text className="text-xs font-semibold italic" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(17,17,48,0.5)' }}>🦖 {t('tutoring.thinking')}</Text>
           </View>
         </View>
       ) : null}

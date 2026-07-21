@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text } from 'react-native';
 import { useTheme } from '@/src/theme/ThemeContext';
 import { QuotesAPI } from '@/src/api/services';
+import { useTranslation } from 'react-i18next';
 
 interface StreakCardProps {
   currentStreak?: number;
@@ -12,6 +13,7 @@ interface StreakCardProps {
 
 export function StreakCard({ currentStreak = 13 }: StreakCardProps) {
   const { colors } = useTheme();
+  const { t } = useTranslation();
   const [quote, setQuote] = useState("");
 
   useEffect(() => {
@@ -19,14 +21,14 @@ export function StreakCard({ currentStreak = 13 }: StreakCardProps) {
       setQuote(q.text);
     }).catch(err => {
       console.error("Failed to load quote:", err);
-      setQuote("Cree en ti mismo y en lo que eres.");
+      setQuote(t('dashboard.fallbackQuote'));
     });
-  }, []);
+  }, [t]);
 
   return (
     <View style={{ paddingHorizontal: 24, marginBottom: 20 }}>
       <Text style={{ fontSize: 17, fontWeight: 'bold', color: colors.text, marginBottom: 12 }}>
-        Racha de tutorías
+        {t('dashboard.streakTitle')}
       </Text>
       
       <View style={{
@@ -50,7 +52,7 @@ export function StreakCard({ currentStreak = 13 }: StreakCardProps) {
           letterSpacing: -0.5,
           textAlign: 'center',
         }}>
-          ¡{currentStreak} días de racha!
+          {t('dashboard.streakDays', { count: currentStreak })}
         </Text>
         <Text style={{
           color: colors.textSecondary,
@@ -61,7 +63,7 @@ export function StreakCard({ currentStreak = 13 }: StreakCardProps) {
           paddingHorizontal: 16,
           lineHeight: 16,
         }}>
-          Completa tu siguiente tutoría para aumentar tu racha
+          {t('dashboard.streakHint')}
         </Text>
 
         {quote ? (
@@ -80,7 +82,7 @@ export function StreakCard({ currentStreak = 13 }: StreakCardProps) {
               textAlign: 'center',
               lineHeight: 18,
             }}>
-              "{quote}"
+              &ldquo;{quote}&rdquo;
             </Text>
           </View>
         ) : null}

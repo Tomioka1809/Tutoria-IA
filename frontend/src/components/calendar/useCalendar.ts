@@ -5,8 +5,10 @@ import { useSessionStore } from '@/src/store/session';
 import { useActivityStore } from '../../store/activity';
 import client from '@/src/api/client';
 import { User } from '@/src/types';
+import { useTranslation } from 'react-i18next';
 
 export function useCalendar() {
+  const { t } = useTranslation();
   const { user } = useAuthStore();
   const { sessions, fetchSessions, createSession, updateSessionStatus } = useSessionStore();
   const { activities, addActivity, deleteActivity, clearPastActivities } = useActivityStore();
@@ -80,11 +82,11 @@ export function useCalendar() {
           notes: activityData.notes,
           location: activityData.location,
         });
-        alert('¡Tutoría programada con éxito!');
+        alert(t('calendar.scheduledSuccess'));
         fetchSessions(); // Recargar sesiones del backend
       } catch (error) {
         console.error(error);
-        alert('Hubo un error al programar la tutoría.');
+        alert(t('calendar.scheduledError'));
       }
     } else {
       // Guardar localmente
@@ -101,11 +103,11 @@ export function useCalendar() {
   const changeBackendSessionStatus = async (sessionId: number, newStatus: string) => {
     try {
       await updateSessionStatus(sessionId, newStatus);
-      alert('¡Estado actualizado con éxito!');
+      alert(t('calendar.statusSuccess'));
       fetchSessions(); // Recargar sesiones
     } catch (error) {
       console.error(error);
-      alert('Hubo un error al actualizar el estado.');
+      alert(t('calendar.statusError'));
     }
   };
 
@@ -127,7 +129,7 @@ export function useCalendar() {
   };
 
   const days = getDaysInMonth(currentMonth);
-  const weekDays = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+  const weekDays = t('calendar.weekDays', { returnObjects: true }) as string[];
 
   const prevMonth = () => {
     setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1));

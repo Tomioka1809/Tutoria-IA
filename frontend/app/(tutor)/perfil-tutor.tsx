@@ -6,12 +6,14 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Feather from '@expo/vector-icons/Feather';
 import { useAuthStore } from '@/src/store/auth';
 import { useTheme } from '@/src/theme/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 const PURPLE = '#9A3BEE';
 const PURPLE_LIGHT = '#F3E8FF';
 
 export default function PerfilTutorScreen() {
   const { colors } = useTheme();
+  const { t } = useTranslation();
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const paddingTop = Math.max(insets.top, 16);
@@ -20,28 +22,28 @@ export default function PerfilTutorScreen() {
   const infoRows = [
     {
       iconName: 'mail' as const,
-      label: 'Correo institucional',
-      value: user?.email || 'No especificado',
+      label: t('tutorProfile.institutionalEmail'),
+      value: user?.email || t('common.notSpecified'),
     },
     {
       iconName: 'award' as const,
-      label: 'Código',
-      value: user?.tutor_code || 'No especificado',
+      label: t('profile.code'),
+      value: user?.tutor_code || t('common.notSpecified'),
     },
     {
       iconName: 'phone' as const,
-      label: 'Celular',
-      value: user?.phone_number || 'No especificado',
+      label: t('tutorProfile.phone'),
+      value: user?.phone_number || t('common.notSpecified'),
     },
     {
       iconName: 'star' as const,
-      label: 'Áreas de experiencia',
-      value: user?.expertise_areas || 'No especificado',
+      label: t('tutorProfile.expertise'),
+      value: user?.expertise_areas || t('common.notSpecified'),
     },
     {
       iconName: 'map-pin' as const,
-      label: 'Oficina',
-      value: user?.office_location || 'No especificado',
+      label: t('tutorProfile.office'),
+      value: user?.office_location || t('common.notSpecified'),
     },
   ];
 
@@ -71,7 +73,7 @@ export default function PerfilTutorScreen() {
             <Feather name="arrow-left" size={24} color="white" />
           </Pressable>
           <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>
-            Perfil de tutor/a
+            {t('tutorProfile.title')}
           </Text>
         </View>
       </View>
@@ -118,10 +120,10 @@ export default function PerfilTutorScreen() {
           
           <View style={{ flex: 1 }}>
             <Text style={{ fontSize: 18, fontWeight: 'bold', color: colors.text }}>
-              {user?.full_name || 'Nombre no especificado'}
+              {user?.full_name || t('tutorProfile.nameNotSpecified')}
             </Text>
             <Text style={{ fontSize: 13, color: '#8E8EA0', marginTop: 4, fontWeight: '500' }}>
-              Docente Tutor
+              {t('tutorProfile.teacherTutor')}
             </Text>
           </View>
         </View>

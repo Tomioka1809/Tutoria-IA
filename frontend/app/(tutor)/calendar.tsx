@@ -8,6 +8,7 @@ import { CalendarMonthView } from '@/src/components/calendar/CalendarMonthView';
 import { CalendarActivitiesList } from '@/src/components/calendar/CalendarActivitiesList';
 import { AddActivityModal } from '@/src/components/calendar/AddActivityModal';
 import { ActivityDetailsModal } from '@/src/components/calendar/ActivityDetailsModal';
+import { useTranslation } from 'react-i18next';
 
 interface UnifiedActivity {
   id: string;
@@ -26,6 +27,7 @@ interface UnifiedActivity {
 
 export default function CalendarScreen() {
   const { colors } = useTheme();
+  const { t } = useTranslation();
   const {
     user,
     selectedDate,
@@ -119,10 +121,10 @@ export default function CalendarScreen() {
         <View className="flex-1 bg-black/45 justify-center items-center">
           <View style={{ backgroundColor: colors.surface, borderRadius: 24, padding: 24, width: '85%', maxWidth: 340, shadowColor: '#000', shadowOffset: {width: 0, height: 10}, shadowOpacity: 0.1, shadowRadius: 20, elevation: 5, borderWidth: 1, borderColor: colors.border }}>
             <Text style={{ fontSize: 18, fontWeight: 'bold', color: colors.text, textAlign: 'center', marginBottom: 8 }}>
-              Confirmar eliminación
+              {t('calendar.confirmDelete')}
             </Text>
             <Text style={{ fontSize: 14, color: colors.textSecondary, textAlign: 'center', marginBottom: 24 }}>
-              ¿Deseas borrar la actividad "{activityToDelete?.name}"?
+              {t('calendar.confirmDeleteMessage', { name: activityToDelete?.name })}
             </Text>
 
             <View className="flex-row justify-between">
@@ -130,14 +132,14 @@ export default function CalendarScreen() {
                 onPress={() => setActivityToDelete(null)}
                 style={{ width: '47%', backgroundColor: colors.border, paddingVertical: 12, borderRadius: 16, alignItems: 'center', justifyContent: 'center' }}
               >
-                <Text style={{ color: colors.textSecondary, fontWeight: 'bold', fontSize: 14 }}>Cancelar</Text>
+                <Text style={{ color: colors.textSecondary, fontWeight: 'bold', fontSize: 14 }}>{t('common.cancel')}</Text>
               </Pressable>
 
               <Pressable
                 onPress={handleDeleteConfirm}
                 style={{ width: '47%', backgroundColor: colors.danger, paddingVertical: 12, borderRadius: 16, alignItems: 'center', justifyContent: 'center' }}
               >
-                <Text style={{ color: '#FFFFFF', fontWeight: 'bold', fontSize: 14 }}>Borrar</Text>
+                <Text style={{ color: '#FFFFFF', fontWeight: 'bold', fontSize: 14 }}>{t('common.delete')}</Text>
               </Pressable>
             </View>
           </View>

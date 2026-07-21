@@ -8,6 +8,7 @@ import { CalendarMonthView } from '@/src/components/calendar/CalendarMonthView';
 import { CalendarActivitiesList } from '@/src/components/calendar/CalendarActivitiesList';
 import { AddActivityModal } from '@/src/components/calendar/AddActivityModal';
 import { ActivityDetailsModal } from '@/src/components/calendar/ActivityDetailsModal';
+import { useTranslation } from 'react-i18next';
 
 interface UnifiedActivity {
   id: string;
@@ -26,6 +27,7 @@ interface UnifiedActivity {
 
 export default function CalendarScreen() {
   const { colors } = useTheme();
+  const { t } = useTranslation();
   const {
     user,
     selectedDate,
@@ -115,10 +117,10 @@ export default function CalendarScreen() {
         <View className="flex-1 bg-black/45 justify-center items-center">
           <View style={{ backgroundColor: colors.surface }} className=" rounded-3xl p-6 w-[85%] max-w-[340px] shadow-2xl border border-gray-100">
             <Text style={{ color: colors.text }} className="text-lg font-bold  text-center mb-2">
-              Confirmar eliminación
+              {t('calendar.confirmDelete')}
             </Text>
             <Text className="text-sm text-textSecondary text-center mb-6">
-              ¿Deseas borrar la actividad "{activityToDelete?.name}"?
+              {t('calendar.confirmDeleteMessage', { name: activityToDelete?.name })}
             </Text>
 
             <View className="flex-row justify-between">
@@ -126,14 +128,14 @@ export default function CalendarScreen() {
                 onPress={() => setActivityToDelete(null)}
                 className="w-[47%] bg-gray-100 py-3 rounded-2xl items-center justify-center"
               >
-                <Text className="text-gray-500 font-bold text-sm">Cancelar</Text>
+                <Text className="text-gray-500 font-bold text-sm">{t('common.cancel')}</Text>
               </Pressable>
 
               <Pressable
                 onPress={handleDeleteConfirm}
                 className="w-[47%] bg-red-500 py-3 rounded-2xl items-center justify-center shadow-md shadow-red-500/20"
               >
-                <Text className="text-white font-bold text-sm">Borrar</Text>
+                <Text className="text-white font-bold text-sm">{t('common.delete')}</Text>
               </Pressable>
             </View>
           </View>

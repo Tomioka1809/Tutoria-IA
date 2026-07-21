@@ -19,9 +19,11 @@ import Feather from '@expo/vector-icons/Feather';
 import * as ImagePicker from 'expo-image-picker';
 import { useAuthStore } from '@/src/store/auth';
 import { useTheme } from '@/src/theme/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 export default function EditarPerfilScreen() {
   const { colors } = useTheme();
+  const { t } = useTranslation();
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const paddingTop = Math.max(insets.top, 16);
@@ -56,8 +58,8 @@ export default function EditarPerfilScreen() {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== 'granted') {
       Alert.alert(
-        'Permiso requerido',
-        'Necesitamos permiso para acceder a tu galería.'
+        t('editProfile.galleryPermissionTitle'),
+        t('editProfile.galleryPermissionMessage')
       );
       return;
     }
@@ -75,19 +77,19 @@ export default function EditarPerfilScreen() {
   // ── Save ──────────────────────────────────────────────────────
   const handleSave = () => {
     if (!nombre.trim()) {
-      Alert.alert('Campo requerido', 'El nombre no puede estar vacío.');
+      Alert.alert(t('editProfile.requiredTitle'), t('editProfile.nameRequired'));
       return;
     }
     if (!codigo.trim()) {
-      Alert.alert('Campo requerido', 'El código no puede estar vacío.');
+      Alert.alert(t('editProfile.requiredTitle'), t('editProfile.codeRequired'));
       return;
     }
     if (!carrera.trim()) {
-      Alert.alert('Campo requerido', 'La carrera no puede estar vacía.');
+      Alert.alert(t('editProfile.requiredTitle'), t('editProfile.schoolRequired'));
       return;
     }
     if (!semestre.trim()) {
-      Alert.alert('Campo requerido', 'El semestre no puede estar vacío.');
+      Alert.alert(t('editProfile.requiredTitle'), t('editProfile.semesterRequired'));
       return;
     }
 
@@ -104,7 +106,7 @@ export default function EditarPerfilScreen() {
 
     setSaving(false);
 
-    Alert.alert('¡Listo!', 'Perfil actualizado correctamente.', [
+    Alert.alert(t('editProfile.updatedTitle'), t('editProfile.updatedMessage'), [
       {
         text: 'OK',
         onPress: () => router.replace('/(estudiante)/configuracion' as any),
@@ -149,7 +151,7 @@ export default function EditarPerfilScreen() {
                 letterSpacing: 0.3,
               }}
             >
-              Editar perfil
+              {t('editProfile.title')}
             </Text>
           </View>
         </View>
@@ -202,7 +204,7 @@ export default function EditarPerfilScreen() {
                 fontWeight: '600',
               }}
             >
-              Cambiar foto
+              {t('editProfile.changePhoto')}
             </Text>
           </View>
 
@@ -210,11 +212,11 @@ export default function EditarPerfilScreen() {
 
           {/* Nombre */}
           <View style={styles.fieldGroup}>
-            <Text style={[styles.label, { color: colors.text }]}>Nombre</Text>
+            <Text style={[styles.label, { color: colors.text }]}>{t('editProfile.name')}</Text>
             <TextInput style={[styles.input, { color: colors.text, backgroundColor: colors.background, borderColor: colors.border }]}
               value={nombre}
               onChangeText={setNombre}
-              placeholder="Ingresa tu nombre"
+              placeholder={t('editProfile.namePlaceholder')}
               placeholderTextColor="#C4C4D4"
               returnKeyType="next"
               autoCorrect={false}
@@ -223,11 +225,11 @@ export default function EditarPerfilScreen() {
 
           {/* Código */}
           <View style={styles.fieldGroup}>
-            <Text style={[styles.label, { color: colors.text }]}>Código</Text>
+            <Text style={[styles.label, { color: colors.text }]}>{t('editProfile.code')}</Text>
             <TextInput style={[styles.input, { color: colors.text, backgroundColor: colors.background, borderColor: colors.border }]}
               value={codigo}
               onChangeText={setCodigo}
-              placeholder="Ingresa tu código"
+              placeholder={t('editProfile.codePlaceholder')}
               placeholderTextColor="#C4C4D4"
               keyboardType="numeric"
               returnKeyType="next"
@@ -236,11 +238,11 @@ export default function EditarPerfilScreen() {
 
           {/* Carrera */}
           <View style={styles.fieldGroup}>
-            <Text style={[styles.label, { color: colors.text }]}>Carrera</Text>
+            <Text style={[styles.label, { color: colors.text }]}>{t('editProfile.school')}</Text>
             <TextInput style={[styles.input, { color: colors.text, backgroundColor: colors.background, borderColor: colors.border }]}
               value={carrera}
               onChangeText={setCarrera}
-              placeholder="Ingresa tu carrera"
+              placeholder={t('editProfile.schoolPlaceholder')}
               placeholderTextColor="#C4C4D4"
               returnKeyType="next"
               autoCorrect={false}
@@ -249,11 +251,11 @@ export default function EditarPerfilScreen() {
 
           {/* Semestre */}
           <View style={{ marginBottom: 28 }}>
-            <Text style={[styles.label, { color: colors.text }]}>Semestre</Text>
+            <Text style={[styles.label, { color: colors.text }]}>{t('editProfile.semester')}</Text>
             <TextInput style={[styles.input, { color: colors.text, backgroundColor: colors.background, borderColor: colors.border }]}
               value={semestre}
               onChangeText={setSemestre}
-              placeholder="Ej: VI Semestre"
+              placeholder={t('editProfile.semesterPlaceholder')}
               placeholderTextColor="#C4C4D4"
               returnKeyType="done"
             />
@@ -285,7 +287,7 @@ export default function EditarPerfilScreen() {
                   letterSpacing: 0.5,
                 }}
               >
-                Cancelar
+                {t('common.cancel')}
               </Text>
             </Pressable>
 
@@ -318,7 +320,7 @@ export default function EditarPerfilScreen() {
                     letterSpacing: 0.5,
                   }}
                 >
-                  Confirmar
+                  {t('editProfile.confirm')}
                 </Text>
               )}
             </Pressable>

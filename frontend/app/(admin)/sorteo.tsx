@@ -5,9 +5,11 @@ import client from '../../src/api/client';
 import { useAuthStore } from '../../src/store/auth';
 import { useFocusEffect } from 'expo-router';
 import { useTheme } from '@/src/theme/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 export default function AsignacionesScreen() {
   const { colors } = useTheme();
+  const { t } = useTranslation();
   const token = useAuthStore(state => state.token);
   const [isExecuting, setIsExecuting] = useState(false);
   const [users, setUsers] = useState<any[]>([]);
@@ -46,7 +48,7 @@ export default function AsignacionesScreen() {
 
   const handleManualAssignment = async () => {
     if (!selectedTutor || !selectedStudent) {
-      Alert.alert("Error", "Debes seleccionar un estudiante y un tutor.");
+      Alert.alert(t('common.error'), t('admin.selectStudentTutor'));
       return;
     }
 
@@ -60,12 +62,12 @@ export default function AsignacionesScreen() {
       }, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      Alert.alert("Éxito", "Estudiante asignado correctamente.");
+      Alert.alert(t('common.success'), t('admin.studentAssigned'));
       setSelectedStudent(null);
       setSelectedTutor(null);
     } catch (e: any) {
       console.error(e);
-      Alert.alert("Error", e.response?.data?.detail || "Hubo un problema al asignar.");
+      Alert.alert(t('common.error'), e.response?.data?.detail || t('admin.assignmentError'));
     } finally {
       setIsAssigning(false);
     }
@@ -73,11 +75,11 @@ export default function AsignacionesScreen() {
 
   const handleBulkTransfer = async () => {
     if (!fromTutor || !toTutor) {
-      Alert.alert("Error", "Debes seleccionar ambos tutores.");
+      Alert.alert(t('common.error'), t('admin.selectBothTutors'));
       return;
     }
     if (fromTutor === toTutor) {
-      Alert.alert("Error", "El tutor de origen y destino no pueden ser el mismo.");
+      Alert.alert(t('common.error'), t('admin.differentTutors'));
       return;
     }
 
@@ -90,12 +92,12 @@ export default function AsignacionesScreen() {
       }, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      Alert.alert("Éxito", res.data.message);
+      Alert.alert(t('common.success'), res.data.message);
       setFromTutor(null);
       setToTutor(null);
     } catch (e: any) {
       console.error(e);
-      Alert.alert("Error", e.response?.data?.detail || "Problema en la reasignación grupal.");
+      Alert.alert(t('common.error'), e.response?.data?.detail || t('admin.bulkError'));
     } finally {
       setIsTransferring(false);
     }
@@ -103,12 +105,12 @@ export default function AsignacionesScreen() {
 
   const handleSorteo = () => {
     Alert.alert(
-      "Confirmar Sorteo", 
-      "¿Ejecutar el sorteo automático? Asignará a los estudiantes sin tutor con los docentes disponibles (Max 15 c/u).",
+      t('admin.confirmDraw'),
+      t('admin.confirmDrawMessage'),
       [
-        { text: "Cancelar", style: "cancel" },
+        { text: t('common.cancel'), style: "cancel" },
         { 
-          text: "Ejecutar", 
+          text: t('admin.run'),
           style: "destructive",
           onPress: async () => {
             setIsExecuting(true);
@@ -116,10 +118,10 @@ export default function AsignacionesScreen() {
               const res = await client.post('/admin/sorteo', null, {
                 headers: { Authorization: `Bearer ${token}` }
               });
-              Alert.alert("Sorteo Finalizado", res.data.message);
+              Alert.alert(t('admin.drawFinished'), res.data.message);
             } catch (e: any) {
               console.error(e);
-              Alert.alert("Error", e.response?.data?.detail || "Falló el sorteo.");
+              Alert.alert(t('common.error'), e.response?.data?.detail || t('admin.drawError'));
             } finally {
               setIsExecuting(false);
             }
@@ -134,9 +136,9 @@ export default function AsignacionesScreen() {
       {/* Sorteo Masivo */}
       <View style={{ backgroundColor: colors.surface }} className=" p-6 rounded-2xl shadow-sm border border-primary/20 dark:border-white mb-6 items-center">
         <Ionicons name="shuffle" size={50} color={colors.primary} style={{ marginBottom: 10 }} />
-        <Text className="text-xl font-bold text-text dark:text-white text-center mb-2">Sorteo Semestral</Text>
+        <Text className="text-xl font-bold text-text dark:text-white text-center mb-2">{t('admin.semesterDraw')}</Text>
         <Text className="text-primary dark:text-white text-center mb-6 text-sm">
-          Asigna alumnos huérfanos a docentes activos de forma equilibrada.
+          {t('admin.drawDescription')}
         </Text>
         
         <Pressable 
@@ -147,21 +149,21 @@ export default function AsignacionesScreen() {
           {isExecuting ? (
             <ActivityIndicator color="white" />
           ) : (
-            <Text className="text-white font-bold">Ejecutar Algoritmo</Text>
+            <Text className="text-white font-bold">{t('admin.runAlgorithm')}</Text>
           )}
         </Pressable>
       </View>
 
       {/* Reasignación Grupal (Bulk Transfer) */}
       <View style={{ backgroundColor: colors.surface }} className=" p-6 rounded-2xl shadow-sm border border-primary/20 dark:border-white mb-6">
-        <Text className="text-xl font-bold text-text dark:text-white mb-2">Reasignación Grupal</Text>
-        <Text className="text-xs text-primary dark:text-white mb-4">Mueve a todos los alumnos de un tutor a otro en caso de baja o emergencia.</Text>
+        <Text className="text-xl font-bold text-text dark:text-white mb-2">{t('admin.bulkReassignment')}</Text>
+        <Text className="text-xs text-primary dark:text-white mb-4">{t('admin.bulkDescription')}</Text>
         
         {loading ? (
           <ActivityIndicator color={colors.primary} />
         ) : (
           <>
-            <Text className="text-xs font-bold text-text dark:text-white mb-1">Tutor de Origen (Quien se va)</Text>
+            <Text className="text-xs font-bold text-text dark:text-white mb-1">{t('admin.sourceTutor')}</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-4">
               {tutors.map(t => (
                 <Pressable
@@ -174,7 +176,7 @@ export default function AsignacionesScreen() {
               ))}
             </ScrollView>
 
-            <Text className="text-xs font-bold text-text dark:text-white mb-1">Tutor de Destino (Quien recibe)</Text>
+            <Text className="text-xs font-bold text-text dark:text-white mb-1">{t('admin.destinationTutor')}</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-6">
               {tutors.map(t => (
                 <Pressable
@@ -195,7 +197,7 @@ export default function AsignacionesScreen() {
               {isTransferring ? (
                 <ActivityIndicator color="white" />
               ) : (
-                <Text className="text-white font-bold">Transferir Grupo</Text>
+                <Text className="text-white font-bold">{t('admin.transferGroup')}</Text>
               )}
             </Pressable>
           </>
@@ -204,16 +206,16 @@ export default function AsignacionesScreen() {
 
       {/* Asignación Manual */}
       <View style={{ backgroundColor: colors.surface }} className=" p-6 rounded-2xl shadow-sm border border-primary/20 dark:border-white mb-10">
-        <Text className="text-xl font-bold text-text dark:text-white mb-4">Manejo de Excepciones</Text>
+        <Text className="text-xl font-bold text-text dark:text-white mb-4">{t('admin.exceptionManagement')}</Text>
         
         {loading ? (
           <ActivityIndicator color={colors.primary} />
         ) : (
           <>
-            <Text className="text-xs font-bold text-text dark:text-white mb-1">Seleccionar Estudiante</Text>
+            <Text className="text-xs font-bold text-text dark:text-white mb-1">{t('admin.selectStudent')}</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-4">
               {students.length === 0 ? (
-                <Text className="text-gray-400 dark:text-white italic py-2">No hay estudiantes activos.</Text>
+                <Text className="text-gray-400 dark:text-white italic py-2">{t('admin.noActiveStudents')}</Text>
               ) : students.map(s => (
                 <Pressable
                   key={s.id}
@@ -225,10 +227,10 @@ export default function AsignacionesScreen() {
               ))}
             </ScrollView>
 
-            <Text className="text-xs font-bold text-text dark:text-white mb-1">Seleccionar Nuevo Tutor</Text>
+            <Text className="text-xs font-bold text-text dark:text-white mb-1">{t('admin.selectNewTutor')}</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-6">
               {tutors.length === 0 ? (
-                <Text className="text-gray-400 dark:text-white italic py-2">No hay tutores activos.</Text>
+                <Text className="text-gray-400 dark:text-white italic py-2">{t('admin.noActiveTutors')}</Text>
               ) : tutors.map(t => (
                 <Pressable
                   key={t.id}
@@ -248,7 +250,7 @@ export default function AsignacionesScreen() {
               {isAssigning ? (
                 <ActivityIndicator color="white" />
               ) : (
-                <Text className="text-white font-bold">Vincular Alumno-Tutor</Text>
+                <Text className="text-white font-bold">{t('admin.linkStudentTutor')}</Text>
               )}
             </Pressable>
           </>

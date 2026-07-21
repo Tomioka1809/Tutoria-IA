@@ -3,6 +3,7 @@ import React from 'react';
 import { useTheme } from '@/src/theme/ThemeContext';
 import { View, Text, Pressable } from 'react-native';
 import { Notification } from '@/src/types';
+import { useTranslation } from 'react-i18next';
 
 interface NotificationItemProps {
   notification: Notification;
@@ -11,19 +12,21 @@ interface NotificationItemProps {
 
 export function NotificationItem({ notification, onPress }: NotificationItemProps) {
   const { colors, isDark } = useTheme();
+  const { t } = useTranslation();
   // Determinar color e icono según título o tipo
   let iconStr = '🔔';
   let iconBg = 'bg-[#F3E8FF]';
   let titleColor = isDark ? '#FFFFFF' : colors.text;
 
-  if (notification.title.includes('Cancelada') || notification.title.includes('cancelada')) {
+  const titleLower = notification.title.toLowerCase();
+  if (titleLower.includes('cancelada') || titleLower.includes('cancelled')) {
     iconStr = '❌';
     iconBg = 'bg-[#FFEAEA]';
     titleColor = colors.danger;
-  } else if (notification.title.includes('Recordatorio')) {
+  } else if (notification.type === 'reminder' || titleLower.includes('recordatorio') || titleLower.includes('reminder')) {
     iconStr = '📅';
     iconBg = 'bg-[#F3E8FF]';
-  } else if (notification.title.includes('asignada') || notification.title.includes('Nueva tutoría')) {
+  } else if (titleLower.includes('asignada') || titleLower.includes('assigned') || titleLower.includes('nueva tutoría')) {
     iconStr = '🔔';
     iconBg = 'bg-[#F3E8FF]';
   }
@@ -36,7 +39,7 @@ export function NotificationItem({ notification, onPress }: NotificationItemProp
       const diffMs = now.getTime() - created.getTime();
       
       if (diffMs < 0) {
-        return 'Hace unos momentos';
+        return t('notifications.justNow');
       }
       
       const diffMins = Math.floor(diffMs / (60 * 1000));
@@ -44,16 +47,16 @@ export function NotificationItem({ notification, onPress }: NotificationItemProp
       const diffDays = Math.floor(diffMs / (24 * 60 * 60 * 1000));
 
       if (diffMins < 1) {
-        return 'Hace unos momentos';
+        return t('notifications.justNow');
       } else if (diffMins < 60) {
-        return `Hace ${diffMins} ${diffMins === 1 ? 'minuto' : 'minutos'}`;
+        return t('notifications.minutesAgo', { count: diffMins });
       } else if (diffHours < 24) {
-        return `Hace ${diffHours} ${diffHours === 1 ? 'hora' : 'horas'}`;
+        return t('notifications.hoursAgo', { count: diffHours });
       } else {
-        return `Hace ${diffDays} ${diffDays === 1 ? 'día' : 'días'}`;
+        return t('notifications.daysAgo', { count: diffDays });
       }
     } catch (e) {
-      return 'Hace poco';
+      return t('notifications.recently');
     }
   };
 

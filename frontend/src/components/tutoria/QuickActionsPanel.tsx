@@ -1,6 +1,7 @@
 // src/components/tutoria/QuickActionsPanel.tsx
 import React from 'react';
 import { useTheme } from '@/src/theme/ThemeContext';
+import { useTranslation } from 'react-i18next';
 import { View, Pressable, Text } from 'react-native';
 
 interface QuickActionsPanelProps {
@@ -10,6 +11,7 @@ interface QuickActionsPanelProps {
 
 export function QuickActionsPanel({ onActionPress, userRole }: QuickActionsPanelProps) {
   const { colors } = useTheme();
+  const { t } = useTranslation();
   const isTutor = userRole === 'tutor';
 
   return (
@@ -17,39 +19,39 @@ export function QuickActionsPanel({ onActionPress, userRole }: QuickActionsPanel
       {isTutor ? (
         <>
           <Pressable
-            onPress={() => onActionPress('¿Cuáles son mis estudiantes asignados?')}
+            onPress={() => onActionPress(t('tutoring.myStudentsPrompt'))}
             style={{ backgroundColor: colors.surface }} className=" border border-border rounded-2xl px-4 py-2.5 mr-2 mb-2 flex-row items-center shadow-sm"
           >
-            <Text className="text-xs font-semibold" style={{ color: colors.text }}>👥 Mis estudiantes</Text>
+            <Text className="text-xs font-semibold" style={{ color: colors.text }}>👥 {t('tutoring.myStudents')}</Text>
           </Pressable>
           <Pressable
-            onPress={() => onActionPress('¿Qué tutorías tengo hoy?')}
+            onPress={() => onActionPress(t('tutoring.mySessionsPrompt'))}
             style={{ backgroundColor: colors.surface }} className=" border border-border rounded-2xl px-4 py-2.5 mr-2 mb-2 flex-row items-center shadow-sm"
           >
-            <Text className="text-xs font-semibold" style={{ color: colors.text }}>📅 Mis tutorías</Text>
+            <Text className="text-xs font-semibold" style={{ color: colors.text }}>📅 {t('tutoring.mySessions')}</Text>
           </Pressable>
         </>
       ) : (
         <>
           <Pressable
-            onPress={() => onActionPress('¿Cuál es mi plan de estudios actual?')}
+            onPress={() => onActionPress(t('tutoring.curriculumPrompt'))}
             style={{ backgroundColor: colors.surface }} className=" border border-border rounded-2xl px-4 py-2.5 mr-2 mb-2 flex-row items-center shadow-sm"
           >
-            <Text className="text-xs font-semibold" style={{ color: colors.text }}>📄 Plan de estudios</Text>
+            <Text className="text-xs font-semibold" style={{ color: colors.text }}>📄 {t('tutoring.curriculum')}</Text>
           </Pressable>
           <Pressable
-            onPress={() => onActionPress('¿Cuándo es mi próxima tutoría?')}
+            onPress={() => onActionPress(t('tutoring.sessionsPrompt'))}
             style={{ backgroundColor: colors.surface }} className=" border border-border rounded-2xl px-4 py-2.5 mr-2 mb-2 flex-row items-center shadow-sm"
           >
-            <Text className="text-xs font-semibold" style={{ color: colors.text }}>📅 Tutorías</Text>
+            <Text className="text-xs font-semibold" style={{ color: colors.text }}>📅 {t('tutoring.sessions')}</Text>
           </Pressable>
         </>
       )}
       <Pressable
-        onPress={() => onActionPress('¿Dónde encuentro los reglamentos universitarios?')}
+        onPress={() => onActionPress(t('tutoring.regulationsPrompt'))}
         style={{ backgroundColor: colors.surface }} className=" border border-border rounded-2xl px-4 py-2.5 mb-2 flex-row items-center shadow-sm"
       >
-        <Text className="text-xs font-semibold" style={{ color: colors.text }}>📄 Reglamentos</Text>
+        <Text className="text-xs font-semibold" style={{ color: colors.text }}>📄 {t('tutoring.regulations')}</Text>
       </Pressable>
     </View>
   );

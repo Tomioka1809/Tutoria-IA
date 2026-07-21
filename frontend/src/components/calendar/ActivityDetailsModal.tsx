@@ -3,6 +3,7 @@ import { View, Text, Modal, Pressable } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
 import { useTheme } from '@/src/theme/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 interface UnifiedActivity {
   id: string;
@@ -28,6 +29,7 @@ interface ActivityDetailsModalProps {
 
 export function ActivityDetailsModal({ activity, onClose, userRole, onStatusChange }: ActivityDetailsModalProps) {
   const { colors, isDark } = useTheme();
+  const { t } = useTranslation();
   if (!activity) return null;
 
   // Formatting date and time nicely
@@ -55,7 +57,7 @@ export function ActivityDetailsModal({ activity, onClose, userRole, onStatusChan
           <View className="w-12 h-1 bg-gray-300 rounded-full align-self-center mx-auto mb-6" />
           
           <View className="flex-row justify-between items-center mb-6">
-            <Text style={{ color: colors.text }} className="text-xl font-bold ">Detalles de la Actividad</Text>
+            <Text style={{ color: colors.text }} className="text-xl font-bold ">{t('calendar.details')}</Text>
             <Pressable onPress={onClose}>
               <Feather name="x" size={24} color={colors.textSecondary} />
             </Pressable>
@@ -80,7 +82,7 @@ export function ActivityDetailsModal({ activity, onClose, userRole, onStatusChan
           {activity.isBackend && (
             <View className="bg-[#F5F3FF] rounded-2xl p-4 mb-4 border border-primary/20">
               <View className="flex-row justify-between items-center mb-3">
-                <Text className="text-xs font-bold text-textSecondary uppercase">Estado</Text>
+                <Text className="text-xs font-bold text-textSecondary uppercase">{t('calendar.status')}</Text>
                 {isTutor && onStatusChange ? (
                   <View style={{ backgroundColor: colors.surface }} className=" border border-border rounded-xl overflow-hidden min-w-[150px]">
                     <Picker
@@ -88,11 +90,11 @@ export function ActivityDetailsModal({ activity, onClose, userRole, onStatusChan
                       onValueChange={(val) => onStatusChange(activity.rawId, val)}
                       style={{ height: 50, width: '100%' }}
                     >
-                      <Picker.Item label="Pendiente" value="pendiente" color={colors.primary} />
-                      <Picker.Item label="Programada" value="programada" color="#3B82F6" />
-                      <Picker.Item label="Completada" value="completada" color="#10B981" />
-                      <Picker.Item label="Cancelada" value="cancelada" color={colors.danger} />
-                      <Picker.Item label="Ausente" value="ausente" color={colors.warning} />
+                      <Picker.Item label={t('calendar.pending')} value="pendiente" color={colors.primary} />
+                      <Picker.Item label={t('calendar.scheduled')} value="programada" color="#3B82F6" />
+                      <Picker.Item label={t('calendar.completed')} value="completada" color="#10B981" />
+                      <Picker.Item label={t('calendar.cancelled')} value="cancelada" color={colors.danger} />
+                      <Picker.Item label={t('calendar.absent')} value="ausente" color={colors.warning} />
                     </Picker>
                   </View>
                 ) : (
@@ -112,21 +114,21 @@ export function ActivityDetailsModal({ activity, onClose, userRole, onStatusChan
 
               {!isTutor && activity.tutorName && (
                 <View className="mb-3">
-                  <Text className="text-xs font-bold text-textSecondary uppercase">Tutor Asignado</Text>
+                  <Text className="text-xs font-bold text-textSecondary uppercase">{t('calendar.assignedTutor')}</Text>
                   <Text style={{ color: colors.text }} className="text-sm font-bold ">{activity.tutorName}</Text>
                 </View>
               )}
 
               {isTutor && activity.studentName && (
                 <View className="mb-3">
-                  <Text className="text-xs font-bold text-textSecondary uppercase">Estudiante</Text>
+                  <Text className="text-xs font-bold text-textSecondary uppercase">{t('calendar.student')}</Text>
                   <Text style={{ color: colors.text }} className="text-sm font-bold ">{activity.studentName}</Text>
                 </View>
               )}
 
               {activity.location && (
                 <View className="mb-3">
-                  <Text className="text-xs font-bold text-textSecondary uppercase">Lugar</Text>
+                  <Text className="text-xs font-bold text-textSecondary uppercase">{t('calendar.location')}</Text>
                   <View className="flex-row items-center mt-1">
                     <Feather name="map-pin" size={14} color="#4B5563" />
                     <Text style={{ color: colors.text }} className="text-sm font-bold  ml-2">{activity.location}</Text>
@@ -136,7 +138,7 @@ export function ActivityDetailsModal({ activity, onClose, userRole, onStatusChan
 
               {activity.notes && activity.notes !== activity.name && (
                 <View>
-                  <Text className="text-xs font-bold text-textSecondary uppercase">Notas</Text>
+                  <Text className="text-xs font-bold text-textSecondary uppercase">{t('calendar.notes')}</Text>
                   <Text className="text-sm text-[#4B5563] mt-1">{activity.notes}</Text>
                 </View>
               )}
@@ -145,8 +147,8 @@ export function ActivityDetailsModal({ activity, onClose, userRole, onStatusChan
 
           {!activity.isBackend && (
             <View style={{ backgroundColor: colors.surface }} className=" rounded-2xl p-4 mb-4">
-              <Text className="text-xs font-bold text-textSecondary uppercase">Tipo de Actividad</Text>
-              <Text style={{ color: colors.text }} className="text-sm font-bold  mt-1">Actividad personal programada localmente.</Text>
+              <Text className="text-xs font-bold text-textSecondary uppercase">{t('calendar.activityKind')}</Text>
+              <Text style={{ color: colors.text }} className="text-sm font-bold  mt-1">{t('calendar.personalActivity')}</Text>
             </View>
           )}
 

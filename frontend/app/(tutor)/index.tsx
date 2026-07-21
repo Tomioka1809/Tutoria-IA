@@ -7,9 +7,11 @@ import { Feather } from '@expo/vector-icons';
 import client from '@/src/api/client';
 import { useAuthStore } from '@/src/store/auth';
 import { useTheme } from '@/src/theme/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 export default function DashboardScreen() {
   const { colors } = useTheme();
+  const { t } = useTranslation();
   const router = useRouter();
   const token = useAuthStore(state => state.token);
   const { isLoading: dashboardLoading, onRefresh, firstName } = useDashboard();
@@ -83,13 +85,13 @@ export default function DashboardScreen() {
             elevation: 4,
           }}
         >
-          <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 16 }}>Iniciar Chat</Text>
+          <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 16 }}>{t('dashboard.startChat')}</Text>
         </Pressable>
       </View>
 
       <View style={{ paddingHorizontal: 24 }}>
         <Text style={{ fontSize: 18, fontWeight: 'bold', color: colors.text, marginBottom: 12 }}>
-          Mis Alumnos Asignados
+          {t('dashboard.assignedStudents')}
         </Text>
         
         {loadingStudents ? (
@@ -97,7 +99,7 @@ export default function DashboardScreen() {
         ) : students.length === 0 ? (
           <View style={{ backgroundColor: colors.surface, padding: 24, borderRadius: 16, alignItems: 'center', borderWidth: 1, borderColor: '#E5E5E5' }}>
             <Feather name="users" size={32} color={colors.primary} style={{ marginBottom: 10 }} />
-            <Text style={{ color: colors.primary, textAlign: 'center' }}>No tienes alumnos asignados para este periodo.</Text>
+            <Text style={{ color: colors.primary, textAlign: 'center' }}>{t('dashboard.noAssignedStudents')}</Text>
           </View>
         ) : (
           students.map(student => (
@@ -123,7 +125,7 @@ export default function DashboardScreen() {
               </View>
               <View style={{ flex: 1 }}>
                 <Text style={{ fontSize: 16, fontWeight: 'bold', color: colors.text }}>
-                  {student.full_name || 'Estudiante'}
+                  {student.full_name || t('dashboard.student')}
                 </Text>
                 <Text style={{ fontSize: 12, color: colors.primary, marginTop: 2 }}>
                   {student.email}
@@ -142,7 +144,7 @@ export default function DashboardScreen() {
             {selectedStudent && (
               <>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-                  <Text style={{ fontSize: 20, fontWeight: 'bold', color: colors.text }}>Perfil del Estudiante</Text>
+                  <Text style={{ fontSize: 20, fontWeight: 'bold', color: colors.text }}>{t('dashboard.studentProfile')}</Text>
                   <Pressable onPress={() => setModalVisible(false)}>
                     <Feather name="x" size={24} color={colors.text} />
                   </Pressable>
@@ -155,28 +157,28 @@ export default function DashboardScreen() {
                   <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
                     <Feather name="hash" size={16} color={colors.primary} />
                     <Text style={{ marginLeft: 8, color: colors.text }}>
-                      Código: <Text style={{ fontWeight: 'bold' }}>{selectedStudent.student_code || 'No registrado'}</Text>
+                      {t('profile.code')}: <Text style={{ fontWeight: 'bold' }}>{selectedStudent.student_code || t('dashboard.notRegistered')}</Text>
                     </Text>
                   </View>
                   
                   <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
                     <Feather name="book" size={16} color={colors.primary} />
                     <Text style={{ marginLeft: 8, color: colors.text }}>
-                      Semestre: <Text style={{ fontWeight: 'bold' }}>{selectedStudent.student_profile?.current_semester || 'No registrado'}</Text>
+                      {t('dashboard.semester')}: <Text style={{ fontWeight: 'bold' }}>{selectedStudent.student_profile?.current_semester || t('dashboard.notRegistered')}</Text>
                     </Text>
                   </View>
                   
                   <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
                     <Feather name="phone" size={16} color={colors.primary} />
                     <Text style={{ marginLeft: 8, color: colors.text }}>
-                      Celular: <Text style={{ fontWeight: 'bold' }}>{selectedStudent.phone_number || 'No registrado'}</Text>
+                      {t('dashboard.phone')}: <Text style={{ fontWeight: 'bold' }}>{selectedStudent.phone_number || t('dashboard.notRegistered')}</Text>
                     </Text>
                   </View>
 
                   <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Feather name="activity" size={16} color={colors.primary} />
                     <Text style={{ marginLeft: 8, color: colors.text }}>
-                      Estado Académico: <Text style={{ fontWeight: 'bold' }}>{selectedStudent.student_profile?.academic_status || 'No registrado'}</Text>
+                      {t('dashboard.academicStatus')}: <Text style={{ fontWeight: 'bold' }}>{selectedStudent.student_profile?.academic_status || t('dashboard.notRegistered')}</Text>
                     </Text>
                   </View>
                 </View>
@@ -185,7 +187,7 @@ export default function DashboardScreen() {
                   onPress={() => setModalVisible(false)}
                   style={{ backgroundColor: colors.text, padding: 16, borderRadius: 16, alignItems: 'center' }}
                 >
-                  <Text style={{ color: 'white', fontWeight: 'bold' }}>Cerrar</Text>
+                  <Text style={{ color: 'white', fontWeight: 'bold' }}>{t('common.close')}</Text>
                 </Pressable>
               </>
             )}

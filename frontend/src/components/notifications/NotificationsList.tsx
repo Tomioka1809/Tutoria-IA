@@ -5,6 +5,7 @@ import { Notification } from '@/src/types';
 import { NotificationItem } from './NotificationItem';
 import { Feather } from '@expo/vector-icons';
 import { useTheme } from '@/src/theme/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 interface NotificationsListProps {
   notifications: Notification[];
@@ -20,6 +21,7 @@ export function NotificationsList({
   onMarkRead,
 }: NotificationsListProps) {
   const { colors } = useTheme();
+  const { t } = useTranslation();
   return (
     <ScrollView
       className="flex-1 px-6"
@@ -47,10 +49,10 @@ export function NotificationsList({
             <Feather name="bell" size={28} color={colors.primary} />
           </View>
           <Text style={{ color: colors.text }} className="text-base font-bold  text-center">
-            No tienes notificaciones
+            {t('notifications.emptyTitle')}
           </Text>
           <Text className="text-xs text-textSecondary mt-1.5 text-center max-w-[200px]">
-            Aquí aparecerán tus recordatorios y tutorías asignadas
+            {t('notifications.emptyDescription')}
           </Text>
         </View>
       )}

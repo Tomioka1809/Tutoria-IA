@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '@/src/theme/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 interface DashboardHeaderProps {
   firstName: string;
@@ -9,6 +10,7 @@ interface DashboardHeaderProps {
 
 export function DashboardHeader({ firstName }: DashboardHeaderProps) {
   const { colors } = useTheme();
+  const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const paddingTop = Math.max(insets.top, 16);
 
@@ -24,7 +26,7 @@ export function DashboardHeader({ firstName }: DashboardHeaderProps) {
         color: colors.text,
         letterSpacing: -0.5,
       }}>
-        ¡Hola, {firstName}!
+        {t('dashboard.greeting', { name: firstName })}
       </Text>
       <Text style={{
         fontSize: 14,
@@ -32,7 +34,7 @@ export function DashboardHeader({ firstName }: DashboardHeaderProps) {
         marginTop: 4,
         fontWeight: '500',
       }}>
-        ¿Qué quieres aprender hoy?
+        {t('dashboard.subtitle')}
       </Text>
     </View>
   );

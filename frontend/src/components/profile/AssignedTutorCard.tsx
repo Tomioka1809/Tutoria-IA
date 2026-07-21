@@ -5,6 +5,7 @@ import { useRouter } from 'expo-router';
 import { TutorAssignment } from '@/src/types';
 import { useAuthStore } from '@/src/store/auth';
 import { useTheme } from '@/src/theme/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 interface AssignedTutorCardProps {
   assignedTutors: TutorAssignment[];
@@ -12,6 +13,7 @@ interface AssignedTutorCardProps {
 
 export function AssignedTutorCard({ assignedTutors }: AssignedTutorCardProps) {
   const { colors } = useTheme();
+  const { t } = useTranslation();
   const router = useRouter();
   const user = useAuthStore((state) => state.user);
   const routePrefix = user?.role === 'tutor' ? '/(tutor)' : user?.role === 'admin' ? '/(admin)' : '/(estudiante)';
@@ -59,14 +61,14 @@ export function AssignedTutorCard({ assignedTutors }: AssignedTutorCardProps) {
               {tutorName}
             </Text>
             <Text style={{ fontSize: 12, color: colors.textSecondary, marginTop: 2, fontWeight: '500' }}>
-              Docente Tutor
+              {t('profile.tutorTeacher')}
             </Text>
           </View>
         </View>
 
         <Pressable onPress={() => router.push(`${routePrefix}/perfil-tutor` as any)}>
           <Text style={{ fontSize: 13, fontWeight: 'bold', color: colors.primary }}>
-            Ver perfil
+            {t('profile.viewProfile')}
           </Text>
         </Pressable>
       </View>

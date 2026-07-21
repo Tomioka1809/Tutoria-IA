@@ -5,9 +5,11 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Feather from '@expo/vector-icons/Feather';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useTheme } from '@/src/theme/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 export default function PrivacidadScreen() {
   const { colors } = useTheme();
+  const { t } = useTranslation();
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const paddingTop = Math.max(insets.top, 16);
@@ -44,7 +46,7 @@ export default function PrivacidadScreen() {
             fontWeight: 'bold',
             color: 'white',
           }}>
-            Privacidad
+            {t('privacy.title')}
           </Text>
         </View>
 
@@ -82,7 +84,7 @@ export default function PrivacidadScreen() {
               fontWeight: 'bold',
               color: colors.text,
             }}>
-              Tu privacidad es importante
+              {t('privacy.important')}
             </Text>
             <Text style={{
               fontSize: 12,
@@ -91,7 +93,7 @@ export default function PrivacidadScreen() {
               marginTop: 4,
               lineHeight: 16,
             }}>
-              Controla cómo se muestra y protege tu información dentro de TutorIA.
+              {t('privacy.description')}
             </Text>
           </View>
         </View>
@@ -136,10 +138,10 @@ export default function PrivacidadScreen() {
               </View>
               <View style={{ flex: 1 }}>
                 <Text style={{ fontSize: 15, fontWeight: 'bold', color: colors.text }}>
-                  Ocultar información académica
+                  {t('privacy.hideAcademic')}
                 </Text>
                 <Text style={{ fontSize: 12, color: colors.textSecondary, marginTop: 2 }}>
-                  Nadie podrá ver tus datos académicos
+                  {t('privacy.hideAcademicDescription')}
                 </Text>
               </View>
             </View>
@@ -177,10 +179,10 @@ export default function PrivacidadScreen() {
               </View>
               <View style={{ flex: 1 }}>
                 <Text style={{ fontSize: 15, fontWeight: 'bold', color: colors.text }}>
-                  Perfil visible solo para tutores
+                  {t('privacy.tutorsOnly')}
                 </Text>
                 <Text style={{ fontSize: 12, color: colors.textSecondary, marginTop: 2 }}>
-                  Solo tus tutores podrán ver tu perfil
+                  {t('privacy.tutorsOnlyDescription')}
                 </Text>
               </View>
             </View>
@@ -205,7 +207,7 @@ export default function PrivacidadScreen() {
               paddingVertical: 16,
               paddingHorizontal: 16,
             }}
-            onPress={() => alert('Descargar mis datos en desarrollo')}
+            onPress={() => alert(t('privacy.downloadPending'))}
           >
             <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
               <View style={{
@@ -221,10 +223,10 @@ export default function PrivacidadScreen() {
               </View>
               <View style={{ flex: 1 }}>
                 <Text style={{ fontSize: 15, fontWeight: 'bold', color: colors.text }}>
-                  Descargar mis datos
+                  {t('privacy.download')}
                 </Text>
                 <Text style={{ fontSize: 12, color: colors.textSecondary, marginTop: 2 }}>
-                  Obtén una copia de tu información
+                  {t('privacy.downloadDescription')}
                 </Text>
               </View>
             </View>
@@ -243,7 +245,7 @@ export default function PrivacidadScreen() {
               paddingVertical: 16,
               paddingHorizontal: 16,
             }}
-            onPress={() => alert('Eliminar mi cuenta en desarrollo')}
+            onPress={() => alert(t('privacy.deletePending'))}
           >
             <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
               <View style={{
@@ -259,10 +261,10 @@ export default function PrivacidadScreen() {
               </View>
               <View style={{ flex: 1 }}>
                 <Text style={{ fontSize: 15, fontWeight: 'bold', color: colors.danger }}>
-                  Eliminar mi cuenta
+                  {t('privacy.deleteAccount')}
                 </Text>
                 <Text style={{ fontSize: 12, color: colors.textSecondary, marginTop: 2 }}>
-                  Elimina tu cuenta y toda tu información
+                  {t('privacy.deleteAccountDescription')}
                 </Text>
               </View>
             </View>
@@ -299,7 +301,7 @@ export default function PrivacidadScreen() {
             flex: 1,
             lineHeight: 18,
           }}>
-            TutorIA protege tu información personal.
+            {t('privacy.protected')}
           </Text>
         </View>
       </View>

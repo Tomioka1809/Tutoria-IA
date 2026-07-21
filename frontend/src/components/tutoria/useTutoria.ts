@@ -3,8 +3,10 @@ import { useState, useEffect, useRef } from 'react';
 import { ScrollView } from 'react-native';
 import { useChatStore } from '@/src/store/chat';
 import { useAuthStore } from '@/src/store/auth';
+import { useTranslation } from 'react-i18next';
 
 export function useTutoria() {
+  const { t } = useTranslation();
   const { user } = useAuthStore();
   const { conversation, fetchConversation, sendMessage, isLoading, isSending, resetConversation } = useChatStore();
   const [inputText, setInputText] = useState('');
@@ -35,7 +37,7 @@ export function useTutoria() {
   };
 
   const handleMicPress = () => {
-    alert('🎤 Entrada de voz (micrófono) en desarrollo para la siguiente versión.');
+    alert(`🎤 ${t('tutoring.voicePending')}`);
   };
 
   return {

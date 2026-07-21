@@ -5,9 +5,11 @@ import client from '../../src/api/client';
 import { useFocusEffect } from 'expo-router';
 import { Feather } from '@expo/vector-icons';
 import { useTheme } from '@/src/theme/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 export default function ContenidoScreen() {
   const { colors } = useTheme();
+  const { t } = useTranslation();
   const token = useAuthStore(state => state.token);
   const [corpus, setCorpus] = useState<any[]>([]);
   const [quotes, setQuotes] = useState<any[]>([]);
@@ -53,9 +55,9 @@ export default function ContenidoScreen() {
   );
 
   const handleDeleteCorpus = (id: number) => {
-    Alert.alert("Eliminar", "¿Borrar este documento del cerebro de TutorIA?", [
-      { text: "Cancelar", style: "cancel" },
-      { text: "Borrar", style: "destructive", onPress: async () => {
+    Alert.alert(t('admin.deleteDocumentTitle'), t('admin.deleteDocumentMessage'), [
+      { text: t('common.cancel'), style: "cancel" },
+      { text: t('common.delete'), style: "destructive", onPress: async () => {
         await client.delete(`/admin/corpus/${id}`, { headers: { Authorization: `Bearer ${token}` } });
         fetchData();
       }}
@@ -85,9 +87,9 @@ export default function ContenidoScreen() {
   };
 
   const handleDeleteQuote = (id: number) => {
-    Alert.alert("Eliminar", "¿Borrar esta frase motivacional?", [
-      { text: "Cancelar", style: "cancel" },
-      { text: "Borrar", style: "destructive", onPress: async () => {
+    Alert.alert(t('admin.deleteDocumentTitle'), t('admin.deleteQuoteMessage'), [
+      { text: t('common.cancel'), style: "cancel" },
+      { text: t('common.delete'), style: "destructive", onPress: async () => {
         await client.delete(`/admin/quotes/${id}`, { headers: { Authorization: `Bearer ${token}` } });
         fetchData();
       }}
@@ -130,8 +132,8 @@ export default function ContenidoScreen() {
       <View style={{ backgroundColor: colors.surface }} className=" p-4 rounded-2xl shadow-sm mb-6 border border-primary/20 dark:border-white mt-2">
         <View className="flex-row justify-between items-center mb-4">
           <View>
-            <Text className="text-xl font-bold text-text dark:text-white">Base de Conocimiento IA</Text>
-            <Text className="text-xs text-primary dark:text-white">Archivos RAG para TutorIA</Text>
+            <Text className="text-xl font-bold text-text dark:text-white">{t('admin.knowledgeBase')}</Text>
+            <Text className="text-xs text-primary dark:text-white">{t('admin.ragFiles')}</Text>
           </View>
           <Pressable onPress={() => { setEditingCorpusId(null); setNewSource(''); setNewText(''); setCorpusModal(true); }} className="bg-primary p-2 rounded-lg">
             <Feather name="plus" size={20} color="white" />
@@ -143,7 +145,7 @@ export default function ContenidoScreen() {
           <TextInput 
             value={corpusSearch}
             onChangeText={setCorpusSearch}
-            placeholder="Buscar documentos..."
+            placeholder={t('admin.searchDocuments')}
             className="flex-1 ml-2 text-text dark:text-gray-300"
             placeholderTextColor="#A0A0A0"
           />
@@ -171,8 +173,8 @@ export default function ContenidoScreen() {
       <View style={{ backgroundColor: colors.surface }} className=" p-4 rounded-2xl shadow-sm mb-10 border border-primary/20 dark:border-white">
         <View className="flex-row justify-between items-center mb-4">
           <View>
-            <Text className="text-xl font-bold text-text dark:text-white">Frases de Motivación</Text>
-            <Text className="text-xs text-primary dark:text-white">Gestor de Gamificación</Text>
+            <Text className="text-xl font-bold text-text dark:text-white">{t('admin.motivationalQuotes')}</Text>
+            <Text className="text-xs text-primary dark:text-white">{t('admin.gamificationManager')}</Text>
           </View>
           <Pressable onPress={() => { setEditingQuoteId(null); setNewQuote(''); setQuoteModal(true); }} className="bg-primary p-2 rounded-lg">
             <Feather name="plus" size={20} color="white" />
@@ -184,7 +186,7 @@ export default function ContenidoScreen() {
           <TextInput 
             value={quoteSearch}
             onChangeText={setQuoteSearch}
-            placeholder="Buscar frases..."
+            placeholder={t('admin.searchQuotes')}
             className="flex-1 ml-2 text-text dark:text-gray-300"
             placeholderTextColor="#A0A0A0"
           />
@@ -192,7 +194,7 @@ export default function ContenidoScreen() {
 
         {loading ? <ActivityIndicator color={colors.primary} /> : filteredQuotes.map(q => (
           <View key={q.id} className="bg-gray-50 dark:bg-surface p-3 rounded-xl mb-2 flex-row justify-between items-center border-l-4 border-yellow-400 dark:border dark:border-white">
-            <Text className="text-sm font-semibold text-text dark:text-white flex-1 italic mr-2">"{q.text}"</Text>
+            <Text className="text-sm font-semibold text-text dark:text-white flex-1 italic mr-2">&ldquo;{q.text}&rdquo;</Text>
             <View className="flex-row">
               <Pressable onPress={() => handleEditQuote(q)} className="p-2 mr-1">
                 <Feather name="edit-2" size={18} color={colors.primary} />
@@ -210,19 +212,19 @@ export default function ContenidoScreen() {
         <View className="flex-1 justify-end bg-black/50">
           <View style={{ backgroundColor: colors.surface }} className=" p-6 rounded-t-3xl border border-transparent dark:border-white">
             <View className="flex-row justify-between items-center mb-4">
-              <Text className="text-lg font-bold text-text dark:text-white">{editingCorpusId ? 'Editar Documento IA' : 'Nuevo Documento IA'}</Text>
+              <Text className="text-lg font-bold text-text dark:text-white">{editingCorpusId ? t('admin.editDocument') : t('admin.newDocument')}</Text>
               <Pressable onPress={() => setCorpusModal(false)}><Feather name="x" size={24} color={colors.text} /></Pressable>
             </View>
             <TextInput 
-              value={newSource} onChangeText={setNewSource} placeholder="Título (ej. Reglamento)"
+              value={newSource} onChangeText={setNewSource} placeholder={t('admin.documentTitlePlaceholder')}
               className="bg-gray-100 dark:bg-background rounded-lg p-3 mb-3 text-text dark:text-white"
             />
             <TextInput 
-              value={newText} onChangeText={setNewText} placeholder="Contenido del documento..."
+              value={newText} onChangeText={setNewText} placeholder={t('admin.documentContentPlaceholder')}
               multiline numberOfLines={5} className="bg-gray-100 dark:bg-background rounded-lg p-3 mb-6 h-32 text-text dark:text-white" textAlignVertical="top"
             />
             <Pressable onPress={handleSaveCorpus} disabled={isSavingCorpus} className="bg-primary p-4 rounded-xl items-center shadow-sm">
-              {isSavingCorpus ? <ActivityIndicator color="white" /> : <Text className="text-white font-bold">{editingCorpusId ? 'Actualizar Vector' : 'Vectorizar y Guardar'}</Text>}
+              {isSavingCorpus ? <ActivityIndicator color="white" /> : <Text className="text-white font-bold">{editingCorpusId ? t('admin.updateVector') : t('admin.vectorizeSave')}</Text>}
             </Pressable>
           </View>
         </View>
@@ -233,15 +235,15 @@ export default function ContenidoScreen() {
         <View className="flex-1 justify-end bg-black/50">
           <View style={{ backgroundColor: colors.surface }} className=" p-6 rounded-t-3xl border border-transparent dark:border-white">
             <View className="flex-row justify-between items-center mb-4">
-              <Text className="text-lg font-bold text-text dark:text-white">{editingQuoteId ? 'Editar Frase' : 'Nueva Frase'}</Text>
+              <Text className="text-lg font-bold text-text dark:text-white">{editingQuoteId ? t('admin.editQuote') : t('admin.newQuote')}</Text>
               <Pressable onPress={() => setQuoteModal(false)}><Feather name="x" size={24} color={colors.text} /></Pressable>
             </View>
             <TextInput 
-              value={newQuote} onChangeText={setNewQuote} placeholder="Escribe la frase..."
+              value={newQuote} onChangeText={setNewQuote} placeholder={t('admin.quotePlaceholder')}
               multiline className="bg-gray-100 dark:bg-background rounded-lg p-3 mb-6 h-24 text-text dark:text-white" textAlignVertical="top"
             />
             <Pressable onPress={handleSaveQuote} disabled={isSavingQuote} className="bg-primary p-4 rounded-xl items-center shadow-sm">
-              {isSavingQuote ? <ActivityIndicator color="white" /> : <Text className="text-white font-bold">{editingQuoteId ? 'Actualizar' : 'Guardar'}</Text>}
+              {isSavingQuote ? <ActivityIndicator color="white" /> : <Text className="text-white font-bold">{editingQuoteId ? t('common.update') : t('common.save')}</Text>}
             </Pressable>
           </View>
         </View>

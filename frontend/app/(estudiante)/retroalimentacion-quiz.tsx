@@ -6,9 +6,11 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Feather from '@expo/vector-icons/Feather';
 import { useTheme } from '@/src/theme/ThemeContext';
 import { QuizAPI, QuizQuestion } from '@/src/api/services';
+import { useTranslation } from 'react-i18next';
 
 export default function QuizScreen() {
   const { colors } = useTheme();
+  const { t } = useTranslation();
   const router = useRouter();
   const insets = useSafeAreaInsets();
   
@@ -30,7 +32,7 @@ export default function QuizScreen() {
       })
       .catch(err => {
         console.error("Failed to generate quiz", err);
-        setError("Error al generar el test. Verifica tu conexión o intenta más tarde.");
+        setError(t('quiz.generationError'));
         setIsLoading(false);
       });
   }, []);
@@ -38,8 +40,8 @@ export default function QuizScreen() {
   if (isLoading) {
     return (
       <View style={{ flex: 1, backgroundColor: colors.background, justifyContent: 'center', alignItems: 'center', padding: 24 }}>
-        <Text style={{ color: colors.text, fontSize: 18, marginBottom: 16 }}>Generando preguntas...</Text>
-        <Text style={{ color: colors.textSecondary, textAlign: 'center' }}>Nuestra IA está analizando la base de datos para crear un test personalizado para ti.</Text>
+        <Text style={{ color: colors.text, fontSize: 18, marginBottom: 16 }}>{t('quiz.generating')}</Text>
+        <Text style={{ color: colors.textSecondary, textAlign: 'center' }}>{t('quiz.analyzing')}</Text>
       </View>
     );
   }
@@ -47,7 +49,7 @@ export default function QuizScreen() {
   if (error || questions.length === 0) {
     return (
       <View style={{ flex: 1, backgroundColor: colors.background, justifyContent: 'center', alignItems: 'center', padding: 24 }}>
-        <Text style={{ color: '#EF4444', textAlign: 'center', marginBottom: 24 }}>{error || "No se encontraron preguntas."}</Text>
+        <Text style={{ color: '#EF4444', textAlign: 'center', marginBottom: 24 }}>{error || t('quiz.noQuestions')}</Text>
         <Pressable
           onPress={() => router.replace('/(estudiante)/' as any)}
           style={{
@@ -57,7 +59,7 @@ export default function QuizScreen() {
             borderRadius: 12,
           }}
         >
-          <Text style={{ color: 'white', fontWeight: 'bold' }}>Volver al inicio</Text>
+          <Text style={{ color: 'white', fontWeight: 'bold' }}>{t('quiz.backHome')}</Text>
         </Pressable>
       </View>
     );
@@ -93,9 +95,9 @@ export default function QuizScreen() {
     return (
       <View style={{ flex: 1, backgroundColor: colors.background, paddingTop: insets.top, paddingHorizontal: 24, alignItems: 'center', justifyContent: 'center' }}>
         <Feather name="award" size={80} color={colors.primary} style={{ marginBottom: 24 }} />
-        <Text style={{ fontSize: 24, fontWeight: 'bold', color: colors.text, marginBottom: 8 }}>¡Prueba Terminada!</Text>
+        <Text style={{ fontSize: 24, fontWeight: 'bold', color: colors.text, marginBottom: 8 }}>{t('quiz.finished')}</Text>
         <Text style={{ fontSize: 16, color: colors.textSecondary, marginBottom: 32, textAlign: 'center' }}>
-          Respondiste correctamente {correctCount} de {questions.length} preguntas.
+          {t('quiz.score', { correct: correctCount, total: questions.length })}
         </Text>
         <Pressable
           onPress={handleBack}
@@ -108,7 +110,7 @@ export default function QuizScreen() {
             alignItems: 'center',
           }}
         >
-          <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Volver al inicio</Text>
+          <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>{t('quiz.backHome')}</Text>
         </Pressable>
       </View>
     );
@@ -130,7 +132,7 @@ export default function QuizScreen() {
       }}>
         <Pressable onPress={handleBack} style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Feather name="arrow-left" size={20} color={colors.textSecondary} />
-          <Text style={{ marginLeft: 8, color: colors.textSecondary, fontSize: 14, fontWeight: '600' }}>Volver al inicio</Text>
+          <Text style={{ marginLeft: 8, color: colors.textSecondary, fontSize: 14, fontWeight: '600' }}>{t('quiz.backHome')}</Text>
         </Pressable>
         <View style={{ backgroundColor: colors.background, paddingHorizontal: 12, paddingVertical: 4, borderRadius: 12 }}>
           <Text style={{ color: colors.primary, fontWeight: 'bold', fontSize: 13 }}>
@@ -209,7 +211,7 @@ export default function QuizScreen() {
             borderLeftColor: selectedOption === currentQuestion.correctAnswerIndex ? '#22C55E' : '#EF4444',
           }}>
             <Text style={{ fontWeight: 'bold', color: selectedOption === currentQuestion.correctAnswerIndex ? '#166534' : '#991B1B', marginBottom: 4 }}>
-              {selectedOption === currentQuestion.correctAnswerIndex ? '¡Correcto!' : 'Incorrecto'}
+              {selectedOption === currentQuestion.correctAnswerIndex ? t('quiz.correct') : t('quiz.incorrect')}
             </Text>
             <Text style={{ color: selectedOption === currentQuestion.correctAnswerIndex ? '#166534' : '#991B1B', fontSize: 14, lineHeight: 20 }}>
               {currentQuestion.explanation}
@@ -243,7 +245,7 @@ export default function QuizScreen() {
             }}
           >
             <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', marginRight: 8 }}>
-              {currentIndex < questions.length - 1 ? 'Siguiente pregunta' : 'Ver resultados'}
+              {currentIndex < questions.length - 1 ? t('quiz.nextQuestion') : t('quiz.viewResults')}
             </Text>
             <Feather name="arrow-right" size={20} color="white" />
           </Pressable>

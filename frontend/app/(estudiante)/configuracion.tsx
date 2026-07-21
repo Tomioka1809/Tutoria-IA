@@ -7,9 +7,11 @@ import { useProfile } from '@/src/components/profile/useProfile';
 import { useAuthStore } from '@/src/store/auth';
 import { usePreferencesStore } from '@/src/store/preferences';
 import { useTheme } from '@/src/theme/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 export default function ConfiguracionScreen() {
   const { colors } = useTheme();
+  const { t: tr } = useTranslation();
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { user } = useProfile();
@@ -37,19 +39,11 @@ export default function ConfiguracionScreen() {
 
   // Translations POC
   const t = {
-    config: language === 'en' ? 'Settings' : 'Configuración',
-    account: language === 'en' ? 'Account' : 'Cuenta',
-    editProfile: language === 'en' ? 'Edit Profile' : 'Editar perfil',
-    editProfileDesc: language === 'en' ? 'Personal & academic data' : 'Datos personales y académicos',
-    changePwd: language === 'en' ? 'Change Password' : 'Cambiar contraseña',
-    changePwdDesc: language === 'en' ? 'Update your access key' : 'Actualiza tu clave de acceso',
-    prefs: language === 'en' ? 'Preferences' : 'Preferencias',
-    lang: language === 'en' ? 'Language' : 'Idioma',
-    theme: language === 'en' ? 'Theme' : 'Tema',
-    changeTheme: language === 'en' ? 'Change theme' : 'Cambiar tema',
-    changeThemeDesc: language === 'en' ? 'Select the application theme' : 'Selecciona el tema de la aplicación',
-    light: language === 'en' ? 'Light' : 'Claro',
-    dark: language === 'en' ? 'Dark' : 'Oscuro',
+    config: tr('settings.title'), account: tr('settings.account'), editProfile: tr('settings.editProfile'),
+    editProfileDesc: tr('settings.editProfileDescription'), changePwd: tr('settings.changePassword'),
+    changePwdDesc: tr('settings.changePasswordDescription'), prefs: tr('settings.preferences'),
+    lang: tr('settings.language'), theme: tr('settings.theme'), changeTheme: tr('settings.changeTheme'),
+    changeThemeDesc: tr('settings.changeThemeDescription'), light: tr('settings.light'), dark: tr('settings.dark'),
   };
 
   const handleLanguageChange = () => {
@@ -64,11 +58,11 @@ export default function ConfiguracionScreen() {
 
   const handleChangePassword = async () => {
     if (!currentPwd || !newPwd) {
-      Alert.alert('Error', 'Debes ingresar ambas contraseñas.');
+      Alert.alert(tr('common.error'), tr('settings.passwordRequired'));
       return;
     }
     if (newPwd.length < 6) {
-      Alert.alert('Error', 'La nueva contraseña debe tener al menos 6 caracteres.');
+      Alert.alert(tr('common.error'), tr('settings.passwordLength'));
       return;
     }
 
@@ -77,12 +71,12 @@ export default function ConfiguracionScreen() {
     setIsChangingPwd(false);
 
     if (success) {
-      Alert.alert('Éxito', 'Contraseña actualizada correctamente.');
+      Alert.alert(tr('common.success'), tr('settings.passwordUpdated'));
       setPwdModalVisible(false);
       setCurrentPwd('');
       setNewPwd('');
     } else {
-      Alert.alert('Error', 'La contraseña actual es incorrecta o hubo un problema.');
+      Alert.alert(tr('common.error'), tr('settings.passwordError'));
     }
   };
 
@@ -178,7 +172,7 @@ export default function ConfiguracionScreen() {
                 fontWeight: '500',
                 marginTop: 4,
               }}>
-                Código: {user?.student_code || '2123456'}
+                {tr('profile.code')}: {user?.student_code || '2123456'}
               </Text>
               <Text style={{
                 fontSize: 12,
@@ -399,7 +393,7 @@ export default function ConfiguracionScreen() {
             color: textColor,
             marginBottom: 12,
           }}>
-            Información
+            {tr('settings.information')}
           </Text>
 
           <View style={{
@@ -423,7 +417,7 @@ export default function ConfiguracionScreen() {
                 paddingVertical: 14,
                 paddingHorizontal: 16,
               }}
-              onPress={() => alert('TutorIA Versión 1.0.0')}
+              onPress={() => alert(`TutorIA ${tr('common.version', { version: '1.0.0' })}`)}
             >
               <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
                 <View style={{
@@ -439,10 +433,10 @@ export default function ConfiguracionScreen() {
                 </View>
                 <View style={{ flex: 1 }}>
                   <Text style={{ fontSize: 15, fontWeight: 'bold', color: textColor }}>
-                    Acerca de TutorIA
+                    {tr('settings.about')}
                   </Text>
                   <Text style={{ fontSize: 12, color: subTextColor, marginTop: 2 }}>
-                    Versión 1.0.0
+                    {tr('common.version', { version: '1.0.0' })}
                   </Text>
                 </View>
               </View>
@@ -462,10 +456,10 @@ export default function ConfiguracionScreen() {
         <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center' }}>
           <View style={{ backgroundColor: cardColor, width: '80%', borderRadius: 24, padding: 24, shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.12, shadowRadius: 10, elevation: 6 }}>
             <Text style={{ fontSize: 18, fontWeight: 'bold', color: textColor }}>
-              Cambiar idioma
+              {tr('settings.changeLanguage')}
             </Text>
             <Text style={{ fontSize: 14, color: subTextColor, marginTop: 6, marginBottom: 16 }}>
-              Selecciona el idioma de la aplicación
+              {tr('settings.changeLanguageDescription')}
             </Text>
 
             {([
@@ -508,7 +502,7 @@ export default function ConfiguracionScreen() {
 
             <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginTop: 6 }}>
               <Pressable onPress={() => setLanguageModalVisible(false)} style={{ paddingHorizontal: 16, paddingVertical: 10, marginRight: 8 }}>
-                <Text style={{ color: subTextColor, fontWeight: '600' }}>Cancelar</Text>
+                <Text style={{ color: subTextColor, fontWeight: '600' }}>{tr('common.cancel')}</Text>
               </Pressable>
               <Pressable
                 onPress={() => {
@@ -517,7 +511,7 @@ export default function ConfiguracionScreen() {
                 }}
                 style={{ backgroundColor: colors.primary, paddingHorizontal: 16, paddingVertical: 10, borderRadius: 12 }}
               >
-                <Text style={{ color: '#FFFFFF', fontWeight: 'bold' }}>Guardar</Text>
+                <Text style={{ color: '#FFFFFF', fontWeight: 'bold' }}>{tr('common.save')}</Text>
               </Pressable>
             </View>
           </View>
@@ -580,7 +574,7 @@ export default function ConfiguracionScreen() {
 
             <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginTop: 6 }}>
               <Pressable onPress={() => setThemeModalVisible(false)} style={{ paddingHorizontal: 16, paddingVertical: 10, marginRight: 8 }}>
-                <Text style={{ color: subTextColor, fontWeight: '600' }}>Cancelar</Text>
+                <Text style={{ color: subTextColor, fontWeight: '600' }}>{tr('common.cancel')}</Text>
               </Pressable>
               <Pressable
                 onPress={() => {
@@ -589,7 +583,7 @@ export default function ConfiguracionScreen() {
                 }}
                 style={{ backgroundColor: colors.primary, paddingHorizontal: 16, paddingVertical: 10, borderRadius: 12 }}
               >
-                <Text style={{ color: '#FFFFFF', fontWeight: 'bold' }}>Guardar</Text>
+                <Text style={{ color: '#FFFFFF', fontWeight: 'bold' }}>{tr('common.save')}</Text>
               </Pressable>
             </View>
           </View>
@@ -609,23 +603,23 @@ export default function ConfiguracionScreen() {
               {t.changePwd}
             </Text>
             
-            <Text style={{ fontSize: 14, color: textColor, marginBottom: 8 }}>Contraseña Actual</Text>
+            <Text style={{ fontSize: 14, color: textColor, marginBottom: 8 }}>{tr('settings.currentPassword')}</Text>
             <TextInput
               style={{ borderWidth: 1, borderColor: borderColor, borderRadius: 12, padding: 12, color: textColor, marginBottom: 16 }}
               secureTextEntry
               value={currentPwd}
               onChangeText={setCurrentPwd}
-              placeholder="Ingresa tu contraseña actual"
+              placeholder={tr('settings.currentPasswordPlaceholder')}
               placeholderTextColor={subTextColor}
             />
 
-            <Text style={{ fontSize: 14, color: textColor, marginBottom: 8 }}>Nueva Contraseña</Text>
+            <Text style={{ fontSize: 14, color: textColor, marginBottom: 8 }}>{tr('settings.newPassword')}</Text>
             <TextInput
               style={{ borderWidth: 1, borderColor: borderColor, borderRadius: 12, padding: 12, color: textColor, marginBottom: 24 }}
               secureTextEntry
               value={newPwd}
               onChangeText={setNewPwd}
-              placeholder="Mínimo 6 caracteres"
+              placeholder={tr('settings.newPasswordPlaceholder')}
               placeholderTextColor={subTextColor}
             />
 
@@ -634,7 +628,7 @@ export default function ConfiguracionScreen() {
                 onPress={() => setPwdModalVisible(false)}
                 style={{ paddingHorizontal: 16, paddingVertical: 10, marginRight: 8 }}
               >
-                <Text style={{ color: subTextColor, fontWeight: '600' }}>Cancelar</Text>
+                <Text style={{ color: subTextColor, fontWeight: '600' }}>{tr('common.cancel')}</Text>
               </Pressable>
               
               <Pressable
@@ -642,7 +636,7 @@ export default function ConfiguracionScreen() {
                 disabled={isChangingPwd}
                 style={{ backgroundColor: colors.primary, paddingHorizontal: 16, paddingVertical: 10, borderRadius: 12, opacity: isChangingPwd ? 0.7 : 1 }}
               >
-                {isChangingPwd ? <ActivityIndicator size="small" color="#fff" /> : <Text style={{ color: 'white', fontWeight: 'bold' }}>Guardar</Text>}
+                {isChangingPwd ? <ActivityIndicator size="small" color="#fff" /> : <Text style={{ color: 'white', fontWeight: 'bold' }}>{tr('common.save')}</Text>}
               </Pressable>
             </View>
           </View>

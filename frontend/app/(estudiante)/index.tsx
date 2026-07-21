@@ -7,9 +7,11 @@ import { DashboardHeader } from '@/src/components/dashboard/DashboardHeader';
 import { ServicesGrid } from '@/src/components/dashboard/ServicesGrid';
 import { StreakCard } from '@/src/components/dashboard/StreakCard';
 import { useTheme } from '@/src/theme/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 export default function DashboardScreen() {
   const { colors } = useTheme();
+  const { t } = useTranslation();
   const router = useRouter();
   const { streak, isLoading, onRefresh, firstName } = useDashboard();
 
@@ -44,7 +46,7 @@ export default function DashboardScreen() {
             elevation: 4,
           }}
         >
-          <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 16 }}>Iniciar Chat</Text>
+          <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 16 }}>{t('dashboard.startChat')}</Text>
         </Pressable>
       </View>
 

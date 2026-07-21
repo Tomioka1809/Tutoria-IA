@@ -3,6 +3,7 @@ import React from 'react';
 import { View, Text, ScrollView, Pressable } from 'react-native';
 import { Feather, FontAwesome } from '@expo/vector-icons';
 import { useTheme } from '@/src/theme/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 interface UnifiedActivity {
   id: string;
@@ -36,6 +37,7 @@ export function CalendarActivitiesList({
 }: CalendarActivitiesListProps) {
   const isTutor = userRole === 'tutor' || userRole === 'admin';
   const { colors } = useTheme();
+  const { t, i18n } = useTranslation();
 
   // Formatear 24h a 12h AM/PM
   const formatTime12h = (time24: string) => {
@@ -86,15 +88,15 @@ export function CalendarActivitiesList({
         date.getMonth() === today.getMonth() &&
         date.getFullYear() === today.getFullYear()
       ) {
-        return 'Hoy';
+        return t('calendar.today');
       } else if (
         date.getDate() === tomorrow.getDate() &&
         date.getMonth() === tomorrow.getMonth() &&
         date.getFullYear() === tomorrow.getFullYear()
       ) {
-        return 'Mañana';
+        return t('calendar.tomorrow');
       } else {
-        return date.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
+        return date.toLocaleDateString(i18n.language === 'en' ? 'en-US' : 'es-ES', { day: 'numeric', month: 'short' });
       }
     } catch (e) {
       return dateStr;
@@ -144,9 +146,9 @@ export function CalendarActivitiesList({
   return (
     <View className="flex-1 px-6">
       <View className="flex-row justify-between items-center mb-4">
-        <Text style={{ color: colors.text }} className=" font-bold text-base">Próximas actividades</Text>
+        <Text style={{ color: colors.text }} className=" font-bold text-base">{t('calendar.upcoming')}</Text>
         <Pressable onPress={onAddPress} className="flex-row items-center">
-          <Text className="text-sm font-bold" style={{ color: colors.primary }}>+ Añadir</Text>
+          <Text className="text-sm font-bold" style={{ color: colors.primary }}>{t('calendar.add')}</Text>
         </Pressable>
       </View>
 
@@ -205,10 +207,10 @@ export function CalendarActivitiesList({
           <View style={{ backgroundColor: colors.surface }} className="items-center justify-center py-12 px-4 /50 border border-dashed border-border rounded-3xl">
             <Feather name="calendar" size={36} color={colors.textSecondary} />
             <Text style={{ color: colors.text }} className="text-sm font-bold  mt-3 text-center">
-              No tienes actividades programadas
+              {t('calendar.emptyScheduled')}
             </Text>
             <Text className="text-xs text-textSecondary mt-1 text-center">
-              ¡Presiona "+ Añadir" para agendar tu primera actividad!
+              {t('calendar.emptyScheduledHint')}
             </Text>
           </View>
         )}

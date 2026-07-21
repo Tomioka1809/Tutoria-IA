@@ -9,9 +9,11 @@ import { TutoriaHeader } from '@/src/components/tutoria/TutoriaHeader';
 import { MessagesList } from '@/src/components/tutoria/MessagesList';
 import { QuickActionsPanel } from '@/src/components/tutoria/QuickActionsPanel';
 import { MessageInputBar } from '@/src/components/tutoria/MessageInputBar';
+import { useTranslation } from 'react-i18next';
 
 export default function TutoriaScreen() {
   const { colors } = useTheme();
+  const { t } = useTranslation();
   const router = useRouter();
   const {
     user,
@@ -61,9 +63,9 @@ export default function TutoriaScreen() {
     return (
       <View style={{ backgroundColor: colors.background }} className="flex-1  justify-center items-center px-6">
         <Text className="text-4xl mb-4">🦖</Text>
-        <Text className="text-lg font-bold text-text text-center">TutorIA Chatbot</Text>
+        <Text className="text-lg font-bold text-text text-center">{t('tutoring.welcomeTitle')}</Text>
         <Text className="text-sm text-text/60 text-center mt-2">
-          El chatbot TutorIA está disponible exclusivamente para estudiantes con el fin de resolver consultas académicas.
+          {t('tutoring.studentOnly')}
         </Text>
       </View>
     );

@@ -5,6 +5,7 @@ import { useRouter } from 'expo-router';
 import Feather from '@expo/vector-icons/Feather';
 import { useAuthStore } from '@/src/store/auth';
 import { useTheme } from '@/src/theme/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 interface ProfileMenuProps {
   onLogout: () => void;
@@ -12,31 +13,32 @@ interface ProfileMenuProps {
 
 export function ProfileMenu({ onLogout }: ProfileMenuProps) {
   const { colors } = useTheme();
+  const { t } = useTranslation();
   const router = useRouter();
   const user = useAuthStore((state) => state.user);
   const routePrefix = user?.role === 'tutor' ? '/(tutor)' : user?.role === 'admin' ? '/(admin)' : '/(estudiante)';
 
   const menuItems = [
     {
-      name: 'Configuración',
+      name: t('profile.settings'),
       icon: 'settings' as const,
       action: () => router.push(`${routePrefix}/configuracion` as any),
       isDestructive: false,
     },
     {
-      name: 'Privacidad',
+      name: t('profile.privacy'),
       icon: 'lock' as const,
       action: () => router.push(`${routePrefix}/privacidad` as any),
       isDestructive: false,
     },
     {
-      name: 'Centro de ayuda',
+      name: t('profile.helpCenter'),
       icon: 'help-circle' as const,
       action: () => router.push(`${routePrefix}/centro-ayuda` as any),
       isDestructive: false,
     },
     {
-      name: 'Cerrar sesión',
+      name: t('profile.logout'),
       icon: 'log-out' as const,
       action: onLogout,
       isDestructive: true,

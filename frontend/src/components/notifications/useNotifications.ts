@@ -3,8 +3,10 @@ import { useEffect } from 'react';
 import { useNotificationStore } from '@/src/store/notification';
 import { useActivityStore } from '../../store/activity';
 import { useSessionStore } from '../../store/session';
+import { useTranslation } from 'react-i18next';
 
 export function useNotifications() {
+  const { t } = useTranslation();
   const { notifications, fetchNotifications, markAsRead, isLoading } = useNotificationStore();
   const { activities } = useActivityStore();
   const { sessions, fetchSessions } = useSessionStore();
@@ -51,7 +53,9 @@ export function useNotifications() {
       .map((n) => {
         let title = n.title;
         if (title.includes('Sesión Programada') || title.includes('tutoría asignada')) {
-          title = 'Nueva tutoría asignada';
+          title = t('notifications.assignedTitle');
+        } else if (title.toLowerCase().includes('cancelada')) {
+          title = t('notifications.cancelledTitle');
         }
         return {
           ...n,
@@ -75,13 +79,13 @@ export function useNotifications() {
           const timeFormatted = formatTime12h(act.time);
           const isAcademic = act.type === 'Tutoría Académica';
           const title = isAcademic
-            ? `Recordatorio: Sesión mañana ${timeFormatted}`
-            : `Recordatorio: ${act.name} ${timeFormatted}`;
+            ? t('notifications.sessionReminder', { time: timeFormatted })
+            : t('notifications.activityReminder', { name: act.name, time: timeFormatted });
 
           reminders.push({
             id: `reminder_local_${act.id}`,
             title: title,
-            body: `Tu actividad "${act.name}" está programada para mañana a las ${timeFormatted}.`,
+            body: t('notifications.activityBody', { name: act.name, time: timeFormatted }),
             type: 'reminder',
             is_read: false,
             created_at: new Date(now.getTime() - 15 * 60 * 1000).toISOString(), // Simular hace 15 mins
@@ -107,13 +111,13 @@ export function useNotifications() {
                                s.service_type.name.includes('Académica') || 
                                s.service_type.name.includes('Tutoría');
             const title = isAcademic
-              ? `Recordatorio: Sesión mañana ${timeFormatted}`
-              : `Recordatorio: ${name} ${timeFormatted}`;
+              ? t('notifications.sessionReminder', { time: timeFormatted })
+              : t('notifications.activityReminder', { name, time: timeFormatted });
 
             reminders.push({
               id: `reminder_session_${s.id}`,
               title: title,
-              body: `Tu tutoría "${name}" está programada para mañana a las ${timeFormatted}.`,
+              body: t('notifications.tutoringBody', { name, time: timeFormatted }),
               type: 'reminder',
               is_read: false,
               created_at: new Date(now.getTime() - 30 * 60 * 1000).toISOString(), // Simular hace 30 mins

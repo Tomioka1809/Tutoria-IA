@@ -3,6 +3,7 @@ import React from 'react';
 import { View, Text, TextInput, Modal, Pressable, ActivityIndicator } from 'react-native';
 import { User, ServiceType } from '@/src/types';
 import { useTheme } from '@/src/theme/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 interface ScheduleSessionModalProps {
   isModalOpen: boolean;
@@ -42,14 +43,15 @@ export function ScheduleSessionModal({
   onSubmit,
 }: ScheduleSessionModalProps) {
   const { colors, isDark } = useTheme();
+  const { t, i18n } = useTranslation();
   return (
     <Modal visible={isModalOpen} animationType="slide" transparent={true}>
       <View className="flex-1 bg-black/50 justify-end">
         <View style={{ backgroundColor: colors.surface }} className=" rounded-t-[40px] px-6 pt-8 pb-12">
           <View className="flex-row justify-between items-center mb-6">
-            <Text className="text-xl font-bold text-text">Programar Tutoría</Text>
+            <Text className="text-xl font-bold text-text">{t('calendar.schedule')}</Text>
             <Pressable onPress={onClose}>
-              <Text className="font-bold text-sm" style={{ color: isDark ? '#FFFFFF' : colors.primary }}>Cerrar</Text>
+              <Text className="font-bold text-sm" style={{ color: isDark ? '#FFFFFF' : colors.primary }}>{t('common.close')}</Text>
             </Pressable>
           </View>
 
@@ -58,15 +60,15 @@ export function ScheduleSessionModal({
           ) : (
             <View>
               <View className="mb-4 bg-border p-3.5 rounded-xl border border-primary/20">
-                <Text className="text-xs text-text/60 font-semibold">Fecha Seleccionada</Text>
+                <Text className="text-xs text-text/60 font-semibold">{t('calendar.selectedDate')}</Text>
                 <Text className="text-base text-text font-bold mt-1">
-                  {selectedDate.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}
+                  {selectedDate.toLocaleDateString(i18n.language === 'en' ? 'en-US' : 'es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}
                 </Text>
               </View>
 
               {/* Student Select */}
               <View className="mb-4">
-                <Text className="text-xs text-text font-semibold mb-2 ml-1">Estudiante</Text>
+                <Text className="text-xs text-text font-semibold mb-2 ml-1">{t('calendar.student')}</Text>
                 <View className="bg-border/50 border border-primary/30 rounded-xl p-1 flex-row flex-wrap">
                   {students.map((student) => (
                     <Pressable
@@ -92,7 +94,7 @@ export function ScheduleSessionModal({
 
               {/* Service Type Select */}
               <View className="mb-4">
-                <Text className="text-xs text-text font-semibold mb-2 ml-1">Tipo de Servicio</Text>
+                <Text className="text-xs text-text font-semibold mb-2 ml-1">{t('calendar.serviceType')}</Text>
                 <View className="bg-border/50 border border-primary/30 rounded-xl p-1 flex-row flex-wrap">
                   {serviceTypes.map((type) => (
                     <Pressable
@@ -118,7 +120,7 @@ export function ScheduleSessionModal({
 
               {/* Hour selection input */}
               <View className="mb-4">
-                <Text className="text-xs text-text font-semibold mb-2 ml-1">Hora (Formato 24h)</Text>
+                <Text className="text-xs text-text font-semibold mb-2 ml-1">{t('calendar.time24')}</Text>
                 <TextInput
                   value={sessionHour}
                   onChangeText={setSessionHour}
@@ -129,11 +131,11 @@ export function ScheduleSessionModal({
 
               {/* Notes Input */}
               <View className="mb-6">
-                <Text className="text-xs text-text font-semibold mb-2 ml-1">Notas / Detalles</Text>
+                <Text className="text-xs text-text font-semibold mb-2 ml-1">{t('calendar.detailsNotes')}</Text>
                 <TextInput
                   value={sessionNotes}
                   onChangeText={setSessionNotes}
-                  placeholder="Repasar dudas..."
+                  placeholder={t('calendar.detailsPlaceholder')}
                   className="bg-border/50 border border-primary/30 rounded-xl px-4 py-3 text-text"
                   multiline
                   numberOfLines={2}
@@ -148,7 +150,7 @@ export function ScheduleSessionModal({
                 {isSubmitting ? (
                   <ActivityIndicator color="white" />
                 ) : (
-                  <Text className="text-white font-bold text-base">Crear Tutoría</Text>
+                  <Text className="text-white font-bold text-base">{t('calendar.createTutoring')}</Text>
                 )}
               </Pressable>
             </View>

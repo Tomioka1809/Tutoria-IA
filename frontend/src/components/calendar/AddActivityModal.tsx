@@ -5,6 +5,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
 import { User } from '@/src/types';
 import { useTheme } from '@/src/theme/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 interface AddActivityModalProps {
   isOpen: boolean;
@@ -33,6 +34,7 @@ export function AddActivityModal({
   onAdd,
 }: AddActivityModalProps) {
   const { colors, isDark } = useTheme();
+  const { t } = useTranslation();
   const isTutor = userRole === 'tutor' || userRole === 'admin';
 
   const [name, setName] = useState('');
@@ -70,7 +72,7 @@ export function AddActivityModal({
 
   const handleSubmit = () => {
     if (!name.trim()) {
-      alert('Por favor ingresa un nombre para la actividad.');
+      alert(t('calendar.nameRequired'));
       return;
     }
 
@@ -117,10 +119,10 @@ export function AddActivityModal({
   });
 
   const typesConfig = [
-    { id: 'Tutoría Académica' as const, label: 'T. Académica', icon: 'book-open', bgColor: 'bg-[#F3E8FF]', activeBgColor: 'bg-primary', textColor: 'text-primary', visible: isTutor },
-    { id: 'Tutoría Personal' as const, label: 'T. Personal', icon: 'user', bgColor: 'bg-[#FCE7F3]', activeBgColor: 'bg-[#ec4899]', textColor: 'text-[#ec4899]', visible: isTutor },
-    { id: 'Tutoría Profesional' as const, label: 'T. Profesional', icon: 'briefcase', bgColor: 'bg-[#E0E7FF]', activeBgColor: 'bg-[#4F46E5]', textColor: 'text-[#4F46E5]', visible: isTutor },
-    { id: 'Trabajos' as const, label: 'Trabajos', icon: 'file-text', bgColor: 'bg-[#F5F3FF]', activeBgColor: 'bg-[#7c3aed]', textColor: 'text-[#7c3aed]', visible: true },
+    { id: 'Tutoría Académica' as const, label: t('calendar.academicShort'), icon: 'book-open', bgColor: 'bg-[#F3E8FF]', activeBgColor: 'bg-primary', textColor: 'text-primary', visible: isTutor },
+    { id: 'Tutoría Personal' as const, label: t('calendar.personalShort'), icon: 'user', bgColor: 'bg-[#FCE7F3]', activeBgColor: 'bg-[#ec4899]', textColor: 'text-[#ec4899]', visible: isTutor },
+    { id: 'Tutoría Profesional' as const, label: t('calendar.professionalShort'), icon: 'briefcase', bgColor: 'bg-[#E0E7FF]', activeBgColor: 'bg-[#4F46E5]', textColor: 'text-[#4F46E5]', visible: isTutor },
+    { id: 'Trabajos' as const, label: t('calendar.work'), icon: 'file-text', bgColor: 'bg-[#F5F3FF]', activeBgColor: 'bg-[#7c3aed]', textColor: 'text-[#7c3aed]', visible: true },
   ];
 
   return (
@@ -132,20 +134,20 @@ export function AddActivityModal({
           <View className="w-12 h-1 bg-gray-300 rounded-full align-self-center mx-auto mb-6" />
           
           <View className="flex-row justify-between items-center mb-6">
-            <Text style={{ color: colors.text }} className="text-xl font-bold ">Añadir Actividad</Text>
+            <Text style={{ color: colors.text }} className="text-xl font-bold ">{t('calendar.addActivity')}</Text>
             <Pressable onPress={onClose}>
-              <Text className="text-primary font-bold text-sm">Cancelar</Text>
+              <Text className="text-primary font-bold text-sm">{t('common.cancel')}</Text>
             </Pressable>
           </View>
 
           <ScrollView showsVerticalScrollIndicator={false}>
             {/* Input: Nombre */}
             <View className="mb-4">
-              <Text className="text-xs font-bold text-textSecondary mb-2 uppercase tracking-wider">Nombre de la actividad</Text>
+              <Text className="text-xs font-bold text-textSecondary mb-2 uppercase tracking-wider">{t('calendar.activityName')}</Text>
               <TextInput
                 value={name}
                 onChangeText={setName}
-                placeholder="Ej. Clase de Álgebra / Tarea de Física"
+                placeholder={t('calendar.activityNamePlaceholder')}
                 placeholderTextColor="#A1A1AA"
                 style={{ color: colors.text, backgroundColor: colors.surface }} className=" border border-gray-200 rounded-2xl px-4 py-3.5  font-semibold"
               />
@@ -153,7 +155,7 @@ export function AddActivityModal({
 
             {/* Selector: Tipo de Actividad */}
             <View className="mb-4">
-              <Text className="text-xs font-bold text-textSecondary mb-2 uppercase tracking-wider">Tipo de Actividad</Text>
+              <Text className="text-xs font-bold text-textSecondary mb-2 uppercase tracking-wider">{t('calendar.activityType')}</Text>
               <View className="flex-row flex-wrap justify-between">
                 {typesConfig
                   .filter((t) => t.visible)
@@ -192,7 +194,7 @@ export function AddActivityModal({
             {type.includes('Tutoría') && isTutor && (
               <View className="mb-4 bg-[#F5F3FF] border border-primary/20 rounded-2xl p-4">
                 <Text style={{ color: isDark ? '#FFFFFF' : colors.primary }} className="text-xs font-bold mb-2 uppercase tracking-wider">
-                  Asignar Estudiante
+                  {t('calendar.assignStudent')}
                 </Text>
                 
                 {/* Buscador de estudiantes */}
@@ -201,7 +203,7 @@ export function AddActivityModal({
                   <TextInput
                     value={studentSearch}
                     onChangeText={setStudentSearch}
-                    placeholder="Buscar estudiante..."
+                    placeholder={t('calendar.searchStudent')}
                     placeholderTextColor="#A1A1AA"
                     style={{ color: colors.text }} className="flex-1 text-xs font-semibold  p-0"
                   />
@@ -220,7 +222,7 @@ export function AddActivityModal({
                     }`}
                   >
                     <Text className={`text-xs font-semibold`} style={{ color: selectedStudentId === null ? (isDark ? '#FFFFFF' : colors.primary) : colors.text, fontWeight: selectedStudentId === null ? 'bold' : 'normal' }}>
-                      A todos (Sesión Grupal)
+                      {t('calendar.allGroup')}
                     </Text>
                     {selectedStudentId === null && (
                       <Feather name="users" size={12} color={colors.primary} />
@@ -249,7 +251,7 @@ export function AddActivityModal({
                     })
                   ) : (
                     <Text className="text-center text-[11px] text-textSecondary py-4">
-                      No se encontraron más estudiantes
+                      {t('calendar.noMoreStudents')}
                     </Text>
                   )}
                 </ScrollView>
@@ -259,7 +261,7 @@ export function AddActivityModal({
             {/* Grid: Fecha y Hora con Selectores */}
             <View className="flex-row justify-between mb-4">
               <View className="w-[48%]">
-                <Text className="text-xs font-bold text-textSecondary mb-2 uppercase tracking-wider">Fecha</Text>
+                <Text className="text-xs font-bold text-textSecondary mb-2 uppercase tracking-wider">{t('calendar.date')}</Text>
                 <Pressable
                   onPress={() => setShowDatePicker(true)}
                   style={{ backgroundColor: colors.surface }} className=" border border-gray-200 rounded-2xl px-4 py-3.5 flex-row justify-between items-center"
@@ -280,7 +282,7 @@ export function AddActivityModal({
               </View>
 
               <View className="w-[48%]">
-                <Text className="text-xs font-bold text-textSecondary mb-2 uppercase tracking-wider">Hora</Text>
+                <Text className="text-xs font-bold text-textSecondary mb-2 uppercase tracking-wider">{t('calendar.time')}</Text>
                 <Pressable
                   onPress={() => setShowTimePicker(true)}
                   style={{ backgroundColor: colors.surface }} className=" border border-gray-200 rounded-2xl px-4 py-3.5 flex-row justify-between items-center"
@@ -305,7 +307,7 @@ export function AddActivityModal({
             {/* Estado y Lugar */}
             <View className="flex-row justify-between mb-4">
               <View className="w-[48%]">
-                <Text className="text-xs font-bold text-textSecondary mb-2 uppercase tracking-wider">Estado</Text>
+                <Text className="text-xs font-bold text-textSecondary mb-2 uppercase tracking-wider">{t('calendar.status')}</Text>
                 <View style={{ backgroundColor: colors.surface }} className=" border border-gray-200 rounded-2xl overflow-hidden">
                   <Picker
                     selectedValue={status}
@@ -320,11 +322,11 @@ export function AddActivityModal({
                 </View>
               </View>
               <View className="w-[48%]">
-                <Text className="text-xs font-bold text-textSecondary mb-2 uppercase tracking-wider">Lugar</Text>
+                <Text className="text-xs font-bold text-textSecondary mb-2 uppercase tracking-wider">{t('calendar.location')}</Text>
                 <TextInput
                   value={location}
                   onChangeText={setLocation}
-                  placeholder="Ej. Aula 102"
+                  placeholder={t('calendar.locationPlaceholder')}
                   placeholderTextColor="#A1A1AA"
                   style={{ color: colors.text, backgroundColor: colors.surface }} className=" border border-gray-200 rounded-2xl px-4 py-[13px]  font-semibold h-[50px]"
                 />
@@ -333,11 +335,11 @@ export function AddActivityModal({
 
             {/* Notas */}
             <View className="mb-6">
-              <Text className="text-xs font-bold text-textSecondary mb-2 uppercase tracking-wider">Notas adicionales</Text>
+              <Text className="text-xs font-bold text-textSecondary mb-2 uppercase tracking-wider">{t('calendar.notes')}</Text>
               <TextInput
                 value={notes}
                 onChangeText={setNotes}
-                placeholder="Tema a tratar, recordatorios..."
+                placeholder={t('calendar.notesPlaceholder')}
                 placeholderTextColor="#A1A1AA"
                 multiline
                 numberOfLines={3}
@@ -351,7 +353,7 @@ export function AddActivityModal({
               onPress={handleSubmit}
               className="bg-primary rounded-2xl py-4 items-center justify-center shadow-lg shadow-[#9A3BEE]/25 mb-4"
             >
-              <Text className="text-white font-bold text-base">Guardar Actividad</Text>
+              <Text className="text-white font-bold text-base">{t('calendar.saveActivity')}</Text>
             </Pressable>
           </ScrollView>
         </View>

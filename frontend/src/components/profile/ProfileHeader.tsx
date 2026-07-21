@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { User } from '@/src/types';
 import { useAuthStore } from '@/src/store/auth';
 import { useTheme } from '@/src/theme/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 interface ProfileHeaderProps {
   user: User | null;
@@ -12,6 +13,7 @@ interface ProfileHeaderProps {
 
 export function ProfileHeader({ user }: ProfileHeaderProps) {
   const { colors } = useTheme();
+  const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const paddingTop = Math.max(insets.top, 16);
   const isStudent = user?.role === 'estudiante';
@@ -35,7 +37,7 @@ export function ProfileHeader({ user }: ProfileHeaderProps) {
           fontWeight: 'bold',
           color: 'white',
         }}>
-          Perfil
+          {t('profile.title')}
         </Text>
       </View>
       
@@ -91,7 +93,7 @@ export function ProfileHeader({ user }: ProfileHeaderProps) {
             fontWeight: '500',
             marginTop: 4,
           }}>
-            Código: {isStudent ? (user?.student_code || '2123456') : (user?.tutor_code || 'T-212345')}
+            {t('profile.code', { code: isStudent ? (user?.student_code || '2123456') : (user?.tutor_code || 'T-212345') })}
           </Text>
           {isStudent ? (
             <>
@@ -109,7 +111,7 @@ export function ProfileHeader({ user }: ProfileHeaderProps) {
                 fontWeight: '500',
                 marginTop: 2,
               }}>
-                Semestre: {user?.current_semester || 'No especificado'}
+                {t('profile.semester', { semester: user?.current_semester || t('common.notSpecified') })}
               </Text>
             </>
           ) : (
@@ -134,7 +136,7 @@ export function ProfileHeader({ user }: ProfileHeaderProps) {
           marginTop: 8,
           marginBottom: 4,
         }}>
-          Mi tutor
+          {t('profile.myTutor')}
         </Text>
       )}
     </View>

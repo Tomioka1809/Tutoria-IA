@@ -9,9 +9,11 @@ import { ThemedView } from '@/components/themed-view';
 import { useExplore } from '@/src/components/explore/useExplore';
 import { ExploreHeader } from '@/src/components/explore/ExploreHeader';
 import { CollapsibleSection } from '@/src/components/explore/CollapsibleSection';
+import { useTranslation } from 'react-i18next';
 
 export default function TabTwoScreen() {
   const { colors } = useTheme();
+  const { t } = useTranslation();
   const { styles, Fonts, Platform } = useExplore();
 
   return (
@@ -26,74 +28,54 @@ export default function TabTwoScreen() {
           style={{
             fontFamily: Fonts.rounded,
           }}>
-          Explore
+          {t('explore.title')}
         </ThemedText>
       </ThemedView>
-      <ThemedText>This app includes example code to help you get started.</ThemedText>
+      <ThemedText>{t('explore.intro')}</ThemedText>
       
-      <CollapsibleSection title="File-based routing">
+      <CollapsibleSection title={t('explore.routing')}>
         <ThemedText>
-          This app has two screens:{' '}
-          <ThemedText type="defaultSemiBold">app/(tutor)/index.tsx</ThemedText> and{' '}
+          {t('explore.screens')}{' '}
+          <ThemedText type="defaultSemiBold">app/(tutor)/index.tsx</ThemedText> {t('explore.and')}{' '}
           <ThemedText type="defaultSemiBold">app/(tutor)/explore.tsx</ThemedText>
         </ThemedText>
         <ThemedText>
-          The layout file in <ThemedText type="defaultSemiBold">app/(tutor)/_layout.tsx</ThemedText>{' '}
-          sets up the tab navigator.
+          <ThemedText type="defaultSemiBold">app/(tutor)/_layout.tsx</ThemedText>{' '}
+          {t('explore.layout')}
         </ThemedText>
         <ExternalLink href="https://docs.expo.dev/router/introduction">
-          <ThemedText type="link">Learn more</ThemedText>
+          <ThemedText type="link">{t('explore.learnMore')}</ThemedText>
         </ExternalLink>
       </CollapsibleSection>
 
-      <CollapsibleSection title="Android, iOS, and web support">
-        <ThemedText>
-          You can open this project on Android, iOS, and the web. To open the web version, press{' '}
-          <ThemedText type="defaultSemiBold">w</ThemedText> in the terminal running this project.
-        </ThemedText>
+      <CollapsibleSection title={t('explore.platforms')}>
+        <ThemedText>{t('explore.platformsBody')}</ThemedText>
       </CollapsibleSection>
 
-      <CollapsibleSection title="Images">
-        <ThemedText>
-          For static images, you can use the <ThemedText type="defaultSemiBold">@2x</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">@3x</ThemedText> suffixes to provide files for
-          different screen densities
-        </ThemedText>
+      <CollapsibleSection title={t('explore.images')}>
+        <ThemedText>{t('explore.imagesBody')}</ThemedText>
         <Image
           source={require('@/assets/images/react-logo.png')}
           style={{ width: 100, height: 100, alignSelf: 'center' }}
         />
         <ExternalLink href="https://reactnative.dev/docs/images">
-          <ThemedText type="link">Learn more</ThemedText>
+          <ThemedText type="link">{t('explore.learnMore')}</ThemedText>
         </ExternalLink>
       </CollapsibleSection>
 
-      <CollapsibleSection title="Light and dark mode components">
-        <ThemedText>
-          This template has light and dark mode support. The{' '}
-          <ThemedText type="defaultSemiBold">useColorScheme()</ThemedText> hook lets you inspect
-          what the user&apos;s current color scheme is, and so you can adjust UI colors accordingly.
-        </ThemedText>
+      <CollapsibleSection title={t('explore.themes')}>
+        <ThemedText>{t('explore.themesBody')}</ThemedText>
         <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
-          <ThemedText type="link">Learn more</ThemedText>
+          <ThemedText type="link">{t('explore.learnMore')}</ThemedText>
         </ExternalLink>
       </CollapsibleSection>
 
-      <CollapsibleSection title="Animations">
-        <ThemedText>
-          This template includes an example of an animated component. The{' '}
-          <ThemedText type="defaultSemiBold">components/HelloWave.tsx</ThemedText> component uses
-          the powerful{' '}
-          <ThemedText type="defaultSemiBold" style={{ fontFamily: Fonts.mono }}>
-            react-native-reanimated
-          </ThemedText>{' '}
-          library to create a waving hand animation.
-        </ThemedText>
+      <CollapsibleSection title={t('explore.animations')}>
+        <ThemedText>{t('explore.animationsBody')}</ThemedText>
         {Platform.select({
           ios: (
             <ThemedText>
-              The <ThemedText type="defaultSemiBold">components/ParallaxScrollView.tsx</ThemedText>{' '}
-              component provides a parallax effect for the header image.
+              {t('explore.parallax')}
             </ThemedText>
           ),
         })}

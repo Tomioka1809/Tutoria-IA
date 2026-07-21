@@ -6,9 +6,11 @@ import Feather from '@expo/vector-icons/Feather';
 import { useAuthStore } from '@/src/store/auth';
 import { usePreferencesStore } from '@/src/store/preferences';
 import { useTheme } from '@/src/theme/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 export default function AdminConfiguracionScreen() {
   const { colors } = useTheme();
+  const { t: tr } = useTranslation();
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const user = useAuthStore((s) => s.user);
@@ -24,13 +26,13 @@ export default function AdminConfiguracionScreen() {
   const secondaryColor = isDark ? '#FFFFFF' : colors.textSecondary;
 
   const t = {
-    prefs: language === 'en' ? 'Preferences' : 'Preferencias',
-    lang: language === 'en' ? 'Language' : 'Idioma',
-    theme: language === 'en' ? 'Theme' : 'Tema',
-    changeTheme: language === 'en' ? 'Change theme' : 'Cambiar tema',
-    changeThemeDesc: language === 'en' ? 'Select the application theme' : 'Selecciona el tema de la aplicación',
-    light: language === 'en' ? 'Light' : 'Claro',
-    dark: language === 'en' ? 'Dark' : 'Oscuro',
+    prefs: tr('settings.preferences'),
+    lang: tr('settings.language'),
+    theme: tr('settings.theme'),
+    changeTheme: tr('settings.changeTheme'),
+    changeThemeDesc: tr('settings.changeThemeDescription'),
+    light: tr('settings.light'),
+    dark: tr('settings.dark'),
   };
 
   const handleLanguageChange = () => {
@@ -76,7 +78,7 @@ export default function AdminConfiguracionScreen() {
               fontWeight: 'bold',
               color: 'white',
             }}>
-              Ajustes de Administrador
+              {tr('admin.adminSettings')}
             </Text>
           </View>
           <Feather name="settings" size={24} color="white" />
@@ -148,7 +150,7 @@ export default function AdminConfiguracionScreen() {
               fontWeight: 'bold',
               marginTop: 2,
             }}>
-              Administrador del Sistema
+              {tr('admin.systemAdministrator')}
             </Text>
           </View>
         </View>
@@ -261,7 +263,7 @@ export default function AdminConfiguracionScreen() {
           color: colors.text,
           marginBottom: 12,
         }}>
-          Acceso
+          {tr('admin.access')}
         </Text>
 
         <View style={{
@@ -301,10 +303,10 @@ export default function AdminConfiguracionScreen() {
               </View>
               <View style={{ flex: 1 }}>
                 <Text style={{ fontSize: 15, fontWeight: 'bold', color: isDark ? '#FFFFFF' : '#DC2626' }}>
-                  Cerrar Sesión
+                  {tr('admin.logout')}
                 </Text>
                 <Text style={{ fontSize: 12, color: secondaryColor, marginTop: 2 }}>
-                  Salir de la cuenta de administrador
+                  {tr('admin.logoutDescription')}
                 </Text>
               </View>
             </View>
@@ -323,10 +325,10 @@ export default function AdminConfiguracionScreen() {
         <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center' }}>
           <View style={{ backgroundColor: colors.surface, width: '80%', borderRadius: 24, borderWidth: isDark ? 1 : 0, borderColor: isDark ? '#FFFFFF' : 'transparent', padding: 24, shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.12, shadowRadius: 10, elevation: 6 }}>
             <Text style={{ fontSize: 18, fontWeight: 'bold', color: colors.text }}>
-              Cambiar idioma
+              {tr('settings.changeLanguage')}
             </Text>
             <Text style={{ fontSize: 14, color: secondaryColor, marginTop: 6, marginBottom: 16 }}>
-              Selecciona el idioma de la aplicación
+              {tr('settings.changeLanguageDescription')}
             </Text>
 
             {([
@@ -369,7 +371,7 @@ export default function AdminConfiguracionScreen() {
 
             <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginTop: 6 }}>
               <Pressable onPress={() => setLanguageModalVisible(false)} style={{ paddingHorizontal: 16, paddingVertical: 10, marginRight: 8 }}>
-                <Text style={{ color: secondaryColor, fontWeight: '600' }}>Cancelar</Text>
+                <Text style={{ color: secondaryColor, fontWeight: '600' }}>{tr('common.cancel')}</Text>
               </Pressable>
               <Pressable
                 onPress={() => {
@@ -378,7 +380,7 @@ export default function AdminConfiguracionScreen() {
                 }}
                 style={{ backgroundColor: colors.primary, paddingHorizontal: 16, paddingVertical: 10, borderRadius: 12 }}
               >
-                <Text style={{ color: '#FFFFFF', fontWeight: 'bold' }}>Guardar</Text>
+                <Text style={{ color: '#FFFFFF', fontWeight: 'bold' }}>{tr('common.save')}</Text>
               </Pressable>
             </View>
           </View>
@@ -441,7 +443,7 @@ export default function AdminConfiguracionScreen() {
 
             <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginTop: 6 }}>
               <Pressable onPress={() => setThemeModalVisible(false)} style={{ paddingHorizontal: 16, paddingVertical: 10, marginRight: 8 }}>
-                <Text style={{ color: secondaryColor, fontWeight: '600' }}>Cancelar</Text>
+                <Text style={{ color: secondaryColor, fontWeight: '600' }}>{tr('common.cancel')}</Text>
               </Pressable>
               <Pressable
                 onPress={() => {
@@ -450,7 +452,7 @@ export default function AdminConfiguracionScreen() {
                 }}
                 style={{ backgroundColor: colors.primary, paddingHorizontal: 16, paddingVertical: 10, borderRadius: 12 }}
               >
-                <Text style={{ color: '#FFFFFF', fontWeight: 'bold' }}>Guardar</Text>
+                <Text style={{ color: '#FFFFFF', fontWeight: 'bold' }}>{tr('common.save')}</Text>
               </Pressable>
             </View>
           </View>

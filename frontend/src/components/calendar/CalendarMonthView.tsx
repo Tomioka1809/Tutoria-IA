@@ -2,6 +2,7 @@
 import React from 'react';
 import { useTheme } from '@/src/theme/ThemeContext';
 import { View, Text, Pressable } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 interface CalendarMonthViewProps {
   currentMonth: Date;
@@ -25,6 +26,7 @@ export function CalendarMonthView({
   hasActivities,
 }: CalendarMonthViewProps) {
   const { colors, isDark } = useTheme();
+  const { t, i18n } = useTranslation();
   const today = new Date();
 
   return (
@@ -34,7 +36,7 @@ export function CalendarMonthView({
           <Text className="text-base text-textSecondary">◀</Text>
         </Pressable>
         <Text style={{ color: colors.text }} className="text-[17px] font-extrabold  mx-4 capitalize">
-          {currentMonth.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' })}
+          {currentMonth.toLocaleDateString(i18n.language === 'en' ? 'en-US' : 'es-ES', { month: 'long', year: 'numeric' })}
         </Text>
         <Pressable onPress={nextMonth} className="px-4 py-2">
           <Text className="text-base text-textSecondary">▶</Text>
@@ -43,9 +45,9 @@ export function CalendarMonthView({
 
       {/* Days of Week Header */}
       <View className="flex-row justify-between mb-2 px-2">
-        {weekDays.map((wd) => (
+        {weekDays.map((wd, index) => (
           <Text key={wd} className="w-[12%] text-center text-xs font-bold text-textSecondary">
-            {wd}
+            {t(`calendar.weekDays.${index}`)}
           </Text>
         ))}
       </View>

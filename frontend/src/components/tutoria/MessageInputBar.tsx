@@ -2,6 +2,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { View, TextInput, Pressable, Text, Keyboard } from 'react-native';
 import { useTheme } from '@/src/theme/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 interface MessageInputBarProps {
   inputText: string;
@@ -20,6 +21,7 @@ export function MessageInputBar({
   inputRef,
 }: MessageInputBarProps) {
   const { colors } = useTheme();
+  const { t } = useTranslation();
   const isTextEmpty = !inputText.trim();
 
   return (
@@ -28,7 +30,7 @@ export function MessageInputBar({
         ref={inputRef}
         value={inputText}
         onChangeText={setInputText}
-        placeholder="Escribe tu mensaje..."
+        placeholder={t('tutoring.inputPlaceholder')}
         multiline={true}
         style={{ backgroundColor: colors.background, color: colors.text }} className="flex-1 rounded-3xl px-5 py-3 text-sm mr-3 font-semibold min-h-[44px] max-h-[120px]"
         placeholderTextColor={colors.textSecondary}
