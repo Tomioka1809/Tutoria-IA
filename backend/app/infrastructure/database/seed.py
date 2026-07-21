@@ -47,6 +47,28 @@ async def seed_database():
             continue
             
         filepath = os.path.join(corpus_dir, filename)
+        
+        # Determine descriptive prefix for metadata enrichment
+        prefix = ""
+        if "reglamento_intercambio" in filename:
+            prefix = "[Reglamento de Intercambio Estudiantil y Movilidad Académica OCRI UNSAAC] "
+        elif "reglamento_tutoria" in filename:
+            prefix = "[Reglamento de Tutoría de Estudiantes UNSAAC] "
+        elif "cronograma" in filename:
+            prefix = "[Cronograma y Calendario Académico Semestre UNSAAC] "
+        elif "2017" in filename:
+            prefix = "[Malla Curricular Plan de Estudios 2017 Ingeniería de Sistemas UNSAAC] "
+        elif "2025" in filename:
+            prefix = "[Malla Curricular Plan de Estudios 2025 Ingeniería de Sistemas UNSAAC] "
+        elif "biblioteca" in filename:
+            prefix = "[Servicios de Biblioteca y Hemeroteca UNSAAC] "
+        elif "bienestar" in filename:
+            prefix = "[Servicios de Bienestar Universitario y Comedor UNSAAC] "
+        elif "preguntas_frecuentes" in filename:
+            prefix = "[Preguntas Frecuentes y Respuestas Generales UNSAAC] "
+        elif "glosario" in filename:
+            prefix = "[Glosario de Términos Académicos UNSAAC] "
+
         with open(filepath, "r", encoding="utf-8") as f:
             try:
                 data = json.load(f)
@@ -67,7 +89,7 @@ async def seed_database():
                         text = dict_to_text(item)
                         
                     source = item.get("fuente", filename)
-                    chunks_to_insert.append({"source": source, "text": text})
+                    chunks_to_insert.append({"source": source, "text": f"{prefix}{text}"})
                     
             elif isinstance(data, dict):
                 # Dictionary containing different sections
@@ -79,7 +101,7 @@ async def seed_database():
                     general_info.append(f"base legal: {', '.join(data['base_legal'])}")
                 
                 if general_info:
-                    chunks_to_insert.append({"source": filename, "text": ". ".join(general_info)})
+                    chunks_to_insert.append({"source": filename, "text": f"{prefix}{'. '.join(general_info)}"})
                 
                 for key, value in data.items():
                     if key in ["universidad", "nombre_completo", "reglamento", "organo_responsable", "documento", "base_legal"]:
@@ -95,28 +117,27 @@ async def seed_database():
                                 else:
                                     text = f"{key}: {dict_to_text(item)}"
                                 source = item.get("fuente", filename)
-                                chunks_to_insert.append({"source": source, "text": text})
+                                chunks_to_insert.append({"source": source, "text": f"{prefix}{text}"})
                         else:
                             text = f"{key}: {', '.join(str(v) for v in value)}"
-                            chunks_to_insert.append({"source": filename, "text": text})
+                            chunks_to_insert.append({"source": filename, "text": f"{prefix}{text}"})
                             
                     elif isinstance(value, dict):
                         # Chunk each sub-section if it's large, or the whole dict
                         # Since it could be deeply nested, dict_to_text helps flatten it
                         text = f"{key}: {dict_to_text(value)}"
-                        chunks_to_insert.append({"source": filename, "text": text})
+                        chunks_to_insert.append({"source": filename, "text": f"{prefix}{text}"})
                         
                     else:
                         text = f"{key}: {value}"
-                        chunks_to_insert.append({"source": filename, "text": text})
+                        chunks_to_insert.append({"source": filename, "text": f"{prefix}{text}"})
 
     async with SessionLocal() as db:
-        # Check if already seeded - maybe we want to drop or ignore
-        # Since we modified the seed, we might want to allow re-seeding or just check as before
-        result = await db.execute(select(CorpusChunk).limit(1))
-        if result.scalars().first():
-            print("Database is already seeded. If you want to re-seed, drop the tables first.")
-            return
+        # Clear existing chunks to reload with metadata prefix
+        from sqlalchemy import delete
+        await db.execute(delete(CorpusChunk))
+        await db.commit()
+        print("Cleared existing corpus chunks.")
 
         print(f"Generating embeddings for {len(chunks_to_insert)} chunks...")
         for i, chunk_data in enumerate(chunks_to_insert):

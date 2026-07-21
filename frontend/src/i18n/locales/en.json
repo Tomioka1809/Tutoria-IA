@@ -201,9 +201,9 @@
     "studentOnly": "The TutorIA chatbot is available exclusively to students for academic questions.",
     "myStudentsPrompt": "Who are my assigned students?",
     "mySessionsPrompt": "What tutoring sessions do I have today?",
-    "curriculumPrompt": "What is my current curriculum?",
+    "curriculumPrompt": "Give me information about my curriculum",
     "sessionsPrompt": "When is my next tutoring session?",
-    "regulationsPrompt": "Where can I find the university regulations?",
+    "regulationsPrompt": "What are the tutoring and student exchange regulations?",
     "voicePending": "Voice input (microphone) is under development for the next version."
   },
   "settings": {

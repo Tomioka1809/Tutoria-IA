@@ -195,15 +195,15 @@
     "welcomeTutor": "Consulta información para acompañar mejor a tus estudiantes.",
     "myStudents": "Mis estudiantes",
     "mySessions": "Mis tutorías",
-    "curriculum": "Plan de estudios",
+    "curriculum": "Malla curricular",
     "sessions": "Tutorías",
     "regulations": "Reglamentos",
     "studentOnly": "El chatbot TutorIA está disponible exclusivamente para estudiantes con el fin de resolver consultas académicas.",
     "myStudentsPrompt": "¿Cuáles son mis estudiantes asignados?",
     "mySessionsPrompt": "¿Qué tutorías tengo hoy?",
-    "curriculumPrompt": "¿Cuál es mi plan de estudios actual?",
+    "curriculumPrompt": "Dame información de mi malla curricular",
     "sessionsPrompt": "¿Cuándo es mi próxima tutoría?",
-    "regulationsPrompt": "¿Dónde encuentro los reglamentos universitarios?",
+    "regulationsPrompt": "¿Cuáles son los reglamentos de tutoría y de intercambio estudiantil?",
     "voicePending": "Entrada de voz (micrófono) en desarrollo para la siguiente versión."
   },
   "settings": {
