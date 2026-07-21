@@ -25,3 +25,8 @@ class InvalidTokenError(DomainException):
 class PasswordMismatchError(DomainException):
     pass
 
+class PasswordValidationError(DomainException):
+    pass
+
+class PasswordUpdateError(DomainException):
+    pass

@@ -96,10 +96,14 @@ from app.application.use_cases.auth_use_cases import AuthUseCase
 from app.infrastructure.database.repositories.user_repository import UserRepository
 from app.infrastructure.database.repositories.tutor_assignment_repository import TutorAssignmentRepository
 from app.infrastructure.database.repositories.calendar_repository import CalendarRepository
+from app.infrastructure.security.security_adapter import PasswordHasher, TokenService, DevelopmentPasswordResetNotifier
 
 def get_auth_use_case(db: AsyncSession = Depends(get_db)) -> AuthUseCase:
     user_repo = UserRepository(db)
-    return AuthUseCase(user_repo)
+    password_hasher = PasswordHasher()
+    token_service = TokenService()
+    notifier = DevelopmentPasswordResetNotifier()
+    return AuthUseCase(user_repo, password_hasher, token_service, notifier)
 
 def get_chat_use_case(db: AsyncSession = Depends(get_db)) -> ChatUseCase:
     chat_repo = ChatRepository(db)
