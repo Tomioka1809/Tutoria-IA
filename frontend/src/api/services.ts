@@ -18,13 +18,25 @@ export const QuizAPI = {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 60000); // 60s timeout
     
+    let token = '';
     try {
+      const { useAuthStore } = require('../store/auth');
+      token = useAuthStore.getState().token || '';
+    } catch (e) {
+      // Ignore if store is not initialized
+    }
+    
+    try {
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+      };
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+
       const response = await fetch(`${API_URL}/quiz/generate`, {
         method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          // Note: Add Authorization header here if needed in the future
-        },
+        headers,
         signal: controller.signal
       });
       

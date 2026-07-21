@@ -1,0 +1,53 @@
+{
+  "project_root": "/home/tsuki/Downloads/React-Native",
+  "integration_mode": false,
+  "counts": {
+    "PASS": 5,
+    "WARN": 0,
+    "FAIL": 0,
+    "SKIP": 0
+  },
+  "ok": true,
+  "results": [
+    {
+      "phase": 0,
+      "code": "F0-001",
+      "description": "Estructura principal",
+      "status": "PASS",
+      "detail": "La estructura principal del repositorio está presente.",
+      "duration_ms": 0
+    },
+    {
+      "phase": 0,
+      "code": "F0-002",
+      "description": "Configuración y dependencias",
+      "status": "PASS",
+      "detail": "Archivos localizados: .env.example, backend/requirements.txt, frontend/package.json, backend/alembic.ini",
+      "duration_ms": 0
+    },
+    {
+      "phase": 0,
+      "code": "F0-003",
+      "description": "Protección de secretos",
+      "status": "PASS",
+      "detail": "Los archivos .env están protegidos frente a Git.",
+      "duration_ms": 1
+    },
+    {
+      "phase": 0,
+      "code": "F0-004",
+      "description": "Variables de entorno mínimas",
+      "status": "PASS",
+      "detail": "Plantilla revisada: .env.example",
+      "duration_ms": 0
+    },
+    {
+      "phase": 0,
+      "code": "F0-005",
+      "description": "Sintaxis de Docker Compose",
+      "status": "PASS",
+      "detail": "docker-compose.yml es sintácticamente válido.",
+      "duration_ms": 151
+    }
+  ]
+}

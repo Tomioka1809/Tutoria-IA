@@ -12,3 +12,16 @@ class ResourceNotFoundError(DomainException):
 
 class InvalidCredentialsError(DomainException):
     pass
+
+class UserAlreadyExistsError(DomainException):
+    pass
+
+class AccountInactiveError(DomainException):
+    pass
+
+class InvalidTokenError(DomainException):
+    pass
+
+class PasswordMismatchError(DomainException):
+    pass
+

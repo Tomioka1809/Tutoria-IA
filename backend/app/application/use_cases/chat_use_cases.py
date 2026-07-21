@@ -65,7 +65,7 @@ class ChatUseCase:
         query_embedding = await self.llm.compute_embedding(rag_query)
         
         # 2. Search corpus in pgvector
-        similar_chunks = await self.corpus_repo.search_similar(query_embedding, limit=6)
+        similar_chunks = await self.corpus_repo.search_similar(query_embedding, limit=6, query_text=rag_query)
         corpus_context = "\n\n".join(similar_chunks)
         
         # Define Tools for Function Calling
