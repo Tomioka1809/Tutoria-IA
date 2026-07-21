@@ -93,9 +93,11 @@ def get_current_active_admin(
     return current_user
 
 from app.application.use_cases.auth_use_cases import AuthUseCase
+from app.application.use_cases.session_service import SessionUseCase
 from app.infrastructure.database.repositories.user_repository import UserRepository
 from app.infrastructure.database.repositories.tutor_assignment_repository import TutorAssignmentRepository
 from app.infrastructure.database.repositories.calendar_repository import CalendarRepository
+from app.infrastructure.database.repositories.session_repository import SessionRepository
 from app.infrastructure.security.security_adapter import PasswordHasher, TokenService, DevelopmentPasswordResetNotifier
 
 def get_auth_use_case(db: AsyncSession = Depends(get_db)) -> AuthUseCase:
@@ -104,6 +106,11 @@ def get_auth_use_case(db: AsyncSession = Depends(get_db)) -> AuthUseCase:
     token_service = TokenService()
     notifier = DevelopmentPasswordResetNotifier()
     return AuthUseCase(user_repo, password_hasher, token_service, notifier)
+
+def get_session_use_case(db: AsyncSession = Depends(get_db)) -> SessionUseCase:
+    session_repo = SessionRepository(db)
+    tutor_assignment_repo = TutorAssignmentRepository(db)
+    return SessionUseCase(session_repo=session_repo, tutor_assignment_repo=tutor_assignment_repo)
 
 def get_chat_use_case(db: AsyncSession = Depends(get_db)) -> ChatUseCase:
     chat_repo = ChatRepository(db)

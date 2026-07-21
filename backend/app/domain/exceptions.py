@@ -30,3 +30,6 @@ class PasswordValidationError(DomainException):
 
 class PasswordUpdateError(DomainException):
     pass
+
+class TutorAssignmentRequiredError(DomainException):
+    pass

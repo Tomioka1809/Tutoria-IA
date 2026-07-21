@@ -12,6 +12,7 @@ from app.domain.exceptions import (
     ResourceNotFoundError,
     PasswordValidationError,
     PasswordUpdateError,
+    TutorAssignmentRequiredError,
 )
 
 def setup_exception_handlers(app: FastAPI) -> None:
@@ -71,6 +72,13 @@ def setup_exception_handlers(app: FastAPI) -> None:
         return JSONResponse(
             status_code=status.HTTP_400_BAD_REQUEST,
             content={"detail": str(exc) or "No se pudo actualizar la contraseña."},
+        )
+
+    @app.exception_handler(TutorAssignmentRequiredError)
+    async def tutor_assignment_required_handler(request: Request, exc: TutorAssignmentRequiredError):
+        return JSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            content={"detail": str(exc) or "No students assigned to this tutor to schedule a group session."},
         )
 
     @app.exception_handler(InvalidTokenError)

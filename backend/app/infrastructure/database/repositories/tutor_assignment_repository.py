@@ -69,3 +69,9 @@ class TutorAssignmentRepository(TutorAssignmentRepositoryPort):
                 "service_type": a.service_type.name if a.service_type else "Tutoría"
             })
         return data
+
+    async def get_assigned_student_ids(self, tutor_id: int) -> List[int]:
+        result = await self.db.execute(
+            select(TutorAssignment.student_id).where(TutorAssignment.tutor_id == tutor_id)
+        )
+        return list(result.scalars().all())

@@ -107,6 +107,9 @@ class FakeTutorAssignmentRepository(TutorAssignmentRepositoryPort):
         self.last_tutor_id_queried = tutor_id
         return self.students_data
 
+    async def get_assigned_student_ids(self, tutor_id: int):
+        return []
+
 
 class FakeCalendarRepository(CalendarRepositoryPort):
     def __init__(self, calendar_data=None):

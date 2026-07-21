@@ -64,6 +64,10 @@ class TutorAssignmentRepositoryPort(ABC):
     async def get_assigned_students_data(self, tutor_id: int) -> List[AssignedStudentDTO]:
         pass
 
+    @abstractmethod
+    async def get_assigned_student_ids(self, tutor_id: int) -> List[int]:
+        pass
+
 class CalendarRepositoryPort(ABC):
     @abstractmethod
     async def get_calendar_events_data(
