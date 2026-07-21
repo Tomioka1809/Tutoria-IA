@@ -19,6 +19,10 @@ export default function ConfiguracionScreen() {
   const paddingTop = Math.max(insets.top, 16);
 
   const [pwdModalVisible, setPwdModalVisible] = useState(false);
+  const [languageModalVisible, setLanguageModalVisible] = useState(false);
+  const [themeModalVisible, setThemeModalVisible] = useState(false);
+  const [selectedLanguage, setSelectedLanguage] = useState<'es' | 'en'>(language);
+  const [selectedTheme, setSelectedTheme] = useState<'light' | 'dark'>(theme === 'dark' ? 'dark' : 'light');
   const [currentPwd, setCurrentPwd] = useState('');
   const [newPwd, setNewPwd] = useState('');
   const [isChangingPwd, setIsChangingPwd] = useState(false);
@@ -42,23 +46,20 @@ export default function ConfiguracionScreen() {
     prefs: language === 'en' ? 'Preferences' : 'Preferencias',
     lang: language === 'en' ? 'Language' : 'Idioma',
     theme: language === 'en' ? 'Theme' : 'Tema',
+    changeTheme: language === 'en' ? 'Change theme' : 'Cambiar tema',
+    changeThemeDesc: language === 'en' ? 'Select the application theme' : 'Selecciona el tema de la aplicación',
+    light: language === 'en' ? 'Light' : 'Claro',
+    dark: language === 'en' ? 'Dark' : 'Oscuro',
   };
 
   const handleLanguageChange = () => {
-    Alert.alert('Idioma / Language', 'Selecciona tu idioma / Choose your language', [
-      { text: 'Español', onPress: () => setLanguage('es') },
-      { text: 'English', onPress: () => setLanguage('en') },
-      { text: 'Cancelar', style: 'cancel' }
-    ]);
+    setSelectedLanguage(language);
+    setLanguageModalVisible(true);
   };
 
   const handleThemeChange = () => {
-    Alert.alert('Tema', 'Selecciona el tema de la aplicación', [
-      { text: 'Claro (Light)', onPress: () => setTheme('light') },
-      { text: 'Oscuro (Dark)', onPress: () => setTheme('dark') },
-      { text: 'Sistema (System)', onPress: () => setTheme('system') },
-      { text: 'Cancelar', style: 'cancel' }
-    ]);
+    setSelectedTheme(theme === 'dark' ? 'dark' : 'light');
+    setThemeModalVisible(true);
   };
 
   const handleChangePassword = async () => {
@@ -381,8 +382,8 @@ export default function ConfiguracionScreen() {
                 </Text>
               </View>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ fontSize: 14, color: subTextColor, marginRight: 8, textTransform: 'capitalize' }}>
-                  {theme}
+                <Text style={{ fontSize: 14, color: subTextColor, marginRight: 8 }}>
+                  {theme === 'dark' ? t.dark : t.light}
                 </Text>
                 <Feather name="chevron-right" size={20} color="#94A3B8" />
               </View>
@@ -450,6 +451,150 @@ export default function ConfiguracionScreen() {
           </View>
         </View>
       </ScrollView>
+
+      {/* Language Modal */}
+      <Modal
+        visible={languageModalVisible}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setLanguageModalVisible(false)}
+      >
+        <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center' }}>
+          <View style={{ backgroundColor: cardColor, width: '80%', borderRadius: 24, padding: 24, shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.12, shadowRadius: 10, elevation: 6 }}>
+            <Text style={{ fontSize: 18, fontWeight: 'bold', color: textColor }}>
+              Cambiar idioma
+            </Text>
+            <Text style={{ fontSize: 14, color: subTextColor, marginTop: 6, marginBottom: 16 }}>
+              Selecciona el idioma de la aplicación
+            </Text>
+
+            {([
+              { value: 'es' as const, label: 'Español' },
+              { value: 'en' as const, label: 'English' },
+            ]).map((option) => {
+              const isSelected = selectedLanguage === option.value;
+              return (
+                <Pressable
+                  key={option.value}
+                  onPress={() => setSelectedLanguage(option.value)}
+                  style={{
+                    minHeight: 52,
+                    borderWidth: isSelected ? 1.5 : 1,
+                    borderColor: isSelected ? colors.primary : borderColor,
+                    borderRadius: 12,
+                    paddingHorizontal: 12,
+                    marginBottom: 10,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    backgroundColor: isSelected ? (isDark ? '#2A183D' : '#FBF7FF') : cardColor,
+                  }}
+                >
+                  <View style={{ width: 34, height: 34, borderRadius: 17, backgroundColor: isSelected ? '#F3E8FF' : (isDark ? '#2C2C2C' : '#F5F5F7'), alignItems: 'center', justifyContent: 'center' }}>
+                    <Feather name="globe" size={19} color={isSelected ? colors.primary : subTextColor} />
+                  </View>
+                  <Text style={{ flex: 1, fontSize: 15, fontWeight: '600', color: textColor, marginLeft: 12 }}>
+                    {option.label}
+                  </Text>
+                  {isSelected ? (
+                    <View style={{ width: 24, height: 24, borderRadius: 12, backgroundColor: colors.primary, alignItems: 'center', justifyContent: 'center' }}>
+                      <Feather name="check" size={16} color="#FFFFFF" />
+                    </View>
+                  ) : (
+                    <View style={{ width: 24, height: 24, borderRadius: 12, borderWidth: 2, borderColor: subTextColor }} />
+                  )}
+                </Pressable>
+              );
+            })}
+
+            <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginTop: 6 }}>
+              <Pressable onPress={() => setLanguageModalVisible(false)} style={{ paddingHorizontal: 16, paddingVertical: 10, marginRight: 8 }}>
+                <Text style={{ color: subTextColor, fontWeight: '600' }}>Cancelar</Text>
+              </Pressable>
+              <Pressable
+                onPress={() => {
+                  setLanguage(selectedLanguage);
+                  setLanguageModalVisible(false);
+                }}
+                style={{ backgroundColor: colors.primary, paddingHorizontal: 16, paddingVertical: 10, borderRadius: 12 }}
+              >
+                <Text style={{ color: '#FFFFFF', fontWeight: 'bold' }}>Guardar</Text>
+              </Pressable>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Theme Modal */}
+      <Modal
+        visible={themeModalVisible}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setThemeModalVisible(false)}
+      >
+        <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center' }}>
+          <View style={{ backgroundColor: cardColor, width: '80%', borderRadius: 24, padding: 24, shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.12, shadowRadius: 10, elevation: 6 }}>
+            <Text style={{ fontSize: 18, fontWeight: 'bold', color: textColor }}>
+              {t.changeTheme}
+            </Text>
+            <Text style={{ fontSize: 14, color: subTextColor, marginTop: 6, marginBottom: 16 }}>
+              {t.changeThemeDesc}
+            </Text>
+
+            {([
+              { value: 'light' as const, label: t.light, icon: 'sun' as const },
+              { value: 'dark' as const, label: t.dark, icon: 'moon' as const },
+            ]).map((option) => {
+              const isSelected = selectedTheme === option.value;
+              return (
+                <Pressable
+                  key={option.value}
+                  onPress={() => setSelectedTheme(option.value)}
+                  style={{
+                    minHeight: 52,
+                    borderWidth: isSelected ? 1.5 : 1,
+                    borderColor: isSelected ? colors.primary : borderColor,
+                    borderRadius: 12,
+                    paddingHorizontal: 12,
+                    marginBottom: 10,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    backgroundColor: isSelected ? (isDark ? '#2A183D' : '#FBF7FF') : cardColor,
+                  }}
+                >
+                  <View style={{ width: 34, height: 34, borderRadius: 17, backgroundColor: isSelected ? '#F3E8FF' : (isDark ? '#2C2C2C' : '#F5F5F7'), alignItems: 'center', justifyContent: 'center' }}>
+                    <Feather name={option.icon} size={19} color={isSelected ? colors.primary : textColor} />
+                  </View>
+                  <Text style={{ flex: 1, fontSize: 15, fontWeight: '600', color: textColor, marginLeft: 12 }}>
+                    {option.label}
+                  </Text>
+                  {isSelected ? (
+                    <View style={{ width: 24, height: 24, borderRadius: 12, backgroundColor: colors.primary, alignItems: 'center', justifyContent: 'center' }}>
+                      <Feather name="check" size={16} color="#FFFFFF" />
+                    </View>
+                  ) : (
+                    <View style={{ width: 24, height: 24, borderRadius: 12, borderWidth: 2, borderColor: subTextColor }} />
+                  )}
+                </Pressable>
+              );
+            })}
+
+            <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginTop: 6 }}>
+              <Pressable onPress={() => setThemeModalVisible(false)} style={{ paddingHorizontal: 16, paddingVertical: 10, marginRight: 8 }}>
+                <Text style={{ color: subTextColor, fontWeight: '600' }}>Cancelar</Text>
+              </Pressable>
+              <Pressable
+                onPress={() => {
+                  setTheme(selectedTheme);
+                  setThemeModalVisible(false);
+                }}
+                style={{ backgroundColor: colors.primary, paddingHorizontal: 16, paddingVertical: 10, borderRadius: 12 }}
+              >
+                <Text style={{ color: '#FFFFFF', fontWeight: 'bold' }}>Guardar</Text>
+              </Pressable>
+            </View>
+          </View>
+        </View>
+      </Modal>
 
       {/* Password Change Modal */}
       <Modal

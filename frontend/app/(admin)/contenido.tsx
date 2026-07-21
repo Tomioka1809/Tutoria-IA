@@ -125,35 +125,35 @@ export default function ContenidoScreen() {
   );
 
   return (
-    <ScrollView className="flex-1 bg-border p-4">
+    <ScrollView className="flex-1 bg-background dark:bg-black p-4">
       {/* Sección Chatbot */}
-      <View style={{ backgroundColor: colors.surface }} className=" p-4 rounded-2xl shadow-sm mb-6 border border-primary/20 mt-2">
+      <View style={{ backgroundColor: colors.surface }} className=" p-4 rounded-2xl shadow-sm mb-6 border border-primary/20 dark:border-white mt-2">
         <View className="flex-row justify-between items-center mb-4">
           <View>
-            <Text className="text-xl font-bold text-text">Base de Conocimiento IA</Text>
-            <Text className="text-xs text-primary">Archivos RAG para TutorIA</Text>
+            <Text className="text-xl font-bold text-text dark:text-white">Base de Conocimiento IA</Text>
+            <Text className="text-xs text-primary dark:text-white">Archivos RAG para TutorIA</Text>
           </View>
           <Pressable onPress={() => { setEditingCorpusId(null); setNewSource(''); setNewText(''); setCorpusModal(true); }} className="bg-primary p-2 rounded-lg">
             <Feather name="plus" size={20} color="white" />
           </Pressable>
         </View>
 
-        <View className="flex-row bg-gray-50 rounded-xl items-center px-4 py-2 mb-4 border border-gray-200">
+        <View className="flex-row bg-gray-50 dark:bg-surface rounded-xl items-center px-4 py-2 mb-4 border border-gray-200 dark:border-white">
           <Feather name="search" size={20} color={colors.primary} />
           <TextInput 
             value={corpusSearch}
             onChangeText={setCorpusSearch}
             placeholder="Buscar documentos..."
-            className="flex-1 ml-2 text-text"
+            className="flex-1 ml-2 text-text dark:text-gray-300"
             placeholderTextColor="#A0A0A0"
           />
         </View>
 
         {loading ? <ActivityIndicator color={colors.primary} /> : filteredCorpus.map(c => (
-          <View key={c.id} className="bg-gray-50 p-3 rounded-xl mb-2 flex-row justify-between items-center">
+          <View key={c.id} className="bg-gray-50 dark:bg-surface p-3 rounded-xl mb-2 flex-row justify-between items-center dark:border dark:border-white">
             <View className="flex-1 mr-2">
-              <Text className="font-bold text-text text-sm">{c.source}</Text>
-              <Text className="text-xs text-gray-500" numberOfLines={2}>{c.text_content}</Text>
+              <Text className="font-bold text-text dark:text-white text-sm">{c.source}</Text>
+              <Text className="text-xs text-gray-500 dark:text-white" numberOfLines={2}>{c.text_content}</Text>
             </View>
             <View className="flex-row">
               <Pressable onPress={() => handleEditCorpus(c)} className="p-2 mr-1">
@@ -168,31 +168,31 @@ export default function ContenidoScreen() {
       </View>
 
       {/* Sección Frases */}
-      <View style={{ backgroundColor: colors.surface }} className=" p-4 rounded-2xl shadow-sm mb-10 border border-primary/20">
+      <View style={{ backgroundColor: colors.surface }} className=" p-4 rounded-2xl shadow-sm mb-10 border border-primary/20 dark:border-white">
         <View className="flex-row justify-between items-center mb-4">
           <View>
-            <Text className="text-xl font-bold text-text">Frases de Motivación</Text>
-            <Text className="text-xs text-primary">Gestor de Gamificación</Text>
+            <Text className="text-xl font-bold text-text dark:text-white">Frases de Motivación</Text>
+            <Text className="text-xs text-primary dark:text-white">Gestor de Gamificación</Text>
           </View>
           <Pressable onPress={() => { setEditingQuoteId(null); setNewQuote(''); setQuoteModal(true); }} className="bg-primary p-2 rounded-lg">
             <Feather name="plus" size={20} color="white" />
           </Pressable>
         </View>
 
-        <View className="flex-row bg-gray-50 rounded-xl items-center px-4 py-2 mb-4 border border-gray-200">
+        <View className="flex-row bg-gray-50 dark:bg-surface rounded-xl items-center px-4 py-2 mb-4 border border-gray-200 dark:border-white">
           <Feather name="search" size={20} color={colors.primary} />
           <TextInput 
             value={quoteSearch}
             onChangeText={setQuoteSearch}
             placeholder="Buscar frases..."
-            className="flex-1 ml-2 text-text"
+            className="flex-1 ml-2 text-text dark:text-gray-300"
             placeholderTextColor="#A0A0A0"
           />
         </View>
 
         {loading ? <ActivityIndicator color={colors.primary} /> : filteredQuotes.map(q => (
-          <View key={q.id} className="bg-gray-50 p-3 rounded-xl mb-2 flex-row justify-between items-center border-l-4 border-yellow-400">
-            <Text className="text-sm font-semibold text-text flex-1 italic mr-2">"{q.text}"</Text>
+          <View key={q.id} className="bg-gray-50 dark:bg-surface p-3 rounded-xl mb-2 flex-row justify-between items-center border-l-4 border-yellow-400 dark:border dark:border-white">
+            <Text className="text-sm font-semibold text-text dark:text-white flex-1 italic mr-2">"{q.text}"</Text>
             <View className="flex-row">
               <Pressable onPress={() => handleEditQuote(q)} className="p-2 mr-1">
                 <Feather name="edit-2" size={18} color={colors.primary} />
@@ -208,18 +208,18 @@ export default function ContenidoScreen() {
       {/* Modal Corpus */}
       <Modal visible={corpusModal} animationType="slide" transparent>
         <View className="flex-1 justify-end bg-black/50">
-          <View style={{ backgroundColor: colors.surface }} className=" p-6 rounded-t-3xl">
+          <View style={{ backgroundColor: colors.surface }} className=" p-6 rounded-t-3xl border border-transparent dark:border-white">
             <View className="flex-row justify-between items-center mb-4">
-              <Text className="text-lg font-bold text-text">{editingCorpusId ? 'Editar Documento IA' : 'Nuevo Documento IA'}</Text>
+              <Text className="text-lg font-bold text-text dark:text-white">{editingCorpusId ? 'Editar Documento IA' : 'Nuevo Documento IA'}</Text>
               <Pressable onPress={() => setCorpusModal(false)}><Feather name="x" size={24} color={colors.text} /></Pressable>
             </View>
             <TextInput 
               value={newSource} onChangeText={setNewSource} placeholder="Título (ej. Reglamento)"
-              className="bg-gray-100 rounded-lg p-3 mb-3 text-text"
+              className="bg-gray-100 dark:bg-background rounded-lg p-3 mb-3 text-text dark:text-white"
             />
             <TextInput 
               value={newText} onChangeText={setNewText} placeholder="Contenido del documento..."
-              multiline numberOfLines={5} className="bg-gray-100 rounded-lg p-3 mb-6 h-32 text-text" textAlignVertical="top"
+              multiline numberOfLines={5} className="bg-gray-100 dark:bg-background rounded-lg p-3 mb-6 h-32 text-text dark:text-white" textAlignVertical="top"
             />
             <Pressable onPress={handleSaveCorpus} disabled={isSavingCorpus} className="bg-primary p-4 rounded-xl items-center shadow-sm">
               {isSavingCorpus ? <ActivityIndicator color="white" /> : <Text className="text-white font-bold">{editingCorpusId ? 'Actualizar Vector' : 'Vectorizar y Guardar'}</Text>}
@@ -231,14 +231,14 @@ export default function ContenidoScreen() {
       {/* Modal Quote */}
       <Modal visible={quoteModal} animationType="slide" transparent>
         <View className="flex-1 justify-end bg-black/50">
-          <View style={{ backgroundColor: colors.surface }} className=" p-6 rounded-t-3xl">
+          <View style={{ backgroundColor: colors.surface }} className=" p-6 rounded-t-3xl border border-transparent dark:border-white">
             <View className="flex-row justify-between items-center mb-4">
-              <Text className="text-lg font-bold text-text">{editingQuoteId ? 'Editar Frase' : 'Nueva Frase'}</Text>
+              <Text className="text-lg font-bold text-text dark:text-white">{editingQuoteId ? 'Editar Frase' : 'Nueva Frase'}</Text>
               <Pressable onPress={() => setQuoteModal(false)}><Feather name="x" size={24} color={colors.text} /></Pressable>
             </View>
             <TextInput 
               value={newQuote} onChangeText={setNewQuote} placeholder="Escribe la frase..."
-              multiline className="bg-gray-100 rounded-lg p-3 mb-6 h-24 text-text" textAlignVertical="top"
+              multiline className="bg-gray-100 dark:bg-background rounded-lg p-3 mb-6 h-24 text-text dark:text-white" textAlignVertical="top"
             />
             <Pressable onPress={handleSaveQuote} disabled={isSavingQuote} className="bg-primary p-4 rounded-xl items-center shadow-sm">
               {isSavingQuote ? <ActivityIndicator color="white" /> : <Text className="text-white font-bold">{editingQuoteId ? 'Actualizar' : 'Guardar'}</Text>}

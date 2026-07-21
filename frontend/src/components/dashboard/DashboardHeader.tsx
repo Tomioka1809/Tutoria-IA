@@ -24,7 +24,7 @@ export function DashboardHeader({ firstName }: DashboardHeaderProps) {
         color: colors.text,
         letterSpacing: -0.5,
       }}>
-        ¡Hola, {firstName}! 👋
+        ¡Hola, {firstName}!
       </Text>
       <Text style={{
         fontSize: 14,

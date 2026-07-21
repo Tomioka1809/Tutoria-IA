@@ -59,10 +59,10 @@ export default function AdminDashboard() {
   ];
 
   return (
-    <ScrollView className="flex-1 bg-border p-4">
+    <ScrollView className="flex-1 bg-background dark:bg-black p-4">
       <View className="mb-6 mt-2">
-        <Text className="text-2xl font-bold text-text">Bienvenido, {user?.full_name}</Text>
-        <Text className="text-primary">Panel de Administración Central</Text>
+        <Text className="text-2xl font-bold text-text dark:text-white">Bienvenido, {user?.full_name}</Text>
+        <Text className="text-primary dark:text-white">Panel de Administración Central</Text>
       </View>
       
       {loading ? (
@@ -70,28 +70,28 @@ export default function AdminDashboard() {
       ) : (
         <>
           <View className="flex-row flex-wrap justify-between">
-            <View style={{ backgroundColor: colors.surface }} className="w-[48%]  p-4 rounded-xl shadow-sm mb-4 border-l-4 border-primary">
-              <Text className="text-text text-xs font-semibold">Total Alumnos</Text>
-              <Text className="text-3xl font-bold text-text mt-2">{stats.total_students}</Text>
+            <View style={{ backgroundColor: colors.surface }} className="w-[48%] p-4 rounded-xl shadow-sm mb-4 border-l-4 border-primary dark:border dark:border-white">
+              <Text className="text-text dark:text-white text-xs font-semibold">Total Alumnos</Text>
+              <Text className="text-3xl font-bold text-text dark:text-white mt-2">{stats.total_students}</Text>
             </View>
-            <View style={{ backgroundColor: colors.surface }} className="w-[48%]  p-4 rounded-xl shadow-sm mb-4 border-l-4 border-green-500">
-              <Text className="text-text text-xs font-semibold">Tutores Activos</Text>
-              <Text className="text-3xl font-bold text-text mt-2">{stats.active_tutors}</Text>
+            <View style={{ backgroundColor: colors.surface }} className="w-[48%] p-4 rounded-xl shadow-sm mb-4 border-l-4 border-green-500 dark:border dark:border-white">
+              <Text className="text-text dark:text-white text-xs font-semibold">Tutores Activos</Text>
+              <Text className="text-3xl font-bold text-text dark:text-white mt-2">{stats.active_tutors}</Text>
             </View>
-            <View style={{ backgroundColor: colors.surface }} className="w-[48%]  p-4 rounded-xl shadow-sm mb-4 border-l-4 border-yellow-500">
-              <Text className="text-text text-xs font-semibold">Tutores Pendientes</Text>
-              <Text className="text-3xl font-bold text-text mt-2">{stats.pending_tutors}</Text>
+            <View style={{ backgroundColor: colors.surface }} className="w-[48%] p-4 rounded-xl shadow-sm mb-4 border-l-4 border-yellow-500 dark:border dark:border-white">
+              <Text className="text-text dark:text-white text-xs font-semibold">Tutores Pendientes</Text>
+              <Text className="text-3xl font-bold text-text dark:text-white mt-2">{stats.pending_tutors}</Text>
             </View>
-            <View style={{ backgroundColor: colors.surface }} className="w-[48%]  p-4 rounded-xl shadow-sm mb-4 border-l-4 border-blue-500">
-              <Text className="text-text text-xs font-semibold">Sesiones Ok</Text>
-              <Text className="text-3xl font-bold text-text mt-2">{stats.completed_sessions}</Text>
+            <View style={{ backgroundColor: colors.surface }} className="w-[48%] p-4 rounded-xl shadow-sm mb-4 border-l-4 border-blue-500 dark:border dark:border-white">
+              <Text className="text-text dark:text-white text-xs font-semibold">Sesiones Ok</Text>
+              <Text className="text-3xl font-bold text-text dark:text-white mt-2">{stats.completed_sessions}</Text>
             </View>
           </View>
 
           {/* Gráfico de Capacidad */}
-          <View style={{ backgroundColor: colors.surface }} className=" p-4 rounded-2xl shadow-sm mb-10 border border-primary/20">
-            <Text className="text-lg font-bold text-text mb-2">Capacidad del Semestre</Text>
-            <Text className="text-xs text-primary mb-4">
+          <View style={{ backgroundColor: colors.surface }} className=" p-4 rounded-2xl shadow-sm mb-10 border border-primary/20 dark:border-white">
+            <Text className="text-lg font-bold text-text dark:text-white mb-2">Capacidad del Semestre</Text>
+            <Text className="text-xs text-primary dark:text-white mb-4">
               Basado en límite de 15 alumnos por tutor activo.
             </Text>
             {stats.total_capacity > 0 ? (
@@ -112,7 +112,7 @@ export default function AdminDashboard() {
                 absolute
               />
             ) : (
-              <Text className="text-center text-gray-400 py-6">No hay capacidad disponible (Faltan tutores activos)</Text>
+              <Text className="text-center text-gray-400 dark:text-white py-6">No hay capacidad disponible (Faltan tutores activos)</Text>
             )}
           </View>
         </>

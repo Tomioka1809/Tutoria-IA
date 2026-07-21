@@ -1,9 +1,10 @@
-import React from 'react';
-import { View, Text, ScrollView, Pressable, Image } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, ScrollView, Pressable, Image, Modal } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Feather from '@expo/vector-icons/Feather';
 import { useAuthStore } from '@/src/store/auth';
+import { usePreferencesStore } from '@/src/store/preferences';
 import { useTheme } from '@/src/theme/ThemeContext';
 
 export default function AdminConfiguracionScreen() {
@@ -13,7 +14,34 @@ export default function AdminConfiguracionScreen() {
   const user = useAuthStore((s) => s.user);
   const logout = useAuthStore((s) => s.logout);
   const profileImage = useAuthStore((s) => s.profileImage);
+  const { theme, language, setTheme, setLanguage } = usePreferencesStore();
   const paddingTop = Math.max(insets.top, 16);
+  const [languageModalVisible, setLanguageModalVisible] = useState(false);
+  const [themeModalVisible, setThemeModalVisible] = useState(false);
+  const [selectedLanguage, setSelectedLanguage] = useState<'es' | 'en'>(language);
+  const [selectedTheme, setSelectedTheme] = useState<'light' | 'dark'>(theme === 'dark' ? 'dark' : 'light');
+  const isDark = theme === 'dark';
+  const secondaryColor = isDark ? '#FFFFFF' : colors.textSecondary;
+
+  const t = {
+    prefs: language === 'en' ? 'Preferences' : 'Preferencias',
+    lang: language === 'en' ? 'Language' : 'Idioma',
+    theme: language === 'en' ? 'Theme' : 'Tema',
+    changeTheme: language === 'en' ? 'Change theme' : 'Cambiar tema',
+    changeThemeDesc: language === 'en' ? 'Select the application theme' : 'Selecciona el tema de la aplicación',
+    light: language === 'en' ? 'Light' : 'Claro',
+    dark: language === 'en' ? 'Dark' : 'Oscuro',
+  };
+
+  const handleLanguageChange = () => {
+    setSelectedLanguage(language);
+    setLanguageModalVisible(true);
+  };
+
+  const handleThemeChange = () => {
+    setSelectedTheme(theme === 'dark' ? 'dark' : 'light');
+    setThemeModalVisible(true);
+  };
 
   const handleLogout = () => {
     logout();
@@ -22,7 +50,7 @@ export default function AdminConfiguracionScreen() {
 
   return (
     <ScrollView
-      style={{ flex: 1, backgroundColor: colors.background }}
+      style={{ flex: 1, backgroundColor: isDark ? '#000000' : colors.background }}
       contentContainerStyle={{ paddingBottom: 130 }}
       showsVerticalScrollIndicator={false}
     >
@@ -58,6 +86,8 @@ export default function AdminConfiguracionScreen() {
         <View style={{
           backgroundColor: colors.surface,
           borderRadius: 24,
+          borderWidth: isDark ? 1 : 0,
+          borderColor: isDark ? '#FFFFFF' : 'transparent',
           padding: 20,
           flexDirection: 'row',
           alignItems: 'center',
@@ -106,7 +136,7 @@ export default function AdminConfiguracionScreen() {
             </Text>
             <Text style={{
               fontSize: 13,
-              color: colors.textSecondary,
+              color: secondaryColor,
               fontWeight: '500',
               marginTop: 4,
             }}>
@@ -114,7 +144,7 @@ export default function AdminConfiguracionScreen() {
             </Text>
             <Text style={{
               fontSize: 12,
-              color: colors.primary,
+              color: isDark ? '#FFFFFF' : colors.primary,
               fontWeight: 'bold',
               marginTop: 2,
             }}>
@@ -125,6 +155,103 @@ export default function AdminConfiguracionScreen() {
       </View>
 
       <View style={{ height: 24 }} />
+
+      {/* Preferencias Section */}
+      <View style={{ paddingHorizontal: 24, marginBottom: 24 }}>
+        <Text style={{
+          fontSize: 16,
+          fontWeight: 'bold',
+          color: colors.text,
+          marginBottom: 12,
+        }}>
+          {t.prefs}
+        </Text>
+
+        <View style={{
+          backgroundColor: colors.surface,
+          borderRadius: 24,
+          borderWidth: 1,
+          borderColor: isDark ? '#FFFFFF' : colors.border,
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.04,
+          shadowRadius: 6,
+          elevation: 2,
+          overflow: 'hidden',
+        }}>
+          {/* Option: Idioma */}
+          <Pressable
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              paddingVertical: 14,
+              paddingHorizontal: 16,
+            }}
+            onPress={handleLanguageChange}
+          >
+            <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
+              <View style={{
+                width: 40,
+                height: 40,
+                borderRadius: 20,
+                backgroundColor: '#F3E8FF',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginRight: 16,
+              }}>
+                <Feather name="globe" size={20} color={colors.primary} />
+              </View>
+              <Text style={{ fontSize: 15, fontWeight: 'bold', color: colors.text }}>
+                {t.lang}
+              </Text>
+            </View>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Text style={{ fontSize: 14, color: secondaryColor, marginRight: 8 }}>
+                {language === 'es' ? 'Español' : 'English'}
+              </Text>
+              <Feather name="chevron-right" size={20} color="#94A3B8" />
+            </View>
+          </Pressable>
+
+          <View style={{ height: 1, backgroundColor: colors.border, marginLeft: 72 }} />
+
+          {/* Option: Tema */}
+          <Pressable
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              paddingVertical: 14,
+              paddingHorizontal: 16,
+            }}
+            onPress={handleThemeChange}
+          >
+            <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
+              <View style={{
+                width: 40,
+                height: 40,
+                borderRadius: 20,
+                backgroundColor: '#F3E8FF',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginRight: 16,
+              }}>
+                <Feather name="sun" size={20} color={colors.primary} />
+              </View>
+              <Text style={{ fontSize: 15, fontWeight: 'bold', color: colors.text }}>
+                {t.theme}
+              </Text>
+            </View>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Text style={{ fontSize: 14, color: secondaryColor, marginRight: 8 }}>
+                {theme === 'dark' ? t.dark : t.light}
+              </Text>
+              <Feather name="chevron-right" size={20} color="#94A3B8" />
+            </View>
+          </Pressable>
+        </View>
+      </View>
 
       {/* Cuenta Section */}
       <View style={{ paddingHorizontal: 24, marginBottom: 24 }}>
@@ -141,7 +268,7 @@ export default function AdminConfiguracionScreen() {
           backgroundColor: colors.surface,
           borderRadius: 24,
           borderWidth: 1,
-          borderColor: colors.border,
+          borderColor: isDark ? '#FFFFFF' : colors.border,
           shadowColor: '#000',
           shadowOffset: { width: 0, height: 2 },
           shadowOpacity: 0.04,
@@ -173,10 +300,10 @@ export default function AdminConfiguracionScreen() {
                 <Feather name="log-out" size={20} color="#DC2626" />
               </View>
               <View style={{ flex: 1 }}>
-                <Text style={{ fontSize: 15, fontWeight: 'bold', color: '#DC2626' }}>
+                <Text style={{ fontSize: 15, fontWeight: 'bold', color: isDark ? '#FFFFFF' : '#DC2626' }}>
                   Cerrar Sesión
                 </Text>
-                <Text style={{ fontSize: 12, color: colors.textSecondary, marginTop: 2 }}>
+                <Text style={{ fontSize: 12, color: secondaryColor, marginTop: 2 }}>
                   Salir de la cuenta de administrador
                 </Text>
               </View>
@@ -185,6 +312,150 @@ export default function AdminConfiguracionScreen() {
           </Pressable>
         </View>
       </View>
+
+      {/* Language Modal */}
+      <Modal
+        visible={languageModalVisible}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setLanguageModalVisible(false)}
+      >
+        <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center' }}>
+          <View style={{ backgroundColor: colors.surface, width: '80%', borderRadius: 24, borderWidth: isDark ? 1 : 0, borderColor: isDark ? '#FFFFFF' : 'transparent', padding: 24, shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.12, shadowRadius: 10, elevation: 6 }}>
+            <Text style={{ fontSize: 18, fontWeight: 'bold', color: colors.text }}>
+              Cambiar idioma
+            </Text>
+            <Text style={{ fontSize: 14, color: secondaryColor, marginTop: 6, marginBottom: 16 }}>
+              Selecciona el idioma de la aplicación
+            </Text>
+
+            {([
+              { value: 'es' as const, label: 'Español' },
+              { value: 'en' as const, label: 'English' },
+            ]).map((option) => {
+              const isSelected = selectedLanguage === option.value;
+              return (
+                <Pressable
+                  key={option.value}
+                  onPress={() => setSelectedLanguage(option.value)}
+                  style={{
+                    minHeight: 52,
+                    borderWidth: isSelected ? 1.5 : 1,
+                    borderColor: isSelected ? colors.primary : (isDark ? '#FFFFFF' : colors.border),
+                    borderRadius: 12,
+                    paddingHorizontal: 12,
+                    marginBottom: 10,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    backgroundColor: isSelected ? (isDark ? '#2A183D' : '#FBF7FF') : colors.surface,
+                  }}
+                >
+                  <View style={{ width: 34, height: 34, borderRadius: 17, backgroundColor: isSelected ? '#F3E8FF' : (isDark ? '#2C2C2C' : '#F5F5F7'), alignItems: 'center', justifyContent: 'center' }}>
+                    <Feather name="globe" size={19} color={isSelected ? colors.primary : secondaryColor} />
+                  </View>
+                  <Text style={{ flex: 1, fontSize: 15, fontWeight: '600', color: colors.text, marginLeft: 12 }}>
+                    {option.label}
+                  </Text>
+                  {isSelected ? (
+                    <View style={{ width: 24, height: 24, borderRadius: 12, backgroundColor: colors.primary, alignItems: 'center', justifyContent: 'center' }}>
+                      <Feather name="check" size={16} color="#FFFFFF" />
+                    </View>
+                  ) : (
+                    <View style={{ width: 24, height: 24, borderRadius: 12, borderWidth: 2, borderColor: secondaryColor }} />
+                  )}
+                </Pressable>
+              );
+            })}
+
+            <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginTop: 6 }}>
+              <Pressable onPress={() => setLanguageModalVisible(false)} style={{ paddingHorizontal: 16, paddingVertical: 10, marginRight: 8 }}>
+                <Text style={{ color: secondaryColor, fontWeight: '600' }}>Cancelar</Text>
+              </Pressable>
+              <Pressable
+                onPress={() => {
+                  setLanguage(selectedLanguage);
+                  setLanguageModalVisible(false);
+                }}
+                style={{ backgroundColor: colors.primary, paddingHorizontal: 16, paddingVertical: 10, borderRadius: 12 }}
+              >
+                <Text style={{ color: '#FFFFFF', fontWeight: 'bold' }}>Guardar</Text>
+              </Pressable>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Theme Modal */}
+      <Modal
+        visible={themeModalVisible}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setThemeModalVisible(false)}
+      >
+        <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center' }}>
+          <View style={{ backgroundColor: colors.surface, width: '80%', borderRadius: 24, borderWidth: isDark ? 1 : 0, borderColor: isDark ? '#FFFFFF' : 'transparent', padding: 24, shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.12, shadowRadius: 10, elevation: 6 }}>
+            <Text style={{ fontSize: 18, fontWeight: 'bold', color: colors.text }}>
+              {t.changeTheme}
+            </Text>
+            <Text style={{ fontSize: 14, color: secondaryColor, marginTop: 6, marginBottom: 16 }}>
+              {t.changeThemeDesc}
+            </Text>
+
+            {([
+              { value: 'light' as const, label: t.light, icon: 'sun' as const },
+              { value: 'dark' as const, label: t.dark, icon: 'moon' as const },
+            ]).map((option) => {
+              const isSelected = selectedTheme === option.value;
+              return (
+                <Pressable
+                  key={option.value}
+                  onPress={() => setSelectedTheme(option.value)}
+                  style={{
+                    minHeight: 52,
+                    borderWidth: isSelected ? 1.5 : 1,
+                    borderColor: isSelected ? colors.primary : (isDark ? '#FFFFFF' : colors.border),
+                    borderRadius: 12,
+                    paddingHorizontal: 12,
+                    marginBottom: 10,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    backgroundColor: isSelected ? (isDark ? '#2A183D' : '#FBF7FF') : colors.surface,
+                  }}
+                >
+                  <View style={{ width: 34, height: 34, borderRadius: 17, backgroundColor: isSelected ? '#F3E8FF' : (isDark ? '#2C2C2C' : '#F5F5F7'), alignItems: 'center', justifyContent: 'center' }}>
+                    <Feather name={option.icon} size={19} color={isSelected ? colors.primary : colors.text} />
+                  </View>
+                  <Text style={{ flex: 1, fontSize: 15, fontWeight: '600', color: colors.text, marginLeft: 12 }}>
+                    {option.label}
+                  </Text>
+                  {isSelected ? (
+                    <View style={{ width: 24, height: 24, borderRadius: 12, backgroundColor: colors.primary, alignItems: 'center', justifyContent: 'center' }}>
+                      <Feather name="check" size={16} color="#FFFFFF" />
+                    </View>
+                  ) : (
+                    <View style={{ width: 24, height: 24, borderRadius: 12, borderWidth: 2, borderColor: secondaryColor }} />
+                  )}
+                </Pressable>
+              );
+            })}
+
+            <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginTop: 6 }}>
+              <Pressable onPress={() => setThemeModalVisible(false)} style={{ paddingHorizontal: 16, paddingVertical: 10, marginRight: 8 }}>
+                <Text style={{ color: secondaryColor, fontWeight: '600' }}>Cancelar</Text>
+              </Pressable>
+              <Pressable
+                onPress={() => {
+                  setTheme(selectedTheme);
+                  setThemeModalVisible(false);
+                }}
+                style={{ backgroundColor: colors.primary, paddingHorizontal: 16, paddingVertical: 10, borderRadius: 12 }}
+              >
+                <Text style={{ color: '#FFFFFF', fontWeight: 'bold' }}>Guardar</Text>
+              </Pressable>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </ScrollView>
   );
 }

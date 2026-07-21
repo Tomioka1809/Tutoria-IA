@@ -7,7 +7,7 @@ import { Feather } from '@expo/vector-icons';
 import { useTheme } from '@/src/theme/ThemeContext';
 
 export default function UsersApprovalScreen() {
-  const { colors } = useTheme();
+  const { colors, isDark } = useTheme();
   const token = useAuthStore(state => state.token);
   const [users, setUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -150,22 +150,22 @@ export default function UsersApprovalScreen() {
   const renderItem = ({ item }: { item: any }) => (
     <Pressable 
       onPress={() => item.role === 'tutor' ? openTutorDetails(item) : null}
-      className={`p-4 rounded-xl shadow-sm mb-3 flex-row justify-between items-center border ${item.is_active ? 'bg-surface border-primary/20' : 'bg-gray-200 border-gray-300 opacity-80'}`}
+      className={`p-4 rounded-xl shadow-sm mb-3 flex-row justify-between items-center border dark:bg-black dark:border-white ${item.is_active ? 'bg-surface border-primary/20' : 'bg-gray-200 border-gray-300 opacity-80'}`}
     >
       <View className="flex-1">
         <View className="flex-row items-center mb-1">
-          <Text className="text-lg font-bold text-text flex-shrink" numberOfLines={1}>{item.full_name}</Text>
+          <Text className="text-lg font-bold text-text dark:text-white flex-shrink" numberOfLines={1}>{item.full_name}</Text>
           {item.role === 'tutor' && (
             <View className="ml-2 bg-border px-2 py-0.5 rounded-md border border-primary/30">
-              <Text className="text-[10px] font-bold text-primary">
+              <Text className="text-[10px] font-bold text-primary dark:text-white">
                 Carga: {item.current_load || 0}/{item.tutor_profile?.max_capacity || 15}
               </Text>
             </View>
           )}
         </View>
-        <Text className="text-primary text-xs mb-2">{item.email}</Text>
+        <Text className="text-primary dark:text-white text-xs mb-2">{item.email}</Text>
         <View className={`self-start px-2 py-0.5 rounded-full ${item.is_active ? 'bg-green-100' : 'bg-red-100'}`}>
-          <Text className={`text-[10px] font-bold ${item.is_active ? 'text-green-700' : 'text-red-700'}`}>
+          <Text className={`text-[10px] font-bold dark:text-white ${item.is_active ? 'text-green-700' : 'text-red-700'}`}>
             {item.is_active ? 'ACTIVO' : 'INACTIVO'}
           </Text>
         </View>
@@ -180,9 +180,9 @@ export default function UsersApprovalScreen() {
   );
 
   return (
-    <View className="flex-1 bg-border p-4">
+    <View className="flex-1 bg-background dark:bg-black p-4">
       <View className="flex-row justify-between items-center mb-4 mt-2">
-        <Text className="text-xl font-bold text-text">Gestión de Usuarios</Text>
+        <Text className="text-xl font-bold text-text dark:text-white">Gestión de Usuarios</Text>
         <Pressable 
           onPress={() => setModalVisible(true)}
           className="bg-primary px-3 py-2 rounded-lg flex-row items-center shadow-sm"
@@ -192,42 +192,42 @@ export default function UsersApprovalScreen() {
         </Pressable>
       </View>
 
-      <View style={{ backgroundColor: colors.surface }} className="flex-row  rounded-xl items-center px-4 py-2 mb-4 border border-primary/20">
+      <View style={{ backgroundColor: colors.surface }} className="flex-row  rounded-xl items-center px-4 py-2 mb-4 border border-primary/20 dark:border-white">
         <Feather name="search" size={20} color={colors.primary} />
         <TextInput 
           value={searchQuery}
           onChangeText={setSearchQuery}
           placeholder="Buscar por nombre o correo..."
-          className="flex-1 ml-2 text-text"
-          placeholderTextColor="#A0A0A0"
+          className="flex-1 ml-2 text-text dark:text-white"
+          placeholderTextColor={isDark ? '#FFFFFF' : '#A0A0A0'}
         />
       </View>
 
-      <View style={{ backgroundColor: colors.surface }} className="flex-row  rounded-xl p-1 mb-4 shadow-sm border border-primary/20">
+      <View style={{ backgroundColor: colors.surface }} className="flex-row  rounded-xl p-1 mb-4 shadow-sm border border-primary/20 dark:border-white">
         <Pressable 
           className={`flex-1 py-2 rounded-lg items-center ${filter === 'tutor' ? 'bg-primary' : ''}`}
           onPress={() => setFilter('tutor')}
         >
-          <Text className={`font-bold ${filter === 'tutor' ? 'text-white' : 'text-text/60'}`}>Tutores</Text>
+          <Text className={`font-bold ${filter === 'tutor' ? 'text-white' : 'text-text/60 dark:text-white'}`}>Tutores</Text>
         </Pressable>
         <Pressable 
           className={`flex-1 py-2 rounded-lg items-center ${filter === 'estudiante' ? 'bg-primary' : ''}`}
           onPress={() => setFilter('estudiante')}
         >
-          <Text className={`font-bold ${filter === 'estudiante' ? 'text-white' : 'text-text/60'}`}>Alumnos</Text>
+          <Text className={`font-bold ${filter === 'estudiante' ? 'text-white' : 'text-text/60 dark:text-white'}`}>Alumnos</Text>
         </Pressable>
         <Pressable 
           className={`flex-1 py-2 rounded-lg items-center ${filter === 'admin' ? 'bg-primary' : ''}`}
           onPress={() => setFilter('admin')}
         >
-          <Text className={`font-bold ${filter === 'admin' ? 'text-white' : 'text-text/60'}`}>Admins</Text>
+          <Text className={`font-bold ${filter === 'admin' ? 'text-white' : 'text-text/60 dark:text-white'}`}>Admins</Text>
         </Pressable>
       </View>
 
       {loading ? (
         <ActivityIndicator size="large" color={colors.primary} className="mt-10" />
       ) : filteredUsers.length === 0 ? (
-        <Text className="text-primary text-center mt-10">No hay usuarios en esta categoría.</Text>
+        <Text className="text-primary dark:text-white text-center mt-10">No hay usuarios en esta categoría.</Text>
       ) : (
         <FlatList 
           data={filteredUsers}
@@ -240,36 +240,36 @@ export default function UsersApprovalScreen() {
       {/* Modal Crear Personal */}
       <Modal visible={modalVisible} animationType="slide" transparent={true}>
         <View className="flex-1 justify-end bg-black/50">
-          <View style={{ backgroundColor: colors.surface }} className=" p-6 rounded-t-3xl shadow-lg">
+          <View style={{ backgroundColor: colors.surface }} className=" p-6 rounded-t-3xl shadow-lg border border-transparent dark:border-white">
             <View className="flex-row justify-between items-center mb-6">
-              <Text className="text-xl font-bold text-text">Registrar Administrador</Text>
+              <Text className="text-xl font-bold text-text dark:text-white">Registrar Administrador</Text>
               <Pressable onPress={() => setModalVisible(false)}>
                 <Feather name="x" size={24} color={colors.text} />
               </Pressable>
             </View>
 
             <View className="mb-4">
-              <Text className="text-xs font-bold text-text mb-2">Nombre Completo</Text>
+              <Text className="text-xs font-bold text-text dark:text-white mb-2">Nombre Completo</Text>
               <TextInput 
                 value={newName} onChangeText={setNewName}
                 placeholder="Ej. Juan Pérez"
-                className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-text"
+                className="bg-gray-50 dark:bg-background border border-gray-200 dark:border-white rounded-xl px-4 py-3 text-text dark:text-white"
               />
             </View>
             <View className="mb-4">
-              <Text className="text-xs font-bold text-text mb-2">Correo Electrónico</Text>
+              <Text className="text-xs font-bold text-text dark:text-white mb-2">Correo Electrónico</Text>
               <TextInput 
                 value={newEmail} onChangeText={setNewEmail}
                 placeholder="correo@institucion.edu" keyboardType="email-address" autoCapitalize="none"
-                className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-text"
+                className="bg-gray-50 dark:bg-background border border-gray-200 dark:border-white rounded-xl px-4 py-3 text-text dark:text-white"
               />
             </View>
             <View className="mb-8">
-              <Text className="text-xs font-bold text-text mb-2">Contraseña Temporal</Text>
+              <Text className="text-xs font-bold text-text dark:text-white mb-2">Contraseña Temporal</Text>
               <TextInput 
                 value={newPassword} onChangeText={setNewPassword}
                 placeholder="Mínimo 6 caracteres" secureTextEntry
-                className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-text"
+                className="bg-gray-50 dark:bg-background border border-gray-200 dark:border-white rounded-xl px-4 py-3 text-text dark:text-white"
               />
             </View>
 
@@ -287,42 +287,42 @@ export default function UsersApprovalScreen() {
       {/* Modal Detalles del Tutor */}
       <Modal visible={tutorModalVisible} animationType="slide" transparent={true}>
         <View className="flex-1 justify-end bg-black/50">
-          <View style={{ backgroundColor: colors.surface }} className=" p-6 rounded-t-3xl shadow-lg max-h-[90%]">
+          <View style={{ backgroundColor: colors.surface }} className=" p-6 rounded-t-3xl shadow-lg max-h-[90%] border border-transparent dark:border-white">
             {selectedTutor && (
               <>
                 <View className="flex-row justify-between items-center mb-6">
-                  <Text className="text-xl font-bold text-text">Detalles del Tutor</Text>
+                  <Text className="text-xl font-bold text-text dark:text-white">Detalles del Tutor</Text>
                   <Pressable onPress={() => setTutorModalVisible(false)}>
                     <Feather name="x" size={24} color={colors.text} />
                   </Pressable>
                 </View>
 
                 <ScrollView showsVerticalScrollIndicator={false}>
-                  <View className="bg-gray-50 p-4 rounded-xl border border-gray-200 mb-6">
-                    <Text className="text-lg font-bold text-text mb-1">{selectedTutor.full_name}</Text>
-                    <Text className="text-primary text-sm mb-3">{selectedTutor.email}</Text>
+                  <View className="bg-gray-50 dark:bg-background p-4 rounded-xl border border-gray-200 dark:border-white mb-6">
+                    <Text className="text-lg font-bold text-text dark:text-white mb-1">{selectedTutor.full_name}</Text>
+                    <Text className="text-primary dark:text-white text-sm mb-3">{selectedTutor.email}</Text>
                     
                     <View className="flex-row items-center mb-2">
                       <Feather name="map-pin" size={16} color={colors.primary} />
-                      <Text className="ml-2 text-text text-sm">Oficina: {selectedTutor.tutor_profile?.office_location || 'No asignada'}</Text>
+                      <Text className="ml-2 text-text dark:text-white text-sm">Oficina: {selectedTutor.tutor_profile?.office_location || 'No asignada'}</Text>
                     </View>
                     <View className="flex-row items-center mb-2">
                       <Feather name="book-open" size={16} color={colors.primary} />
-                      <Text className="ml-2 text-text text-sm">Especialidad: {selectedTutor.tutor_profile?.expertise_areas || 'No especificada'}</Text>
+                      <Text className="ml-2 text-text dark:text-white text-sm">Especialidad: {selectedTutor.tutor_profile?.expertise_areas || 'No especificada'}</Text>
                     </View>
                     <View className="flex-row items-center">
                       <Feather name="users" size={16} color={colors.primary} />
-                      <Text className="ml-2 text-text text-sm font-bold">Alumnos Actuales: {selectedTutor.current_load || 0}</Text>
+                      <Text className="ml-2 text-text dark:text-white text-sm font-bold">Alumnos Actuales: {selectedTutor.current_load || 0}</Text>
                     </View>
                   </View>
 
                   <View className="mb-6">
-                    <Text className="text-xs font-bold text-text mb-2">Límite Máximo de Estudiantes</Text>
+                    <Text className="text-xs font-bold text-text dark:text-white mb-2">Límite Máximo de Estudiantes</Text>
                     <View className="flex-row items-center">
                       <TextInput 
                         value={newCapacity} onChangeText={setNewCapacity}
                         placeholder="Ej. 15" keyboardType="numeric"
-                        className="flex-1 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-text text-lg font-bold mr-2"
+                        className="flex-1 bg-gray-50 dark:bg-background border border-gray-200 dark:border-white rounded-xl px-4 py-3 text-text dark:text-white text-lg font-bold mr-2"
                       />
                       <Pressable 
                         onPress={handleUpdateCapacity}
@@ -332,26 +332,26 @@ export default function UsersApprovalScreen() {
                         {isUpdatingCapacity ? <ActivityIndicator size="small" color="white" /> : <Text className="text-white font-bold">Guardar</Text>}
                       </Pressable>
                     </View>
-                    <Text className="text-[10px] text-gray-500 mt-1 ml-1">
+                    <Text className="text-[10px] text-gray-500 dark:text-white mt-1 ml-1">
                       El algoritmo respetará este límite exacto al asignar alumnos.
                     </Text>
                   </View>
 
                   <View className="mb-4">
-                    <Text className="text-xs font-bold text-text mb-2">Alumnos a cargo</Text>
+                    <Text className="text-xs font-bold text-text dark:text-white mb-2">Alumnos a cargo</Text>
                     {loadingTutorStudents ? (
                       <ActivityIndicator color={colors.primary} className="mt-4 mb-4" />
                     ) : tutorStudents.length === 0 ? (
-                      <Text className="text-gray-500 text-sm">Este tutor no tiene alumnos asignados actualmente.</Text>
+                      <Text className="text-gray-500 dark:text-white text-sm">Este tutor no tiene alumnos asignados actualmente.</Text>
                     ) : (
                       tutorStudents.map(student => (
-                        <View key={student.id} className="bg-gray-50 border border-gray-200 rounded-lg p-3 mb-2 flex-row items-center">
+                        <View key={student.id} className="bg-gray-50 dark:bg-background border border-gray-200 dark:border-white rounded-lg p-3 mb-2 flex-row items-center">
                           <View className="w-8 h-8 rounded-full bg-border items-center justify-center mr-3">
                             <Feather name="user" size={14} color={colors.primary} />
                           </View>
                           <View className="flex-1">
-                            <Text className="text-text font-bold text-sm">{student.full_name}</Text>
-                            <Text className="text-primary text-[10px]">{student.student_code || student.email}</Text>
+                            <Text className="text-text dark:text-white font-bold text-sm">{student.full_name}</Text>
+                            <Text className="text-primary dark:text-white text-[10px]">{student.student_code || student.email}</Text>
                           </View>
                         </View>
                       ))

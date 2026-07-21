@@ -6,16 +6,16 @@ import { useTheme } from '@/src/theme/ThemeContext';
 
 export default function AdminLayout() {
   const { t } = useTranslation();
-  const { colors } = useTheme();
+  const { colors, isDark } = useTheme();
 
   return (
     <Tabs screenOptions={{
       headerShown: true,
       headerStyle: { backgroundColor: colors.background },
       headerTitleStyle: { color: colors.text, fontWeight: 'bold' },
-      tabBarStyle: { backgroundColor: colors.surface, borderTopWidth: 1, borderTopColor: colors.border },
-      tabBarActiveTintColor: colors.primary,
-      tabBarInactiveTintColor: colors.textSecondary,
+      tabBarStyle: { backgroundColor: colors.surface, borderTopWidth: 1, borderTopColor: isDark ? '#FFFFFF' : colors.border },
+      tabBarActiveTintColor: isDark ? '#FFFFFF' : colors.primary,
+      tabBarInactiveTintColor: isDark ? '#FFFFFF' : colors.textSecondary,
     }}>
       <Tabs.Screen 
         name="index" 

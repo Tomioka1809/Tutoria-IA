@@ -130,12 +130,12 @@ export default function AsignacionesScreen() {
   };
 
   return (
-    <ScrollView className="flex-1 bg-border p-4">
+    <ScrollView className="flex-1 bg-background dark:bg-black p-4">
       {/* Sorteo Masivo */}
-      <View style={{ backgroundColor: colors.surface }} className=" p-6 rounded-2xl shadow-sm border border-primary/20 mb-6 items-center">
+      <View style={{ backgroundColor: colors.surface }} className=" p-6 rounded-2xl shadow-sm border border-primary/20 dark:border-white mb-6 items-center">
         <Ionicons name="shuffle" size={50} color={colors.primary} style={{ marginBottom: 10 }} />
-        <Text className="text-xl font-bold text-text text-center mb-2">Sorteo Semestral</Text>
-        <Text className="text-primary text-center mb-6 text-sm">
+        <Text className="text-xl font-bold text-text dark:text-white text-center mb-2">Sorteo Semestral</Text>
+        <Text className="text-primary dark:text-white text-center mb-6 text-sm">
           Asigna alumnos huérfanos a docentes activos de forma equilibrada.
         </Text>
         
@@ -153,36 +153,36 @@ export default function AsignacionesScreen() {
       </View>
 
       {/* Reasignación Grupal (Bulk Transfer) */}
-      <View style={{ backgroundColor: colors.surface }} className=" p-6 rounded-2xl shadow-sm border border-primary/20 mb-6">
-        <Text className="text-xl font-bold text-text mb-2">Reasignación Grupal</Text>
-        <Text className="text-xs text-primary mb-4">Mueve a todos los alumnos de un tutor a otro en caso de baja o emergencia.</Text>
+      <View style={{ backgroundColor: colors.surface }} className=" p-6 rounded-2xl shadow-sm border border-primary/20 dark:border-white mb-6">
+        <Text className="text-xl font-bold text-text dark:text-white mb-2">Reasignación Grupal</Text>
+        <Text className="text-xs text-primary dark:text-white mb-4">Mueve a todos los alumnos de un tutor a otro en caso de baja o emergencia.</Text>
         
         {loading ? (
           <ActivityIndicator color={colors.primary} />
         ) : (
           <>
-            <Text className="text-xs font-bold text-text mb-1">Tutor de Origen (Quien se va)</Text>
+            <Text className="text-xs font-bold text-text dark:text-white mb-1">Tutor de Origen (Quien se va)</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-4">
               {tutors.map(t => (
                 <Pressable
                   key={`from-${t.id}`}
                   onPress={() => setFromTutor(t.id)}
-                  className={`mr-2 px-3 py-2 rounded-lg border ${fromTutor === t.id ? 'bg-red-500 border-red-500' : 'bg-gray-50 border-gray-200'}`}
+                  className={`mr-2 px-3 py-2 rounded-lg border dark:bg-white dark:border-white ${fromTutor === t.id ? 'bg-red-500 border-red-500' : 'bg-gray-50 border-gray-200'}`}
                 >
-                  <Text className={fromTutor === t.id ? 'text-white font-bold' : 'text-text'}>{t.full_name}</Text>
+                  <Text className={fromTutor === t.id ? 'text-white dark:text-black font-bold' : 'text-text dark:text-black'}>{t.full_name}</Text>
                 </Pressable>
               ))}
             </ScrollView>
 
-            <Text className="text-xs font-bold text-text mb-1">Tutor de Destino (Quien recibe)</Text>
+            <Text className="text-xs font-bold text-text dark:text-white mb-1">Tutor de Destino (Quien recibe)</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-6">
               {tutors.map(t => (
                 <Pressable
                   key={`to-${t.id}`}
                   onPress={() => setToTutor(t.id)}
-                  className={`mr-2 px-3 py-2 rounded-lg border ${toTutor === t.id ? 'bg-green-500 border-green-500' : 'bg-gray-50 border-gray-200'}`}
+                  className={`mr-2 px-3 py-2 rounded-lg border dark:bg-white dark:border-white ${toTutor === t.id ? 'bg-green-500 border-green-500' : 'bg-gray-50 border-gray-200'}`}
                 >
-                  <Text className={toTutor === t.id ? 'text-white font-bold' : 'text-text'}>{t.full_name}</Text>
+                  <Text className={toTutor === t.id ? 'text-white dark:text-black font-bold' : 'text-text dark:text-black'}>{t.full_name}</Text>
                 </Pressable>
               ))}
             </ScrollView>
@@ -203,39 +203,39 @@ export default function AsignacionesScreen() {
       </View>
 
       {/* Asignación Manual */}
-      <View style={{ backgroundColor: colors.surface }} className=" p-6 rounded-2xl shadow-sm border border-primary/20 mb-10">
-        <Text className="text-xl font-bold text-text mb-4">Manejo de Excepciones</Text>
+      <View style={{ backgroundColor: colors.surface }} className=" p-6 rounded-2xl shadow-sm border border-primary/20 dark:border-white mb-10">
+        <Text className="text-xl font-bold text-text dark:text-white mb-4">Manejo de Excepciones</Text>
         
         {loading ? (
           <ActivityIndicator color={colors.primary} />
         ) : (
           <>
-            <Text className="text-xs font-bold text-text mb-1">Seleccionar Estudiante</Text>
+            <Text className="text-xs font-bold text-text dark:text-white mb-1">Seleccionar Estudiante</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-4">
               {students.length === 0 ? (
-                <Text className="text-gray-400 italic py-2">No hay estudiantes activos.</Text>
+                <Text className="text-gray-400 dark:text-white italic py-2">No hay estudiantes activos.</Text>
               ) : students.map(s => (
                 <Pressable
                   key={s.id}
                   onPress={() => setSelectedStudent(s.id)}
-                  className={`mr-2 px-3 py-2 rounded-lg border ${selectedStudent === s.id ? 'bg-primary border-primary' : 'bg-gray-50 border-gray-200'}`}
+                  className={`mr-2 px-3 py-2 rounded-lg border dark:bg-white dark:border-white ${selectedStudent === s.id ? 'bg-primary border-primary' : 'bg-gray-50 border-gray-200'}`}
                 >
-                  <Text className={selectedStudent === s.id ? 'text-white font-bold' : 'text-text'}>{s.full_name}</Text>
+                  <Text className={selectedStudent === s.id ? 'text-white dark:text-black font-bold' : 'text-text dark:text-black'}>{s.full_name}</Text>
                 </Pressable>
               ))}
             </ScrollView>
 
-            <Text className="text-xs font-bold text-text mb-1">Seleccionar Nuevo Tutor</Text>
+            <Text className="text-xs font-bold text-text dark:text-white mb-1">Seleccionar Nuevo Tutor</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-6">
               {tutors.length === 0 ? (
-                <Text className="text-gray-400 italic py-2">No hay tutores activos.</Text>
+                <Text className="text-gray-400 dark:text-white italic py-2">No hay tutores activos.</Text>
               ) : tutors.map(t => (
                 <Pressable
                   key={t.id}
                   onPress={() => setSelectedTutor(t.id)}
-                  className={`mr-2 px-3 py-2 rounded-lg border ${selectedTutor === t.id ? 'bg-green-500 border-green-500' : 'bg-gray-50 border-gray-200'}`}
+                  className={`mr-2 px-3 py-2 rounded-lg border dark:bg-white dark:border-white ${selectedTutor === t.id ? 'bg-green-500 border-green-500' : 'bg-gray-50 border-gray-200'}`}
                 >
-                  <Text className={selectedTutor === t.id ? 'text-white font-bold' : 'text-text'}>{t.full_name}</Text>
+                  <Text className={selectedTutor === t.id ? 'text-white dark:text-black font-bold' : 'text-text dark:text-black'}>{t.full_name}</Text>
                 </Pressable>
               ))}
             </ScrollView>
