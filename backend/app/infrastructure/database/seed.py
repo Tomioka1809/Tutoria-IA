@@ -127,6 +127,7 @@ async def seed_database():
             # Compute embedding
             try:
                 embedding = await llm.compute_embedding(text)
+                await asyncio.sleep(0.8)  # Prevent hitting Gemini API 429 rate limit (100 requests/min)
             except Exception as e:
                 print(f"Failed to compute embedding for chunk: {e}")
                 continue

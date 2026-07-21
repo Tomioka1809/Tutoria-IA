@@ -1,4 +1,6 @@
 from typing import List, Dict
+import json
+from datetime import datetime, timedelta
 from app.application.ports.repository_ports import ChatRepositoryPort, CorpusRepositoryPort
 from app.application.ports.llm_port import LLMPort
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -7,6 +9,7 @@ from sqlalchemy.orm import selectinload
 from app.infrastructure.database.models.user import User
 from app.infrastructure.database.models.session import Session
 from app.infrastructure.database.models.tutor_assignment import TutorAssignment
+from app.infrastructure.database.models.event import Event
 
 class ChatUseCase:
     def __init__(
@@ -44,104 +47,222 @@ class ChatUseCase:
                 "parts": [{"text": msg.content}]
             })
             
-        # 1. Embed user query
-        query_embedding = await self.llm.compute_embedding(user_content)
+        # RAG Query Expansion/Rewriting for short follow-up messages
+        prev_user_content = ""
+        # history_msgs[-1] is the current user message because it was saved at line 35.
+        for i in range(len(history_msgs) - 2, -1, -1):
+            if history_msgs[i].role == "user":
+                prev_user_content = history_msgs[i].content
+                break
+        
+        # If current query is short (e.g. <= 4 words) and there is a previous user query, combine them to preserve context
+        if prev_user_content and len(user_content.split()) <= 4:
+            rag_query = f"{prev_user_content} {user_content}"
+        else:
+            rag_query = user_content
+
+        # 1. Embed RAG query
+        query_embedding = await self.llm.compute_embedding(rag_query)
         
         # 2. Search corpus in pgvector
         similar_chunks = await self.corpus_repo.search_similar(query_embedding, limit=3)
         corpus_context = "\n\n".join(similar_chunks)
         
-        system_instruction = (
-            "Eres TutorIA, el tutor académico inteligente de la universidad UNSAAC. Te presentas como un amigable dinosaurio morado. "
-            "Tu objetivo es ayudar a los estudiantes con sus consultas académicas, planes de estudio, reglamentos universitarios y técnicas de estudio. "
-            "Mantén siempre un tono entusiasta, paciente, motivador, alegre y amigable. Utiliza emojis ocasionalmente para ser más cercano (🦖, 📚, ✍️, ✨).\n\n"
-            "Aquí tienes fragmentos relevantes de la base de datos oficial (corpus) de la universidad UNSAAC sobre el reglamento de tutoría y servicios:\n"
-            f"{corpus_context}\n\n"
-        )
-        
-        # Inject dynamic context for Tutors
-        if user.role == "tutor":
+        # Define Tools for Function Calling
+        async def get_assigned_tutors() -> str:
+            """
+            Obtiene la lista de tutores asignados al estudiante actual en el sistema.
+            Retorna un JSON con el nombre, correo, oficina y especialidad de cada tutor.
+            """
             result = await db.execute(
-                select(Session)
-                .where(Session.tutor_id == user.id)
-                .options(
-                    selectinload(Session.student).selectinload(User.student_profile),
-                    selectinload(Session.student).selectinload(User.tutor_profile),
-                    selectinload(Session.student).selectinload(User.admin_profile)
-                )
-                .options(selectinload(Session.service_type))
-            )
-            tutor_sessions = result.scalars().all()
-            
-            schedule_info = "El usuario actual con el que estás hablando es un TUTOR de la universidad. Esta es la información de sus tutorías programadas y sus alumnos:\n"
-            if not tutor_sessions:
-                schedule_info += "Actualmente no tiene ninguna tutoría o alumno asignado en el sistema.\n"
-            else:
-                for s in tutor_sessions:
-                    student_name = s.student.full_name if s.student else f"Estudiante ID {s.student_id}"
-                    svc_name = s.service_type.name if s.service_type else "Tutoría"
-                    schedule_info += f"- Alumno: {student_name} | Actividad: {s.title or svc_name} | Fecha y Hora: {s.scheduled_at} | Estado: {s.status} | Lugar: {s.location or 'No definido'} | Notas: {s.notes or 'Ninguna'}\n"
-            
-            system_instruction += schedule_info + "\n"
-            
-        # Inject dynamic context for Students
-        elif user.role == "estudiante":
-            # Fetch permanent assignments
-            assignment_result = await db.execute(
                 select(TutorAssignment)
                 .where(TutorAssignment.student_id == user.id)
                 .options(
-                    selectinload(TutorAssignment.tutor).selectinload(User.tutor_profile)
+                    selectinload(TutorAssignment.tutor).selectinload(User.tutor_profile),
+                    selectinload(TutorAssignment.service_type)
                 )
             )
-            assignments = assignment_result.scalars().all()
-            
-            # Fetch scheduled sessions
-            result = await db.execute(
-                select(Session)
-                .where(Session.student_id == user.id)
-                .options(
-                    selectinload(Session.tutor).selectinload(User.tutor_profile),
-                    selectinload(Session.tutor).selectinload(User.student_profile),
-                    selectinload(Session.tutor).selectinload(User.admin_profile)
-                )
-                .options(selectinload(Session.service_type))
-            )
-            student_sessions = result.scalars().all()
-            
-            schedule_info = "El usuario actual con el que estás hablando es un ESTUDIANTE de la universidad. Esta es su información académica:\n"
-            
+            assignments = result.scalars().all()
             if not assignments:
-                schedule_info += "- Tutor Principal Asignado: Ninguno (No tiene tutor asignado en el sistema).\n"
-            else:
-                for a in assignments:
-                    tutor_name = a.tutor.full_name if a.tutor else f"Tutor ID {a.tutor_id}"
-                    schedule_info += f"- Tutor Principal Asignado: {tutor_name} (Periodo: {a.academic_period})\n"
+                return "No tienes ningún tutor asignado actualmente."
             
-            if not student_sessions:
-                schedule_info += "- Tutorías Programadas: Ninguna actualmente.\n"
-            else:
-                schedule_info += "- Tutorías Programadas:\n"
-                for s in student_sessions:
-                    tutor_name = s.tutor.full_name if s.tutor else f"Tutor ID {s.tutor_id}"
-                    svc_name = s.service_type.name if s.service_type else "Tutoría"
-                    schedule_info += f"  * Tutor: {tutor_name} | Actividad: {s.title or svc_name} | Fecha y Hora: {s.scheduled_at} | Estado: {s.status} | Lugar: {s.location or 'No definido'}\n"
+            data = []
+            for a in assignments:
+                t = a.tutor
+                t_profile = t.tutor_profile if t else None
+                data.append({
+                    "tutor_name": t.full_name if t else "No definido",
+                    "email": t.email if t else "No definido",
+                    "office_location": t_profile.office_location if t_profile else "No definido",
+                    "expertise_areas": t_profile.expertise_areas if t_profile else "No definido",
+                    "service_type": a.service_type.name if a.service_type else "Tutoría",
+                    "academic_period": a.academic_period
+                })
+            return json.dumps(data, ensure_ascii=False)
+
+        async def get_assigned_students() -> str:
+            """
+            Obtiene la lista de estudiantes asignados al tutor actual en el sistema.
+            Retorna un JSON con el nombre, correo, código de estudiante, celular, semestre actual, estado académico, periodo académico y tipo de tutoría de cada estudiante.
+            """
+            result = await db.execute(
+                select(TutorAssignment)
+                .where(TutorAssignment.tutor_id == user.id)
+                .options(
+                    selectinload(TutorAssignment.student).selectinload(User.student_profile),
+                    selectinload(TutorAssignment.service_type)
+                )
+            )
+            assignments = result.scalars().all()
+            if not assignments:
+                return "No tienes ningún estudiante asignado actualmente."
             
-            system_instruction += schedule_info + "\n"
+            data = []
+            for a in assignments:
+                s = a.student
+                if not s:
+                    continue
+                s_profile = s.student_profile
+                data.append({
+                    "student_name": s.full_name,
+                    "email": s.email,
+                    "student_code": s_profile.student_code if s_profile else "No definido",
+                    "current_semester": s_profile.current_semester if s_profile else "No definido",
+                    "academic_status": s_profile.academic_status if s_profile else "No definido",
+                    "phone_number": s_profile.phone_number if s_profile else "No definido",
+                    "academic_period": a.academic_period,
+                    "service_type": a.service_type.name if a.service_type else "Tutoría"
+                })
+            return json.dumps(data, ensure_ascii=False)
 
+        async def get_calendar_events(start_date: str = None, end_date: str = None) -> str:
+            """
+            Obtiene el listado de actividades del calendario, tutorías programadas y sesiones del usuario actual
+            en un rango de fechas. Las fechas opcionales deben tener el formato 'YYYY-MM-DD'.
+            """
+            now = datetime.now()
+            if start_date:
+                try:
+                    start_dt = datetime.strptime(start_date, "%Y-%m-%d")
+                except ValueError:
+                    return "Error: Formato de fecha de inicio inválido. Debe ser YYYY-MM-DD."
+            else:
+                start_dt = now - timedelta(days=30)
 
-        system_instruction += (
-            "INSTRUCCIONES IMPORTANTES DE RESPUESTA:\n"
-            "1. Intenta responder a la consulta del estudiante/tutor utilizando la información de la base de datos oficial (corpus) anterior o la información de su horario provista.\n"
-            "2. Si la respuesta NO se encuentra en la base de datos oficial anterior o en el contexto de sus tutorías, debes responder utilizando tus conocimientos generales.\n"
-            "3. En este último caso, debes aclarar obligatoriamente al inicio de tu respuesta que no tienes esa información en tu base de datos oficial, pero que según internet/conocimiento general es de cierta manera."
+            if end_date:
+                try:
+                    end_dt = datetime.strptime(end_date, "%Y-%m-%d")
+                except ValueError:
+                    return "Error: Formato de fecha de fin inválido. Debe ser YYYY-MM-DD."
+            else:
+                end_dt = now + timedelta(days=30)
+
+            if user.role == "estudiante":
+                session_query = select(Session).where(
+                    Session.student_id == user.id,
+                    Session.scheduled_at >= start_dt,
+                    Session.scheduled_at <= end_dt
+                ).options(
+                    selectinload(Session.tutor).selectinload(User.tutor_profile),
+                    selectinload(Session.service_type)
+                )
+            else:
+                session_query = select(Session).where(
+                    Session.tutor_id == user.id,
+                    Session.scheduled_at >= start_dt,
+                    Session.scheduled_at <= end_dt
+                ).options(
+                    selectinload(Session.student).selectinload(User.student_profile),
+                    selectinload(Session.service_type)
+                )
+
+            sessions_res = await db.execute(session_query)
+            sessions = sessions_res.scalars().all()
+
+            if user.role == "estudiante":
+                tutor_ids_subquery = select(TutorAssignment.tutor_id).where(TutorAssignment.student_id == user.id)
+                session_ids_subquery = select(Session.id).where(Session.student_id == user.id)
+                event_query = select(Event).where(
+                    (Event.starts_at >= start_dt) & (Event.starts_at <= end_dt) &
+                    ((Event.created_by.in_(tutor_ids_subquery)) | (Event.session_id.in_(session_ids_subquery)))
+                )
+            else:
+                event_query = select(Event).where(
+                    Event.created_by == user.id,
+                    Event.starts_at >= start_dt,
+                    Event.starts_at <= end_dt
+                )
+
+            events_res = await db.execute(event_query)
+            events = events_res.scalars().all()
+
+            result_data = {
+                "sessions": [],
+                "events": []
+            }
+
+            for s in sessions:
+                other_name = s.tutor.full_name if user.role == "estudiante" else s.student.full_name
+                result_data["sessions"].append({
+                    "session_id": s.id,
+                    "title": s.title or (s.service_type.name if s.service_type else "Tutoría"),
+                    "scheduled_at": s.scheduled_at.strftime("%Y-%m-%d %H:%M:%S"),
+                    "status": s.status,
+                    "location": s.location or "No definido",
+                    "notes": s.notes or "",
+                    "other_participant": other_name
+                })
+
+            for e in events:
+                result_data["events"].append({
+                    "event_id": e.id,
+                    "title": e.title,
+                    "starts_at": e.starts_at.strftime("%Y-%m-%d %H:%M:%S"),
+                    "ends_at": e.ends_at.strftime("%Y-%m-%d %H:%M:%S"),
+                    "type": e.type
+                })
+
+            return json.dumps(result_data, ensure_ascii=False)
+
+        # Assemble list of tools based on user role
+        tools = [get_calendar_events]
+        if user.role == "estudiante":
+            tools.append(get_assigned_tutors)
+        elif user.role == "tutor":
+            tools.append(get_assigned_students)
+
+        system_instruction = (
+            "Eres TutorIA, el tutor académico inteligente de la universidad UNSAAC. Te presentas como un amigable dinosaurio morado. "
+            "Tu objetivo es ayudar a los estudiantes y tutores con sus consultas académicas, planes de estudio, reglamentos universitarios, "
+            "técnicas de estudio y gestión de sus horarios.\n"
+            "Mantén un tono entusiasta, paciente y amigable, pero sé conciso, directo y profesional.\n\n"
+            f"La fecha y hora actual del servidor es: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}.\n"
+            "DIRECTIVA DE FECHAS Y SEMESTRES: Para preguntas sobre el cronograma o calendario académico (exámenes, fin de clases, inicio, etc.):\n"
+            "- Si la fecha actual está entre el 30 de marzo de 2026 y el 20 de agosto de 2026, asume por defecto que se refiere al semestre 2026-I (salvo que el usuario especifique otro).\n"
+            "- Si la fecha actual es posterior al 20 de agosto de 2026 (por ejemplo, en septiembre) y hasta el 12 de enero de 2027, asume por defecto que se refiere al semestre 2026-II.\n"
+            "- Sé dinámico y adapta tu respuesta si el usuario pregunta explícitamente por un semestre en particular.\n\n"
+            "Tienes acceso a herramientas en tiempo real para obtener información específica del usuario. "
+            "Si la consulta del usuario requiere conocer sus tutores asignados, estudiantes asignados, o sus horarios/actividades del calendario, "
+            "DEBES invocar la herramienta correspondiente para dar una respuesta precisa basada en datos reales de la base de datos.\n\n"
+            "Aquí tienes fragmentos relevantes de la base de datos oficial (corpus) de la universidad UNSAAC sobre el reglamento de tutoría y servicios:\n"
+            f"{corpus_context}\n\n"
+            "REGLAS OBLIGATORIAS DE FORMATO Y CONCISIÓN:\n"
+            "1. Sé conciso y ve al grano inmediatamente. Evita introducciones con relleno (como '¡Qué buena pregunta! Es fundamental...' o similares) y despedidas repetitivas. Responde de forma directa pero amigable.\n"
+            "2. Si la consulta requiere datos específicos recuperados por las herramientas (como quién es su tutor, estudiantes asignados o próximas tutorías), debes mostrar esa información CLAVE en viñetas claras al principio de tu respuesta. Ejemplo:\n"
+            "   * **Tutor Asignado:** Nombre del Tutor\n"
+            "   * **Email de Contacto:** correo@unsaac.edu.pe\n"
+            "3. Utiliza un máximo de 2 emojis en todo el mensaje. No satures la respuesta con emojis.\n"
+            "4. Utiliza negrita (`**`) únicamente para destacar datos críticos (nombres, fechas, requisitos importantes). No pongas párrafos enteros en negrita.\n"
+            "5. Si la consulta es sobre reglamentos o servicios generales, resume la respuesta en máximo 1 o 2 párrafos cortos y precisos.\n"
+            "6. Si la respuesta NO se encuentra en la base de datos oficial ni en los datos de las herramientas, responde usando tus conocimientos generales e inicia aclarando obligatoriamente que no cuentas con esa información en la base de datos de la universidad. Ejemplo: 'No tengo esa información en mi base de datos de la universidad, pero según internet...'"
         )
         
-        # 3. Generate response via Gemini
+        # 3. Generate response via Gemini using function calling
         assistant_content = await self.llm.generate_response(
             system_instruction=system_instruction,
             history=history,
-            user_message=user_content
+            user_message=user_content,
+            tools=tools
         )
         
         # Save assistant message

@@ -124,6 +124,14 @@ export default function LoginScreen() {
             />
           </View>
 
+          <Link href="/auth/forgot-password" asChild>
+            <Pressable style={{ alignSelf: 'flex-end', marginTop: -8, marginBottom: 20 }}>
+              <Text style={{ fontSize: 13, color: colors.primary, fontWeight: '600' }}>
+                ¿Olvidaste tu contraseña?
+              </Text>
+            </Pressable>
+          </Link>
+
           <Pressable
             onPress={handleLogin}
             disabled={isLoading}

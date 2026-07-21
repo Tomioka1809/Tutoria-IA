@@ -3,7 +3,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 
 from app.infrastructure.api.dependencies import get_current_user, get_auth_use_case
 from app.domain.entities.user import UserCreate, UserOut, UserUpdate, PasswordChange
-from app.domain.entities.auth import Token, LoginRequest
+from app.domain.entities.auth import Token, LoginRequest, ForgotPasswordRequest, ResetPasswordRequest
 from app.infrastructure.database.models.user import User
 from app.application.use_cases.auth_use_cases import AuthUseCase
 
@@ -62,3 +62,25 @@ async def change_password(
     if success:
         return {"status": "success", "message": "Password changed successfully"}
     raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Failed to change password")
+
+@router.post("/forgot-password", response_model=dict)
+async def forgot_password(
+    request: ForgotPasswordRequest,
+    auth_use_case: AuthUseCase = Depends(get_auth_use_case)
+):
+    await auth_use_case.generate_reset_token(email=request.email)
+    return {"status": "success", "message": "Código de recuperación enviado con éxito."}
+
+@router.post("/reset-password", response_model=dict)
+async def reset_password(
+    request: ResetPasswordRequest,
+    auth_use_case: AuthUseCase = Depends(get_auth_use_case)
+):
+    success = await auth_use_case.reset_password_with_token(
+        email=request.email,
+        token=request.token,
+        new_password=request.new_password
+    )
+    if success:
+        return {"status": "success", "message": "Contraseña restablecida con éxito."}
+    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="No se pudo restablecer la contraseña.")

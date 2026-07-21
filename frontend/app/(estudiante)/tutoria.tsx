@@ -1,7 +1,7 @@
 // app/(estudiante)/tutoria.tsx
 import React, { useEffect, useRef, useState } from 'react';
 import { useTheme } from '@/src/theme/ThemeContext';
-import { View, Text, KeyboardAvoidingView, Platform, TextInput, Keyboard } from 'react-native';
+import { View, Text, KeyboardAvoidingView, Platform, TextInput, Keyboard, ActivityIndicator } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
 import { useTutoria } from '@/src/components/tutoria/useTutoria';
@@ -59,7 +59,15 @@ export default function TutoriaScreen() {
     };
   }, []);
 
-  if (user?.role !== 'estudiante') {
+  if (!user) {
+    return (
+      <View style={{ flex: 1, backgroundColor: colors.background, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color={colors.primary} />
+      </View>
+    );
+  }
+
+  if (user.role !== 'estudiante') {
     return (
       <View style={{ backgroundColor: colors.background }} className="flex-1  justify-center items-center px-6">
         <Text className="text-4xl mb-4">🦖</Text>
