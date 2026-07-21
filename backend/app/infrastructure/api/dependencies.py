@@ -94,6 +94,8 @@ def get_current_active_admin(
 
 from app.application.use_cases.auth_use_cases import AuthUseCase
 from app.infrastructure.database.repositories.user_repository import UserRepository
+from app.infrastructure.database.repositories.tutor_assignment_repository import TutorAssignmentRepository
+from app.infrastructure.database.repositories.calendar_repository import CalendarRepository
 
 def get_auth_use_case(db: AsyncSession = Depends(get_db)) -> AuthUseCase:
     user_repo = UserRepository(db)
@@ -102,5 +104,13 @@ def get_auth_use_case(db: AsyncSession = Depends(get_db)) -> AuthUseCase:
 def get_chat_use_case(db: AsyncSession = Depends(get_db)) -> ChatUseCase:
     chat_repo = ChatRepository(db)
     corpus_repo = CorpusRepository(db)
+    tutor_assignment_repo = TutorAssignmentRepository(db)
+    calendar_repo = CalendarRepository(db)
     llm = GeminiAdapter(api_key=settings.GEMINI_API_KEY)
-    return ChatUseCase(chat_repo, corpus_repo, llm)
+    return ChatUseCase(
+        chat_repo=chat_repo,
+        corpus_repo=corpus_repo,
+        llm=llm,
+        tutor_assignment_repo=tutor_assignment_repo,
+        calendar_repo=calendar_repo
+    )

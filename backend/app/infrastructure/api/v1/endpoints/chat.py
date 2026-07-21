@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.infrastructure.api.dependencies import get_current_user, get_chat_use_case, get_db
+from app.infrastructure.api.dependencies import get_current_user, get_chat_use_case
 from app.domain.entities.chat import ConversationOut, MessageOut, MessageCreate
 from app.infrastructure.database.models.user import User
 from app.application.use_cases.chat_use_cases import ChatUseCase
@@ -24,8 +23,7 @@ async def read_conversation(
 async def send_message(
     message_in: MessageCreate,
     current_user: User = Depends(get_current_user),
-    chat_use_case: ChatUseCase = Depends(get_chat_use_case),
-    db: AsyncSession = Depends(get_db)
+    chat_use_case: ChatUseCase = Depends(get_chat_use_case)
 ):
     if current_user.role not in ["estudiante", "tutor"]:
         raise HTTPException(
@@ -33,7 +31,9 @@ async def send_message(
             detail="Only students and tutors can chat with TutorIA.",
         )
     return await chat_use_case.send_chat_message(
-        user=current_user, user_content=message_in.content, db=db
+        user_id=current_user.id,
+        user_role=current_user.role,
+        user_content=message_in.content,
     )
 
 @router.delete("/conversation", response_model=dict)
