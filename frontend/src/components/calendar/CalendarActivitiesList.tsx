@@ -1,31 +1,16 @@
-// src/components/calendar/CalendarActivitiesList.tsx
 import React from 'react';
 import { View, Text, ScrollView, Pressable } from 'react-native';
 import { Feather, FontAwesome } from '@expo/vector-icons';
 import { useTheme } from '@/src/theme/ThemeContext';
 import { useTranslation } from 'react-i18next';
-
-interface UnifiedActivity {
-  id: string;
-  name: string;
-  type: string;
-  date: string;
-  time: string;
-  isBackend: boolean;
-  rawId: number;
-  status?: string;
-  notes?: string;
-  location?: string;
-  tutorName?: string;
-  studentName?: string;
-}
+import { CalendarItem } from './calendar-items';
 
 interface CalendarActivitiesListProps {
-  activities: UnifiedActivity[];
+  activities: CalendarItem[];
   userRole?: string;
   onAddPress: () => void;
-  onViewPress?: (activity: UnifiedActivity) => void;
-  onDeletePress: (activity: UnifiedActivity) => void;
+  onViewPress?: (activity: CalendarItem) => void;
+  onDeletePress: (activity: CalendarItem) => void;
 }
 
 export function CalendarActivitiesList({
@@ -39,7 +24,6 @@ export function CalendarActivitiesList({
   const { colors } = useTheme();
   const { t, i18n } = useTranslation();
 
-  // Formatear 24h a 12h AM/PM
   const formatTime12h = (time24: string) => {
     try {
       const [hoursStr, minutesStr] = time24.split(':');
@@ -50,12 +34,11 @@ export function CalendarActivitiesList({
       const displayMinutes = String(minutes).padStart(2, '0');
       const formattedHours = String(displayHours).padStart(2, '0');
       return `${formattedHours}:${displayMinutes} ${ampm}`;
-    } catch (e) {
+    } catch {
       return time24;
     }
   };
 
-  // Obtener rango de hora (duración 1h por defecto para tutorías, hora fija para tareas)
   const getRangeString = (timeStr: string, type: string) => {
     const startTimeFormatted = formatTime12h(timeStr);
     if (type === 'Trabajos') {
@@ -69,12 +52,11 @@ export function CalendarActivitiesList({
       const endTimeStr = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
       const endTimeFormatted = formatTime12h(endTimeStr);
       return `${startTimeFormatted} - ${endTimeFormatted}`;
-    } catch (e) {
+    } catch {
       return timeStr;
     }
   };
 
-  // Formatear fecha de la actividad
   const formatActivityDate = (dateStr: string) => {
     try {
       const [year, month, day] = dateStr.split('-').map(Number);
@@ -98,12 +80,11 @@ export function CalendarActivitiesList({
       } else {
         return date.toLocaleDateString(i18n.language === 'en' ? 'en-US' : 'es-ES', { day: 'numeric', month: 'short' });
       }
-    } catch (e) {
+    } catch {
       return dateStr;
     }
   };
 
-  // Mapeo de estilos y configuración de cada tipo de actividad
   const getActivityStyle = (type: string) => {
     if (type === 'Tutoría Académica') {
       return {
@@ -155,13 +136,13 @@ export function CalendarActivitiesList({
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         {activities.length > 0 ? (
           activities.map((activity) => {
+            const dateStr = activity.dateStr;
+            const timeStr = activity.timeStr;
+            const nameStr = activity.name;
             const style = getActivityStyle(activity.type);
-            const dateDisplay = formatActivityDate(activity.date);
-            const timeRange = getRangeString(activity.time, activity.type);
+            const dateDisplay = formatActivityDate(dateStr);
+            const timeRange = getRangeString(timeStr, activity.type);
             
-            // Un estudiante NO puede eliminar actividades de tutoría académica (del backend)
-            // Solo los docentes pueden eliminar tutorías.
-            // Las actividades locales (Apoyo, Trabajo) sí las pueden borrar todos.
             const canDelete = !activity.isBackend || isTutor;
 
             return (
@@ -171,7 +152,6 @@ export function CalendarActivitiesList({
                 style={{ backgroundColor: colors.surface }} className=" border border-border rounded-3xl p-4 mb-3 shadow-sm flex-row items-center justify-between"
               >
                 <View className="flex-row items-center flex-1">
-                  {/* Contenedor del Icono */}
                   <View className={`w-12 h-12 rounded-[20px] items-center justify-center mr-4 ${style.bgColor}`}>
                     {style.iconSet === 'Feather' ? (
                       <Feather name={style.icon as any} size={20} color={style.iconColor} />
@@ -180,10 +160,9 @@ export function CalendarActivitiesList({
                     )}
                   </View>
 
-                  {/* Textos: Nombre y Horarios */}
                   <View className="flex-1 mr-2">
                     <Text style={{ color: colors.text }} className="text-sm font-bold " numberOfLines={1}>
-                      {activity.name}
+                      {nameStr}
                     </Text>
                     <Text className="text-xs text-textSecondary mt-1 font-medium">
                       {dateDisplay}, {timeRange}
@@ -191,7 +170,6 @@ export function CalendarActivitiesList({
                   </View>
                 </View>
 
-                {/* Botón de Eliminar */}
                 {canDelete && (
                   <Pressable
                     onPress={() => onDeletePress(activity)}

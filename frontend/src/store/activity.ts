@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { shouldRetainStoredActivity } from '../components/calendar/calendar-items';
 
 export interface Activity {
   id: string;
@@ -37,18 +38,9 @@ export const useActivityStore = create<ActivityState>()(
       clearPastActivities: () =>
         set((state) => {
           const now = new Date();
-          const activeActivities = state.activities.filter((act) => {
-            // Unir fecha (YYYY-MM-DD) y hora (HH:MM) para crear un objeto Date
-            const [year, month, day] = act.date.split('-').map(Number);
-            const [hours, minutes] = act.time.split(':').map(Number);
-            
-            // Creamos la fecha local de la actividad
-            const actDate = new Date(year, month - 1, day, hours, minutes, 0, 0);
-            
-            // Si la fecha de la actividad es mayor o igual a la hora actual, se mantiene.
-            // Si ya pasó, retorna false (se descarta)
-            return actDate.getTime() >= now.getTime();
-          });
+          const activeActivities = state.activities.filter((act) =>
+            shouldRetainStoredActivity(act, now)
+          );
           return { activities: activeActivities };
         }),
     }),

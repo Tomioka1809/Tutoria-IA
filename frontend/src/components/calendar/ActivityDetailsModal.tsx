@@ -41,7 +41,7 @@ export function ActivityDetailsModal({ activity, onClose, userRole, onStatusChan
       const ampm = hours >= 12 ? 'PM' : 'AM';
       const displayHours = hours % 12 === 0 ? 12 : hours % 12;
       return `${String(displayHours).padStart(2, '0')}:${String(minutes).padStart(2, '0')} ${ampm}`;
-    } catch (e) {
+    } catch {
       return time24;
     }
   };

@@ -184,7 +184,10 @@
     "scheduledSuccess": "Tutoring session scheduled successfully!",
     "scheduledError": "There was an error scheduling the tutoring session.",
     "statusSuccess": "Status updated successfully!",
-    "statusError": "There was an error updating the status."
+    "statusError": "There was an error updating the status.",
+    "localActivity": "Personal Activity",
+    "tutoringSession": "Tutoring Session",
+    "invalidActivityDate": "Invalid activity date or time"
   },
   "tutoring": {
     "online": "Online",
@@ -464,6 +467,8 @@
     "markNotification": "Could not mark notification as read.",
     "updateProfile": "Could not update profile information.",
     "changePassword": "Could not change password.",
-    "loadStreak": "Could not load current streak."
+    "loadStreak": "Could not load current streak.",
+    "loadServiceTypes": "Could not load service types.",
+    "loadTutorData": "Could not load the student list."
   }
 }
