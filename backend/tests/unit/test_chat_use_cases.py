@@ -311,6 +311,63 @@ class TestChatUseCase(unittest.IsolatedAsyncioTestCase):
                 f"Constructor parameter '{name}' in ChatUseCase must not have a default value"
             )
 
+    def test_legacy_chat_service_removal_and_application_purity(self):
+        # 1. chat_service.py file does not exist
+        legacy_file = os.path.join(
+            os.path.dirname(__file__),
+            "../../app/application/use_cases/chat_service.py"
+        )
+        self.assertFalse(os.path.exists(legacy_file), "chat_service.py must not exist")
+
+        # 2 & 5. No static or dynamic imports of chat_service in backend/app
+        app_dir = os.path.join(os.path.dirname(__file__), "../../app")
+        for root, _, files in os.walk(app_dir):
+            for file in files:
+                if file.endswith(".py"):
+                    filepath = os.path.join(root, file)
+                    with open(filepath, "r", encoding="utf-8") as f:
+                        content = f.read()
+                    self.assertNotIn("chat_service", content, f"Found chat_service reference in {filepath}")
+
+        # 3. endpoints/chat.py uses ChatUseCase
+        endpoint_path = os.path.join(os.path.dirname(__file__), "../../app/infrastructure/api/v1/endpoints/chat.py")
+        with open(endpoint_path, "r", encoding="utf-8") as f:
+            endpoint_content = f.read()
+        self.assertIn("ChatUseCase", endpoint_content, "endpoints/chat.py must use ChatUseCase")
+
+        # 4. dependencies.py constructs ChatUseCase
+        dep_path = os.path.join(os.path.dirname(__file__), "../../app/infrastructure/api/dependencies.py")
+        with open(dep_path, "r", encoding="utf-8") as f:
+            dep_content = f.read()
+        self.assertIn("def get_chat_use_case", dep_content, "dependencies.py must construct ChatUseCase")
+        self.assertIn("ChatUseCase(", dep_content)
+
+        # 8. Entire application directory is clean of forbidden framework imports
+        use_cases_dir = os.path.join(os.path.dirname(__file__), "../../app/application")
+        forbidden_prefixes = ["fastapi", "sqlalchemy", "app.infrastructure"]
+        for root, _, files in os.walk(use_cases_dir):
+            for file in files:
+                if file.endswith(".py"):
+                    filepath = os.path.join(root, file)
+                    with open(filepath, "r", encoding="utf-8") as f:
+                        code = f.read()
+                    parsed = ast.parse(code)
+                    imported_modules = []
+                    for node in ast.walk(parsed):
+                        if isinstance(node, ast.Import):
+                            for alias in node.names:
+                                imported_modules.append(alias.name)
+                        elif isinstance(node, ast.ImportFrom):
+                            if node.module:
+                                imported_modules.append(node.module)
+
+                    for mod in imported_modules:
+                        for prefix in forbidden_prefixes:
+                            self.assertFalse(
+                                mod.startswith(prefix),
+                                f"Forbidden import '{mod}' found in {filepath}"
+                            )
+
 
 if __name__ == "__main__":
     unittest.main()
