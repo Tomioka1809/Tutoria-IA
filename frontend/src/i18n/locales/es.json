@@ -104,7 +104,12 @@
     "assignedTutor": "Tutor asignado",
     "noTutor": "Aún no tienes un tutor asignado",
     "tutorTeacher": "Docente Tutor",
-    "viewProfile": "Ver perfil"
+    "viewProfile": "Ver perfil",
+    "noAssignedTutor": "Sin tutor asignado",
+    "noAssignedTutorDescription": "Actualmente no tienes un tutor asignado.",
+    "tutorUnavailable": "Tutor no disponible",
+    "tutorAssignmentAmbiguous": "Asignación de tutor por confirmar",
+    "tutorAssignmentAmbiguousDescription": "Se encontraron varias asignaciones y no es posible determinar un único tutor."
   },
   "notifications": {
     "title": "Notificaciones",
@@ -334,22 +339,14 @@
     "viewResults": "Ver resultados"
   },
   "explore": {
-    "title": "Explorar",
-    "intro": "Esta aplicación incluye código de ejemplo para ayudarte a comenzar.",
-    "routing": "Navegación basada en archivos",
-    "screens": "Esta aplicación tiene dos pantallas:",
-    "and": "y",
-    "layout": "El archivo de diseño configura el navegador de pestañas.",
-    "learnMore": "Más información",
-    "platforms": "Compatibilidad con Android, iOS y web",
-    "platformsBody": "Puedes abrir este proyecto en Android, iOS y la web. Para abrir la versión web, presiona w en la terminal que ejecuta el proyecto.",
-    "images": "Imágenes",
-    "imagesBody": "Para imágenes estáticas, puedes usar los sufijos @2x y @3x para proporcionar archivos para diferentes densidades de pantalla.",
-    "themes": "Componentes para modo claro y oscuro",
-    "themesBody": "Esta plantilla admite los modos claro y oscuro. El hook useColorScheme() permite consultar el esquema de color actual y ajustar la interfaz.",
-    "animations": "Animaciones",
-    "animationsBody": "Esta plantilla incluye un componente animado de ejemplo. HelloWave.tsx usa react-native-reanimated para crear una animación.",
-    "parallax": "ParallaxScrollView.tsx proporciona un efecto parallax para la imagen del encabezado."
+    "title": "Servicios y Recursos",
+    "intro": "Accede a las herramientas y servicios académicos de TutorIA.",
+    "studentDescription": "Accede rápidamente a tus servicios académicos y personales de TutorIA.",
+    "tutorDescription": "Gestión de tutorías, estudiantes asignados y recursos académicos.",
+    "openChat": "Chat Asistente IA",
+    "openCalendar": "Calendario",
+    "openProfile": "Mi Perfil",
+    "profileDescription": "Consulta y administra la información de tu perfil."
   },
   "admin": {
     "welcome": "Bienvenido, {{name}}",
@@ -469,6 +466,7 @@
     "changePassword": "No se pudo cambiar la contraseña.",
     "loadStreak": "No se pudo obtener la racha actual.",
     "loadServiceTypes": "No se pudieron cargar los tipos de servicio.",
-    "loadTutorData": "No se pudo cargar la lista de estudiantes."
+    "loadTutorData": "No se pudo cargar la lista de estudiantes.",
+    "loadAssignedTutor": "No se pudo cargar la información del tutor asignado."
   }
 }

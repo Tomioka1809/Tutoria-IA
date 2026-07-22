@@ -81,7 +81,7 @@ export function useNotifications() {
             body: t('notifications.activityBody', { name: act.name, time: timeFormatted }),
             type: 'reminder',
             is_read: false,
-            created_at: new Date(now.getTime() - 15 * 60 * 1000).toISOString(),
+            created_at: actDate.toISOString(),
           });
         }
       } catch {

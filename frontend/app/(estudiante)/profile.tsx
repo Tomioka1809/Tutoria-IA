@@ -9,7 +9,7 @@ import { useTheme } from '@/src/theme/ThemeContext';
 
 export default function ProfileScreen() {
   const { colors } = useTheme();
-  const { user, assignedTutors, handleLogout } = useProfile();
+  const { user, assignedTutors, isLoading, assignedTutorLoadError, handleLogout } = useProfile();
 
   return (
     <ScrollView
@@ -20,7 +20,11 @@ export default function ProfileScreen() {
       <ProfileHeader user={user} />
 
       {user?.role === 'estudiante' ? (
-        <AssignedTutorCard assignedTutors={assignedTutors} />
+        <AssignedTutorCard
+          assignedTutors={assignedTutors}
+          isLoading={isLoading}
+          hasLoadError={assignedTutorLoadError}
+        />
       ) : null}
 
       <ProfileMenu onLogout={handleLogout} />

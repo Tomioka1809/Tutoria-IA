@@ -1,4 +1,3 @@
-// src/components/notifications/NotificationItem.tsx
 import React from 'react';
 import { useTheme } from '@/src/theme/ThemeContext';
 import { View, Text, Pressable } from 'react-native';
@@ -13,10 +12,11 @@ interface NotificationItemProps {
 export function NotificationItem({ notification, onPress }: NotificationItemProps) {
   const { colors, isDark } = useTheme();
   const { t } = useTranslation();
-  // Determinar color e icono según título o tipo
   let iconStr = '🔔';
   let iconBg = 'bg-[#F3E8FF]';
   let titleColor = isDark ? '#FFFFFF' : colors.text;
+
+  const isLocalReminder = String(notification.id).startsWith('reminder_local_');
 
   const titleLower = notification.title.toLowerCase();
   if (titleLower.includes('cancelada') || titleLower.includes('cancelled')) {
@@ -31,7 +31,6 @@ export function NotificationItem({ notification, onPress }: NotificationItemProp
     iconBg = 'bg-[#F3E8FF]';
   }
 
-  // Formatear fecha de creación a tiempo relativo
   const formatRelativeTime = (dateStr: string) => {
     try {
       const created = new Date(dateStr);
@@ -55,10 +54,12 @@ export function NotificationItem({ notification, onPress }: NotificationItemProp
       } else {
         return t('notifications.daysAgo', { count: diffDays });
       }
-    } catch (e) {
+    } catch {
       return t('notifications.recently');
     }
   };
+
+  const subtitleText = isLocalReminder ? notification.body : formatRelativeTime(notification.created_at);
 
   return (
     <Pressable
@@ -72,7 +73,7 @@ export function NotificationItem({ notification, onPress }: NotificationItemProp
       <View className="flex-1">
         <Text className="text-sm font-bold" style={{ color: titleColor }}>{notification.title}</Text>
         <Text className="text-xs text-textSecondary mt-1 font-medium">
-          {formatRelativeTime(notification.created_at)}
+          {subtitleText}
         </Text>
       </View>
 
@@ -82,4 +83,3 @@ export function NotificationItem({ notification, onPress }: NotificationItemProp
     </Pressable>
   );
 }
-
