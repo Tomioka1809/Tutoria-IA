@@ -2,8 +2,10 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.infrastructure.api.v1.api import api_router
 from app.infrastructure.config.config import settings
+from app.infrastructure.api.exception_handlers import setup_exception_handlers
 
 app = FastAPI(title=settings.PROJECT_NAME)
+setup_exception_handlers(app)
 
 # Enable CORS for React Native / Expo development
 app.add_middleware(

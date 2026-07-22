@@ -1,8 +1,12 @@
 from abc import ABC, abstractmethod
 from typing import List, Optional, Any
+from datetime import datetime
 from app.domain.entities.user import UserCreate, UserUpdate
-# We'll import actual models locally or use generic Any to avoid cyclic imports if needed,
-# but ideally we use domain entities. For ORM models, they should be mapped or we use them as return types.
+from app.application.dtos.chat_tool_dtos import (
+    AssignedTutorDTO,
+    AssignedStudentDTO,
+    CalendarDataDTO,
+)
 
 class UserRepositoryPort(ABC):
     @abstractmethod
@@ -44,9 +48,29 @@ class ChatRepositoryPort(ABC):
 
 class CorpusRepositoryPort(ABC):
     @abstractmethod
-    async def search_similar(self, query_embedding: List[float], limit: int = 5) -> List[str]:
+    async def search_similar(self, query_embedding: List[float], limit: int = 5, query_text: str | None = None) -> List[str]:
         pass
 
     @abstractmethod
     async def insert_chunk(self, text: str, embedding: List[float]):
+        pass
+
+class TutorAssignmentRepositoryPort(ABC):
+    @abstractmethod
+    async def get_assigned_tutors_data(self, student_id: int) -> List[AssignedTutorDTO]:
+        pass
+
+    @abstractmethod
+    async def get_assigned_students_data(self, tutor_id: int) -> List[AssignedStudentDTO]:
+        pass
+
+    @abstractmethod
+    async def get_assigned_student_ids(self, tutor_id: int) -> List[int]:
+        pass
+
+class CalendarRepositoryPort(ABC):
+    @abstractmethod
+    async def get_calendar_events_data(
+        self, user_id: int, role: str, start_dt: datetime, end_dt: datetime
+    ) -> CalendarDataDTO:
         pass

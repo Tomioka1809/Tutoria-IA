@@ -58,10 +58,8 @@ async def change_password(
     current_user: User = Depends(get_current_user),
     auth_use_case: AuthUseCase = Depends(get_auth_use_case)
 ):
-    success = await auth_use_case.change_password(current_user.id, password_in)
-    if success:
-        return {"status": "success", "message": "Password changed successfully"}
-    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Failed to change password")
+    await auth_use_case.change_password(current_user.id, password_in)
+    return {"status": "success", "message": "Password changed successfully"}
 
 @router.post("/forgot-password", response_model=dict)
 async def forgot_password(
@@ -76,11 +74,9 @@ async def reset_password(
     request: ResetPasswordRequest,
     auth_use_case: AuthUseCase = Depends(get_auth_use_case)
 ):
-    success = await auth_use_case.reset_password_with_token(
+    await auth_use_case.reset_password_with_token(
         email=request.email,
         token=request.token,
         new_password=request.new_password
     )
-    if success:
-        return {"status": "success", "message": "Contraseña restablecida con éxito."}
-    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="No se pudo restablecer la contraseña.")
+    return {"status": "success", "message": "Contraseña restablecida con éxito."}

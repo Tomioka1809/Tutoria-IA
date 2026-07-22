@@ -1,70 +1,70 @@
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
-from fastapi import HTTPException, status
 from typing import List
-from app.infrastructure.database.models.notification import Notification
-from app.infrastructure.database.models.tutor_assignment import TutorAssignment
-from app.infrastructure.database.models.user import User
+from app.application.ports.other_ports import NotificationRepositoryPort
+from app.application.ports.repository_ports import TutorAssignmentRepositoryPort
+from app.application.ports.transaction_port import TransactionPort
+from app.domain.entities.notification import NotificationOut
+from app.domain.exceptions import ResourceNotFoundError, NotAuthorizedError
 
-async def get_user_notifications(db: AsyncSession, user: User) -> List[Notification]:
-    if user.role == "estudiante":
-        # Students see only their own notifications
-        result = await db.execute(
-            select(Notification)
-            .where(Notification.user_id == user.id)
-            .order_by(Notification.created_at.desc())
-        )
-        return list(result.scalars().all())
-        
-    elif user.role == "tutor":
-        # Tutors see their own notifications + notifications of all their assigned students
-        student_ids_subquery = select(TutorAssignment.student_id).where(TutorAssignment.tutor_id == user.id)
-        result = await db.execute(
-            select(Notification)
-            .where(
-                (Notification.user_id == user.id) | 
-                (Notification.user_id.in_(student_ids_subquery))
+
+class NotificationUseCase:
+    def __init__(
+        self,
+        notification_repo: NotificationRepositoryPort,
+        tutor_assignment_repo: TutorAssignmentRepositoryPort,
+        transaction: TransactionPort,
+    ):
+        self.notification_repo = notification_repo
+        self.tutor_assignment_repo = tutor_assignment_repo
+        self.transaction = transaction
+
+    async def get_user_notifications(self, user_id: int, user_role: str) -> List[NotificationOut]:
+        return await self.notification_repo.get_user_notifications(user_id=user_id, user_role=user_role)
+
+    async def get_unread_count(self, user_id: int) -> int:
+        return await self.notification_repo.get_unread_count(user_id=user_id)
+
+    async def create_notification(
+        self, user_id: int, title: str, body: str, notification_type: str
+    ) -> NotificationOut:
+        try:
+            notification = await self.notification_repo.create_notification(
+                user_id=user_id, title=title, body=body, notification_type=notification_type
             )
-            .order_by(Notification.created_at.desc())
-        )
-        return list(result.scalars().all())
-        
-    else: # admin
-        # Admins can see all notifications in the system
-        result = await db.execute(
-            select(Notification).order_by(Notification.created_at.desc())
-        )
-        return list(result.scalars().all())
+            await self.transaction.commit()
+            return notification
+        except Exception:
+            await self.transaction.rollback()
+            raise
 
-async def create_notification(
-    db: AsyncSession, user_id: int, title: str, body: str, notification_type: str
-) -> Notification:
-    notification = Notification(
-        user_id=user_id,
-        title=title,
-        body=body,
-        type=notification_type,
-        is_read=False,
-    )
-    db.add(notification)
-    await db.commit()
-    await db.refresh(notification)
-    return notification
+    async def mark_notification_as_read(
+        self, notification_id: int, user_id: int, user_role: str
+    ) -> NotificationOut:
+        access_data = await self.notification_repo.get_access_data(notification_id)
+        if not access_data:
+            raise ResourceNotFoundError("Notification not found")
 
-async def mark_notification_as_read(db: AsyncSession, notification_id: int, user_id: int) -> Notification:
-    result = await db.execute(
-        select(Notification).where(Notification.id == notification_id)
-    )
-    notification = result.scalars().first()
-    if not notification:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Notification not found",
-        )
-    # Ensure they have permission (either they own it, or they are the tutor of the student)
-    # Actually, simpler is: if they are reading it, they can mark it read.
-    notification.is_read = True
-    db.add(notification)
-    await db.commit()
-    await db.refresh(notification)
-    return notification
+        # Authorization rules
+        is_allowed = False
+        if user_role == "admin":
+            is_allowed = True
+        elif user_role == "estudiante":
+            is_allowed = (user_id == access_data.user_id)
+        elif user_role == "tutor":
+            if user_id == access_data.user_id:
+                is_allowed = True
+            else:
+                assigned_student_ids = await self.tutor_assignment_repo.get_assigned_student_ids(user_id)
+                is_allowed = (access_data.user_id in assigned_student_ids)
+
+        if not is_allowed:
+            raise NotAuthorizedError("Not authorized to access this notification")
+
+        try:
+            notification = await self.notification_repo.mark_as_read(notification_id=notification_id)
+            if not notification:
+                raise ResourceNotFoundError("Notification not found")
+            await self.transaction.commit()
+            return notification
+        except Exception:
+            await self.transaction.rollback()
+            raise

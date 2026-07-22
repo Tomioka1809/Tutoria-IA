@@ -1,26 +1,28 @@
-from typing import List, Dict
+from typing import Literal
 import json
 from datetime import datetime, timedelta
-from app.application.ports.repository_ports import ChatRepositoryPort, CorpusRepositoryPort
+from app.application.ports.repository_ports import (
+    ChatRepositoryPort,
+    CorpusRepositoryPort,
+    TutorAssignmentRepositoryPort,
+    CalendarRepositoryPort,
+)
 from app.application.ports.llm_port import LLMPort
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
-from sqlalchemy.orm import selectinload
-from app.infrastructure.database.models.user import User
-from app.infrastructure.database.models.session import Session
-from app.infrastructure.database.models.tutor_assignment import TutorAssignment
-from app.infrastructure.database.models.event import Event
 
 class ChatUseCase:
     def __init__(
         self,
         chat_repo: ChatRepositoryPort,
         corpus_repo: CorpusRepositoryPort,
-        llm: LLMPort
+        llm: LLMPort,
+        tutor_assignment_repo: TutorAssignmentRepositoryPort,
+        calendar_repo: CalendarRepositoryPort,
     ):
         self.chat_repo = chat_repo
         self.corpus_repo = corpus_repo
         self.llm = llm
+        self.tutor_assignment_repo = tutor_assignment_repo
+        self.calendar_repo = calendar_repo
 
     async def get_or_create_conversation(self, user_id: int):
         return await self.chat_repo.get_or_create_conversation(user_id)
@@ -28,8 +30,13 @@ class ChatUseCase:
     async def reset_conversation(self, user_id: int):
         return await self.chat_repo.reset_conversation(user_id)
 
-    async def send_chat_message(self, user: 'User', user_content: str, db: 'AsyncSession'):
-        conversation = await self.chat_repo.get_or_create_conversation(user.id)
+    async def send_chat_message(
+        self,
+        user_id: int,
+        user_role: Literal["estudiante", "tutor"],
+        user_content: str,
+    ):
+        conversation = await self.chat_repo.get_or_create_conversation(user_id)
         
         # Save user message
         await self.chat_repo.save_message(conversation.id, "user", user_content)
@@ -38,7 +45,6 @@ class ChatUseCase:
         history_msgs = await self.chat_repo.get_history(conversation.id)
         history = []
         for msg in history_msgs:
-            # We don't include the newly added user message in the history we pass separately
             if msg.id == history_msgs[-1].id and msg.role == "user":
                 continue
             role_map = "user" if msg.role == "user" else "model"
@@ -49,13 +55,11 @@ class ChatUseCase:
             
         # RAG Query Expansion/Rewriting for short follow-up messages
         prev_user_content = ""
-        # history_msgs[-1] is the current user message because it was saved at line 35.
         for i in range(len(history_msgs) - 2, -1, -1):
             if history_msgs[i].role == "user":
                 prev_user_content = history_msgs[i].content
                 break
         
-        # If current query is short (e.g. <= 4 words) and there is a previous user query, combine them to preserve context
         if prev_user_content and len(user_content.split()) <= 4:
             rag_query = f"{prev_user_content} {user_content}"
         else:
@@ -74,30 +78,9 @@ class ChatUseCase:
             Obtiene la lista de tutores asignados al estudiante actual en el sistema.
             Retorna un JSON con el nombre, correo, oficina y especialidad de cada tutor.
             """
-            result = await db.execute(
-                select(TutorAssignment)
-                .where(TutorAssignment.student_id == user.id)
-                .options(
-                    selectinload(TutorAssignment.tutor).selectinload(User.tutor_profile),
-                    selectinload(TutorAssignment.service_type)
-                )
-            )
-            assignments = result.scalars().all()
-            if not assignments:
+            data = await self.tutor_assignment_repo.get_assigned_tutors_data(user_id)
+            if not data:
                 return "No tienes ningún tutor asignado actualmente."
-            
-            data = []
-            for a in assignments:
-                t = a.tutor
-                t_profile = t.tutor_profile if t else None
-                data.append({
-                    "tutor_name": t.full_name if t else "No definido",
-                    "email": t.email if t else "No definido",
-                    "office_location": t_profile.office_location if t_profile else "No definido",
-                    "expertise_areas": t_profile.expertise_areas if t_profile else "No definido",
-                    "service_type": a.service_type.name if a.service_type else "Tutoría",
-                    "academic_period": a.academic_period
-                })
             return json.dumps(data, ensure_ascii=False)
 
         async def get_assigned_students() -> str:
@@ -105,34 +88,9 @@ class ChatUseCase:
             Obtiene la lista de estudiantes asignados al tutor actual en el sistema.
             Retorna un JSON con el nombre, correo, código de estudiante, celular, semestre actual, estado académico, periodo académico y tipo de tutoría de cada estudiante.
             """
-            result = await db.execute(
-                select(TutorAssignment)
-                .where(TutorAssignment.tutor_id == user.id)
-                .options(
-                    selectinload(TutorAssignment.student).selectinload(User.student_profile),
-                    selectinload(TutorAssignment.service_type)
-                )
-            )
-            assignments = result.scalars().all()
-            if not assignments:
+            data = await self.tutor_assignment_repo.get_assigned_students_data(user_id)
+            if not data:
                 return "No tienes ningún estudiante asignado actualmente."
-            
-            data = []
-            for a in assignments:
-                s = a.student
-                if not s:
-                    continue
-                s_profile = s.student_profile
-                data.append({
-                    "student_name": s.full_name,
-                    "email": s.email,
-                    "student_code": s_profile.student_code if s_profile else "No definido",
-                    "current_semester": s_profile.current_semester if s_profile else "No definido",
-                    "academic_status": s_profile.academic_status if s_profile else "No definido",
-                    "phone_number": s_profile.phone_number if s_profile else "No definido",
-                    "academic_period": a.academic_period,
-                    "service_type": a.service_type.name if a.service_type else "Tutoría"
-                })
             return json.dumps(data, ensure_ascii=False)
 
         async def get_calendar_events(start_date: str = None, end_date: str = None) -> str:
@@ -157,78 +115,19 @@ class ChatUseCase:
             else:
                 end_dt = now + timedelta(days=30)
 
-            if user.role == "estudiante":
-                session_query = select(Session).where(
-                    Session.student_id == user.id,
-                    Session.scheduled_at >= start_dt,
-                    Session.scheduled_at <= end_dt
-                ).options(
-                    selectinload(Session.tutor).selectinload(User.tutor_profile),
-                    selectinload(Session.service_type)
-                )
-            else:
-                session_query = select(Session).where(
-                    Session.tutor_id == user.id,
-                    Session.scheduled_at >= start_dt,
-                    Session.scheduled_at <= end_dt
-                ).options(
-                    selectinload(Session.student).selectinload(User.student_profile),
-                    selectinload(Session.service_type)
-                )
-
-            sessions_res = await db.execute(session_query)
-            sessions = sessions_res.scalars().all()
-
-            if user.role == "estudiante":
-                tutor_ids_subquery = select(TutorAssignment.tutor_id).where(TutorAssignment.student_id == user.id)
-                session_ids_subquery = select(Session.id).where(Session.student_id == user.id)
-                event_query = select(Event).where(
-                    (Event.starts_at >= start_dt) & (Event.starts_at <= end_dt) &
-                    ((Event.created_by.in_(tutor_ids_subquery)) | (Event.session_id.in_(session_ids_subquery)))
-                )
-            else:
-                event_query = select(Event).where(
-                    Event.created_by == user.id,
-                    Event.starts_at >= start_dt,
-                    Event.starts_at <= end_dt
-                )
-
-            events_res = await db.execute(event_query)
-            events = events_res.scalars().all()
-
-            result_data = {
-                "sessions": [],
-                "events": []
-            }
-
-            for s in sessions:
-                other_name = s.tutor.full_name if user.role == "estudiante" else s.student.full_name
-                result_data["sessions"].append({
-                    "session_id": s.id,
-                    "title": s.title or (s.service_type.name if s.service_type else "Tutoría"),
-                    "scheduled_at": s.scheduled_at.strftime("%Y-%m-%d %H:%M:%S"),
-                    "status": s.status,
-                    "location": s.location or "No definido",
-                    "notes": s.notes or "",
-                    "other_participant": other_name
-                })
-
-            for e in events:
-                result_data["events"].append({
-                    "event_id": e.id,
-                    "title": e.title,
-                    "starts_at": e.starts_at.strftime("%Y-%m-%d %H:%M:%S"),
-                    "ends_at": e.ends_at.strftime("%Y-%m-%d %H:%M:%S"),
-                    "type": e.type
-                })
-
+            result_data = await self.calendar_repo.get_calendar_events_data(
+                user_id=user_id,
+                role=user_role,
+                start_dt=start_dt,
+                end_dt=end_dt
+            )
             return json.dumps(result_data, ensure_ascii=False)
 
         # Assemble list of tools based on user role
         tools = [get_calendar_events]
-        if user.role == "estudiante":
+        if user_role == "estudiante":
             tools.append(get_assigned_tutors)
-        elif user.role == "tutor":
+        elif user_role == "tutor":
             tools.append(get_assigned_students)
 
         system_instruction = (

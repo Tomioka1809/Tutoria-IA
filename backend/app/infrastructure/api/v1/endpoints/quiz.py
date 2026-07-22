@@ -9,15 +9,20 @@ import json
 from app.infrastructure.api.dependencies import get_db
 from app.infrastructure.database.models.corpus_chunk import CorpusChunk
 from app.infrastructure.config.config import settings
-from app.application.use_cases.chat_service import call_gemini_api
+from app.infrastructure.adapters.quiz_gemini_client import call_gemini_api
+
+import logging
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
+
 
 class QuizQuestionOut(BaseModel):
     question: str
     options: List[str]
     correctAnswerIndex: int
     explanation: str
+
 
 @router.get("/generate", response_model=List[QuizQuestionOut])
 async def generate_quiz(db: AsyncSession = Depends(get_db)):
@@ -83,8 +88,8 @@ async def generate_quiz(db: AsyncSession = Depends(get_db)):
         return questions
         
     except json.JSONDecodeError as e:
-        print(f"Failed to parse Gemini response as JSON: {response_text}")
+        logger.error("Failed to parse Gemini response as JSON: %s", response_text)
         raise HTTPException(status_code=500, detail="Error parseando las preguntas generadas.")
     except Exception as e:
-        print(f"Error generating quiz: {e}")
+        logger.error("Error generating quiz: %s", e)
         raise HTTPException(status_code=500, detail="Error interno al generar el quiz.")
