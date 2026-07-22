@@ -63,6 +63,17 @@ En [`frontend/src/store/chat.ts`](../frontend/src/store/chat.ts), la función `s
 - **Tipado Estricto sin Fallback:** Eliminado el fallback arbitrario (`serviceTypeId = 1`). La creación valida la respuesta de tipos de servicio y notifica de forma segura ante ausencia de coincidencias.
 - **Decisión sobre `/events/`:** Las actividades personales son recordatorios locales en `AsyncStorage`. Las tutorías persistidas provienen de `/sessions/`. El backend crea eventos en la tabla `events` asociados a cada sesión; por ende, `/events/` no se consume desde el frontend para prevenir duplicidad.
 
+### 2.6 Integridad de Datos Reales, Resolución Determinista y Limpieza de Plantilla (Fase 4D)
+- **Política de Fuente de Datos:** Todo dato mostrado al usuario procede de `useAuthStore`, respuestas HTTP de endpoints backend existentes o estado local de `AsyncStorage`. Se prohíbe inventar personas, correos, especialidades o métricas de demostración.
+- **Resolución Determinista del Tutor (`assigned-tutor-view-model.ts`):** Módulo puro que procesa las asignaciones recibidas y determina semánticamente el estado:
+  - `none`: Cero asignaciones válidas (muestra estado vacío `t('profile.noAssignedTutor')`).
+  - `available`: Exactamente un tutor único válido (habilita la navegación a `/(estudiante)/perfil-tutor`).
+  - `ambiguous`: Múltiples tutores distintos (muestra aviso localizado `t('profile.tutorAssignmentAmbiguous')` sin seleccionar arbitrariamente a ninguna persona ni habilitar navegación desincronizada).
+- **Manejo de Errores de Carga (`useProfile.ts`):** Distingue formalmente entre un fallo de red/servidor (`assignedTutorLoadError=true`, notificando con `errors.loadAssignedTutor`) y la ausencia real de asignación (`none`).
+- **Limpieza de UI y Componentes Residuales:** Eliminado el falso control desplegable de filtro en `NotificationsHeader.tsx`. Removidos los tres componentes sin consumidores en Explore (`CollapsibleSection.tsx`, `ExploreHeader.tsx`, `useExplore.ts`).
+- **Recordatorios Locales con Fecha Real:** En `useNotifications.ts`, los recordatorios locales asignan `created_at: actDate.toISOString()` usando la fecha real de la actividad. En `NotificationItem.tsx`, los recordatorios locales presentan su texto/body explicativo en lugar de una fecha relativa simulada.
+- **Consumo de Rutas HTTP:** Las tutorías se consultan y gestionan mediante `/sessions`. El backend crea internamente eventos asociados a sesiones; `/events` no se consume desde el frontend; esta decisión evita duplicar tutorías. No se crearon endpoints falsos ni fallbacks arbitrarios con `id = 1`.
+
 ---
 
 ## 3. Tabla de Hallazgos y Acciones Aplicadas
@@ -72,8 +83,9 @@ En [`frontend/src/store/chat.ts`](../frontend/src/store/chat.ts), la función `s
 | `src/api/services.ts` | `QuizAPI.generateQuiz` utilizaba `fetch` nativo con `require()` dinámico. | Media | **Resuelto (Fase 4A):** Migrado a `client.get<QuizQuestion[]>` con timeout de 60s y token inyectado por interceptor. |
 | `src/api/client.ts` | Se incluía la IP `192.168.18.27` como *fallback* duro. | Baja | **Resuelto (Fase 4A):** Eliminada la IP fija; implementada la función `resolveApiUrl()` con soporte para `EXPO_PUBLIC_API_URL` y `hostUri`. |
 | `src/store/*.ts` | Los errores de red en los 5 stores Zustand principales solo hacían `console.error`. | Media | **Resuelto (Fase 4B):** Centralizado con `normalizeApiError`, sanitización de secretos/trazas, `reportApiError`, deduplicación por `Map` y `notify: false` en consumidores visuales. |
-| `src/i18n/locales/` | Paridad estructural de claves i18n (ES/EN). | Baja | **Resuelto (Fase 4B / 4C):** Paridad estructural ES/EN confirmada entre `es.json` y `en.json` (incluyendo `errors`, `calendar` y botón `errors.close`). |
+| `src/i18n/locales/` | Paridad estructural de claves i18n (ES/EN). | Baja | **Resuelto (Fase 4B / 4C / 4D):** Paridad estructural ES/EN confirmada entre `es.json` y `en.json` (incluyendo `errors`, `calendar`, `profile`, `explore` y botón `errors.close`). |
 | `src/components/calendar/` | Mezcla potencial entre actividades locales y tutorías persistidas. | Media | **Resuelto (Fase 4C):** Separación formalizada mediante `calendar-items.ts`, prefijos de ID `activity:` / `session:`, modelo puro y decisión de no consumir `/events/`. |
+| `src/components/profile/`, `app/*/explore.tsx` | Datos ficticios hardcodeados (Ana Torres) y plantilla residual de Expo Router. | Media | **Resuelto (Fase 4D):** Aplicada la política "dato real o estado vacío", eliminadas personas ficticias, limpias las pantallas Explore con accesos directos a rutas reales y creado el verificador `verify:data`. |
 
 ---
 
@@ -81,4 +93,4 @@ En [`frontend/src/store/chat.ts`](../frontend/src/store/chat.ts), la función `s
 
 - **Autenticación:** Totalmente sincronizada con los esquemas del backend (`/auth/login`, `/auth/me`, `/auth/register`).
 - **Chatbot RAG:** Compatible con las respuestas del backend, renderizando los mensajes en formato Markdown.
-- **Sesiones y Calendario:** Sincronizado con los endpoints de `/sessions` y `/events`.
+- **Sesiones y Calendario:** Las tutorías se consultan y gestionan mediante `/sessions`. El backend crea internamente eventos asociados a sesiones; `/events` no se consume desde el frontend; esta decisión evita duplicar tutorías.

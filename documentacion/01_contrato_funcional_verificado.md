@@ -177,16 +177,16 @@ Diferenciación estricta de responsabilidades entre el adaptador LLM y el caso d
 | Endpoint | Archivo backend | Clasificación | Observación |
 |---|---|---|---|
 | `POST /api/v1/auth/register-staff` | `endpoints/auth.py` L23 | `ENDPOINT_POTENCIALMENTE_REDUNDANTE` | La creación de personal administrativo/tutores es asumida por `POST /admin/users`. |
-| `GET /api/v1/tutors/service-types` | `endpoints/tutors.py` L99 | `SOLO_BACKEND` | El frontend envía `service_type_id: 1` fijo o ingresado en modales sin consultar dinámicamente este catálogo. |
+| `GET /api/v1/tutors/service-types` | `endpoints/tutors.py` L99 | `CONSUMIDO_POR_FRONTEND` | `useCalendar.ts` consulta dinámicamente `GET /tutors/service-types`, valida la respuesta y busca la coincidencia solicitada sin utilizar un ID fijo ni el primer elemento como fallback. |
 
 ---
 
 ## 13. Uso de mocks y datos estáticos
 
-| Archivo | Dato simulado | Funcionalidad afectada | Severidad |
+| Archivo | Dato simulado | Funcionalidad afectada | Severidad / Estado |
 |---|---|---|---|
-| `frontend/src/components/profile/AssignedTutorCard.tsx` L23-L27 | `'Ing. Ana Torres'` / `'ana.torres@universidad.edu'` | Muestra datos ficticios si el array de tutores asignados viene vacío. | Media |
-| `frontend/src/components/notifications/NotificationsHeader.tsx` L21 | Filtro mock visual de tipos de notificación | Desplegable de selección en pantalla de Notificaciones sin conexión a backend. | Baja |
+| `frontend/src/components/profile/AssignedTutorCard.tsx` L23-L27 | `'Ing. Ana Torres'` / `'ana.torres@universidad.edu'` | Muestra datos ficticios si el array de tutores asignados viene vacío. | `RESUELTO_EN_FASE_4D` |
+| `frontend/src/components/notifications/NotificationsHeader.tsx` | Filtro mock visual de tipos de notificación | El control era un Pressable sin funcionalidad que fue eliminado en la Fase 4D; NotificationsHeader conserva únicamente botón de regreso y título. | `RESUELTO_EN_FASE_4D` |
 
 ---
 
@@ -286,13 +286,13 @@ Los siguientes componentes existen en código pero requieren validación en ejec
 | ID | Componente | Hallazgo | Severidad | Fase recomendada |
 |---|---|---|---|---|
 | `HALL-AUTH-001` | Autenticación | Flujo de recuperación de contraseña (`forgot-password`) no envía correos de restablecimiento reales. | Media | Fase 2 |
-| `HALL-NAV-001` | Navegación | Pantallas `explore.tsx` en estudiante y tutor mantienen contenido estático de plantilla Expo Router. | Baja | Fase 4 |
+| `HALL-NAV-001` | Navegación | Pantallas `explore.tsx` en estudiante y tutor actualizadas con servicios y accesos a rutas reales (`/tutoria`, `/calendar`, `/profile`), eliminando la plantilla estática de Expo Router. | Baja | RESUELTO_EN_FASE_4D |
 | `HALL-EST-001` | Estudiante | Actividades del calendario se persisten localmente en `useActivityStore` (recordatorios privados) sin consumir `/events/`. Las tutorías persistidas se consumen desde `/sessions/`. | Media | DECISION_FUNCIONAL_RESUELTA_EN_FASE_4C |
-| `HALL-TUT-001` | Tutor | El selector de tipos de servicio consume `GET /tutors/service-types` (`useCalendar.ts` L62). | Baja | Resuelto en Código |
+| `HALL-TUT-001` | Tutor | El selector de tipos de servicio consume `GET /tutors/service-types` dinámicamente sin fallbacks fijos (`useCalendar.ts`). | Baja | Resuelto en Código |
 | `HALL-ADM-001` | Admin | El endpoint `POST /auth/register-staff` no tiene vista consumidora directa en el frontend de administración. | Baja | Fase 2 |
 | `HALL-CHAT-001` | Chatbot | `ChatUseCase` desacoplado de SQLAlchemy; utiliza `CorpusRepositoryPort` y DTOs tipados `RetrievedChunkDTO`. | Alta | Resuelto Fase 2 / Fase 3 |
 | `HALL-API-001` | API Client | `client.ts` contenía IP hardcodeada (`192.168.18.27`); eliminada y resuelta con `resolveApiUrl`. | Media | Resuelto Fase 4A |
-| `HALL-MOCK-001` | Frontend / UX | `AssignedTutorCard.tsx` muestra datos mock hardcodeados (`Ing. Ana Torres`) si el usuario no tiene tutor asignado. | Media | Fase 4 |
+| `HALL-MOCK-001` | Frontend / UX | Resueltos los mocks visuales de frontend: eliminada la persona ficticia de `AssignedTutorCard.tsx` (aplicando resolución determinista `none`/`available`/`ambiguous`) y eliminado el falso control de filtro de `NotificationsHeader.tsx`. | Media | RESUELTO_EN_FASE_4D |
 
 ---
 

@@ -49,6 +49,7 @@ El cliente resuelve la URL base en el siguiente orden de prioridad:
 - `npm run verify:api`: Ejecuta la verificación estática y funcional de la capa API.
 - `npm run verify:errors`: Ejecuta la verificación estática y funcional del sistema centralizado de errores.
 - `npm run verify:calendar`: Ejecuta la verificación estática y funcional del módulo de calendario.
+- `npm run verify:data`: Ejecuta la verificación estática de integridad de datos reales del frontend.
 - `npm run lint`: Ejecuta ESLint sobre el proyecto.
 
 ---
@@ -73,3 +74,9 @@ El módulo de calendario desacopla conceptual y técnicamente los recordatorios 
 - **Proyección Backend (`/events/`):** El backend vincula eventos a cada sesión de forma automática. El frontend no consume `/events/` directamente para prevenir la duplicación de tutorías.
 - **Modelo Puro (`src/components/calendar/calendar-items.ts`):** Normaliza y ordena elementos asignando identificadores estables `activity:<id>` y `session:<id>`, aplicando análisis numérico seguro de fechas locales.
 - **Conservación de Datos y Notificaciones:** Actividades locales inválidas se retienen en `AsyncStorage` (`shouldRetainStoredActivity`), excluyéndolas únicamente de las vistas. Las notificaciones del backend y recordatorios locales provienen de fuentes independientes sin duplicación sintética.
+
+---
+
+## 👤 Política de Integridad de Datos Reales y Estados Vacíos
+
+Todo contenido mostrado en la interfaz procede del usuario autenticado, respuestas de endpoints reales respaldados por el backend o estado local del usuario. La asignación de tutor utiliza la función resolutora determinista `resolveAssignedTutor()` que clasifica la respuesta en `none` (ausencia), `available` (unívoco) y `ambiguous` (múltiple ambigüedad), mientras que `useProfile` diferencia fallos de carga (`assignedTutorLoadError`). Si un dato no está disponible o existe un error de red, la app presenta un estado explícito y localizado en lugar de utilizar datos o personas ficticias.
