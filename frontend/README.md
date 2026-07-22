@@ -1,50 +1,50 @@
-# Welcome to your Expo app 👋
+# App Móvil TutorIA (React Native + Expo SDK 54) 👋
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Aplicación móvil del sistema **TutorIA** desarrollada con Expo, Expo Router (v6), NativeWind y Zustand.
 
-## Get started
+---
 
-1. Install dependencies
+## ⚙️ Configuración del Cliente API Backend
 
+Todas las peticiones HTTP del frontend utilizan un cliente centralizado de **Axios** con interceptores de autenticación JWT.
+
+### Resolución de la URL Base del Backend (`API_URL`)
+
+El cliente resuelve la URL base en el siguiente orden de prioridad:
+
+1. **`EXPO_PUBLIC_API_URL`**: Variable de entorno configurada en `.env` (solo admite protocolo `http://` o `https://`, ej: `http://localhost:8000/api/v1`).
+2. **Detección Dinámica de Expo (`expoConfig.hostUri`)**: Cuando la app se ejecuta con Expo Go en un dispositivo físico conectado a la misma red Wi-Fi, detecta automáticamente la IP LAN del host (ej: `http://<IP_LAN_DEL_EQUIPO>:8000/api/v1`).
+3. **`localhost`**: Fallback por defecto (`http://localhost:8000/api/v1`).
+
+### Configuración para Dispositivo Físico
+- Crea un archivo `.env` local basándote en `.env.example`:
+  ```bash
+  EXPO_PUBLIC_API_URL=http://<IP_LAN_DEL_EQUIPO>:8000/api/v1
+  ```
+- **Nota:** El archivo `.env` real **nunca se versiona en Git**.
+
+---
+
+## 🚀 Inicio Rápido
+
+1. Instalar dependencias:
    ```bash
    npm install
    ```
 
-2. Start the app
+2. Verificar la capa API:
+   ```bash
+   npm run verify:api
+   ```
 
+3. Iniciar el servidor de desarrollo de Expo:
    ```bash
    npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+---
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## 🧪 Comandos de Calidad
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- `npm run verify:api`: Ejecuta la verificación estática y funcional de la capa API.
+- `npm run lint`: Ejecuta ESLint sobre el proyecto.

@@ -6,7 +6,7 @@ El frontend de **TutorIA** es una aplicación móvil desarrollada con **React Na
 
 ## 1. Arquitectura de Navegación y Separación por Roles
 
-La navegación principal está protegida en [`frontend/app/_layout.tsx`](file:///home/tsuki/Downloads/React-Native/frontend/app/_layout.tsx) utilizando observadores reactivos del estado de autenticación (`token` y `user.role` en `useAuthStore`).
+La navegación principal está protegida en [`frontend/app/_layout.tsx`](../frontend/app/_layout.tsx) utilizando observadores reactivos del estado de autenticación (`token` y `user.role` en `useAuthStore`).
 
 ```mermaid
 graph TD
@@ -34,26 +34,32 @@ graph TD
 
 ## 2. Integración API y Manejo de Estado (Zustand + Axios)
 
-### 2.1 Autodetección Dinámica de IP Local
-En [`frontend/src/api/client.ts`](file:///home/tsuki/Downloads/React-Native/frontend/src/api/client.ts), el cliente Axios inspecciona `Constants.expoConfig?.hostUri` al iniciar para extraer la IP de la máquina host en la red Wi-Fi local (`http://${ip}:8000/api/v1`). Esto elimina la necesidad de configurar manualmente `localhost` o direcciones IP estáticas al probar en dispositivos móviles reales con Expo Go.
+### 2.1 Resolución de URL Base API (`resolveApiUrl`)
+En [`frontend/src/api/api-config.ts`](../frontend/src/api/api-config.ts) y [`frontend/src/api/client.ts`](../frontend/src/api/client.ts), la URL base de la API se resuelve dinámicamente mediante la función pura `resolveApiUrl()` con el siguiente orden de prioridad:
+1. **`EXPO_PUBLIC_API_URL`**: Definida en `.env` (ej: `http://localhost:8000/api/v1`).
+2. **Detección Dinámica de Expo (`expoConfig.hostUri`)**: Extrae el host cuando la app se ejecuta con Expo Go en un dispositivo físico.
+3. **`localhost`**: Fallback estándar por defecto (`http://localhost:8000/api/v1`).
 
-### 2.2 Gestión de Sesión y Tokens JWT
-- **Interceptor de Petición:** Recupera el token dinámicamente de `useAuthStore` e inyecta la cabecera `Authorization: Bearer <token>`.
-- **Interceptor de Respuesta:** Detecta respuestas `401 Unauthorized` o `403 Forbidden` (excluyendo rutas de login/registro) y ejecuta el cierre de sesión (`logout()`) automático de la app.
+Se eliminó completamente cualquier IP privada hardcodeada (`192.168.18.27`).
+
+### 2.2 Gestión de Sesión y Tokens JWT (Desacoplada)
+- **Desacoplamiento Arquitectónico:** [`frontend/src/api/auth-session.ts`](../frontend/src/api/auth-session.ts) expone un registro de callbacks puras (`getApiToken()`, `notifyUnauthorized()`) configurado desde `useAuthStore` sin crear ciclos de importación ni `require()` dinámicos.
+- **Interceptor de Petición:** Recupera el token mediante `getApiToken()` e inyecta la cabecera `Authorization: Bearer <token>`.
+- **Interceptor de Respuesta:** Detecta únicamente respuestas `401 Unauthorized` (excluyendo rutas de autenticación) y ejecuta `notifyUnauthorized()` para cerrar la sesión. No se realiza logout en respuestas `403 Forbidden`.
 
 ### 2.3 UX Optimista en el Chat RAG
-En [`frontend/src/store/chat.ts`](file:///home/tsuki/Downloads/React-Native/frontend/src/store/chat.ts), la función `sendMessage` agrega inmediatamente el mensaje del usuario a la lista local antes de enviar la petición HTTP POST (`/chat/message`). Si la petición falla, realiza un *rollback* silencioso eliminando el mensaje optimista.
+En [`frontend/src/store/chat.ts`](../frontend/src/store/chat.ts), la función `sendMessage` agrega inmediatamente el mensaje del usuario a la lista local antes de enviar la petición HTTP POST (`/chat/message`). Si la petición falla, realiza un *rollback* silencioso eliminando el mensaje optimista.
 
 ---
 
-## 3. Tabla de Hallazgos y Acciones Recomendadas
+## 3. Tabla de Hallazgos y Acciones Aplicadas
 
-| Componente / Archivo | Hallazgo | Severidad | Acción Recomendada |
+| Componente / Archivo | Hallazgo | Severidad | Estado / Acción Aplicada en Fase 4A |
 |---|---|---|---|
-| `src/api/services.ts` | `QuizAPI.generateQuiz` utiliza `fetch` nativo sin incluir la cabecera `Authorization: Bearer ${token}`. | Media | Migrar la llamada para utilizar el cliente `client` de Axios estructurado o inyectar el token explícitamente. |
-| `src/api/client.ts` | Se incluye la IP `192.168.18.27` como *fallback* duro si `hostUri` no está disponible. | Baja | Reemplazar la IP hardcodeada por `localhost` como *fallback* estándar de desarrollo. |
-| `src/store/chat.ts` | Los errores de red en `fetchConversation` y `sendMessage` solo hacen `console.error`. | Media | Añadir notificaciones visuales (Toast/Alert) para advertir al usuario en caso de desconexión del servidor. |
-| `src/i18n/locales/` | Algunas etiquetas del módulo de administración no están traducidas al inglés (`en.json`). | Baja | Completar los pares clave-valor de i18n para mantener paridad lingüística en todas las vistas. |
+| `src/api/services.ts` | `QuizAPI.generateQuiz` utilizaba `fetch` nativo con `require()` dinámico. | Media | **Resuelto (Fase 4A):** Migrado a `client.get<QuizQuestion[]>` con timeout de 60s y token inyectado por interceptor. |
+| `src/api/client.ts` | Se incluía la IP `192.168.18.27` como *fallback* duro. | Baja | **Resuelto (Fase 4A):** Eliminada la IP fija; implementada la función `resolveApiUrl()` con soporte para `EXPO_PUBLIC_API_URL` y `hostUri`. |
+| `src/store/chat.ts` | Los errores de red en `fetchConversation` y `sendMessage` solo hacen `console.error`. | Media | Añadir notificaciones visuales (Toast/Alert) para advertir al usuario en caso de desconexión del servidor (Fase 4B). |
+| `src/i18n/locales/` | Paridad estructural de claves i18n (ES/EN). | Baja | **Resuelto:** Paridad de 425 claves confirmada entre `es.json` y `en.json`. Cualquier revisión semántica es un ajuste futuro. |
 
 ---
 
