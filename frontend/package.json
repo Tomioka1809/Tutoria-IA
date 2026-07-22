@@ -9,6 +9,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "verify:api": "node scripts/verify-api-layer.mjs",
+    "verify:errors": "node scripts/verify-error-layer.mjs",
     "lint": "expo lint"
   },
   "dependencies": {
