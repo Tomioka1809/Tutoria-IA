@@ -12,6 +12,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import List, Dict, Any, Optional, Callable, Tuple
 
+from app.application.ports.llm_port import LLMPort
+from app.infrastructure.adapters.gemini_adapter import GeminiAdapter
+
 logger = logging.getLogger(__name__)
 
 class InfrastructureError(Exception):
@@ -248,7 +251,6 @@ class EvaluationConfig:
 
         self.output_dir = output_dir or os.getenv("EVAL_OUTPUT_DIR")
 
-        # Explicitly distinguish None from empty string for run_id
         raw_run_id = (
             run_id
             if run_id is not None
@@ -259,7 +261,7 @@ class EvaluationConfig:
 def is_transient_error(exc: Exception) -> bool:
     """
     Determina si un error es transitorio (red, timeout, 429, 500, 502, 503, 504).
-    Devuelve False para errores 400, 401, 403 o errores de validación/código.
+    Devuelve False para errores 400, 401, 403, API_KEY_INVALID o errores de validación/código.
     """
     if isinstance(exc, (NonRetryableError, InfrastructureError)):
         return False
@@ -276,7 +278,10 @@ def is_transient_error(exc: Exception) -> bool:
         return True
 
     msg = str(exc).lower()
-    non_retryable_terms = ["400", "401", "403", "unauthorized", "forbidden", "invalid_argument", "bad request"]
+    non_retryable_terms = [
+        "400", "401", "403", "unauthorized", "forbidden", "invalid_argument",
+        "api_key_invalid", "api key not valid", "bad request"
+    ]
     if any(term in msg for term in non_retryable_terms):
         return False
 
@@ -333,6 +338,82 @@ async def execute_with_retry(
                 await res_sleep
             backoff *= 2.0
 
+class EvaluationGeminiAdapter(LLMPort):
+    """
+    Adaptador de evaluación para el banco de pruebas RAG.
+    Desactiva los reintentos internos de GeminiAdapter (api_max_attempts=1)
+    y gestiona una sola capa de reintentos mediante execute_with_retry por cada llamada remota.
+    Registra trazabilidad exacta de intentos por operación con soporte de reset por caso.
+    """
+    def __init__(
+        self,
+        api_key: str,
+        config: Optional[EvaluationConfig] = None,
+        sleep_fn: Optional[Callable[[float], Any]] = None
+    ):
+        self.config = config or EvaluationConfig()
+        self.sleep_fn = sleep_fn
+        self.adapter = GeminiAdapter(
+            api_key=api_key,
+            allow_embedding_fallback=False,
+            allow_generation_fallback=False,
+            api_max_attempts=1
+        )
+        self.reset_attempt_counters()
+
+    def reset_attempt_counters(self):
+        self.last_embedding_attempts = 0
+        self.last_generation_attempts = 0
+
+    async def compute_embedding(self, text: str) -> List[float]:
+        async def _op():
+            return await self.adapter.compute_embedding(text)
+
+        try:
+            res, attempts = await execute_with_retry(
+                _op,
+                config=self.config,
+                sleep_fn=self.sleep_fn
+            )
+            self.last_embedding_attempts = attempts
+            return res
+        except (InfrastructureError, NonRetryableError) as e:
+            self.last_embedding_attempts = e.attempts
+            raise e
+        except Exception as e:
+            self.last_embedding_attempts = getattr(e, "attempts", 1)
+            raise e
+
+    async def generate_response(
+        self,
+        system_instruction: str,
+        history: List[Dict],
+        user_message: str,
+        tools: List = None
+    ) -> str:
+        async def _op():
+            return await self.adapter.generate_response(
+                system_instruction=system_instruction,
+                history=history,
+                user_message=user_message,
+                tools=tools
+            )
+
+        try:
+            res, attempts = await execute_with_retry(
+                _op,
+                config=self.config,
+                sleep_fn=self.sleep_fn
+            )
+            self.last_generation_attempts = attempts
+            return res
+        except (InfrastructureError, NonRetryableError) as e:
+            self.last_generation_attempts = e.attempts
+            raise e
+        except Exception as e:
+            self.last_generation_attempts = getattr(e, "attempts", 1)
+            raise e
+
 def compute_golden_set_hash(golden_set_path: str | Path) -> str:
     """Calcula el hash SHA-256 del archivo Golden Set."""
     with open(golden_set_path, "rb") as f:
@@ -349,7 +430,6 @@ def atomic_write_artifact_pair(
     """
     Escribe conjuntamente y de forma atómica el par JSON y CSV.
     Restaura el estado previo de los archivos tanto si existían como si NO existían originalmente.
-    Admite inyección de copy_fn y replace_fn para pruebas de simulación sin interruptores privados.
     """
     j_path = Path(json_path).resolve()
     c_path = Path(csv_path).resolve()
