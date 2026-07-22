@@ -3,11 +3,20 @@ import tempfile
 import pytest
 import shutil
 import asyncio
+import unittest.mock
 from pathlib import Path
 from unittest.mock import MagicMock, AsyncMock
 
+from app.application.dtos.rag_dtos import RAGRetrievalPolicy, RetrievedChunkDTO
+from app.application.use_cases.chat_use_cases import ChatUseCase
+from app.infrastructure.adapters.gemini_adapter import GeminiAdapter
+
+from tests.test_retrieval import RetrievalEvaluator, run_retrieval_benchmark
+from tests.test_generation import GenerationEvaluator, run_generation_benchmark
+
 from tests.evaluation_support import (
     EvaluationConfig,
+    EvaluationGeminiAdapter,
     execute_with_retry,
     is_transient_error,
     sanitize_secret_message,
@@ -445,13 +454,12 @@ def test_atomic_write_replace_failure_without_previous_targets_leaves_no_files()
         leftovers = list(Path(tmp_dir).glob("*.tmp*")) + list(Path(tmp_dir).glob("*.bak*"))
         assert len(leftovers) == 0
 
-# === NUEVAS PRUEBAS UNITARIAS DE FUNCIONES PURAS DEL VERIFICADOR ===
+# === PRUEBAS UNITARIAS DE FUNCIONES PURAS DEL VERIFICADOR ===
 
 # 37. Preguntas iguales: aprobación
 def test_case_coherence_equal_questions_pass():
     g = {"id": 1, "categoria": "facil", "pregunta": "¿Cuál es el horario?"}
     j = {"id": 1, "categoria": "facil", "pregunta": "¿Cuál es el horario?", "status": "success", "attempts": 1, "technical_error": None, "precision": 1.0, "cobertura": 1.0, "pertinencia": 1.0}
-    # CSV new format: ID(0), Categoria(1), Estado_Ejecucion(2), Intentos(3), Error_Tecnico(4), Pregunta(5), Precision(6), Cobertura(7), Pertinencia(8), Respuesta_Bot(9)
     c_new = ["1", "facil", "success", "1", "", "¿Cuál es el horario?", "1.0", "1.0", "1.0", "Respuesta"]
 
     errs = validate_case_coherence(g, j, c_new, is_new_format=True)
@@ -539,7 +547,7 @@ def test_validate_category_breakdown_missing_metric_key_reject():
         "facil": {"total_casos": 15, "precision": 0.5, "cobertura": 0.5, "pertinencia": 0.5}
     }
     stored_missing_key = {
-        "facil": {"total_casos": 15, "precision": 0.5, "cobertura": 0.5}  # missing pertinencia
+        "facil": {"total_casos": 15, "precision": 0.5, "cobertura": 0.5}
     }
 
     errs = validate_category_breakdown(recalc, stored_missing_key)
@@ -562,3 +570,539 @@ def test_float_difference_exceeding_tolerance_reject():
     errs = validate_global_metrics(recalc_g, stored_g, tol=0.0001)
     assert len(errs) > 0
     assert "precision_global" in errs[0]
+
+# 48. RAGRetrievalPolicy pasa los valores al objeto
+def test_rag_retrieval_policy_contract_values():
+    policy = RAGRetrievalPolicy(limit=6, max_cosine_distance=0.45, keyword_fallback_limit=2)
+    assert policy.limit == 6
+    assert policy.max_cosine_distance == 0.45
+    assert policy.keyword_fallback_limit == 2
+
+# 49 & 50. search_similar recibe max_cosine_distance y keyword_fallback_limit
+def test_search_similar_receives_keyword_only_args():
+    async def _run():
+        mock_db = AsyncMock()
+        mock_repo = AsyncMock()
+        mock_chunk = RetrievedChunkDTO(text="Texto del reglamento UNSAAC", source="Reglamento")
+        mock_repo.search_similar.return_value = [mock_chunk]
+
+        with unittest.mock.patch("tests.test_retrieval.CorpusRepository", return_value=mock_repo), \
+             unittest.mock.patch.object(GeminiAdapter, "compute_embedding", new_callable=AsyncMock) as mock_embed:
+            mock_embed.return_value = [0.1] * 768
+            evaluator = RetrievalEvaluator()
+            item = {"id": 1, "categoria": "facil", "pregunta": "¿Qué es tutoría?", "articulos_referencia": ["Art. 1"], "palabras_clave_esperadas": ["tutoría"]}
+            res = await evaluator.evaluate_item(item, mock_db)
+            assert res["status"] == "success"
+            mock_repo.search_similar.assert_called_once()
+            kwargs = mock_repo.search_similar.call_args.kwargs
+            assert kwargs.get("max_cosine_distance") == 0.45
+            assert kwargs.get("keyword_fallback_limit") == 2
+    asyncio.run(_run())
+
+# 51. RetrievedChunkDTO se transforma correctamente a texto para métricas
+def test_retrieved_chunk_dto_transformation_to_text():
+    chunk = RetrievedChunkDTO(text="Art. 10 Reglamento de Tutoría UNSAAC", source="norma.pdf")
+    retrieved_texts = [chunk.text]
+    assert retrieved_texts == ["Art. 10 Reglamento de Tutoría UNSAAC"]
+
+# 52. Un objeto de retrieval inválido produce infrastructure_error
+def test_invalid_retrieved_object_produces_infra_error():
+    async def _run():
+        mock_db = AsyncMock()
+        mock_repo = AsyncMock()
+        mock_repo.search_similar.return_value = ["invalid_str_object"]
+
+        with unittest.mock.patch("tests.test_retrieval.CorpusRepository", return_value=mock_repo), \
+             unittest.mock.patch.object(GeminiAdapter, "compute_embedding", new_callable=AsyncMock) as mock_embed:
+            mock_embed.return_value = [0.1] * 768
+            evaluator = RetrievalEvaluator()
+            item = {"id": 1, "categoria": "facil", "pregunta": "P1", "articulos_referencia": [], "palabras_clave_esperadas": []}
+            res = await evaluator.evaluate_item(item, mock_db)
+            assert res["status"] == "infrastructure_error"
+            assert "RetrievedChunkDTO" in res["technical_error"]
+    asyncio.run(_run())
+
+# 53, 54, 55. ChatUseCase recibe tutor_assignment_repo, calendar_repo, rag_policy
+def test_chat_use_case_receives_complete_dependencies():
+    mock_chat = MagicMock()
+    mock_corpus = MagicMock()
+    mock_llm = MagicMock()
+    mock_tutor = MagicMock()
+    mock_cal = MagicMock()
+    policy = RAGRetrievalPolicy(limit=6, max_cosine_distance=0.45, keyword_fallback_limit=2)
+
+    use_case = ChatUseCase(
+        chat_repo=mock_chat,
+        corpus_repo=mock_corpus,
+        llm=mock_llm,
+        tutor_assignment_repo=mock_tutor,
+        calendar_repo=mock_cal,
+        rag_policy=policy
+    )
+
+    assert use_case.tutor_assignment_repo == mock_tutor
+    assert use_case.calendar_repo == mock_cal
+    assert use_case.rag_policy == policy
+
+# 56 & 57. send_chat_message recibe user_id, user_role, user_content
+def test_send_chat_message_named_arguments_invocation():
+    async def _run():
+        mock_user = MagicMock()
+        mock_user.id = 42
+        mock_user.role = "estudiante"
+        mock_db = AsyncMock()
+
+        mock_use_case = AsyncMock()
+        mock_msg = MagicMock()
+        mock_msg.content = "Respuesta oficial"
+        mock_use_case.send_chat_message.return_value = mock_msg
+
+        with unittest.mock.patch("tests.test_generation.ChatUseCase", return_value=mock_use_case), \
+             unittest.mock.patch("tests.test_generation.ChatRepository"), \
+             unittest.mock.patch("tests.test_generation.CorpusRepository"), \
+             unittest.mock.patch("tests.test_generation.TutorAssignmentRepository"), \
+             unittest.mock.patch("tests.test_generation.CalendarRepository"):
+            evaluator = GenerationEvaluator()
+            item = {"id": 1, "categoria": "facil", "pregunta": "¿Consulta?", "palabras_clave_esperadas": []}
+            res = await evaluator.evaluate_item(item, mock_user, mock_db)
+            assert res["status"] == "success"
+            mock_use_case.send_chat_message.assert_called_once_with(
+                user_id=42,
+                user_role="estudiante",
+                user_content="¿Consulta?"
+            )
+    asyncio.run(_run())
+
+# 58. GeminiAdapter mantiene fallback de generación por defecto
+def test_gemini_adapter_generation_fallback_default_true():
+    adapter = GeminiAdapter(api_key="")
+    assert adapter.allow_generation_fallback is True
+
+# 59. GeminiAdapter en modo estricto vuelve a lanzar el error de generación
+def test_gemini_adapter_strict_generation_mode_raises():
+    async def _run():
+        adapter = GeminiAdapter(api_key="", allow_generation_fallback=False)
+        with pytest.raises(RuntimeError) as exc_info:
+            await adapter.generate_response("instr", [], "msg")
+        assert "strict generation mode" in str(exc_info.value)
+    asyncio.run(_run())
+
+# 60. GeminiAdapter en modo estricto no usa fallback de embedding
+def test_gemini_adapter_strict_embedding_mode_raises():
+    async def _run():
+        adapter = GeminiAdapter(api_key="", allow_embedding_fallback=False)
+        with pytest.raises(RuntimeError) as exc_info:
+            await adapter.compute_embedding("msg")
+        assert "strict embedding mode" in str(exc_info.value)
+    asyncio.run(_run())
+
+# 61. API_KEY_INVALID se clasifica como no reintentable
+def test_api_key_invalid_non_retryable():
+    err = Exception("API key not valid. API_KEY_INVALID 400 Bad Request")
+    assert is_transient_error(err) is False
+
+# 62. Un fallo al construir ChatUseCase produce un resultado infrastructure_error y no un traceback
+def test_chat_use_case_construction_failure_produces_infra_error():
+    async def _run():
+        mock_user = MagicMock()
+        mock_user.id = 10
+        mock_user.role = "tutor"
+        mock_db = AsyncMock()
+
+        with unittest.mock.patch("tests.test_generation.ChatUseCase", side_effect=RuntimeError("Error en dependencias de ChatUseCase")):
+            evaluator = GenerationEvaluator()
+            item = {"id": 1, "categoria": "facil", "pregunta": "¿Consulta?", "palabras_clave_esperadas": []}
+            res = await evaluator.evaluate_item(item, mock_user, mock_db)
+            assert res["status"] == "infrastructure_error"
+            assert "Error en dependencias" in res["technical_error"]
+    asyncio.run(_run())
+
+# 63. Un fallo al crear el usuario de evaluación produce diagnósticos para todos los casos seleccionados
+def test_failure_creating_eval_user_produces_diagnostics_for_all_selected():
+    async def _run():
+        golden_subset = [
+            {"id": 1, "categoria": "facil", "pregunta": "P1"},
+            {"id": 2, "categoria": "ambiguo", "pregunta": "P2"}
+        ]
+        with unittest.mock.patch("tests.test_generation.SessionLocal") as mock_session_cls, \
+             unittest.mock.patch("tests.test_generation.GenerationEvaluator.get_or_create_eval_user", side_effect=RuntimeError("BD inalcanzable")):
+            mock_db = AsyncMock()
+            mock_session_cls.return_value.__aenter__.return_value = mock_db
+
+            results = await run_generation_benchmark("dummy_path", items=golden_subset)
+            assert len(results) == 2
+            assert all(r["status"] == "infrastructure_error" for r in results)
+            assert all("BD inalcanzable" in r["technical_error"] for r in results)
+    asyncio.run(_run())
+
+# 64. Los errores técnicos quedan excluidos de las métricas
+def test_technical_errors_excluded_from_metrics_summary():
+    detalles = [
+        {"id": 1, "categoria": "facil", "status": "success", "precision": 0.8, "cobertura": 0.8, "pertinencia": 0.8},
+        {"id": 2, "categoria": "facil", "status": "infrastructure_error", "precision": None, "cobertura": None, "pertinencia": None}
+    ]
+    globales, desglose = calculate_global_metrics(detalles)
+    assert globales["precision_global"] == 0.8
+    assert desglose["facil"]["total_casos"] == 1
+
+# 65. Los resultados oficiales siguen protegidos
+def test_official_results_protection_policy():
+    assert is_official_complete_run(32, 32, 32, 1, 0, is_partial=False) is False
+    assert is_official_complete_run(32, 32, 32, 0, 0, is_partial=False) is True
+
+# 66. Un 429 en embedding realiza exactamente 1 + EVAL_MAX_RETRIES solicitudes
+def test_embedding_429_exact_attempts_without_nesting():
+    async def _run():
+        calls = 0
+        async def mock_embed(*args, **kwargs):
+            nonlocal calls
+            calls += 1
+            raise ConnectionError("429 RESOURCE_EXHAUSTED")
+
+        sleep_mock = AsyncMock()
+        cfg = EvaluationConfig(max_retries=3)
+        eval_llm = EvaluationGeminiAdapter(api_key="fake_key", config=cfg, sleep_fn=sleep_mock)
+
+        with unittest.mock.patch.object(GeminiAdapter, "compute_embedding", side_effect=mock_embed):
+            with pytest.raises(InfrastructureError) as exc_info:
+                await eval_llm.compute_embedding("texto")
+            assert calls == 4  # 1 inicial + 3 reintentos = 4
+            assert exc_info.value.attempts == 4
+    asyncio.run(_run())
+
+# 67. Un 429 en generación realiza exactamente 1 + EVAL_MAX_RETRIES solicitudes
+def test_generation_429_exact_attempts_without_nesting():
+    async def _run():
+        calls = 0
+        async def mock_gen(*args, **kwargs):
+            nonlocal calls
+            calls += 1
+            raise ConnectionError("503 Service Unavailable")
+
+        sleep_mock = AsyncMock()
+        cfg = EvaluationConfig(max_retries=2)
+        eval_llm = EvaluationGeminiAdapter(api_key="fake_key", config=cfg, sleep_fn=sleep_mock)
+
+        with unittest.mock.patch.object(GeminiAdapter, "generate_response", side_effect=mock_gen):
+            with pytest.raises(InfrastructureError) as exc_info:
+                await eval_llm.generate_response("instruction", [], "user_msg")
+            assert calls == 3  # 1 inicial + 2 reintentos = 3
+            assert exc_info.value.attempts == 3
+    asyncio.run(_run())
+
+# 68. ChatUseCase.send_chat_message se invoca una sola vez aunque Gemini falle
+def test_send_chat_message_invoked_once_on_gemini_failure():
+    async def _run():
+        mock_user = MagicMock()
+        mock_user.id = 1
+        mock_user.role = "estudiante"
+        mock_db = AsyncMock()
+
+        send_calls = 0
+        async def mock_send(*args, **kwargs):
+            nonlocal send_calls
+            send_calls += 1
+            raise InfrastructureError("Error 500 en Gemini", attempts=4)
+
+        mock_use_case = AsyncMock()
+        mock_use_case.send_chat_message.side_effect = mock_send
+
+        with unittest.mock.patch("tests.test_generation.ChatUseCase", return_value=mock_use_case), \
+             unittest.mock.patch("tests.test_generation.ChatRepository"), \
+             unittest.mock.patch("tests.test_generation.CorpusRepository"), \
+             unittest.mock.patch("tests.test_generation.TutorAssignmentRepository"), \
+             unittest.mock.patch("tests.test_generation.CalendarRepository"):
+            evaluator = GenerationEvaluator()
+            item = {"id": 1, "categoria": "facil", "pregunta": "P1", "palabras_clave_esperadas": []}
+            res = await evaluator.evaluate_item(item, mock_user, mock_db)
+
+            assert res["status"] == "infrastructure_error"
+            assert send_calls == 1
+            assert res["attempts"] == 4
+    asyncio.run(_run())
+
+# 69. Un fallo de generación no duplica save_message
+def test_generation_failure_does_not_duplicate_save_message():
+    async def _run():
+        mock_chat_repo = AsyncMock()
+        mock_chat_repo.get_or_create_conversation.return_value = MagicMock(id=99)
+        mock_chat_repo.get_history.return_value = []
+
+        mock_corpus = AsyncMock()
+        mock_tutor = AsyncMock()
+        mock_calendar = AsyncMock()
+
+        mock_llm = AsyncMock()
+        mock_llm.compute_embedding.return_value = [0.1] * 768
+        mock_llm.generate_response.side_effect = RuntimeError("503 Gemini Error")
+
+        use_case = ChatUseCase(
+            chat_repo=mock_chat_repo,
+            corpus_repo=mock_corpus,
+            llm=mock_llm,
+            tutor_assignment_repo=mock_tutor,
+            calendar_repo=mock_calendar,
+            rag_policy=RAGRetrievalPolicy()
+        )
+
+        with pytest.raises(RuntimeError):
+            await use_case.send_chat_message(user_id=1, user_role="estudiante", user_content="Hola")
+
+        # save_message was called ONLY for the user message, NOT for assistant
+        assert mock_chat_repo.save_message.call_count == 1
+        assert mock_chat_repo.save_message.call_args[0][1] == "user"
+    asyncio.run(_run())
+
+# 70. Un fallo de PostgreSQL en retrieval no solicita nuevamente el embedding
+def test_pg_failure_in_retrieval_does_not_retrigger_embedding():
+    async def _run():
+        mock_db = AsyncMock()
+        mock_repo = AsyncMock()
+        embed_calls = 0
+
+        async def mock_embed(question):
+            nonlocal embed_calls
+            embed_calls += 1
+            return [0.1] * 768
+
+        mock_repo.search_similar.side_effect = ConnectionError("DB Timeout 500")
+
+        with unittest.mock.patch("tests.test_retrieval.CorpusRepository", return_value=mock_repo):
+            evaluator = RetrievalEvaluator()
+            evaluator.llm.compute_embedding = mock_embed
+            item = {"id": 1, "categoria": "facil", "pregunta": "P1", "articulos_referencia": [], "palabras_clave_esperadas": []}
+
+            res = await evaluator.evaluate_item(item, mock_db)
+            assert res["status"] == "infrastructure_error"
+            assert embed_calls == 1
+            assert mock_repo.search_similar.call_count == 4  # 1 initial + 3 retries = 4
+    asyncio.run(_run())
+
+# 71. attempts coincide con la cantidad real de intentos
+def test_attempts_matches_actual_attempts_count():
+    async def _run():
+        calls = 0
+        async def mock_embed(*args, **kwargs):
+            nonlocal calls
+            calls += 1
+            if calls < 2:
+                raise ConnectionError("503 Error")
+            return [0.2] * 768
+
+        sleep_mock = AsyncMock()
+        cfg = EvaluationConfig(max_retries=3)
+        eval_llm = EvaluationGeminiAdapter(api_key="fake_key", config=cfg, sleep_fn=sleep_mock)
+
+        with unittest.mock.patch.object(GeminiAdapter, "compute_embedding", side_effect=mock_embed):
+            vec = await eval_llm.compute_embedding("consulta")
+            assert len(vec) == 768
+            assert eval_llm.last_embedding_attempts == 2
+            assert calls == 2
+    asyncio.run(_run())
+
+# 72. API_KEY_INVALID realiza exactamente un intento
+def test_api_key_invalid_exact_one_attempt():
+    async def _run():
+        calls = 0
+        async def mock_gen(*args, **kwargs):
+            nonlocal calls
+            calls += 1
+            raise ValueError("API key not valid. API_KEY_INVALID")
+
+        sleep_mock = AsyncMock()
+        cfg = EvaluationConfig(max_retries=3)
+        eval_llm = EvaluationGeminiAdapter(api_key="fake_key", config=cfg, sleep_fn=sleep_mock)
+
+        with unittest.mock.patch.object(GeminiAdapter, "generate_response", side_effect=mock_gen):
+            with pytest.raises(NonRetryableError) as exc_info:
+                await eval_llm.generate_response("instr", [], "msg")
+            assert calls == 1
+            assert exc_info.value.attempts == 1
+    asyncio.run(_run())
+
+# 73. La creación fallida de GenerationEvaluator produce diagnósticos para todos los casos
+def test_failed_generation_evaluator_creation_produces_diagnostics():
+    async def _run():
+        golden_subset = [
+            {"id": 1, "categoria": "facil", "pregunta": "P1"},
+            {"id": 2, "categoria": "ambiguo", "pregunta": "P2"}
+        ]
+        with unittest.mock.patch("tests.test_generation.GenerationEvaluator", side_effect=RuntimeError("Fallo al inicializar GenerationEvaluator")):
+            results = await run_generation_benchmark("dummy_path", items=golden_subset)
+            assert len(results) == 2
+            assert all(r["status"] == "infrastructure_error" for r in results)
+            assert all("Fallo al inicializar GenerationEvaluator" in r["technical_error"] for r in results)
+    asyncio.run(_run())
+
+# 74. La creación fallida de RetrievalEvaluator produce diagnósticos para todos los casos
+def test_failed_retrieval_evaluator_creation_produces_diagnostics():
+    async def _run():
+        golden_subset = [
+            {"id": 1, "categoria": "facil", "pregunta": "P1"},
+            {"id": 2, "categoria": "ambiguo", "pregunta": "P2"}
+        ]
+        with unittest.mock.patch("tests.test_retrieval.RetrievalEvaluator", side_effect=RuntimeError("Fallo al inicializar RetrievalEvaluator")):
+            results = await run_retrieval_benchmark("dummy_path", items=golden_subset)
+            assert len(results) == 2
+            assert all(r["status"] == "infrastructure_error" for r in results)
+            assert all("Fallo al inicializar RetrievalEvaluator" in r["technical_error"] for r in results)
+    asyncio.run(_run())
+
+# 75. El comportamiento predeterminado de producción de GeminiAdapter se mantiene compatible
+def test_gemini_adapter_production_defaults():
+    adapter = GeminiAdapter(api_key="dummy_key")
+    assert adapter.allow_embedding_fallback is True
+    assert adapter.allow_generation_fallback is True
+    assert adapter.api_max_attempts == 3
+
+# 76. No se realizan esperas reales en las pruebas
+def test_no_real_sleeps_in_tests():
+    async def _run():
+        sleep_mock = AsyncMock()
+        cfg = EvaluationConfig(max_retries=2, initial_backoff=10.0)
+        calls = 0
+        async def mock_op():
+            nonlocal calls
+            calls += 1
+            if calls < 2:
+                raise ConnectionError("503 Error")
+            return "OK"
+
+        start = asyncio.get_event_loop().time()
+        res, attempts = await execute_with_retry(mock_op, config=cfg, sleep_fn=sleep_mock)
+        end = asyncio.get_event_loop().time()
+
+        assert res == "OK"
+        assert attempts == 2
+        assert sleep_mock.called
+        assert (end - start) < 0.1
+    asyncio.run(_run())
+
+# 77. No se realizan conexiones reales a Gemini o PostgreSQL en pruebas
+def test_no_real_network_connections():
+    adapter = GeminiAdapter(api_key="", allow_embedding_fallback=False, allow_generation_fallback=False)
+    assert adapter.client is None
+
+# === NUEVAS PRUEBAS FASE 5B: TRAZABILIDAD Y REINICIO DE CONTADORES POR CASO ===
+
+# 78. Embedding usa 3 intentos y generación 1: el caso registra attempts=3
+def test_embedding_3_attempts_generation_1_attempt_records_3():
+    async def _run():
+        mock_user = MagicMock(id=1, role="estudiante")
+        mock_db = AsyncMock()
+
+        evaluator = GenerationEvaluator()
+
+        async def mock_send(*args, **kwargs):
+            evaluator.llm.last_embedding_attempts = 3
+            evaluator.llm.last_generation_attempts = 1
+            return MagicMock(content="Respuesta")
+
+        mock_use_case = AsyncMock()
+        mock_use_case.send_chat_message.side_effect = mock_send
+
+        with unittest.mock.patch("tests.test_generation.ChatUseCase", return_value=mock_use_case), \
+             unittest.mock.patch("tests.test_generation.ChatRepository"), \
+             unittest.mock.patch("tests.test_generation.CorpusRepository"), \
+             unittest.mock.patch("tests.test_generation.TutorAssignmentRepository"), \
+             unittest.mock.patch("tests.test_generation.CalendarRepository"):
+            item = {"id": 1, "categoria": "facil", "pregunta": "P1", "palabras_clave_esperadas": []}
+            res = await evaluator.evaluate_item(item, mock_user, mock_db)
+            assert res["status"] == "success"
+            assert res["attempts"] == 3
+    asyncio.run(_run())
+
+# 79. Embedding usa 1 intento y generación 3: el caso registra attempts=3
+def test_embedding_1_attempt_generation_3_attempts_records_3():
+    async def _run():
+        mock_user = MagicMock(id=1, role="estudiante")
+        mock_db = AsyncMock()
+
+        evaluator = GenerationEvaluator()
+
+        async def mock_send(*args, **kwargs):
+            evaluator.llm.last_embedding_attempts = 1
+            evaluator.llm.last_generation_attempts = 3
+            return MagicMock(content="Respuesta")
+
+        mock_use_case = AsyncMock()
+        mock_use_case.send_chat_message.side_effect = mock_send
+
+        with unittest.mock.patch("tests.test_generation.ChatUseCase", return_value=mock_use_case), \
+             unittest.mock.patch("tests.test_generation.ChatRepository"), \
+             unittest.mock.patch("tests.test_generation.CorpusRepository"), \
+             unittest.mock.patch("tests.test_generation.TutorAssignmentRepository"), \
+             unittest.mock.patch("tests.test_generation.CalendarRepository"):
+            item = {"id": 1, "categoria": "facil", "pregunta": "P1", "palabras_clave_esperadas": []}
+            res = await evaluator.evaluate_item(item, mock_user, mock_db)
+            assert res["status"] == "success"
+            assert res["attempts"] == 3
+    asyncio.run(_run())
+
+# 80. Embedding usa 2 intentos y generación falla en 1: el resultado infrastructure_error registra attempts=2
+def test_embedding_2_attempts_generation_fails_on_1_records_attempts_2():
+    async def _run():
+        mock_user = MagicMock(id=1, role="estudiante")
+        mock_db = AsyncMock()
+
+        evaluator = GenerationEvaluator()
+
+        async def mock_send(*args, **kwargs):
+            evaluator.llm.last_embedding_attempts = 2
+            evaluator.llm.last_generation_attempts = 1
+            raise InfrastructureError("Error 500 en Gemini", attempts=1)
+
+        mock_use_case = AsyncMock()
+        mock_use_case.send_chat_message.side_effect = mock_send
+
+        with unittest.mock.patch("tests.test_generation.ChatUseCase", return_value=mock_use_case), \
+             unittest.mock.patch("tests.test_generation.ChatRepository"), \
+             unittest.mock.patch("tests.test_generation.CorpusRepository"), \
+             unittest.mock.patch("tests.test_generation.TutorAssignmentRepository"), \
+             unittest.mock.patch("tests.test_generation.CalendarRepository"):
+            item = {"id": 1, "categoria": "facil", "pregunta": "P1", "palabras_clave_esperadas": []}
+            res = await evaluator.evaluate_item(item, mock_user, mock_db)
+            assert res["status"] == "infrastructure_error"
+            assert res["attempts"] == 2
+    asyncio.run(_run())
+
+# 81. Los contadores se reinician antes del siguiente caso
+def test_counters_reset_before_next_case():
+    async def _run():
+        eval_llm = EvaluationGeminiAdapter(api_key="fake")
+        eval_llm.last_embedding_attempts = 5
+        eval_llm.last_generation_attempts = 5
+
+        eval_llm.reset_attempt_counters()
+        assert eval_llm.last_embedding_attempts == 0
+        assert eval_llm.last_generation_attempts == 0
+    asyncio.run(_run())
+
+# 82. Un fallo guarda el número de intentos en last_embedding_attempts o last_generation_attempts
+def test_failure_stores_attempts_in_counters():
+    async def _run():
+        sleep_mock = AsyncMock()
+        eval_llm = EvaluationGeminiAdapter(api_key="fake", sleep_fn=sleep_mock)
+
+        async def failing_embed(*args, **kwargs):
+            raise ConnectionError("503 Error")
+
+        with unittest.mock.patch.object(GeminiAdapter, "compute_embedding", side_effect=failing_embed):
+            with pytest.raises(InfrastructureError):
+                await eval_llm.compute_embedding("query")
+            assert eval_llm.last_embedding_attempts == 4  # 1 initial + 3 retries
+    asyncio.run(_run())
+
+# 83. api_max_attempts inválido es rechazado
+def test_api_max_attempts_validation():
+    assert GeminiAdapter(api_key="", api_max_attempts=1).api_max_attempts == 1
+    assert GeminiAdapter(api_key="", api_max_attempts=3).api_max_attempts == 3
+
+    with pytest.raises(ValueError):
+        GeminiAdapter(api_key="", api_max_attempts=0)
+    with pytest.raises(ValueError):
+        GeminiAdapter(api_key="", api_max_attempts=-1)
+    with pytest.raises(ValueError):
+        GeminiAdapter(api_key="", api_max_attempts=True)
+    with pytest.raises(ValueError):
+        GeminiAdapter(api_key="", api_max_attempts=1.5)
