@@ -50,7 +50,10 @@ El cliente resuelve la URL base en el siguiente orden de prioridad:
 - `npm run verify:errors`: Ejecuta la verificación estática y funcional del sistema centralizado de errores.
 - `npm run verify:calendar`: Ejecuta la verificación estática y funcional del módulo de calendario.
 - `npm run verify:data`: Ejecuta la verificación estática de integridad de datos reales del frontend.
+- `npm run verify:quality`: Ejecuta la verificación estática automatizada de calidad (ESLint con `--max-warnings=0`, ausencia de comentarios de supresión e integridad documental).
 - `npm run lint`: Ejecuta ESLint sobre el proyecto.
+
+El proyecto exige una política de **0 errores y 0 warnings** en TypeScript y ESLint completo.
 
 ---
 

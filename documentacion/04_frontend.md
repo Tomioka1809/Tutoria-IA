@@ -74,6 +74,14 @@ En [`frontend/src/store/chat.ts`](../frontend/src/store/chat.ts), la función `s
 - **Recordatorios Locales con Fecha Real:** En `useNotifications.ts`, los recordatorios locales asignan `created_at: actDate.toISOString()` usando la fecha real de la actividad. En `NotificationItem.tsx`, los recordatorios locales presentan su texto/body explicativo en lugar de una fecha relativa simulada.
 - **Consumo de Rutas HTTP:** Las tutorías se consultan y gestionan mediante `/sessions`. El backend crea internamente eventos asociados a sesiones; `/events` no se consume desde el frontend; esta decisión evita duplicar tutorías. No se crearon endpoints falsos ni fallbacks arbitrarios con `id = 1`.
 
+### 2.7 Cierre de Calidad Estática del Frontend (Fase 4E)
+- **Política de 0 Warnings:** Se eliminaron las 36 advertencias iniciales de ESLint, logrando 0 errores y 0 warnings en todo el proyecto frontend.
+- **Estabilización de Callbacks y Carga Coordinada:** Se envolvió `fetchPeriods` e `index.tsx` de tutor en la estrategia coordinada `loadTutorData` que ejecuta una única carga inicial de estudiantes con el periodo efectivo, eliminando peticiones HTTP duplicadas y desvinculando `fetchPeriods` de `selectedPeriod`. Se aplicaron callbacks memorizados (`useCallback`) en pantallas administrativas (`contenido.tsx`, `index.tsx`, `sorteo.tsx`, `users.tsx`), pantallas de tutor/estudiante (`retroalimentacion-quiz.tsx`), dashboard (`useDashboard.ts`) y tutoria (`useTutoria.ts`).
+- **Eliminación de Script Temporal:** Se eliminó el script un-off sin consumidores `frontend/fix_refs.js`.
+- **Ajuste Compatible de i18next:** Se utilizó la importación por espacio de nombres (`import * as i18nextModule from 'i18next'`) en `src/i18n/index.ts` para resolver la regla `import/no-named-as-default-member` sin violar `rules-of-hooks`.
+- **Ausencia de Supresiones:** No se utilizaron comentarios de supresión (`eslint-disable`, `@ts-ignore`, `@ts-nocheck`) ni variables prefijadas con `_`.
+- **Verificación Automatizada:** Se implementó el script `npm run verify:quality` ([`frontend/scripts/verify-static-quality.mjs`](../frontend/scripts/verify-static-quality.mjs)) que valida de forma automatizada ESLint `--max-warnings=0`, ausencia de supresiones, la estrategia de carga coordinada del dashboard tutor e integridad de la documentación.
+
 ---
 
 ## 3. Tabla de Hallazgos y Acciones Aplicadas
@@ -86,6 +94,7 @@ En [`frontend/src/store/chat.ts`](../frontend/src/store/chat.ts), la función `s
 | `src/i18n/locales/` | Paridad estructural de claves i18n (ES/EN). | Baja | **Resuelto (Fase 4B / 4C / 4D):** Paridad estructural ES/EN confirmada entre `es.json` y `en.json` (incluyendo `errors`, `calendar`, `profile`, `explore` y botón `errors.close`). |
 | `src/components/calendar/` | Mezcla potencial entre actividades locales y tutorías persistidas. | Media | **Resuelto (Fase 4C):** Separación formalizada mediante `calendar-items.ts`, prefijos de ID `activity:` / `session:`, modelo puro y decisión de no consumir `/events/`. |
 | `src/components/profile/`, `app/*/explore.tsx` | Datos ficticios hardcodeados (Ana Torres) y plantilla residual de Expo Router. | Media | **Resuelto (Fase 4D):** Aplicada la política "dato real o estado vacío", eliminadas personas ficticias, limpias las pantallas Explore con accesos directos a rutas reales y creado el verificador `verify:data`. |
+| `frontend/` | 36 advertencias ESLint y dependencias inestables en hooks. | Baja | **Resuelto (Fase 4E):** 0 errores y 0 warnings en ESLint completo, estabilización de callbacks con `useCallback`, eliminación de imports no usados y script `verify:quality`. |
 
 ---
 

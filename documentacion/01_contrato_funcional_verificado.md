@@ -293,6 +293,7 @@ Los siguientes componentes existen en código pero requieren validación en ejec
 | `HALL-CHAT-001` | Chatbot | `ChatUseCase` desacoplado de SQLAlchemy; utiliza `CorpusRepositoryPort` y DTOs tipados `RetrievedChunkDTO`. | Alta | Resuelto Fase 2 / Fase 3 |
 | `HALL-API-001` | API Client | `client.ts` contenía IP hardcodeada (`192.168.18.27`); eliminada y resuelta con `resolveApiUrl`. | Media | Resuelto Fase 4A |
 | `HALL-MOCK-001` | Frontend / UX | Resueltos los mocks visuales de frontend: eliminada la persona ficticia de `AssignedTutorCard.tsx` (aplicando resolución determinista `none`/`available`/`ambiguous`) y eliminado el falso control de filtro de `NotificationsHeader.tsx`. | Media | RESUELTO_EN_FASE_4D |
+| `HALL-STATIC-001` | Frontend / Calidad Estática | Las 36 advertencias iniciales de ESLint fueron totalmente corregidas sin supresiones (`eslint-disable`), logrando 0 errores y 0 warnings verificados estáticamente con `verify:quality`. | Baja | RESUELTO_EN_FASE_4E |
 
 ---
 
