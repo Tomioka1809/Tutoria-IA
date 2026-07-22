@@ -1,21 +1,17 @@
+/* eslint-disable import/no-named-as-default-member */
 import axios from 'axios';
 import Constants from 'expo-constants';
-import { Platform } from 'react-native';
+import { resolveApiUrl } from './api-config';
+import { getApiToken, notifyUnauthorized } from './auth-session';
 
-// Auto-detect host IP for physical device connection, default to localhost for simulators
-const hostUri = Constants.expoConfig?.hostUri;
-let ip = '192.168.18.27'; // Force hardcode LAN IP as fallback
-
-if (hostUri) {
-  ip = hostUri.split(':')[0];
-}
-
-export const API_URL = `http://${ip}:8000/api/v1`;
-console.log('===> INIT API_URL:', API_URL);
+export const API_URL = resolveApiUrl({
+  envUrl: process.env.EXPO_PUBLIC_API_URL,
+  expoHostUri: Constants.expoConfig?.hostUri,
+});
 
 const client = axios.create({
   baseURL: API_URL,
-  timeout: 60000, // 60 seconds timeout to allow LLM processing
+  timeout: 60000,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -23,17 +19,10 @@ const client = axios.create({
 
 // Request interceptor to attach JWT token
 client.interceptors.request.use(
-  async (config) => {
-    // We will dynamically get the token from our Zustand store
-    // to avoid import cycle issues, we'll read it from our storage or state
-    try {
-      const { useAuthStore } = require('../store/auth');
-      const token = useAuthStore.getState().token;
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-      }
-    } catch (e) {
-      // Ignore errors if store is not loaded yet
+  (config) => {
+    const token = getApiToken();
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
@@ -42,18 +31,17 @@ client.interceptors.request.use(
   }
 );
 
-// Response interceptor to handle expired or invalid token (401/403)
+// Response interceptor to handle expired or invalid token (401 only)
 client.interceptors.response.use(
   (response) => response,
   async (error) => {
     const url = error.config?.url ?? '';
     const isAuthRoute = url.includes('/auth/login') || url.includes('/auth/register');
-    if (!isAuthRoute && error.response && (error.response.status === 401 || error.response.status === 403)) {
+    if (!isAuthRoute && error.response && error.response.status === 401) {
       try {
-        const { useAuthStore } = require('../store/auth');
-        useAuthStore.getState().logout();
-      } catch (e) {
-        // Ignore errors if store is not loaded yet
+        await notifyUnauthorized();
+      } catch {
+        // Ignore errors during logout notification
       }
     }
     return Promise.reject(error);

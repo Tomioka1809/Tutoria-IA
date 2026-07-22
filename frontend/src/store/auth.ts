@@ -3,6 +3,7 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { User } from '../types';
 import client from '../api/client';
+import { configureApiAuth } from '../api/auth-session';
 
 interface AuthState {
   token: string | null;
@@ -18,7 +19,7 @@ interface AuthState {
 
 export const useAuthStore = create<AuthState>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       token: null,
       user: null,
       profileImage: null,
@@ -54,3 +55,10 @@ export const useAuthStore = create<AuthState>()(
     }
   )
 );
+
+configureApiAuth({
+  getToken: () => useAuthStore.getState().token,
+  onUnauthorized: () => {
+    useAuthStore.getState().logout();
+  },
+});
