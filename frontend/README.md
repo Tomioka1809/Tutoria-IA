@@ -48,6 +48,7 @@ El cliente resuelve la URL base en el siguiente orden de prioridad:
 
 - `npm run verify:api`: Ejecuta la verificación estática y funcional de la capa API.
 - `npm run verify:errors`: Ejecuta la verificación estática y funcional del sistema centralizado de errores.
+- `npm run verify:calendar`: Ejecuta la verificación estática y funcional del módulo de calendario.
 - `npm run lint`: Ejecuta ESLint sobre el proyecto.
 
 ---
@@ -60,3 +61,15 @@ El frontend implementa una normalización y clasificación pura de errores (`src
 - **Detalle Seguro:** Conserva `detail` únicamente para respuestas HTTP 400, 409 y 422. Filtra automáticamente credenciales, tokens Bearer/JWT, cookies y trazas de pila (*stack traces*), imponiendo un límite de 240 caracteres.
 - **Retroalimentación Configurable (`notify`):** Presenta alertas visuales mediante `Alert.alert` utilizando el botón `errors.close`. Admite la opción `{ notify: false }` para silenciar alertas automáticas en operaciones cuyos consumidores/pantallas ya muestran su propia notificación visual.
 - **Deduplicación por Mapa:** Mantiene un registro de huellas semánticas en un `Map` para evitar mostrar alertas duplicadas dentro de un intervalo de 1500 ms.
+
+---
+
+## 📅 Gestión del Calendario y Separación Funcional
+
+El módulo de calendario desacopla conceptual y técnicamente los recordatorios locales de las tutorías académicas:
+
+- **Recordatorios Locales:** Almacenados en `useActivityStore` (`AsyncStorage`). Representan tareas/recordatorios privados del dispositivo.
+- **Tutorías Persistidas:** Consumidas desde `/sessions/` a través de `useSessionStore` con persistencia en PostgreSQL.
+- **Proyección Backend (`/events/`):** El backend vincula eventos a cada sesión de forma automática. El frontend no consume `/events/` directamente para prevenir la duplicación de tutorías.
+- **Modelo Puro (`src/components/calendar/calendar-items.ts`):** Normaliza y ordena elementos asignando identificadores estables `activity:<id>` y `session:<id>`, aplicando análisis numérico seguro de fechas locales.
+- **Conservación de Datos y Notificaciones:** Actividades locales inválidas se retienen en `AsyncStorage` (`shouldRetainStoredActivity`), excluyéndolas únicamente de las vistas. Las notificaciones del backend y recordatorios locales provienen de fuentes independientes sin duplicación sintética.

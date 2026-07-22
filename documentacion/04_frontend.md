@@ -52,10 +52,16 @@ Se eliminó completamente cualquier IP privada hardcodeada (`192.168.18.27`).
 - **Sanitización de Seguridad:** Filtra automáticamente credenciales, encabezados `Authorization`, tokens Bearer/JWT, cookies y trazas de ejecuciones (*stack traces*), suprimiéndolos por completo para proteger información sensible.
 - **Servicio de Retroalimentación ([`frontend/src/services/error-feedback.ts`](../frontend/src/services/error-feedback.ts)):** Expone `reportApiError(error, fallbackKey, options)`. Admite la opción `notify: false` para silenciar alertas en operaciones donde la pantalla/consumidor ya presenta su propia retroalimentación visual (`createSession`, `updateSessionStatus`, `updateProfile`, `changePassword`).
 - **Deduplicación:** Implementa una ventana de deduplicación de 1500 ms basada en un mapa de huellas (`Map<string, number>`) para evitar acumular alertas ante secuencias repetidas. Utiliza el botón localizado `errors.close`.
-- **Stores Actualizados:** `useSessionStore`, `useChatStore`, `useNotificationStore`, `useAuthStore` y `useStreakStore` utilizan `reportApiError()` eliminando `console.error` como respuesta aislada.
-
 ### 2.4 UX Optimista en el Chat RAG
 En [`frontend/src/store/chat.ts`](../frontend/src/store/chat.ts), la función `sendMessage` agrega inmediatamente el mensaje del usuario a la lista local antes de enviar la petición HTTP POST (`/chat/message`). Si la petición falla, realiza un *rollback* silencioso eliminando el mensaje optimista y notifica el error mediante `reportApiError()`.
+
+### 2.5 Modelo Puro del Calendario y Separación Funcional (Fase 4C)
+- **Modelo Puro ([`frontend/src/components/calendar/calendar-items.ts`](../frontend/src/components/calendar/calendar-items.ts)):** Módulo puro sin dependencias de UI/framework que define `CalendarItem` con orígenes explícitos (`local_activity` para recordatorios privados locales y `tutoring_session` para tutorías del backend).
+- **Prefijos de ID sin Colisión:** Asigna prefijos estables `activity:<id>` y `session:<id>`, evitando duplicación o sobrescritura de elementos con el mismo número de identificador.
+- **Tratamiento de Fechas Locales y Conservación de Datos Inválidos:** Analiza fecha y hora locales numéricamente (`parseLocalActivityDate`), descartando fechas imposibles de las vistas temporales (`buildCalendarItems`). Las actividades con datos inválidos se conservan en `AsyncStorage` (`shouldRetainStoredActivity`) para evitar pérdidas automáticas de información local.
+- **Notificaciones Desacopladas:** Notificaciones del backend y recordatorios locales provienen de fuentes distintas; no se generan recordatorios sintéticos duplicados desde `useSessionStore`.
+- **Tipado Estricto sin Fallback:** Eliminado el fallback arbitrario (`serviceTypeId = 1`). La creación valida la respuesta de tipos de servicio y notifica de forma segura ante ausencia de coincidencias.
+- **Decisión sobre `/events/`:** Las actividades personales son recordatorios locales en `AsyncStorage`. Las tutorías persistidas provienen de `/sessions/`. El backend crea eventos en la tabla `events` asociados a cada sesión; por ende, `/events/` no se consume desde el frontend para prevenir duplicidad.
 
 ---
 
@@ -66,7 +72,8 @@ En [`frontend/src/store/chat.ts`](../frontend/src/store/chat.ts), la función `s
 | `src/api/services.ts` | `QuizAPI.generateQuiz` utilizaba `fetch` nativo con `require()` dinámico. | Media | **Resuelto (Fase 4A):** Migrado a `client.get<QuizQuestion[]>` con timeout de 60s y token inyectado por interceptor. |
 | `src/api/client.ts` | Se incluía la IP `192.168.18.27` como *fallback* duro. | Baja | **Resuelto (Fase 4A):** Eliminada la IP fija; implementada la función `resolveApiUrl()` con soporte para `EXPO_PUBLIC_API_URL` y `hostUri`. |
 | `src/store/*.ts` | Los errores de red en los 5 stores Zustand principales solo hacían `console.error`. | Media | **Resuelto (Fase 4B):** Centralizado con `normalizeApiError`, sanitización de secretos/trazas, `reportApiError`, deduplicación por `Map` y `notify: false` en consumidores visuales. |
-| `src/i18n/locales/` | Paridad estructural de claves i18n (ES/EN). | Baja | **Resuelto (Fase 4B):** Paridad estructural ES/EN confirmada entre `es.json` y `en.json` (incluyendo sección `errors` y botón `errors.close`). |
+| `src/i18n/locales/` | Paridad estructural de claves i18n (ES/EN). | Baja | **Resuelto (Fase 4B / 4C):** Paridad estructural ES/EN confirmada entre `es.json` y `en.json` (incluyendo `errors`, `calendar` y botón `errors.close`). |
+| `src/components/calendar/` | Mezcla potencial entre actividades locales y tutorías persistidas. | Media | **Resuelto (Fase 4C):** Separación formalizada mediante `calendar-items.ts`, prefijos de ID `activity:` / `session:`, modelo puro y decisión de no consumir `/events/`. |
 
 ---
 

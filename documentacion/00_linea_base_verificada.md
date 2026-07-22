@@ -143,6 +143,7 @@ React-Native/
 | `RAG-003` | RAG / Base de Datos | Ausencia de índice vectorial resuelta con migración HNSW (`vector_cosine_ops`). | Media | Pendiente de Despliegue (Fase 3) |
 | `FRONT-001` | Frontend / API | IP LAN hardcodeada (`192.168.18.27`) eliminada; resuelto con `EXPO_PUBLIC_API_URL` y detección dinámica por Expo `hostUri`. | Baja | Resuelto Fase 4A |
 | `FRONT-002` | Frontend / UX | Manejo de errores centralizado con normalización pura (`api-error.ts`), filtrado de secretos/trazas, retroalimentación i18n, deduplicación por mapa (`error-feedback.ts`) y opción `notify: false` para evitar alertas duplicadas en consumidores visuales. | Media | RESUELTO_EN_FASE_4B |
+| `FRONT-003` | Frontend / Calendario | Separación formalizada entre actividades personales locales (`useActivityStore`) y tutorías persistidas (`useSessionStore`) mediante el modelo puro `CalendarItem` (`calendar-items.ts`), prefijos de ID (`activity:`, `session:`) y sin consumir `/events/` para evitar duplicidad. | Media | RESUELTO_EN_FASE_4C |
 | `TEST-001` | Banco de Pruebas | Vulnerabilidad a cuotas gratuitas de la API de Gemini (HTTP 429) en ejecuciones masivas del benchmark. | Media | Fase 5 |
 
 ---
