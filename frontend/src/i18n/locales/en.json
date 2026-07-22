@@ -441,5 +441,29 @@
     "access": "Access",
     "logout": "Sign Out",
     "logoutDescription": "Sign out of the administrator account"
+  },
+  "errors": {
+    "title": "Error",
+    "close": "Close",
+    "network": "Unable to connect to the server. Please check your internet connection.",
+    "timeout": "The operation timed out. Please try again.",
+    "unauthorized": "Your session has expired. Please sign in again.",
+    "forbidden": "You do not have permission to perform this action.",
+    "notFound": "The requested resource was not found.",
+    "conflict": "There is a conflict with the current request.",
+    "validation": "The entered data is invalid or incomplete.",
+    "server": "The server could not complete the operation. Please try again later.",
+    "unknown": "An unexpected error occurred. Please try again.",
+    "loadSessions": "Could not load scheduled tutoring sessions.",
+    "createSession": "Could not schedule the tutoring session.",
+    "updateSession": "Could not update the tutoring session.",
+    "loadConversation": "Could not load the chat conversation.",
+    "sendMessage": "Could not send the message.",
+    "resetConversation": "Could not reset the chat conversation.",
+    "loadNotifications": "Could not load notifications.",
+    "markNotification": "Could not mark notification as read.",
+    "updateProfile": "Could not update profile information.",
+    "changePassword": "Could not change password.",
+    "loadStreak": "Could not load current streak."
   }
 }

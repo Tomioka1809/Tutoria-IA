@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { User } from '../types';
 import client from '../api/client';
 import { configureApiAuth } from '../api/auth-session';
+import { reportApiError } from '../services/error-feedback';
 
 interface AuthState {
   token: string | null;
@@ -33,7 +34,7 @@ export const useAuthStore = create<AuthState>()(
           const res = await client.put<User>('/auth/profile', partial);
           set({ user: res.data });
         } catch (error) {
-          console.error('Failed to update profile:', error);
+          reportApiError(error, 'errors.updateProfile', { notify: false });
           throw error;
         }
       },
@@ -42,7 +43,7 @@ export const useAuthStore = create<AuthState>()(
           await client.put('/auth/change-password', { current_password, new_password });
           return true;
         } catch (error) {
-          console.error('Failed to change password:', error);
+          reportApiError(error, 'errors.changePassword', { notify: false });
           return false;
         }
       },

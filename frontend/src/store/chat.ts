@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import client from '../api/client';
 import { Message, Conversation } from '../types';
+import { reportApiError } from '../services/error-feedback';
 
 interface ChatState {
   conversation: Conversation | null;
@@ -16,7 +17,6 @@ export const useChatStore = create<ChatState>((set, get) => ({
   isLoading: false,
   isSending: false,
   fetchConversation: async () => {
-    // Only show full loading spinner during initial load
     if (!get().conversation) {
       set({ isLoading: true });
     }
@@ -26,17 +26,16 @@ export const useChatStore = create<ChatState>((set, get) => ({
           'Cache-Control': 'no-cache',
           'Pragma': 'no-cache',
           'Expires': '0',
-        }
+        },
       });
       set({ conversation: response.data });
     } catch (error) {
-      console.error('Failed to fetch chat conversation:', error);
+      reportApiError(error, 'errors.loadConversation');
     } finally {
       set({ isLoading: false });
     }
   },
   sendMessage: async (content: string) => {
-    // Optimistic user message addition for modern UX
     const activeConv = get().conversation;
     if (!activeConv) return;
 
@@ -60,11 +59,9 @@ export const useChatStore = create<ChatState>((set, get) => ({
 
     try {
       const response = await client.post<Message>('/chat/message', { content });
-      
-      // Replace optimistic message and add model response
+
       set((state) => {
         if (!state.conversation) return {};
-        // Keep the temporary user message and append the bot's response
         return {
           conversation: {
             ...state.conversation,
@@ -72,12 +69,10 @@ export const useChatStore = create<ChatState>((set, get) => ({
           },
         };
       });
-      
-      // Refresh to fetch final backend message state (including model response message)
+
       await get().fetchConversation();
     } catch (error) {
-      console.error('Failed to send chat message:', error);
-      // Remove optimistic message on failure
+      reportApiError(error, 'errors.sendMessage');
       set((state) => ({
         conversation: state.conversation
           ? {
@@ -98,7 +93,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
       await client.delete('/chat/conversation');
       await get().fetchConversation();
     } catch (error) {
-      console.error('Failed to reset chat conversation:', error);
+      reportApiError(error, 'errors.resetConversation');
       set({ isLoading: false });
     }
   },

@@ -441,5 +441,29 @@
     "access": "Acceso",
     "logout": "Cerrar Sesión",
     "logoutDescription": "Salir de la cuenta de administrador"
+  },
+  "errors": {
+    "title": "Error",
+    "close": "Cerrar",
+    "network": "No fue posible conectarse con el servidor. Revisa tu conexión a internet.",
+    "timeout": "La operación tardó demasiado tiempo. Intenta de nuevo.",
+    "unauthorized": "Tu sesión ha expirado. Por favor, inicia sesión nuevamente.",
+    "forbidden": "No tienes permisos para realizar esta acción.",
+    "notFound": "El recurso solicitado no fue encontrado.",
+    "conflict": "Existe un conflicto con la solicitud actual.",
+    "validation": "Los datos ingresados son incorrectos o están incompletos.",
+    "server": "El servidor no pudo completar la operación. Intenta más tarde.",
+    "unknown": "Ocurrió un error inesperado. Intenta de nuevo.",
+    "loadSessions": "No se pudieron cargar las tutorías programadas.",
+    "createSession": "No se pudo agendar la tutoría.",
+    "updateSession": "No se pudo actualizar la tutoría.",
+    "loadConversation": "No se pudo cargar la conversación.",
+    "sendMessage": "No se pudo enviar el mensaje.",
+    "resetConversation": "No se pudo reiniciar la conversación.",
+    "loadNotifications": "No se pudieron cargar las notificaciones.",
+    "markNotification": "No se pudo marcar la notificación como leída.",
+    "updateProfile": "No se pudo actualizar la información del perfil.",
+    "changePassword": "No se pudo cambiar la contraseña.",
+    "loadStreak": "No se pudo obtener la racha actual."
   }
 }

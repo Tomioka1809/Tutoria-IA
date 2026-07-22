@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import client from '../api/client';
 import { Streak } from '../types';
+import { reportApiError } from '../services/error-feedback';
 
 interface StreakState {
   streak: Streak | null;
@@ -17,7 +18,7 @@ export const useStreakStore = create<StreakState>((set) => ({
       const response = await client.get<Streak>('/streaks/');
       set({ streak: response.data });
     } catch (error) {
-      console.error('Failed to fetch streak:', error);
+      reportApiError(error, 'errors.loadStreak');
     } finally {
       set({ isLoading: false });
     }

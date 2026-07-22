@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import client from '../api/client';
 import { Notification } from '../types';
+import { reportApiError } from '../services/error-feedback';
 
 interface NotificationState {
   notifications: Notification[];
@@ -19,7 +20,7 @@ export const useNotificationStore = create<NotificationState>((set, get) => ({
       const response = await client.get<Notification[]>('/notifications/');
       set({ notifications: response.data });
     } catch (error) {
-      console.error('Failed to fetch notifications:', error);
+      reportApiError(error, 'errors.loadNotifications');
     } finally {
       set({ isLoading: false });
     }
@@ -35,7 +36,7 @@ export const useNotificationStore = create<NotificationState>((set, get) => ({
         ),
       }));
     } catch (error) {
-      console.error('Failed to mark notification as read:', error);
+      reportApiError(error, 'errors.markNotification');
     }
   },
   getUnreadCount: () => {
