@@ -47,4 +47,16 @@ El cliente resuelve la URL base en el siguiente orden de prioridad:
 ## 🧪 Comandos de Calidad
 
 - `npm run verify:api`: Ejecuta la verificación estática y funcional de la capa API.
+- `npm run verify:errors`: Ejecuta la verificación estática y funcional del sistema centralizado de errores.
 - `npm run lint`: Ejecuta ESLint sobre el proyecto.
+
+---
+
+## 🛡️ Sistema Centralizado de Errores HTTP
+
+El frontend implementa una normalización y clasificación pura de errores (`src/api/api-error.ts`) combinada con un servicio de retroalimentación (`src/services/error-feedback.ts`):
+
+- **Normalización Pura:** Clasifica fallos en tipos semánticos (`network`, `timeout`, `unauthorized`, `forbidden`, `not_found`, `conflict`, `validation`, `server`, `unknown`).
+- **Detalle Seguro:** Conserva `detail` únicamente para respuestas HTTP 400, 409 y 422. Filtra automáticamente credenciales, tokens Bearer/JWT, cookies y trazas de pila (*stack traces*), imponiendo un límite de 240 caracteres.
+- **Retroalimentación Configurable (`notify`):** Presenta alertas visuales mediante `Alert.alert` utilizando el botón `errors.close`. Admite la opción `{ notify: false }` para silenciar alertas automáticas en operaciones cuyos consumidores/pantallas ya muestran su propia notificación visual.
+- **Deduplicación por Mapa:** Mantiene un registro de huellas semánticas en un `Map` para evitar mostrar alertas duplicadas dentro de un intervalo de 1500 ms.

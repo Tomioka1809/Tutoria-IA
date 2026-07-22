@@ -47,19 +47,26 @@ Se eliminó completamente cualquier IP privada hardcodeada (`192.168.18.27`).
 - **Interceptor de Petición:** Recupera el token mediante `getApiToken()` e inyecta la cabecera `Authorization: Bearer <token>`.
 - **Interceptor de Respuesta:** Detecta únicamente respuestas `401 Unauthorized` (excluyendo rutas de autenticación) y ejecuta `notifyUnauthorized()` para cerrar la sesión. No se realiza logout en respuestas `403 Forbidden`.
 
-### 2.3 UX Optimista en el Chat RAG
-En [`frontend/src/store/chat.ts`](../frontend/src/store/chat.ts), la función `sendMessage` agrega inmediatamente el mensaje del usuario a la lista local antes de enviar la petición HTTP POST (`/chat/message`). Si la petición falla, realiza un *rollback* silencioso eliminando el mensaje optimista.
+### 2.3 Sistema Centralizado de Manejo y Normalización de Errores (Fase 4B)
+- **Normalización Pura ([`frontend/src/api/api-error.ts`](../frontend/src/api/api-error.ts)):** Clasifica fallos en tipos semánticos (`network`, `timeout`, `unauthorized`, `forbidden`, `not_found`, `conflict`, `validation`, `server`, `unknown`). El detalle del backend solo se conserva para respuestas HTTP 400, 409 y 422 (`validation` y `conflict`).
+- **Sanitización de Seguridad:** Filtra automáticamente credenciales, encabezados `Authorization`, tokens Bearer/JWT, cookies y trazas de ejecuciones (*stack traces*), suprimiéndolos por completo para proteger información sensible.
+- **Servicio de Retroalimentación ([`frontend/src/services/error-feedback.ts`](../frontend/src/services/error-feedback.ts)):** Expone `reportApiError(error, fallbackKey, options)`. Admite la opción `notify: false` para silenciar alertas en operaciones donde la pantalla/consumidor ya presenta su propia retroalimentación visual (`createSession`, `updateSessionStatus`, `updateProfile`, `changePassword`).
+- **Deduplicación:** Implementa una ventana de deduplicación de 1500 ms basada en un mapa de huellas (`Map<string, number>`) para evitar acumular alertas ante secuencias repetidas. Utiliza el botón localizado `errors.close`.
+- **Stores Actualizados:** `useSessionStore`, `useChatStore`, `useNotificationStore`, `useAuthStore` y `useStreakStore` utilizan `reportApiError()` eliminando `console.error` como respuesta aislada.
+
+### 2.4 UX Optimista en el Chat RAG
+En [`frontend/src/store/chat.ts`](../frontend/src/store/chat.ts), la función `sendMessage` agrega inmediatamente el mensaje del usuario a la lista local antes de enviar la petición HTTP POST (`/chat/message`). Si la petición falla, realiza un *rollback* silencioso eliminando el mensaje optimista y notifica el error mediante `reportApiError()`.
 
 ---
 
 ## 3. Tabla de Hallazgos y Acciones Aplicadas
 
-| Componente / Archivo | Hallazgo | Severidad | Estado / Acción Aplicada en Fase 4A |
+| Componente / Archivo | Hallazgo | Severidad | Estado / Acción Aplicada |
 |---|---|---|---|
 | `src/api/services.ts` | `QuizAPI.generateQuiz` utilizaba `fetch` nativo con `require()` dinámico. | Media | **Resuelto (Fase 4A):** Migrado a `client.get<QuizQuestion[]>` con timeout de 60s y token inyectado por interceptor. |
 | `src/api/client.ts` | Se incluía la IP `192.168.18.27` como *fallback* duro. | Baja | **Resuelto (Fase 4A):** Eliminada la IP fija; implementada la función `resolveApiUrl()` con soporte para `EXPO_PUBLIC_API_URL` y `hostUri`. |
-| `src/store/chat.ts` | Los errores de red en `fetchConversation` y `sendMessage` solo hacen `console.error`. | Media | Añadir notificaciones visuales (Toast/Alert) para advertir al usuario en caso de desconexión del servidor (Fase 4B). |
-| `src/i18n/locales/` | Paridad estructural de claves i18n (ES/EN). | Baja | **Resuelto:** Paridad de 425 claves confirmada entre `es.json` y `en.json`. Cualquier revisión semántica es un ajuste futuro. |
+| `src/store/*.ts` | Los errores de red en los 5 stores Zustand principales solo hacían `console.error`. | Media | **Resuelto (Fase 4B):** Centralizado con `normalizeApiError`, sanitización de secretos/trazas, `reportApiError`, deduplicación por `Map` y `notify: false` en consumidores visuales. |
+| `src/i18n/locales/` | Paridad estructural de claves i18n (ES/EN). | Baja | **Resuelto (Fase 4B):** Paridad estructural ES/EN confirmada entre `es.json` y `en.json` (incluyendo sección `errors` y botón `errors.close`). |
 
 ---
 
