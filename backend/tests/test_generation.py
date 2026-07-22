@@ -1,7 +1,7 @@
 import asyncio
 import json
 import os
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 from sqlalchemy.future import select
 
 import app.infrastructure.database.base  # noqa
@@ -13,39 +13,58 @@ from app.infrastructure.adapters.gemini_adapter import GeminiAdapter
 from app.application.use_cases.chat_use_cases import ChatUseCase
 from app.infrastructure.config.config import settings
 
+from tests.evaluation_support import (
+    EvaluationConfig,
+    execute_with_retry,
+    compute_generation_metrics,
+    sanitize_secret_message,
+    InfrastructureError,
+    NonRetryableError
+)
+
 class GenerationEvaluator:
     def __init__(self):
         self.llm = GeminiAdapter(api_key=settings.GEMINI_API_KEY)
 
-    async def get_or_create_eval_user(self, db) -> User:
-        result = await db.execute(select(User).where(User.email == "eval_bot@unsaac.edu.pe"))
-        user = result.scalars().first()
-        if not user:
-            user = User(
-                email="eval_bot@unsaac.edu.pe",
-                password_hash="eval_hash",
-                role="estudiante",
-                is_active=True
-            )
-            db.add(user)
-            await db.commit()
-            await db.refresh(user)
+    async def get_or_create_eval_user(self, db, config: Optional[EvaluationConfig] = None) -> User:
+        async def _get_user():
+            result = await db.execute(select(User).where(User.email == "eval_bot@unsaac.edu.pe"))
+            user = result.scalars().first()
+            if not user:
+                user = User(
+                    email="eval_bot@unsaac.edu.pe",
+                    password_hash="eval_hash",
+                    role="estudiante",
+                    is_active=True
+                )
+                db.add(user)
+                await db.commit()
+                await db.refresh(user)
 
-            from app.infrastructure.database.models.profiles import StudentProfile
-            profile = StudentProfile(
-                user_id=user.id,
-                full_name="Usuario Evaluación Paper IEEE",
-                student_code="20260001",
-                current_semester=5
-            )
-            db.add(profile)
-            await db.commit()
-            await db.refresh(user)
+                from app.infrastructure.database.models.profiles import StudentProfile
+                profile = StudentProfile(
+                    user_id=user.id,
+                    full_name="Usuario Evaluación Paper IEEE",
+                    student_code="20260001",
+                    current_semester=5
+                )
+                db.add(profile)
+                await db.commit()
+                await db.refresh(user)
+            return user
+
+        user, _ = await execute_with_retry(_get_user, config=config)
         return user
 
-    async def evaluate_item(self, item: Dict[str, Any], user: User, db) -> Dict[str, Any]:
+    async def evaluate_item(
+        self,
+        item: Dict[str, Any],
+        user: User,
+        db,
+        config: Optional[EvaluationConfig] = None
+    ) -> Dict[str, Any]:
+        cfg = config or EvaluationConfig()
         question = item["pregunta"]
-        expected_answer = item["respuesta_esperada"]
         expected_keywords = item.get("palabras_clave_esperadas", [])
         categoria = item["categoria"]
 
@@ -53,56 +72,75 @@ class GenerationEvaluator:
         corpus_repo = CorpusRepository(db)
         use_case = ChatUseCase(chat_repo=chat_repo, corpus_repo=corpus_repo, llm=self.llm)
 
-        # Generate response end-to-end
-        try:
+        async def _send_msg():
             msg = await use_case.send_chat_message(user, question, db)
-            bot_response = msg.content
+            return msg.content
+
+        try:
+            bot_response, attempts = await execute_with_retry(_send_msg, config=cfg)
+        except (InfrastructureError, NonRetryableError) as e:
+            return {
+                "id": item["id"],
+                "categoria": categoria,
+                "pregunta": question,
+                "status": "infrastructure_error",
+                "attempts": e.attempts,
+                "technical_error": e.sanitized_message,
+                "bot_response": f"Error al generar respuesta: {e.sanitized_message}",
+                "pertinencia": None
+            }
         except Exception as e:
-            bot_response = f"Error al generar respuesta: {str(e)}"
+            err_msg = sanitize_secret_message(str(e))
+            return {
+                "id": item["id"],
+                "categoria": categoria,
+                "pregunta": question,
+                "status": "infrastructure_error",
+                "attempts": 1,
+                "technical_error": err_msg,
+                "bot_response": f"Error al generar respuesta: {err_msg}",
+                "pertinencia": None
+            }
 
-        bot_response_lower = bot_response.lower()
-
-        # Compute Pertinencia / Faithfulness score (0.0 to 1.0)
-        pertinencia = 0.0
-
-        if categoria == "fuera_de_alcance":
-            # For out-of-scope, bot MUST state refusal / lack of info in database
-            refusal_markers = ["no tengo esa información", "no se encuentra en mi base", "no cuento con esa información", "base de datos de la universidad"]
-            has_refusal = any(marker in bot_response_lower for marker in refusal_markers)
-            pertinencia = 1.0 if has_refusal else 0.2
-        else:
-            # Check keyword coverage in generated response
-            keyword_hits = sum(1 for kw in expected_keywords if kw.lower() in bot_response_lower)
-            kw_ratio = keyword_hits / len(expected_keywords) if expected_keywords else 1.0
-            
-            # Check non-empty & grounded response
-            is_valid_len = len(bot_response) >= 30
-            
-            pertinencia = (kw_ratio * 0.7) + (0.3 if is_valid_len else 0.0)
-
-        pertinencia = min(max(pertinencia, 0.0), 1.0)
+        pertinencia = compute_generation_metrics(
+            bot_response=bot_response,
+            expected_keywords=expected_keywords,
+            categoria=categoria
+        )
 
         return {
             "id": item["id"],
             "categoria": categoria,
             "pregunta": question,
+            "status": "success",
+            "attempts": attempts,
+            "technical_error": None,
             "bot_response": bot_response,
-            "pertinencia": round(pertinencia, 4)
+            "pertinencia": pertinencia
         }
 
-async def run_generation_benchmark(golden_set_path: str) -> List[Dict[str, Any]]:
-    with open(golden_set_path, "r", encoding="utf-8") as f:
-        golden_set = json.load(f)
+async def run_generation_benchmark(
+    golden_set_path: str,
+    config: Optional[EvaluationConfig] = None,
+    items: Optional[List[Dict[str, Any]]] = None
+) -> List[Dict[str, Any]]:
+    cfg = config or EvaluationConfig()
+    if items is None:
+        with open(golden_set_path, "r", encoding="utf-8") as f:
+            golden_set = json.load(f)
+    else:
+        golden_set = items
 
     evaluator = GenerationEvaluator()
     results = []
 
     async with SessionLocal() as db:
-        eval_user = await evaluator.get_or_create_eval_user(db)
+        eval_user = await evaluator.get_or_create_eval_user(db, config=cfg)
         for item in golden_set:
-            res = await evaluator.evaluate_item(item, eval_user, db)
+            res = await evaluator.evaluate_item(item, eval_user, db, config=cfg)
             results.append(res)
-            await asyncio.sleep(0.8)  # Rate limit Gemini API
+            if cfg.inter_case_delay > 0:
+                await asyncio.sleep(cfg.inter_case_delay)
 
     return results
 
