@@ -9,5 +9,5 @@ class CorpusChunk(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
     source: Mapped[str] = mapped_column(String(255), nullable=True) # e.g., 'reglamento', 'glosario'
     text_content: Mapped[str] = mapped_column(Text, nullable=False)
-    # Gemini text-embedding-004 has 768 dimensions by default.
+    # Embeddings configured with output_dimensionality=768.
     embedding: Mapped[list[float]] = mapped_column(Vector(768), nullable=True)

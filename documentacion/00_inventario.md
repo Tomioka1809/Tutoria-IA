@@ -17,8 +17,6 @@ React-Native/
 │   ├── alembic.ini                      # Configuración de Alembic
 │   ├── Dockerfile                       # Dockerfile del servicio FastAPI
 │   ├── requirements.txt                 # Dependencias Python
-│   ├── test_embed.py                    # Script de prueba rápida para embeddings Gemini
-│   ├── test_models.py                   # Script de prueba básica de modelos
 │   ├── corpus/                          # Archivos de la normativa y servicios (JSON)
 │   │   ├── cronograma_academico.json
 │   │   ├── glosario.json
@@ -82,7 +80,7 @@ React-Native/
 | **Framework Backend** | FastAPI | `0.136.3` (ASGI Uvicorn `0.49.0`) |
 | **Base de Datos** | PostgreSQL + pgvector | Imagen Docker `pgvector/pgvector:pg16` (Puerto host: 5433 / contenedor: 5432) |
 | **ORM & Migraciones** | SQLAlchemy (Async) + Alembic | SQLAlchemy `2.0.50`, asyncpg `0.31.0`, Alembic `1.18.4` |
-| **Integración RAG / LLM** | Google Gemini API (`google-genai`) | Modelo Generativo: `gemini-2.5-flash` <br> Embeddings: `text-embedding-004` |
+| **Integración RAG / LLM** | Google Gemini API (`google-genai`) | Modelo Generativo: `gemini-2.5-flash` <br> Embeddings: `gemini-embedding-2` |
 | **Seguridad Backend** | OAuth2 + JWT | `python-jose 3.5.0`, `passlib 1.7.4` (bcrypt) |
 | **Framework Frontend** | React Native + Expo | Expo SDK `54.0.36`, React Native `0.81.5`, React `19.1.0` |
 | **Enrutamiento Frontend** | Expo Router | `^6.0.23` (File-based routing) |
@@ -117,9 +115,9 @@ Identificadas en `.env.example` y `.env`:
 | Componente | Estado Actual (Qué Existe) | Brecha Detectada (Qué Falta) |
 |---|---|---|
 | **Backend (Arquitectura)** | Estructura en 3 capas (`domain`, `application`, `infrastructure`). Modelos de dominio (`entities`), casos de uso (`use_cases`), endpoints FastAPI (`v1/endpoints/`) y repositorios con SQLAlchemy async. | La carpeta `domain/schemas/` está vacía. Los esquemas Pydantic/DTOs están declarados dentro de la infraestructura/entidades o importados de manera no estrictamente segregada. |
-| **Pipeline RAG** | Ingesta de 9 documentos JSON en `backend/corpus/`. Adaptador `GeminiAdapter` implementando `text-embedding-004` y `gemini-2.5-flash`. Almacenamiento y búsqueda por coseno en PostgreSQL con `pgvector`. | Falta modularizar la estrategia de chunking por límites semánticos (artículos y numerales del reglamento). Falta configuración explicita de umbral de similitud (score threshold) y manejo de fallback cuando no hay coincidencias. |
+| **Pipeline RAG** | Ingesta de 9 documentos JSON en `backend/corpus/`. Adaptador `GeminiAdapter` implementando `gemini-embedding-2` (768 dim) y `gemini-2.5-flash`. Búsqueda por coseno con umbral `max_cosine_distance=0.45`, fallback léxico controlado (`AND` con normalización Unicode), política de abstención y script de regeneración estricto (`allow_embedding_fallback=False`). | Migración HNSW preparada (`6f892a019e42`); pendiente de aplicación en el entorno desplegado. Script de regeneración listo en código, pendiente de ejecución operativa. Pendiente calibración fina con Golden Dataset (Fase 5). |
 | **Frontend Móvil** | Estructura por roles (`(estudiante)`, `(tutor)`, `(admin)`). Autenticación JWT integrada, cliente Axios dinámico, tiendas Zustand (Auth, Chat, Session, Notifications, etc.), interfaz limpia y multilingüe. | Algunas vistas consumen mocks o carecen de manejo centralizado de errores ante fallas de red backend. |
-| **Banco de Pruebas (Tests)** | Scripts de prueba aislados en la raíz de `backend` (`test_embed.py`, `test_models.py`). | **Crítico para el paper IEEE:** No existía la carpeta `backend/tests/` ni el golden set de evaluación (preguntas de referencia, ground truth), scripts `test_retrieval.py`, `test_generation.py` ni `run_eval.py` para calcular métricas (Precisión, Cobertura, Pertinencia). |
+| **Banco de Pruebas (Tests)** | Suite automatizado de pruebas unitarias en `backend/tests/unit/` (`test_rag_quality.py`, `test_chat_use_cases.py`, `test_quiz_gemini_client.py`, `test_auth_application.py`, `test_session_application.py`, `test_streak_application.py`, `test_notification_application.py`). | **Crítico para el paper IEEE:** No existía la carpeta `backend/tests/` ni el golden set de evaluación (preguntas de referencia, ground truth), scripts `test_retrieval.py`, `test_generation.py` ni `run_eval.py` para calcular métricas (Precisión, Cobertura, Pertinencia). |
 | **Documentación** | `README.md` de instalación general y `frontend/README.md`. | No existía la carpeta `/documentacion/` con la especificación formal del proyecto, diagramas Mermaid RAG, análisis hexagonal, auditoría de RAG, evaluación de frontend ni reporte consolidado IEEE. |
 
 ---

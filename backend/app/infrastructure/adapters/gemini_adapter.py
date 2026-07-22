@@ -1,27 +1,32 @@
 from typing import List, Dict
 from google import genai
 from google.genai import types
+import logging
 from app.application.ports.llm_port import LLMPort
 
+logger = logging.getLogger(__name__)
+
+
 class GeminiAdapter(LLMPort):
-    def __init__(self, api_key: str):
+    def __init__(self, api_key: str, allow_embedding_fallback: bool = True):
         self.api_key = api_key
+        self.allow_embedding_fallback = allow_embedding_fallback
         # We use the async client to avoid blocking the event loop
-        self.client = genai.Client(api_key=api_key)
+        self.client = genai.Client(api_key=api_key) if api_key else None
 
     async def generate_response(
-        self, 
-        system_instruction: str, 
-        history: List[Dict], 
+        self,
+        system_instruction: str,
+        history: List[Dict],
         user_message: str,
         tools: List = None
     ) -> str:
-        if not self.api_key:
+        if not self.api_key or not self.client:
             return (
                 "¡Hola! Soy TutorIA 🦖. Mi cerebro requiere que configures "
                 "la variable `GEMINI_API_KEY`. Por ahora estoy en modo de simulación."
             )
-            
+
         # Convert history format to genai SDK format
         contents = []
         for msg in history:
@@ -29,7 +34,7 @@ class GeminiAdapter(LLMPort):
                 role=msg["role"],
                 parts=[types.Part.from_text(text=msg["parts"][0]["text"])]
             ))
-            
+
         contents.append(types.Content(
             role="user",
             parts=[types.Part.from_text(text=user_message)]
@@ -70,7 +75,7 @@ class GeminiAdapter(LLMPort):
                                     else:
                                         result = func(**call.args)
                                 except Exception as ex:
-                                    print(f"Error executing tool {call.name}: {ex}")
+                                    logger.error("Error executing tool %s: %s", call.name, ex)
                                     result = f"Error al ejecutar la herramienta: {str(ex)}"
                             else:
                                 result = f"Error: Herramienta '{call.name}' no encontrada."
@@ -85,7 +90,7 @@ class GeminiAdapter(LLMPort):
                             role="tool",
                             parts=tool_parts
                         ))
-                        
+
                         # Continue generating content with tool context
                         continue
                     else:
@@ -97,24 +102,20 @@ class GeminiAdapter(LLMPort):
                 err_str = str(e)
                 if ("429" in err_str or "RESOURCE_EXHAUSTED" in err_str or "quota" in err_str.lower()) and attempt < max_retries - 1:
                     wait_time = (attempt + 1) * 5
-                    print(f"429 Quota limit hit. Retrying in {wait_time}s... (attempt {attempt + 1}/{max_retries})")
+                    logger.warning("429 Quota limit hit. Retrying in %ds... (attempt %d/%d)", wait_time, attempt + 1, max_retries)
                     await asyncio.sleep(wait_time)
                     continue
 
-                print(f"Gemini API Exception: {e}")
+                logger.error("Gemini API Exception: %s", e)
                 # Offline RAG fallback when API quota is exhausted
                 if "corpus" in system_instruction.lower():
-                    # Extract relevant corpus fragments from system instruction
-                    ctx_start = system_instruction.find("sobre el reglamento de tutoría y servicios:\n")
-                    if ctx_start != -1:
-                        ctx_text = system_instruction[ctx_start + len("sobre el reglamento de tutoría y servicios:\n"):].split("REGLAS OBLIGATORIAS")[0]
-                        lines = [line.strip() for line in ctx_text.split("\n") if line.strip()]
-                        if lines:
-                            return f"Según la normativa oficial de la UNSAAC: {lines[0]}"
-                return "No tengo esa información en mi base de datos de la universidad."
+                    return "No cuento con información suficiente en la base oficial de la UNSAAC para responder con certeza."
+                return "No cuento con información suficiente en la base oficial de la UNSAAC para responder con certeza."
 
     async def compute_embedding(self, text: str) -> List[float]:
-        if not self.api_key:
+        if not self.api_key or not self.client:
+            if not self.allow_embedding_fallback:
+                raise RuntimeError("GEMINI_API_KEY is missing in strict embedding mode.")
             return self._fallback_embedding(text)
 
         import asyncio
@@ -122,32 +123,51 @@ class GeminiAdapter(LLMPort):
         for attempt in range(max_retries):
             try:
                 response = await self.client.aio.models.embed_content(
-                    model='gemini-embedding-001',
+                    model='gemini-embedding-2',
                     contents=text,
                     config=types.EmbedContentConfig(
                         output_dimensionality=768
                     )
                 )
-                return response.embeddings[0].values
+                if response and hasattr(response, "embeddings") and response.embeddings:
+                    vals = response.embeddings[0].values
+                    if len(vals) == 768:
+                        return [float(v) for v in vals]
+
+                if not self.allow_embedding_fallback:
+                    raise RuntimeError("Gemini embedding returned invalid structure or length")
+                logger.error("Gemini embedding returned invalid structure or length")
+                return self._fallback_embedding(text)
             except Exception as e:
                 err_str = str(e)
-                if "429" in err_str or "RESOURCE_EXHAUSTED" in err_str or "quota" in err_str.lower():
-                    return self._fallback_embedding(text)
+                if ("429" in err_str or "RESOURCE_EXHAUSTED" in err_str or "quota" in err_str.lower()) and attempt < max_retries - 1:
+                    wait_time = (attempt + 1) * 5
+                    logger.warning("429 Quota limit hit for embedding. Retrying in %ds...", wait_time)
+                    await asyncio.sleep(wait_time)
+                    continue
 
-                print(f"Gemini Embedding Exception: {e}")
+                if not self.allow_embedding_fallback:
+                    raise RuntimeError(f"Gemini Embedding failed in strict mode: {e}") from e
+
+                logger.error("Gemini Embedding Exception: %s", e)
                 return self._fallback_embedding(text)
 
     def _fallback_embedding(self, text: str) -> List[float]:
         # Deterministic pseudo-embedding for testing when offline or rate-limited
         import hashlib
+        import math
         vec = [0.0] * 768
+        if not text or not text.strip():
+            vec[0] = 1.0
+            return vec
         words = text.lower().split()
         for word in words:
             h = int(hashlib.md5(word.encode('utf-8')).hexdigest(), 16)
             idx = h % 768
             val = ((h >> 8) % 1000) / 1000.0
             vec[idx] += val
-        # Normalize vector
-        import math
-        norm = math.sqrt(sum(x*x for x in vec)) or 1.0
+        norm = math.sqrt(sum(x * x for x in vec))
+        if norm == 0:
+            vec[0] = 1.0
+            return vec
         return [x / norm for x in vec]

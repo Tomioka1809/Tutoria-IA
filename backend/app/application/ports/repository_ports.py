@@ -46,9 +46,19 @@ class ChatRepositoryPort(ABC):
     async def get_history(self, conversation_id: int) -> List[Any]:
         pass
 
+from app.application.dtos.rag_dtos import RetrievedChunkDTO
+
 class CorpusRepositoryPort(ABC):
     @abstractmethod
-    async def search_similar(self, query_embedding: List[float], limit: int = 5, query_text: str | None = None) -> List[str]:
+    async def search_similar(
+        self,
+        query_embedding: List[float],
+        *,
+        limit: int,
+        query_text: str | None,
+        max_cosine_distance: float,
+        keyword_fallback_limit: int,
+    ) -> List[RetrievedChunkDTO]:
         pass
 
     @abstractmethod

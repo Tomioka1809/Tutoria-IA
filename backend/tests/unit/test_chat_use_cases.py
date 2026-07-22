@@ -18,6 +18,7 @@ from app.application.dtos.chat_tool_dtos import (
     AssignedStudentDTO,
     CalendarDataDTO,
 )
+from app.application.dtos.rag_dtos import RetrievedChunkDTO, RAGRetrievalPolicy
 
 
 class FakeConversation:
@@ -53,8 +54,23 @@ class FakeChatRepository(ChatRepositoryPort):
 
 
 class FakeCorpusRepository(CorpusRepositoryPort):
-    async def search_similar(self, query_embedding: list, limit: int = 5, query_text: str = None):
-        return ["Art. 1 - La tutoría es obligatoria."]
+    async def search_similar(
+        self,
+        query_embedding: list,
+        *,
+        limit: int,
+        query_text: str | None,
+        max_cosine_distance: float,
+        keyword_fallback_limit: int,
+    ):
+        return [
+            RetrievedChunkDTO(
+                text="Art. 1 - La tutoría es obligatoria.",
+                source="reglamento.json",
+                cosine_distance=0.1,
+                retrieval_method="vector"
+            )
+        ]
 
     async def insert_chunk(self, text: str, embedding: list):
         pass
@@ -156,13 +172,15 @@ class TestChatUseCase(unittest.IsolatedAsyncioTestCase):
         llm = FakeLLM()
         tutor_assignment_repo = FakeTutorAssignmentRepository()
         calendar_repo = FakeCalendarRepository()
+        rag_policy = RAGRetrievalPolicy()
 
         use_case = ChatUseCase(
             chat_repo=chat_repo,
             corpus_repo=corpus_repo,
             llm=llm,
             tutor_assignment_repo=tutor_assignment_repo,
-            calendar_repo=calendar_repo
+            calendar_repo=calendar_repo,
+            rag_policy=rag_policy,
         )
 
         res = await use_case.send_chat_message(user_id=101, user_role="estudiante", user_content="¿Quién es mi tutor?")
@@ -186,13 +204,15 @@ class TestChatUseCase(unittest.IsolatedAsyncioTestCase):
         llm = FakeLLM()
         tutor_assignment_repo = FakeTutorAssignmentRepository()
         calendar_repo = FakeCalendarRepository()
+        rag_policy = RAGRetrievalPolicy()
 
         use_case = ChatUseCase(
             chat_repo=chat_repo,
             corpus_repo=corpus_repo,
             llm=llm,
             tutor_assignment_repo=tutor_assignment_repo,
-            calendar_repo=calendar_repo
+            calendar_repo=calendar_repo,
+            rag_policy=rag_policy,
         )
 
         res = await use_case.send_chat_message(user_id=201, user_role="tutor", user_content="¿Quiénes son mis alumnos?")
@@ -216,13 +236,15 @@ class TestChatUseCase(unittest.IsolatedAsyncioTestCase):
         llm = FakeLLM()
         tutor_assignment_repo = FakeTutorAssignmentRepository()
         calendar_repo = FakeCalendarRepository()
+        rag_policy = RAGRetrievalPolicy()
 
         use_case = ChatUseCase(
             chat_repo=chat_repo,
             corpus_repo=corpus_repo,
             llm=llm,
             tutor_assignment_repo=tutor_assignment_repo,
-            calendar_repo=calendar_repo
+            calendar_repo=calendar_repo,
+            rag_policy=rag_policy,
         )
 
         await use_case.send_chat_message(user_id=101, user_role="estudiante", user_content="¿Qué reuniones tengo?")
@@ -245,13 +267,15 @@ class TestChatUseCase(unittest.IsolatedAsyncioTestCase):
         llm = FakeLLM()
         tutor_assignment_repo = FakeTutorAssignmentRepository(tutors_data=[], students_data=[])
         calendar_repo = FakeCalendarRepository(calendar_data={"sessions": [], "events": []})
+        rag_policy = RAGRetrievalPolicy()
 
         use_case = ChatUseCase(
             chat_repo=chat_repo,
             corpus_repo=corpus_repo,
             llm=llm,
             tutor_assignment_repo=tutor_assignment_repo,
-            calendar_repo=calendar_repo
+            calendar_repo=calendar_repo,
+            rag_policy=rag_policy,
         )
 
         await use_case.send_chat_message(user_id=101, user_role="estudiante", user_content="¿Quién es mi tutor?")

@@ -15,7 +15,7 @@ graph LR
     end
 
     subgraph EmbeddingStorage ["2. Embeddings y Almacenamiento"]
-        GeminiEmbed["gemini-embedding-001 (768 dim)"]
+        GeminiEmbed["gemini-embedding-2 (768 dim)"]
         PGVector["PostgreSQL + pgvector (corpus_chunks)"]
     end
 
@@ -49,40 +49,59 @@ graph LR
 
 ### 2.2 Embeddings (Representación Vectorial)
 - **Implementación Actual:** Se utiliza el SDK `google-genai` en `GeminiAdapter.compute_embedding()`.
-- **Modelo:** `gemini-embedding-001` configurado con `output_dimensionality=768`.
-- **Observación:** El prompt general menciona `text-embedding-004`. Aunque ambos modelos de Google AI Studio operan nativamente a 768 dimensiones y son compatibles con la columna `Vector(768)` de `pgvector`, conviene unificar la nomenclatura en código y documentación.
+- **Modelo:** `gemini-embedding-2` configurado con `output_dimensionality=768`.
+- **Observación:** Los modelos anteriores retirados (modelo anterior / modelo retirado) fueron unificados a `gemini-embedding-2` en la Fase 3.
 
 ### 2.3 Almacenamiento Vectorial (`pgvector` en PostgreSQL)
 - **Esquema:** Tabla `corpus_chunks` con columna `embedding VECTOR(768)`.
-- **Métrica de Búsqueda Actual:** En `CorpusRepository.search_similar()`, se consulta utilizando la distancia euclidiana L2 (`.l2_distance()` o operador `<->`).
-- **Crítica Técnica:** Para modelos de embedding conversacionales como los de Gemini, la **distancia coseno (`cosine_distance` / `<=>`)** es matemáticamente superior para medir la similitud semántica.
-- **Índice Vectorial:** La migración Alembic `f9995a19c833_add_pgvector_and_corpuschunk.py` no crea un índice vectorial (`HNSW` o `IVFFlat`). Actualmente se realiza una búsqueda secuencial exacta (Exact Nearest Neighbors).
+- **Métrica de Búsqueda:** En `CorpusRepository.search_similar()`, se consulta utilizando la **distancia coseno (`cosine_distance` / `<=>`)**.
+- **Índice Vectorial:** Se preparó la migración Alembic `6f892a019e42` con un índice HNSW y `vector_cosine_ops`; permanece pendiente de aplicación en PostgreSQL real.
 
 ### 2.4 Recuperación (*Retrieval*)
-- **Top-K:** Fijado en `limit = 6` en `ChatUseCase.send_chat_message()`.
-- **Umbral de Similitud (*Score Threshold*):** **Inexistente**. La consulta siempre recupera los 6 fragmentos más cercanos sin verificar si la distancia supera un valor de corte (ej: cosine similarity >= 0.65).
-- **Riesgo:** Cuando el usuario realiza una pregunta ajena a la normativa (ej. sobre fútbol o recetas), el sistema inyecta 6 fragmentos irrelevantes al prompt en lugar de pasar un contexto vacío.
+- **Top-K y Umbral de Similitud:** Configurado a través de `RAGRetrievalPolicy` con `limit=6` y `max_cosine_distance=0.45` (equivalente a similitud coseno $\ge 0.55$).
+- **Fallback Léxico Controlado:** Si la búsqueda vectorial no completa `limit`, se ejecuta un fallback léxico que exige coincidencia conjunta `AND` para 2+ términos significativos (o término exacto de 6+ caracteres en búsquedas cortas) sin duplicar ni superar `keyword_fallback_limit=2`.
+- **Script de Regeneración Estricta:** `backend/scripts/rebuild_corpus_embeddings.py` utiliza `GeminiAdapter` con `allow_embedding_fallback=False` para evitar pseudoembeddings en la BD.
 
 ### 2.5 Generación y Grounding (*Gemini 2.5 Flash*)
-- **Inyección de Contexto:** Los 6 fragmentos se unen con salto de línea doble y se inyectan en `system_instruction`.
-- **Directivas de Grounding:** El prompt incluye reglas de concisión y uso de emojis (máximo 2), así como directivas de fecha para semestres (2026-I / 2026-II).
-- **Política de Fallback:** La Regla 6 del prompt autoriza al modelo a responder "según internet..." si no encuentra la respuesta en el corpus. Esto relaja el *grounding* y puede propiciar alucinaciones fuera del reglamento.
+- **Inyección de Contexto:** Los fragmentos recuperados incluyen su fuente descriptiva (`[Fuente: ...]`). Si no hay fragmentos que superen el umbral 0.45, el contexto adopta el marcador `NO HAY FRAGMENTOS RELEVANTES DEL CORPUS PARA ESTA CONSULTA.`.
+- **Política de Abstención Estricta:** Prohibidas expresiones como "según internet" o "conocimiento general". El bot responde obligatoriamente: *"No cuento con información suficiente en la base oficial de la UNSAAC para responder con certeza."*
 
 ---
 
-## 3. Tabla de Hallazgos y Acciones Recomendadas
+## 3. Tabla de Hallazgos y Acciones Aplicadas
 
-| Componente | Hallazgo | Severidad | Acción / Corrección Propuesta |
+| Componente | Hallazgo / Requerimiento | Severidad | Estado / Acción Aplicada en Fase 3 |
 |---|---|---|---|
-| **Almacenamiento (Métrica)** | Se usa distancia L2 (`l2_distance`) en lugar de distancia Coseno (`cosine_distance`) para la búsqueda vectorial. | Media | Cambiar `.l2_distance()` a `.cosine_distance()` en `CorpusRepository.search_similar()`. |
-| **Almacenamiento (Índice)** | No existe índice `HNSW` en PostgreSQL `pgvector`, provocando búsquedas por escaneo secuencial. | Media | Crear migración de Alembic o script SQL ejecutando `CREATE INDEX ON corpus_chunks USING hnsw (embedding vector_cosine_ops)`. |
-| **Recuperación (Umbral)** | Ausencia de *Score Threshold*. Siempre se inyectan 6 fragmentos independientemente de su relevancia. | Alta | Implementar filtro por distancia/similitud mínima (ej. `distance <= 0.45`) antes de inyectar contexto. |
-| **Generación (Grounding)** | La regla 6 del prompt permite usar "conocimientos generales e internet", aumentando el riesgo de alucinaciones normativas. | Media | Ajustar la regla 6 para forzar un mensaje de abstención estricto cuando la consulta sea sobre reglamentos pero no esté en la base oficial. |
+| **Almacenamiento (Métrica)** | Distancia Coseno (`cosine_distance`) para similitud semántica. | Media | **Resuelto:** Búsqueda vectorial mediante `.cosine_distance()` en `CorpusRepository`. |
+| **Almacenamiento (Índice)** | Creación de índice `HNSW` para acelerar búsquedas vectoriales. | Media | **Pendiente Despliegue:** Migración `6f892a019e42_add_hnsw_index_to_corpus_chunks.py` con `vector_cosine_ops` preparada en código. |
+| **Recuperación (Umbral)** | Filtro por umbral de similitud (*Score Threshold*). | Alta | **Resuelto:** `max_cosine_distance=0.45` en `RAGRetrievalPolicy` y `CorpusRepository`. |
+| **Generación (Grounding)** | Eliminación de respuestas no fundamentadas. | Media | **Resuelto:** Abstención estricta obligatoria ante falta de contexto oficial. |
 | **Chunking** | Falta de segmentación por límites semánticos estándar (artículos/incisos) y tamaño de tokens uniforme. | Media | Refactorizar el parser de `seed.py` para crear chunks estructurados por Artículos con solapamiento (*overlap*) de 100 tokens. |
 
 ---
 
-## 4. Plan de Optimización Inmediata para el Paper IEEE
+## 4. Secuencia de Despliegue Operativo y Advertencia Tecnológica
+
+> [!WARNING]
+> **Incompatibilidad Temporal de Vectores:**
+> **No debe operar el buscador vectorial de producción con consultas generadas por `gemini-embedding-2` mientras los `corpus_chunks` en la base de datos PostgreSQL conserven embeddings de un modelo anterior.** Las distancias vectoriales calculadas serán inconsistentes.
+
+Para desplegar operativamente los cambios de la Fase 3 en un entorno real:
+1. **Revocar la clave histórica comprometida** en la consola de Google AI Studio.
+2. **Configurar la nueva `GEMINI_API_KEY`** únicamente en las variables de entorno del servidor.
+3. **Realizar un respaldo completo** de PostgreSQL (`pg_dump`).
+4. **Pausar el tráfico conversacional RAG** o colocar el backend en mantenimiento.
+5. **Ejecutar el script en modo Dry-Run** (`python backend/scripts/rebuild_corpus_embeddings.py --dry-run`).
+6. **Ejecutar la regeneración real** de todos los embeddings existentes (`python backend/scripts/rebuild_corpus_embeddings.py`).
+7. **Aplicar la migración Alembic** (`cd backend && venv/bin/alembic upgrade head`).
+8. **Verificar el único Head de Alembic** (`6f892a019e42`).
+9. **Ejecutar pruebas de humo** y restaurar el tráfico normal.
+
+*(Consúltese el documento detallado [03_despliegue_rag_fase3.md](./03_despliegue_rag_fase3.md)).*
+
+---
+
+## 5. Plan de Optimización Inmediata para el Paper IEEE
 
 Para garantizar que el banco de pruebas (Fase 5) mida la máxima precisión del RAG:
 1. **Ajuste de Métrica:** Modificar `CorpusRepository` para usar distancia coseno.

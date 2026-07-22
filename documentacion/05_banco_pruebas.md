@@ -8,7 +8,7 @@ Este documento describe la metodología de evaluación, la composición del **Go
 
 El suite de pruebas evalúa el desempeño del sistema RAG en dos fases consecutivas:
 
-1. **Evaluación de Recuperación Vectorial (*Retrieval*):** Mide la habilidad de `pgvector` y del modelo de embedding (`gemini-embedding-001` / `text-embedding-004`) para recuperar los fragmentos relevantes del corpus normativo de la UNSAAC.
+1. **Evaluación de Recuperación Vectorial (*Retrieval*):** Mide la habilidad de `pgvector` y del modelo de embedding (`gemini-embedding-2`) para recuperar los fragmentos relevantes del corpus normativo de la UNSAAC.
 2. **Evaluación de Generación y Grounding (*Generation & LLM*):** Mide la capacidad del modelo `gemini-2.5-flash` para generar respuestas precisas, fundamentadas en el reglamento, sin alucinaciones y respetando la política de abstención en preguntas fuera de dominio.
 
 ```mermaid
