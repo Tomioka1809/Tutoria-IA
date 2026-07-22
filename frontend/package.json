@@ -10,6 +10,7 @@
     "web": "expo start --web",
     "verify:api": "node scripts/verify-api-layer.mjs",
     "verify:errors": "node scripts/verify-error-layer.mjs",
+    "verify:calendar": "node scripts/verify-calendar-layer.mjs",
     "lint": "expo lint"
   },
   "dependencies": {
