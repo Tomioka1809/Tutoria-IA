@@ -32,7 +32,7 @@ export default function ContenidoScreen() {
   const [isSavingQuote, setIsSavingQuote] = useState(false);
   const [editingQuoteId, setEditingQuoteId] = useState<number | null>(null);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setLoading(true);
     try {
       const [resC, resQ] = await Promise.all([
@@ -46,12 +46,12 @@ export default function ContenidoScreen() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
 
   useFocusEffect(
     useCallback(() => {
       fetchData();
-    }, [])
+    }, [fetchData])
   );
 
   const handleDeleteCorpus = (id: number) => {

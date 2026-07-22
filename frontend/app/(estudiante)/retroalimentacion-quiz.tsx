@@ -1,6 +1,6 @@
 // app/(estudiante)/retroalimentacion-quiz.tsx
 import React, { useState, useEffect } from 'react';
-import { View, Text, Pressable, ScrollView, Animated } from 'react-native';
+import { View, Text, Pressable, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Feather from '@expo/vector-icons/Feather';
@@ -21,7 +21,7 @@ export default function QuizScreen() {
   const [correctCount, setCorrectCount] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [errorKey, setErrorKey] = useState<string | null>(null);
 
   useEffect(() => {
     // Generar 20 preguntas desde la base de datos usando AI
@@ -32,7 +32,7 @@ export default function QuizScreen() {
       })
       .catch(err => {
         console.error("Failed to generate quiz", err);
-        setError(t('quiz.generationError'));
+        setErrorKey('quiz.generationError');
         setIsLoading(false);
       });
   }, []);
@@ -46,10 +46,10 @@ export default function QuizScreen() {
     );
   }
 
-  if (error || questions.length === 0) {
+  if (errorKey || questions.length === 0) {
     return (
       <View style={{ flex: 1, backgroundColor: colors.background, justifyContent: 'center', alignItems: 'center', padding: 24 }}>
-        <Text style={{ color: '#EF4444', textAlign: 'center', marginBottom: 24 }}>{error || t('quiz.noQuestions')}</Text>
+        <Text style={{ color: '#EF4444', textAlign: 'center', marginBottom: 24 }}>{errorKey ? t(errorKey) : t('quiz.noQuestions')}</Text>
         <Pressable
           onPress={() => router.replace('/(estudiante)/' as any)}
           style={{

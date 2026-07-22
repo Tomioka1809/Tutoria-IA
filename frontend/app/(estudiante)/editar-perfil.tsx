@@ -1,5 +1,5 @@
 // app/(estudiante)/editar-perfil.tsx
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   View,
   Text,
@@ -12,8 +12,7 @@ import {
   ActivityIndicator,
   StyleSheet,
 } from 'react-native';
-import { useFocusEffect } from 'expo-router';
-import { useRouter } from 'expo-router';
+import { useFocusEffect, useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Feather from '@expo/vector-icons/Feather';
 import * as ImagePicker from 'expo-image-picker';

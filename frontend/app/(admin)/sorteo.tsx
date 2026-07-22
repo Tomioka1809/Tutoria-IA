@@ -24,7 +24,7 @@ export default function AsignacionesScreen() {
   const [toTutor, setToTutor] = useState<number | null>(null);
   const [isTransferring, setIsTransferring] = useState(false);
 
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     try {
       const res = await client.get('/admin/users', {
         headers: { Authorization: `Bearer ${token}` }
@@ -35,12 +35,12 @@ export default function AsignacionesScreen() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
 
   useFocusEffect(
     useCallback(() => {
       fetchUsers();
-    }, [])
+    }, [fetchUsers])
   );
 
   const tutors = users.filter(u => u.role === 'tutor' && u.is_active);

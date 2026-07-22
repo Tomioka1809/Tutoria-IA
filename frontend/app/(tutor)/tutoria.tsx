@@ -1,7 +1,7 @@
 // app/(tutor)/tutoria.tsx
 import React, { useEffect, useRef, useState } from 'react';
 import { useTheme } from '@/src/theme/ThemeContext';
-import { View, Text, KeyboardAvoidingView, Platform, TextInput, Keyboard } from 'react-native';
+import { KeyboardAvoidingView, Platform, TextInput, Keyboard } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
 import { useTutoria } from '@/src/components/tutoria/useTutoria';
@@ -16,7 +16,6 @@ export default function TutoriaScreen() {
   const {
     user,
     conversation,
-    fetchConversation,
     isLoading,
     isSending,
     inputText,

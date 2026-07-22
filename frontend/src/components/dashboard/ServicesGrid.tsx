@@ -6,7 +6,6 @@ import { useRouter } from 'expo-router';
 import Feather from '@expo/vector-icons/Feather';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { useAuthStore } from '@/src/store/auth';
 import { useTranslation } from 'react-i18next';
 
 const services = [
@@ -24,7 +23,6 @@ export function ServicesGrid() {
   const { colors } = useTheme();
   const { t } = useTranslation();
   const router = useRouter();
-  const user = useAuthStore((state) => state.user);
 
   const renderIcon = (type: string, name: string) => {
     const size = 22;
