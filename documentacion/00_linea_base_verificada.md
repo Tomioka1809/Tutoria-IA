@@ -146,7 +146,8 @@ React-Native/
 | `FRONT-003` | Frontend / Calendario | Separación formalizada entre actividades personales locales (`useActivityStore`) y tutorías persistidas (`useSessionStore`) mediante el modelo puro `CalendarItem` (`calendar-items.ts`), prefijos de ID (`activity:`, `session:`) y sin consumir `/events/` para evitar duplicidad. | Media | RESUELTO_EN_FASE_4C |
 | `FRONT-004` | Frontend / Datos Reales | Eliminación de datos y personas ficticias visibles. Implementación de la resolución determinista de tutor (ausencia, asignación disponible o ambigüedad), diferenciación de errores de carga en `useProfile`, eliminación del filtro ficticio en notificaciones y fecha real en recordatorios locales. | Media | RESUELTO_EN_FASE_4D |
 | `FRONT-005` | Frontend / Calidad Estática | Cierre de advertencias ESLint (36 a 0), corrección semántica de dependencias de hooks sin supresiones, eliminación de imports y variables sin uso, ajuste compatible de i18next y script `verify:quality`. | Baja | RESUELTO_EN_FASE_4E |
-| `TEST-001` | Banco de Pruebas | Vulnerabilidad a cuotas gratuitas de la API de Gemini (HTTP 429) en ejecuciones masivas del benchmark. | Media | Fase 5 |
+| `F5-001` | Banco de Pruebas RAG | Inconsistencia de métricas históricas entre artefactos y documentación. La Fase 5A implementa trazabilidad, retries, escritura atómica y protección de ejecuciones incompletas; las métricas finales reproducibles requieren la Fase 5B. | Alta | EN_CORRECCION_FASE_5A |
+| `TEST-001` | Banco de Pruebas | Vulnerabilidad a cuotas gratuitas de la API de Gemini (HTTP 429) en ejecuciones masivas del benchmark. | Media | EN_CORRECCION_FASE_5A |
 
 ---
 
