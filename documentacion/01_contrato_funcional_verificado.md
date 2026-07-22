@@ -90,7 +90,7 @@ Todos requieren ejecución en el entorno levantado. Esta cantidad no se suma a l
 | `EST-002` | Chat TutorIA RAG | `frontend/app/(estudiante)/tutoria.tsx` | `useChatStore` | `GET /chat/conversation` & `POST /chat/message` | `{ "content": "string" }` | `MessageOut` | `PARCIAL` | `chat.ts` L24, L62, `chat.py` L11, L23 | GeminiAdapter declara las herramientas y recibe peticiones de Tool Calling, pero `ChatUseCase` ejecuta directamente modelos ORM SQLAlchemy. |
 | `EST-003` | Solicitar Tutoría | `frontend/src/components/calendar/ScheduleSessionModal.tsx` | `useSessionStore.createSession` | `POST /sessions/` | `{ tutor_id, service_type_id, scheduled_at, notes, location }` | `SessionOut` | `COMPLETO_EN_CODIGO` | `session.ts` L40, `sessions.py` L18 | Crea una sesión de tutoría con estado inicial `"programada"`. |
 | `EST-004` | Quiz Generativo LLM | `frontend/app/(estudiante)/retroalimentacion-quiz.tsx` | `QuizAPI.generateQuiz` | `GET /quiz/generate` | Header `Authorization: Bearer token` | `List[QuizQuestionOut]` | `COMPLETO_EN_CODIGO` | `services.ts` L16, `quiz.py` L22 | Inconsistencia de cliente HTTP: usa `fetch` independiente con 60s timeout duplicando la gestión de tokens. |
-| `EST-005` | Actividades Personales | `frontend/src/components/calendar/AddActivityModal.tsx` | `useActivityStore` | N/A (Local Storage) | `{ name, type, date, time }` | `Activity` (local) | `REQUIERE_DECISION_FUNCIONAL` | `activity.ts` L20-L54, `events.py` L15, L41 | Persistencia local en AsyncStorage. Podría representar un concepto diferente a las actividades académicas en `/events/`. |
+| `EST-005` | Actividades Personales | `frontend/src/components/calendar/AddActivityModal.tsx` | `useActivityStore` | N/A (Local Storage) | `{ name, type, date, time }` | `Activity` (local) | `DECISION_FUNCIONAL_RESUELTA_EN_FASE_4C` | `activity.ts` L20-L54, `events.py` L15, L41 | Persistencia local en AsyncStorage para recordatorios personales. Las tutorías persistidas se gestionan en `useSessionStore` y PostgreSQL. `/events/` es una proyección interna vinculada a sesiones y no se consume para evitar duplicidad. |
 | `EST-006` | Frase Motivacional | `frontend/app/(estudiante)/index.tsx` | `QuotesAPI.getRandomQuote` | `GET /quotes/random` | Ninguno | `QuoteOut` | `COMPLETO_EN_CODIGO` | `services.ts` L58, `quotes.py` L19 | Obtiene una frase aleatoria almacenada en la base de datos. |
 
 ---
@@ -177,16 +177,16 @@ Diferenciación estricta de responsabilidades entre el adaptador LLM y el caso d
 | Endpoint | Archivo backend | Clasificación | Observación |
 |---|---|---|---|
 | `POST /api/v1/auth/register-staff` | `endpoints/auth.py` L23 | `ENDPOINT_POTENCIALMENTE_REDUNDANTE` | La creación de personal administrativo/tutores es asumida por `POST /admin/users`. |
-| `GET /api/v1/tutors/service-types` | `endpoints/tutors.py` L99 | `SOLO_BACKEND` | El frontend envía `service_type_id: 1` fijo o ingresado en modales sin consultar dinámicamente este catálogo. |
+| `GET /api/v1/tutors/service-types` | `endpoints/tutors.py` L99 | `CONSUMIDO_POR_FRONTEND` | `useCalendar.ts` consulta dinámicamente `GET /tutors/service-types`, valida la respuesta y busca la coincidencia solicitada sin utilizar un ID fijo ni el primer elemento como fallback. |
 
 ---
 
 ## 13. Uso de mocks y datos estáticos
 
-| Archivo | Dato simulado | Funcionalidad afectada | Severidad |
+| Archivo | Dato simulado | Funcionalidad afectada | Severidad / Estado |
 |---|---|---|---|
-| `frontend/src/components/profile/AssignedTutorCard.tsx` L23-L27 | `'Ing. Ana Torres'` / `'ana.torres@universidad.edu'` | Muestra datos ficticios si el array de tutores asignados viene vacío. | Media |
-| `frontend/src/components/notifications/NotificationsHeader.tsx` L21 | Filtro mock visual de tipos de notificación | Desplegable de selección en pantalla de Notificaciones sin conexión a backend. | Baja |
+| `frontend/src/components/profile/AssignedTutorCard.tsx` L23-L27 | `'Ing. Ana Torres'` / `'ana.torres@universidad.edu'` | Muestra datos ficticios si el array de tutores asignados viene vacío. | `RESUELTO_EN_FASE_4D` |
+| `frontend/src/components/notifications/NotificationsHeader.tsx` | Filtro mock visual de tipos de notificación | El control era un Pressable sin funcionalidad que fue eliminado en la Fase 4D; NotificationsHeader conserva únicamente botón de regreso y título. | `RESUELTO_EN_FASE_4D` |
 
 ---
 
@@ -212,8 +212,8 @@ Los siguientes componentes existen en código pero requieren validación en ejec
 
 | ID | Tipo | Frontend | Backend | Impacto | Fase de corrección |
 |---|---|---|---|---|---|
-| `INC-001` | Inconsistencia Cliente HTTP | `QuizAPI.generateQuiz` usa `fetch` para elevar el timeout a 60s. | `client.ts` tiene timeout por defecto de 5000ms. | Duplicación de lógica de tokens y desestandarización del cliente HTTP de la app. | Fase 4 |
-| `INC-002` | IP Fallback Hardcodeada | `client.ts` contiene `192.168.18.27` fija como fallback. | API Backend se ejecuta en `localhost:8000` o IP dinámica LAN. | Riesgo de fallos de conexión en redes locales distintas a `192.168.18.x`. | Fase 4 |
+| `INC-001` | Cliente HTTP Centralizado | `QuizAPI` utiliza `client.get('/quiz/generate')`. | Cliente centralizado con timeout de 60000 ms. | JWT inyectado mediante interceptor de Axios. | RESUELTO_EN_FASE_4A |
+| `INC-002` | Resolución Dinámica de URL | No existe IP privada fija en `client.ts`. | Se prioriza `EXPO_PUBLIC_API_URL`, luego se utiliza `expoConfig.hostUri` y fallback `localhost`. | Eliminada IP estática hardcodeada de desarrollo. | RESUELTO_EN_FASE_4A |
 | `INC-003` | Documentación Embeddings | Modelos anteriores retirados unificados a `gemini-embedding-2`. | `gemini_adapter.py` unificado a `gemini-embedding-2`. | Resuelto en la Fase 3. | Fase 3 |
 
 ---
@@ -286,13 +286,14 @@ Los siguientes componentes existen en código pero requieren validación en ejec
 | ID | Componente | Hallazgo | Severidad | Fase recomendada |
 |---|---|---|---|---|
 | `HALL-AUTH-001` | Autenticación | Flujo de recuperación de contraseña (`forgot-password`) no envía correos de restablecimiento reales. | Media | Fase 2 |
-| `HALL-NAV-001` | Navegación | Pantallas `explore.tsx` en estudiante y tutor mantienen contenido estático de plantilla Expo Router. | Baja | Fase 4 |
-| `HALL-EST-001` | Estudiante | Actividades del calendario se persisten localmente en `useActivityStore` sin consumir los endpoints `/events/` del backend. | Media | Fase 4 |
-| `HALL-TUT-001` | Tutor | El selector de tipos de servicio en solicitud de sesión no consume `GET /tutors/service-types`. | Baja | Fase 4 |
+| `HALL-NAV-001` | Navegación | Pantallas `explore.tsx` en estudiante y tutor actualizadas con servicios y accesos a rutas reales (`/tutoria`, `/calendar`, `/profile`), eliminando la plantilla estática de Expo Router. | Baja | RESUELTO_EN_FASE_4D |
+| `HALL-EST-001` | Estudiante | Actividades del calendario se persisten localmente en `useActivityStore` (recordatorios privados) sin consumir `/events/`. Las tutorías persistidas se consumen desde `/sessions/`. | Media | DECISION_FUNCIONAL_RESUELTA_EN_FASE_4C |
+| `HALL-TUT-001` | Tutor | El selector de tipos de servicio consume `GET /tutors/service-types` dinámicamente sin fallbacks fijos (`useCalendar.ts`). | Baja | Resuelto en Código |
 | `HALL-ADM-001` | Admin | El endpoint `POST /auth/register-staff` no tiene vista consumidora directa en el frontend de administración. | Baja | Fase 2 |
 | `HALL-CHAT-001` | Chatbot | `ChatUseCase` desacoplado de SQLAlchemy; utiliza `CorpusRepositoryPort` y DTOs tipados `RetrievedChunkDTO`. | Alta | Resuelto Fase 2 / Fase 3 |
-| `HALL-API-001` | API Client | `client.ts` contiene una IP de red LAN hardcodeada (`192.168.18.27`) como fallback de conexión. | Media | Fase 4 |
-| `HALL-MOCK-001` | Frontend / UX | `AssignedTutorCard.tsx` muestra datos mock hardcodeados (`Ing. Ana Torres`) si el usuario no tiene tutor asignado. | Media | Fase 4 |
+| `HALL-API-001` | API Client | `client.ts` contenía IP hardcodeada (`192.168.18.27`); eliminada y resuelta con `resolveApiUrl`. | Media | Resuelto Fase 4A |
+| `HALL-MOCK-001` | Frontend / UX | Resueltos los mocks visuales de frontend: eliminada la persona ficticia de `AssignedTutorCard.tsx` (aplicando resolución determinista `none`/`available`/`ambiguous`) y eliminado el falso control de filtro de `NotificationsHeader.tsx`. | Media | RESUELTO_EN_FASE_4D |
+| `HALL-STATIC-001` | Frontend / Calidad Estática | Las 36 advertencias iniciales de ESLint fueron totalmente corregidas sin supresiones (`eslint-disable`), logrando 0 errores y 0 warnings verificados estáticamente con `verify:quality`. | Baja | RESUELTO_EN_FASE_4E |
 
 ---
 

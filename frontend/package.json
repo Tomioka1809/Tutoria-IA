@@ -8,6 +8,11 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
+    "verify:api": "node scripts/verify-api-layer.mjs",
+    "verify:errors": "node scripts/verify-error-layer.mjs",
+    "verify:calendar": "node scripts/verify-calendar-layer.mjs",
+    "verify:data": "node scripts/verify-real-data-layer.mjs",
+    "verify:quality": "node scripts/verify-static-quality.mjs",
     "lint": "expo lint"
   },
   "dependencies": {

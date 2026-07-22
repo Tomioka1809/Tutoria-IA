@@ -1,85 +1,104 @@
-// app/(estudiante)/explore.tsx
 import React from 'react';
+import { View, Text, ScrollView, Pressable } from 'react-native';
+import { useRouter } from 'expo-router';
+import { Feather } from '@expo/vector-icons';
 import { useTheme } from '@/src/theme/ThemeContext';
-import { Image } from 'expo-image';
-import { ExternalLink } from '@/components/external-link';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { useExplore } from '@/src/components/explore/useExplore';
-import { ExploreHeader } from '@/src/components/explore/ExploreHeader';
-import { CollapsibleSection } from '@/src/components/explore/CollapsibleSection';
 import { useTranslation } from 'react-i18next';
 
-export default function TabTwoScreen() {
-  const { colors } = useTheme();
+export default function ExploreScreen() {
+  const { colors, isDark } = useTheme();
   const { t } = useTranslation();
-  const { styles, Fonts, Platform } = useExplore();
+  const router = useRouter();
+
+  const services = [
+    {
+      id: 'chat',
+      title: t('explore.openChat'),
+      description: t('explore.studentDescription'),
+      icon: 'message-square' as const,
+      route: '/(estudiante)/tutoria',
+      color: '#9A3BEE',
+      bgColor: '#F3E8FF',
+    },
+    {
+      id: 'calendar',
+      title: t('explore.openCalendar'),
+      description: t('calendar.emptyScheduledHint'),
+      icon: 'calendar' as const,
+      route: '/(estudiante)/calendar',
+      color: '#3B82F6',
+      bgColor: '#DBEAFE',
+    },
+    {
+      id: 'profile',
+      title: t('explore.openProfile'),
+      description: t('explore.profileDescription'),
+      icon: 'user' as const,
+      route: '/(estudiante)/profile',
+      color: '#10B981',
+      bgColor: '#D1FAE5',
+    },
+  ];
 
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-      headerImage={
-        <ExploreHeader style={styles.headerImage} />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText
-          type="title"
-          style={{
-            fontFamily: Fonts.rounded,
-          }}>
+    <ScrollView
+      style={{ flex: 1, backgroundColor: colors.background }}
+      contentContainerStyle={{ paddingHorizontal: 24, paddingTop: 64, paddingBottom: 120 }}
+      showsVerticalScrollIndicator={false}
+    >
+      <View style={{ marginBottom: 24 }}>
+        <Text style={{ fontSize: 24, fontWeight: 'bold', color: colors.text }}>
           {t('explore.title')}
-        </ThemedText>
-      </ThemedView>
-      <ThemedText>{t('explore.intro')}</ThemedText>
-      
-      <CollapsibleSection title={t('explore.routing')}>
-        <ThemedText>
-          {t('explore.screens')}{' '}
-          <ThemedText type="defaultSemiBold">app/(estudiante)/index.tsx</ThemedText> {t('explore.and')}{' '}
-          <ThemedText type="defaultSemiBold">app/(estudiante)/explore.tsx</ThemedText>
-        </ThemedText>
-        <ThemedText>
-          <ThemedText type="defaultSemiBold">app/(estudiante)/_layout.tsx</ThemedText>{' '}
-          {t('explore.layout')}
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/router/introduction">
-          <ThemedText type="link">{t('explore.learnMore')}</ThemedText>
-        </ExternalLink>
-      </CollapsibleSection>
+        </Text>
+        <Text style={{ fontSize: 14, color: colors.textSecondary, marginTop: 6, lineHeight: 20 }}>
+          {t('explore.studentDescription')}
+        </Text>
+      </View>
 
-      <CollapsibleSection title={t('explore.platforms')}>
-        <ThemedText>{t('explore.platformsBody')}</ThemedText>
-      </CollapsibleSection>
-
-      <CollapsibleSection title={t('explore.images')}>
-        <ThemedText>{t('explore.imagesBody')}</ThemedText>
-        <Image
-          source={require('@/assets/images/react-logo.png')}
-          style={{ width: 100, height: 100, alignSelf: 'center' }}
-        />
-        <ExternalLink href="https://reactnative.dev/docs/images">
-          <ThemedText type="link">{t('explore.learnMore')}</ThemedText>
-        </ExternalLink>
-      </CollapsibleSection>
-
-      <CollapsibleSection title={t('explore.themes')}>
-        <ThemedText>{t('explore.themesBody')}</ThemedText>
-        <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
-          <ThemedText type="link">{t('explore.learnMore')}</ThemedText>
-        </ExternalLink>
-      </CollapsibleSection>
-
-      <CollapsibleSection title={t('explore.animations')}>
-        <ThemedText>{t('explore.animationsBody')}</ThemedText>
-        {Platform.select({
-          ios: (
-            <ThemedText>
-              {t('explore.parallax')}
-            </ThemedText>
-          ),
-        })}
-      </CollapsibleSection>
-    </ParallaxScrollView>
+      {services.map((item) => (
+        <Pressable
+          key={item.id}
+          onPress={() => router.push(item.route as any)}
+          style={{
+            backgroundColor: colors.surface,
+            borderRadius: 24,
+            padding: 20,
+            marginBottom: 16,
+            borderWidth: 1,
+            borderColor: colors.border,
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.04,
+            shadowRadius: 8,
+            elevation: 2,
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}
+        >
+          <View
+            style={{
+              width: 52,
+              height: 52,
+              borderRadius: 20,
+              backgroundColor: isDark ? '#374151' : item.bgColor,
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginRight: 16,
+            }}
+          >
+            <Feather name={item.icon} size={24} color={item.color} />
+          </View>
+          <View style={{ flex: 1 }}>
+            <Text style={{ fontSize: 16, fontWeight: 'bold', color: colors.text, marginBottom: 4 }}>
+              {item.title}
+            </Text>
+            <Text style={{ fontSize: 12, color: colors.textSecondary, lineHeight: 16 }} numberOfLines={2}>
+              {item.description}
+            </Text>
+          </View>
+          <Feather name="chevron-right" size={20} color={colors.textSecondary} style={{ marginLeft: 8 }} />
+        </Pressable>
+      ))}
+    </ScrollView>
   );
 }

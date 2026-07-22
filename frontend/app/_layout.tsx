@@ -67,7 +67,7 @@ function RootLayoutNav() {
         }
       }
     }
-  }, [token, user, segments, isHydrated, navigationState?.key]);
+  }, [token, user, segments, isHydrated, navigationState?.key, router]);
 
   if (!isHydrated) {
     return (

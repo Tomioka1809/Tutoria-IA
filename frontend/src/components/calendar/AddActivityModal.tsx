@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Modal, Pressable, ScrollView, Platform } from 'react-native';
+import { View, Text, TextInput, Modal, Pressable, ScrollView } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
@@ -44,31 +44,34 @@ export function AddActivityModal({
   const [notes, setNotes] = useState('');
   const [location, setLocation] = useState('');
 
-  // studentId === null means "A todos"
   const [selectedStudentId, setSelectedStudentId] = useState<number | null>(null);
   const [studentSearch, setStudentSearch] = useState('');
 
-  // Date and Time
-  const [date, setDate] = useState(selectedDate);
-  const [time, setTime] = useState(new Date(selectedDate.setHours(10, 0, 0, 0)));
+  const [date, setDate] = useState(() => new Date(selectedDate));
+  const [time, setTime] = useState(() => {
+    const initTime = new Date(selectedDate);
+    initTime.setHours(10, 0, 0, 0);
+    return initTime;
+  });
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
 
-  // Sync on open
   React.useEffect(() => {
     if (isOpen) {
       const initDate = new Date(selectedDate);
       setDate(initDate);
-      setTime(new Date(initDate.setHours(10, 0, 0, 0)));
+      const initTime = new Date(selectedDate);
+      initTime.setHours(10, 0, 0, 0);
+      setTime(initTime);
       setType(isTutor ? 'Tutoría Académica' : 'Trabajos');
       setStatus('pendiente');
       setNotes('');
       setLocation('');
       setName('');
       setStudentSearch('');
-      setSelectedStudentId(null); // Defaults to "A todos"
+      setSelectedStudentId(null);
     }
-  }, [isOpen, selectedDate]);
+  }, [isOpen, selectedDate, isTutor]);
 
   const handleSubmit = () => {
     if (!name.trim()) {
@@ -99,14 +102,14 @@ export function AddActivityModal({
     onClose();
   };
 
-  const onDateChange = (event: any, selectedValue?: Date) => {
+  const onDateChange = (_event: any, selectedValue?: Date) => {
     setShowDatePicker(false);
     if (selectedValue) {
       setDate(selectedValue);
     }
   };
 
-  const onTimeChange = (event: any, selectedValue?: Date) => {
+  const onTimeChange = (_event: any, selectedValue?: Date) => {
     setShowTimePicker(false);
     if (selectedValue) {
       setTime(selectedValue);
@@ -141,7 +144,6 @@ export function AddActivityModal({
           </View>
 
           <ScrollView showsVerticalScrollIndicator={false}>
-            {/* Input: Nombre */}
             <View className="mb-4">
               <Text className="text-xs font-bold text-textSecondary mb-2 uppercase tracking-wider">{t('calendar.activityName')}</Text>
               <TextInput
@@ -153,12 +155,11 @@ export function AddActivityModal({
               />
             </View>
 
-            {/* Selector: Tipo de Actividad */}
             <View className="mb-4">
               <Text className="text-xs font-bold text-textSecondary mb-2 uppercase tracking-wider">{t('calendar.activityType')}</Text>
               <View className="flex-row flex-wrap justify-between">
                 {typesConfig
-                  .filter((t) => t.visible)
+                  .filter((tConfig) => tConfig.visible)
                   .map((item) => {
                     const isActive = type === item.id;
                     return (
@@ -190,14 +191,12 @@ export function AddActivityModal({
               </View>
             </View>
 
-            {/* Apartado para seleccionar estudiante */}
             {type.includes('Tutoría') && isTutor && (
               <View className="mb-4 bg-[#F5F3FF] border border-primary/20 rounded-2xl p-4">
                 <Text style={{ color: isDark ? '#FFFFFF' : colors.primary }} className="text-xs font-bold mb-2 uppercase tracking-wider">
                   {t('calendar.assignStudent')}
                 </Text>
                 
-                {/* Buscador de estudiantes */}
                 <View style={{ backgroundColor: colors.surface }} className="flex-row items-center  border border-gray-200 rounded-xl px-3 py-1.5 mb-3 shadow-sm">
                   <Feather name="search" size={14} color={colors.textSecondary} className="mr-2" />
                   <TextInput
@@ -209,7 +208,6 @@ export function AddActivityModal({
                   />
                 </View>
 
-                {/* Lista de estudiantes */}
                 <ScrollView 
                   style={{ maxHeight: 110 }} 
                   nestedScrollEnabled={true}
@@ -258,7 +256,6 @@ export function AddActivityModal({
               </View>
             )}
 
-            {/* Grid: Fecha y Hora con Selectores */}
             <View className="flex-row justify-between mb-4">
               <View className="w-[48%]">
                 <Text className="text-xs font-bold text-textSecondary mb-2 uppercase tracking-wider">{t('calendar.date')}</Text>
@@ -304,7 +301,6 @@ export function AddActivityModal({
               </View>
             </View>
 
-            {/* Estado y Lugar */}
             <View className="flex-row justify-between mb-4">
               <View className="w-[48%]">
                 <Text className="text-xs font-bold text-textSecondary mb-2 uppercase tracking-wider">{t('calendar.status')}</Text>
@@ -333,7 +329,6 @@ export function AddActivityModal({
               </View>
             </View>
 
-            {/* Notas */}
             <View className="mb-6">
               <Text className="text-xs font-bold text-textSecondary mb-2 uppercase tracking-wider">{t('calendar.notes')}</Text>
               <TextInput
@@ -348,7 +343,6 @@ export function AddActivityModal({
               />
             </View>
 
-            {/* Botón de Submit */}
             <Pressable
               onPress={handleSubmit}
               className="bg-primary rounded-2xl py-4 items-center justify-center shadow-lg shadow-[#9A3BEE]/25 mb-4"

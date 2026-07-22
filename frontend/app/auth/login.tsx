@@ -3,8 +3,6 @@ import { View, TextInput, Text, Pressable, ActivityIndicator, KeyboardAvoidingVi
 import { useRouter, Link } from 'expo-router';
 import { useAuthStore } from '../../src/store/auth';
 import client from '../../src/api/client';
-import { ThemedText } from '../../components/themed-text';
-import { ThemedView } from '../../components/themed-view';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '@/src/theme/ThemeContext';
 

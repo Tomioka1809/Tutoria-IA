@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import { ScrollView, Pressable, Text, View, RefreshControl, ActivityIndicator, Modal } from 'react-native';
 import { useRouter, useFocusEffect } from 'expo-router';
 import { useDashboard } from '@/src/components/dashboard/useDashboard';
@@ -21,61 +21,80 @@ export default function DashboardScreen() {
 
   const [periods, setPeriods] = useState<string[]>([]);
   const [selectedPeriod, setSelectedPeriod] = useState<string>('');
+  const selectedPeriodRef = useRef<string>('');
 
   const [selectedStudent, setSelectedStudent] = useState<any>(null);
   const [modalVisible, setModalVisible] = useState(false);
 
-  const fetchPeriods = async () => {
+  const fetchPeriods = useCallback(async (): Promise<string[]> => {
     try {
       const res = await client.get('/tutors/periods', {
         headers: { Authorization: `Bearer ${token}` }
       });
-      setPeriods(res.data);
-      if (res.data.length > 0 && !selectedPeriod) {
-        setSelectedPeriod(res.data[0]);
-      }
+      const data = Array.isArray(res.data) ? res.data : [];
+      setPeriods(data);
+      return data;
     } catch (e) {
       console.error('Failed to load academic periods', e);
+      return [];
     }
-  };
+  }, [token]);
 
-  const fetchStudents = async (period?: string) => {
+  const fetchStudents = useCallback(async (period?: string) => {
     setLoadingStudents(true);
     try {
       const res = await client.get('/tutors/students', {
         params: period ? { academic_period: period } : {},
         headers: { Authorization: `Bearer ${token}` }
       });
-      setStudents(res.data);
+      setStudents(Array.isArray(res.data) ? res.data : []);
     } catch (e) {
-      console.error(e);
+      console.error('Failed to load assigned students', e);
     } finally {
       setLoadingStudents(false);
     }
-  };
+  }, [token]);
+
+  const loadTutorData = useCallback(async (customPeriod?: string) => {
+    setLoadingStudents(true);
+    try {
+      const periodList = await fetchPeriods();
+      let effectivePeriod = customPeriod ?? selectedPeriodRef.current;
+
+      if (periodList.length > 0) {
+        if (!effectivePeriod || !periodList.includes(effectivePeriod)) {
+          effectivePeriod = periodList[0];
+        }
+      } else {
+        effectivePeriod = '';
+      }
+
+      selectedPeriodRef.current = effectivePeriod;
+      setSelectedPeriod(effectivePeriod);
+      await fetchStudents(effectivePeriod);
+    } catch (e) {
+      console.error('Failed to load tutor data', e);
+    } finally {
+      setLoadingStudents(false);
+    }
+  }, [fetchPeriods, fetchStudents]);
 
   useFocusEffect(
     useCallback(() => {
-      fetchPeriods();
-    }, [])
+      loadTutorData();
+    }, [loadTutorData])
   );
 
-  useEffect(() => {
-    if (selectedPeriod) {
-      fetchStudents(selectedPeriod);
-    } else {
-      fetchStudents();
-    }
-  }, [selectedPeriod]);
+  const handleSelectPeriod = useCallback((period: string) => {
+    if (period === selectedPeriodRef.current) return;
+    selectedPeriodRef.current = period;
+    setSelectedPeriod(period);
+    fetchStudents(period);
+  }, [fetchStudents]);
 
   const handleRefresh = async () => {
     onRefresh();
-    await fetchPeriods();
-    if (selectedPeriod) {
-      await fetchStudents(selectedPeriod);
-    } else {
-      await fetchStudents();
-    }
+    await loadTutorData();
   };
 
   const openStudentDetails = (student: any) => {
@@ -136,7 +155,7 @@ export default function DashboardScreen() {
               return (
                 <Pressable
                   key={p}
-                  onPress={() => setSelectedPeriod(p)}
+                  onPress={() => handleSelectPeriod(p)}
                   style={{
                     backgroundColor: isSelected ? colors.primary : colors.surface,
                     paddingHorizontal: 16,

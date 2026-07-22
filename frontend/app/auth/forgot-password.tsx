@@ -20,7 +20,7 @@ export default function ForgotPasswordScreen() {
     setError('');
     setIsLoading(true);
     try {
-      const response = await client.post('/auth/forgot-password', {
+      await client.post('/auth/forgot-password', {
         email: email.trim().toLowerCase()
       });
 

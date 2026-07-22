@@ -18,7 +18,6 @@ export default function TutoriaScreen() {
   const {
     user,
     conversation,
-    fetchConversation,
     isLoading,
     isSending,
     inputText,

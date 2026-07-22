@@ -31,7 +31,7 @@ export default function UsersApprovalScreen() {
   const [tutorStudents, setTutorStudents] = useState<any[]>([]);
   const [loadingTutorStudents, setLoadingTutorStudents] = useState(false);
 
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     try {
       const res = await client.get('/admin/users', {
         headers: { Authorization: `Bearer ${token}` }
@@ -42,12 +42,12 @@ export default function UsersApprovalScreen() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
 
   useFocusEffect(
     useCallback(() => {
       fetchUsers();
-    }, [])
+    }, [fetchUsers])
   );
 
   const toggleStatus = (id: number, currentStatus: boolean, name: string) => {

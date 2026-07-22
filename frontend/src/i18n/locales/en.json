@@ -104,7 +104,12 @@
     "assignedTutor": "Assigned tutor",
     "noTutor": "You do not have an assigned tutor yet",
     "tutorTeacher": "Faculty Tutor",
-    "viewProfile": "View profile"
+    "viewProfile": "View profile",
+    "noAssignedTutor": "No assigned tutor",
+    "noAssignedTutorDescription": "You currently do not have an assigned tutor.",
+    "tutorUnavailable": "Tutor unavailable",
+    "tutorAssignmentAmbiguous": "Tutor assignment requires confirmation",
+    "tutorAssignmentAmbiguousDescription": "Multiple assignments were found and a single tutor cannot be determined."
   },
   "notifications": {
     "title": "Notifications",
@@ -184,7 +189,10 @@
     "scheduledSuccess": "Tutoring session scheduled successfully!",
     "scheduledError": "There was an error scheduling the tutoring session.",
     "statusSuccess": "Status updated successfully!",
-    "statusError": "There was an error updating the status."
+    "statusError": "There was an error updating the status.",
+    "localActivity": "Personal Activity",
+    "tutoringSession": "Tutoring Session",
+    "invalidActivityDate": "Invalid activity date or time"
   },
   "tutoring": {
     "online": "Online",
@@ -331,22 +339,14 @@
     "viewResults": "View Results"
   },
   "explore": {
-    "title": "Explore",
-    "intro": "This app includes example code to help you get started.",
-    "routing": "File-based Routing",
-    "screens": "This app has two screens:",
-    "and": "and",
-    "layout": "The layout file sets up the tab navigator.",
-    "learnMore": "Learn More",
-    "platforms": "Android, iOS, and Web Support",
-    "platformsBody": "You can open this project on Android, iOS, and the web. To open the web version, press w in the terminal running this project.",
-    "images": "Images",
-    "imagesBody": "For static images, you can use the @2x and @3x suffixes to provide files for different screen densities.",
-    "themes": "Light and Dark Mode Components",
-    "themesBody": "This template supports light and dark mode. The useColorScheme() hook lets you inspect the current color scheme and adjust the interface.",
-    "animations": "Animations",
-    "animationsBody": "This template includes an example animated component. HelloWave.tsx uses react-native-reanimated to create an animation.",
-    "parallax": "ParallaxScrollView.tsx provides a parallax effect for the header image."
+    "title": "Services & Resources",
+    "intro": "Access TutorIA's tools and academic services.",
+    "studentDescription": "Quickly access your academic and personal TutorIA services.",
+    "tutorDescription": "Management of tutoring, assigned students, and academic resources.",
+    "openChat": "AI Assistant Chat",
+    "openCalendar": "Calendar",
+    "openProfile": "My Profile",
+    "profileDescription": "View and manage your profile information."
   },
   "admin": {
     "welcome": "Welcome, {{name}}",
@@ -441,5 +441,32 @@
     "access": "Access",
     "logout": "Sign Out",
     "logoutDescription": "Sign out of the administrator account"
+  },
+  "errors": {
+    "title": "Error",
+    "close": "Close",
+    "network": "Unable to connect to the server. Please check your internet connection.",
+    "timeout": "The operation timed out. Please try again.",
+    "unauthorized": "Your session has expired. Please sign in again.",
+    "forbidden": "You do not have permission to perform this action.",
+    "notFound": "The requested resource was not found.",
+    "conflict": "There is a conflict with the current request.",
+    "validation": "The entered data is invalid or incomplete.",
+    "server": "The server could not complete the operation. Please try again later.",
+    "unknown": "An unexpected error occurred. Please try again.",
+    "loadSessions": "Could not load scheduled tutoring sessions.",
+    "createSession": "Could not schedule the tutoring session.",
+    "updateSession": "Could not update the tutoring session.",
+    "loadConversation": "Could not load the chat conversation.",
+    "sendMessage": "Could not send the message.",
+    "resetConversation": "Could not reset the chat conversation.",
+    "loadNotifications": "Could not load notifications.",
+    "markNotification": "Could not mark notification as read.",
+    "updateProfile": "Could not update profile information.",
+    "changePassword": "Could not change password.",
+    "loadStreak": "Could not load current streak.",
+    "loadServiceTypes": "Could not load service types.",
+    "loadTutorData": "Could not load the student list.",
+    "loadAssignedTutor": "Could not load assigned tutor information."
   }
 }

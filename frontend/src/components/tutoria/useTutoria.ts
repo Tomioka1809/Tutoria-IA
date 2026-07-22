@@ -3,20 +3,25 @@ import { useState, useEffect, useRef } from 'react';
 import { ScrollView } from 'react-native';
 import { useChatStore } from '@/src/store/chat';
 import { useAuthStore } from '@/src/store/auth';
-import { useTranslation } from 'react-i18next';
 
 export function useTutoria() {
-  const { t } = useTranslation();
-  const { user } = useAuthStore();
-  const { conversation, fetchConversation, sendMessage, isLoading, isSending, resetConversation } = useChatStore();
+  const user = useAuthStore((state) => state.user);
+  const userId = user?.id;
+  const userRole = user?.role;
+  const conversation = useChatStore((state) => state.conversation);
+  const fetchConversation = useChatStore((state) => state.fetchConversation);
+  const sendMessage = useChatStore((state) => state.sendMessage);
+  const isLoading = useChatStore((state) => state.isLoading);
+  const isSending = useChatStore((state) => state.isSending);
+  const resetConversation = useChatStore((state) => state.resetConversation);
   const [inputText, setInputText] = useState('');
   const scrollViewRef = useRef<ScrollView>(null);
 
   useEffect(() => {
-    if (user?.role === 'estudiante' || user?.role === 'tutor') {
+    if (userRole === 'estudiante' || userRole === 'tutor') {
       fetchConversation();
     }
-  }, [user?.id, user?.role]);
+  }, [userId, userRole, fetchConversation]);
 
   useEffect(() => {
     if (scrollViewRef.current) {
@@ -34,10 +39,6 @@ export function useTutoria() {
 
   const handleQuickAction = (actionText: string) => {
     handleSend(actionText);
-  };
-
-  const handleMicPress = () => {
-    alert(`🎤 ${t('tutoring.voicePending')}`);
   };
 
   return {

@@ -1,4 +1,4 @@
-import client, { API_URL } from './client';
+import client from './client';
 
 export interface QuizQuestion {
   question: string;
@@ -14,50 +14,16 @@ export interface Quote {
 
 export const QuizAPI = {
   generateQuiz: async (): Promise<QuizQuestion[]> => {
-    // LLM generation takes time, override default 5s timeout by using fetch directly
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 60000); // 60s timeout
-    
-    let token = '';
-    try {
-      const { useAuthStore } = require('../store/auth');
-      token = useAuthStore.getState().token || '';
-    } catch (e) {
-      // Ignore if store is not initialized
-    }
-    
-    try {
-      const headers: Record<string, string> = {
-        'Content-Type': 'application/json',
-      };
-      if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
-      }
-
-      const response = await fetch(`${API_URL}/quiz/generate`, {
-        method: 'GET',
-        headers,
-        signal: controller.signal
-      });
-      
-      clearTimeout(timeoutId);
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      clearTimeout(timeoutId);
-      throw error;
-    }
-  }
+    const response = await client.get<QuizQuestion[]>('/quiz/generate', {
+      timeout: 60000,
+    });
+    return response.data;
+  },
 };
 
 export const QuotesAPI = {
   getRandomQuote: async (): Promise<Quote> => {
-    const response = await client.get('/quotes/random');
+    const response = await client.get<Quote>('/quotes/random');
     return response.data;
-  }
+  },
 };

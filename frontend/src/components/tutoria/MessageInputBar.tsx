@@ -1,6 +1,6 @@
 // src/components/tutoria/MessageInputBar.tsx
-import React, { useState, useRef, useEffect } from 'react';
-import { View, TextInput, Pressable, Text, Keyboard } from 'react-native';
+import React from 'react';
+import { View, TextInput, Pressable, Text } from 'react-native';
 import { useTheme } from '@/src/theme/ThemeContext';
 import { useTranslation } from 'react-i18next';
 

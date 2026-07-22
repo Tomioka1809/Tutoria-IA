@@ -24,7 +24,7 @@ export default function AdminDashboard() {
   });
   const [loading, setLoading] = useState(true);
 
-  const fetchStats = async () => {
+  const fetchStats = useCallback(async () => {
     try {
       const res = await client.get('/admin/stats', {
         headers: { Authorization: `Bearer ${token}` }
@@ -35,12 +35,12 @@ export default function AdminDashboard() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
 
   useFocusEffect(
     useCallback(() => {
       fetchStats();
-    }, [])
+    }, [fetchStats])
   );
 
   const chartData = [
