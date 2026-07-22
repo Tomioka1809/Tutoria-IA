@@ -13,6 +13,7 @@ from app.domain.exceptions import (
     PasswordValidationError,
     PasswordUpdateError,
     TutorAssignmentRequiredError,
+    StreakUnavailableForRoleError,
 )
 
 def setup_exception_handlers(app: FastAPI) -> None:
@@ -79,6 +80,13 @@ def setup_exception_handlers(app: FastAPI) -> None:
         return JSONResponse(
             status_code=status.HTTP_400_BAD_REQUEST,
             content={"detail": str(exc) or "No students assigned to this tutor to schedule a group session."},
+        )
+
+    @app.exception_handler(StreakUnavailableForRoleError)
+    async def streak_unavailable_handler(request: Request, exc: StreakUnavailableForRoleError):
+        return JSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            content={"detail": str(exc) or "Only students have study streaks."},
         )
 
     @app.exception_handler(InvalidTokenError)

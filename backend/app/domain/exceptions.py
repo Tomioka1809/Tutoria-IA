@@ -33,3 +33,6 @@ class PasswordUpdateError(DomainException):
 
 class TutorAssignmentRequiredError(DomainException):
     pass
+
+class StreakUnavailableForRoleError(DomainException):
+    pass

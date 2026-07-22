@@ -1,20 +1,17 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.ext.asyncio import AsyncSession
-
-from app.infrastructure.api.dependencies import get_db, get_current_user
+from fastapi import APIRouter, Depends
+from app.infrastructure.api.dependencies import get_current_user, get_streak_use_case
 from app.domain.entities.streak import StreakOut
 from app.infrastructure.database.models.user import User
-from app.application.use_cases import streak_service
+from app.application.use_cases.streak_service import StreakUseCase
 
 router = APIRouter()
 
 @router.get("/", response_model=StreakOut)
 async def read_streak(
-    db: AsyncSession = Depends(get_db), current_user: User = Depends(get_current_user)
+    current_user: User = Depends(get_current_user),
+    streak_use_case: StreakUseCase = Depends(get_streak_use_case)
 ):
-    if current_user.role != "estudiante":
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Only students have study streaks.",
-        )
-    return await streak_service.get_student_streak(db=db, student_id=current_user.id)
+    return await streak_use_case.get_student_streak(
+        student_id=current_user.id,
+        user_role=current_user.role
+    )
