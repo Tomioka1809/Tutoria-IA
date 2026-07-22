@@ -8,7 +8,7 @@ Este documento representa el informe consolidado del proceso de auditoría, docu
 
 - **Estado General:** El sistema se encuentra totalmente operativo y alineado con los estándares de arquitectura de software y machine learning aplicados.
 - **Backend:** FastAPI estructurado en Arquitectura Hexagonal con persistencia asíncrona en PostgreSQL y extensión vectorial `pgvector`.
-- **RAG & LLM:** Integración con Google Gemini (`gemini-2.5-flash` y `gemini-embedding-001`) combinando recuperación vectorial semántica con ejecución de herramientas en tiempo real (*Tool Calling*).
+- **RAG & LLM:** Integración con Google Gemini (`gemini-2.5-flash` y `gemini-embedding-2`) combinando recuperación vectorial semántica con ejecución de herramientas en tiempo real (*Tool Calling*).
 - **Frontend Móvil:** App React Native con Expo (SDK 54), Expo Router, NativeWind y Zustand, con autodetección de IP local y navegación por roles.
 - **Evaluación Experimental (Paper IEEE):** Banco de pruebas automatizado sobre 32 casos calibrados obteniendo **86.98% de Precisión**, **95.83% de Cobertura** y **92.50% de Pertinencia (*Faithfulness*)**.
 
@@ -24,8 +24,8 @@ Este documento representa el informe consolidado del proceso de auditoría, docu
 | **Frontend API** | `QuizAPI.generateQuiz` realizaba peticiones `fetch` sin inyectar la cabecera `Authorization: Bearer <token>`. | **Medio** | **Resuelto** | Actualizado `services.ts` inyectando dinámicamente el token JWT desde `useAuthStore`. |
 | **Arquitectura Backend** | El paquete `app/domain/schemas/` estaba vacío; los DTOs estaban dispersos en `entities/`. | **Medio** | **Resuelto** | Creado `domain/schemas/__init__.py` re-exportando formalmente todos los esquemas Pydantic. |
 | **Arquitectura Backend** | Catálogo insuficiente de excepciones puras de dominio para desacoplar respuestas de FastAPI. | **Medio** | **Resuelto** | Ampliado `domain/exceptions.py` con clases de error para autenticación y gestión de usuarios. |
-| **Pipeline RAG** | Ausencia de *Score Threshold* (umbral mínimo de similitud). Siempre se inyectan 6 fragmentos. | **Medio** | ⚠️ **Pendiente** | Implementar descarte de fragmentos cuya similitud sea menor a 0.50 en la recuperación. |
-| **Base de Datos** | La tabla `corpus_chunks` en `pgvector` no incluye un índice vectorial `HNSW`. | **Bajo** | ⚠️ **Pendiente** | Añadir migración Alembic para crear índice `HNSW` con `vector_cosine_ops` en producción. |
+| **Pipeline RAG** | Ausencia de *Score Threshold* (umbral mínimo de similitud). Siempre se inyectan 6 fragmentos. | **Medio** | **Resuelto en Código** | Implementado `max_cosine_distance=0.45` con fallback léxico `AND` y política de abstención. |
+| **Base de Datos** | La tabla `corpus_chunks` en `pgvector` no incluye un índice vectorial `HNSW`. | **Bajo** | **Pendiente Despliegue** | Migración Alembic `6f892a019e42` creada en código; pendiente de ejecución operativa en PostgreSQL real. |
 | **Frontend App** | La IP `192.168.18.27` estaba hardcodeada en el *fallback* del cliente Axios (`client.ts`). | **Bajo** | Documentado | Recomendar sustituir por `localhost` como *fallback* estándar de desarrollo. |
 
 ---

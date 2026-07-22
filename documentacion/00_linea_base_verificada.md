@@ -118,15 +118,15 @@ React-Native/
 
 | Afirmación | Documento de origen | Evidencia encontrada | Clasificación | Observación |
 |---|---|---|---|---|
-| Google Gemini API usa `text-embedding-004` para embeddings de 768 dim. | `README.md`, `00_inventario.md`, `03_pipeline_rag.md` | En `backend/app/infrastructure/adapters/gemini_adapter.py` L125 se llama a `model='gemini-embedding-001'`. | `CONTRADICTORIO` | El código ejecuta `gemini-embedding-001` mientras la doc afirma `text-embedding-004`. |
+| Google Gemini API utiliza `gemini-embedding-2` para embeddings de 768 dim. | `README.md`, `00_inventario.md`, `03_pipeline_rag.md` | Modelos anteriores retirados (modelo anterior y modelo retirado) fueron unificados a `gemini-embedding-2` en la Fase 3. | `RESOLVIDO_EN_FASE_3` | Se unificó `gemini-embedding-2` en código y documentación técnica. |
 | CorpusRepository realiza búsquedas por distancia L2 (`<->`). | `00_inventario.md`, `03_pipeline_rag.md` | En `corpus_repository.py` L15 se invoca `cosine_distance` (`<=>`) e inyecta búsqueda por texto. | `CONTRADICTORIO` | El código fue modificado para usar distancia Coseno, pero la doc previa citaba L2. |
 | La carpeta `domain/schemas/` está vacía. | `00_inventario.md`, `02_backend_arquitectura.md` | Existe `backend/app/domain/schemas/__init__.py` que exporta todos los DTOs de Pydantic. | `CONTRADICTORIO` | El directorio fue poblado en refactorizaciones previas. |
 | `QuizAPI.generateQuiz` usa `fetch` sin cabecera `Authorization`. | `04_frontend.md` | En `frontend/src/api/services.ts` L27-L34 se inyecta `Authorization: Bearer <token>` desde Zustand. | `CONTRADICTORIO` | El servicio frontend ya adjunta el Bearer token si el usuario está autenticado. |
 | El cliente Axios incluye la IP `192.168.18.27` como fallback duro. | `04_frontend.md` | En `frontend/src/api/client.ts` L7 figura `let ip = '192.168.18.27';`. | `CONFIRMADO_EN_CODIGO` | Se constata la presencia de la IP hardcodeada en el código fuente. |
 | Existe un Golden Set de 32 casos con scripts de evaluación. | `05_banco_pruebas.md` | Existen los archivos `backend/tests/dataset/golden_set.json` (32 casos), `test_retrieval.py`, `test_generation.py` y `run_eval.py`. | `CONFIRMADO_EN_EJECUCION` | El script `run_eval.py` y `verificar_tutoria.py` se ejecutan correctamente. |
-| El RAG no posee umbral de similitud (*score threshold*). | `03_pipeline_rag.md`, `06_reporte_final.md` | En `chat_use_cases.py` L68 se solicita `limit=6` sin filtrar por distancia máxima. | `CONFIRMADO_EN_CODIGO` | No existe condición de corte para descartar fragmentos irrelevantes. |
-| La tabla `corpus_chunks` incluye un índice vectorial `HNSW`. | `03_pipeline_rag.md` | En `alembic/versions/f9995a19c833_add_pgvector_and_corpuschunk.py` solo se crea la tabla y la extensión `vector`, sin índice HNSW. | `CONFIRMADO_EN_CODIGO` | Las búsquedas vectoriales se realizan por escaneo secuencial en PostgreSQL. |
-| ChatUseCase ejecuta consultas SQL directas de infraestructura. | `02_backend_arquitectura.md` | En `chat_use_cases.py` L7-L12 se importan modelos ORM (`TutorAssignment`, `Event`) y `AsyncSession`. | `CONFIRMADO_EN_CODIGO` | Violación al desacoplamiento de la capa de aplicación en Arquitectura Hexagonal. |
+| El RAG no posee umbral de similitud (*score threshold*). | `03_pipeline_rag.md`, `06_reporte_final.md` | Implementado `max_cosine_distance=0.45` en `CorpusRepository` y `RAGRetrievalPolicy`. | `RESUELTO_EN_CODIGO` | Filtro por distancia coseno activado en código para descartar fragmentos irrelevantes. |
+| La tabla `corpus_chunks` incluye un índice vectorial `HNSW`. | `03_pipeline_rag.md` | Creada migración Alembic `6f892a019e42_add_hnsw_index_to_corpus_chunks.py` con `vector_cosine_ops`. | `PENDIENTE_DE_DESPLIEGUE` | Migración HNSW preparada en código, pendiente de aplicación en base de datos PostgreSQL real. |
+| ChatUseCase ejecuta consultas SQL directas de infraestructura. | `02_backend_arquitectura.md` | En `chat_use_cases.py` se desacoplaron las herramientas usando puertos abstractos. | `RESUELTO_EN_FASE_2` | Resuelto en la Fase 2C2B. |
 | El sistema está totalmente operativo sin restricciones. | `06_reporte_final.md` | Al hacer solicitudes masivas se pueden experimentar errores HTTP 429 (`RESOURCE_EXHAUSTED`) por cuotas de Gemini API. | `DOCUMENTADO_NO_COMPROBADO` | La operatividad continua depende de los límites de cuota de la API Key de Google AI Studio. |
 
 ---
@@ -136,11 +136,11 @@ React-Native/
 | ID | Componente | Problema | Severidad | Fase sugerida |
 |---|---|---|---|---|
 | `BASE-001` | Git / Entorno | Repositorio posicionado en la rama `chore/fase-0-linea-base` para la auditoría de línea base. | Baja | Fase 0 |
-| `BACK-001` | Backend / Dominio | `auth_use_cases.py` lanza `fastapi.HTTPException` directamente en lugar de usar excepciones de dominio. | Media | Fase 2 |
-| `BACK-002` | Backend / Aplicación | `ChatUseCase` ejecuta consultas SQL directas de SQLAlchemy para las herramientas de *Tool Calling*. | Alta | Fase 2 |
-| `RAG-001` | RAG / Embeddings | Discrepancia del modelo en código (`gemini-embedding-001`) frente al documentado (`text-embedding-004`). | Media | Fase 3 |
-| `RAG-002` | RAG / Recuperación | Falta de filtro por umbral de similitud (*Score Threshold*) para descartar contextos irrelevantes. | Alta | Fase 3 |
-| `RAG-003` | RAG / Base de Datos | Ausencia de índice `HNSW` en la migración de Alembic para la tabla `corpus_chunks`. | Media | Fase 3 |
+| `BACK-001` | Backend / Dominio | `auth_use_cases.py` lanza `fastapi.HTTPException` directamente en lugar de usar excepciones de dominio. | Media | Resuelto Fase 2 |
+| `BACK-002` | Backend / Aplicación | `ChatUseCase` ejecuta consultas SQL directas de SQLAlchemy para las herramientas de *Tool Calling*. | Alta | Resuelto Fase 2 |
+| `RAG-001` | RAG / Embeddings | Discrepancia de modelo resuelta unificando a `gemini-embedding-2` en código y documentación. | Media | Resuelto en Código (Fase 3) |
+| `RAG-002` | RAG / Recuperación | Ausencia de umbral resuelta con `max_cosine_distance=0.45` y fallback léxico controlado. | Alta | Resuelto en Código (Fase 3) |
+| `RAG-003` | RAG / Base de Datos | Ausencia de índice vectorial resuelta con migración HNSW (`vector_cosine_ops`). | Media | Pendiente de Despliegue (Fase 3) |
 | `FRONT-001` | Frontend / API | IP LAN hardcodeada (`192.168.18.27`) como fallback en `frontend/src/api/client.ts`. | Baja | Fase 4 |
 | `FRONT-002` | Frontend / UX | Manejo de errores silencioso (solo `console.error`) en llamadas de red de las tiendas Zustand. | Media | Fase 4 |
 | `TEST-001` | Banco de Pruebas | Vulnerabilidad a cuotas gratuitas de la API de Gemini (HTTP 429) en ejecuciones masivas del benchmark. | Media | Fase 5 |

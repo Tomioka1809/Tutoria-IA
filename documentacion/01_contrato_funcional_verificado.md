@@ -214,7 +214,7 @@ Los siguientes componentes existen en código pero requieren validación en ejec
 |---|---|---|---|---|---|
 | `INC-001` | Inconsistencia Cliente HTTP | `QuizAPI.generateQuiz` usa `fetch` para elevar el timeout a 60s. | `client.ts` tiene timeout por defecto de 5000ms. | Duplicación de lógica de tokens y desestandarización del cliente HTTP de la app. | Fase 4 |
 | `INC-002` | IP Fallback Hardcodeada | `client.ts` contiene `192.168.18.27` fija como fallback. | API Backend se ejecuta en `localhost:8000` o IP dinámica LAN. | Riesgo de fallos de conexión en redes locales distintas a `192.168.18.x`. | Fase 4 |
-| `INC-003` | Documentación Embeddings | `03_pipeline_rag.md` menciona `text-embedding-004`. | `gemini_adapter.py` ejecuta `gemini-embedding-001`. | Inconsistencia en la documentación técnica formal. | Fase 3 |
+| `INC-003` | Documentación Embeddings | Modelos anteriores retirados unificados a `gemini-embedding-2`. | `gemini_adapter.py` unificado a `gemini-embedding-2`. | Resuelto en la Fase 3. | Fase 3 |
 
 ---
 
@@ -290,7 +290,7 @@ Los siguientes componentes existen en código pero requieren validación en ejec
 | `HALL-EST-001` | Estudiante | Actividades del calendario se persisten localmente en `useActivityStore` sin consumir los endpoints `/events/` del backend. | Media | Fase 4 |
 | `HALL-TUT-001` | Tutor | El selector de tipos de servicio en solicitud de sesión no consume `GET /tutors/service-types`. | Baja | Fase 4 |
 | `HALL-ADM-001` | Admin | El endpoint `POST /auth/register-staff` no tiene vista consumidora directa en el frontend de administración. | Baja | Fase 2 |
-| `HALL-CHAT-001` | Chatbot | `ChatUseCase` ejecuta directamente consultas SQL sobre modelos ORM de infraestructura para las herramientas del LLM. | Alta | Fase 2 |
+| `HALL-CHAT-001` | Chatbot | `ChatUseCase` desacoplado de SQLAlchemy; utiliza `CorpusRepositoryPort` y DTOs tipados `RetrievedChunkDTO`. | Alta | Resuelto Fase 2 / Fase 3 |
 | `HALL-API-001` | API Client | `client.ts` contiene una IP de red LAN hardcodeada (`192.168.18.27`) como fallback de conexión. | Media | Fase 4 |
 | `HALL-MOCK-001` | Frontend / UX | `AssignedTutorCard.tsx` muestra datos mock hardcodeados (`Ing. Ana Torres`) si el usuario no tiene tutor asignado. | Media | Fase 4 |
 
