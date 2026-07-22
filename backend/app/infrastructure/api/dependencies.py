@@ -140,16 +140,20 @@ def get_notification_use_case(db: AsyncSession = Depends(get_db)) -> Notificatio
         transaction=transaction
     )
 
+from app.application.dtos.rag_dtos import RAGRetrievalPolicy
+
 def get_chat_use_case(db: AsyncSession = Depends(get_db)) -> ChatUseCase:
     chat_repo = ChatRepository(db)
     corpus_repo = CorpusRepository(db)
     tutor_assignment_repo = TutorAssignmentRepository(db)
     calendar_repo = CalendarRepository(db)
     llm = GeminiAdapter(api_key=settings.GEMINI_API_KEY)
+    rag_policy = RAGRetrievalPolicy(limit=6, max_cosine_distance=0.45, keyword_fallback_limit=2)
     return ChatUseCase(
         chat_repo=chat_repo,
         corpus_repo=corpus_repo,
         llm=llm,
         tutor_assignment_repo=tutor_assignment_repo,
-        calendar_repo=calendar_repo
+        calendar_repo=calendar_repo,
+        rag_policy=rag_policy,
     )
