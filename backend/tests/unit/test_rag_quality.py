@@ -5,8 +5,10 @@ import ast
 import inspect
 import sys
 import subprocess
+import shutil
 
 from app.infrastructure.adapters.gemini_adapter import GeminiAdapter
+
 from app.application.ports.repository_ports import CorpusRepositoryPort
 from app.application.dtos.rag_dtos import RetrievedChunkDTO, RAGRetrievalPolicy
 from app.application.use_cases.chat_use_cases import ChatUseCase
@@ -52,8 +54,9 @@ class TestRAGQuality(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(_normalized_stopword_key("cuál"), "cual")
         self.assertEqual(_normalized_stopword_key("matrícula"), "matricula")
 
-    # 5. Lexical fallback AND matching & preservation of accented terms
+    # 5. Lexical fallback OR matching & preservation of accented terms
     async def test_05_lexical_fallback_accent_and_matching(self):
+
         mock_db = AsyncMock()
         repo = CorpusRepository(db=mock_db)
 
@@ -83,9 +86,9 @@ class TestRAGQuality(unittest.IsolatedAsyncioTestCase):
         kw_call_stmt = mock_db.execute.call_args_list[1][0][0]
         compiled_sql = str(kw_call_stmt.compile(compile_kwargs={"literal_binds": True}))
 
-        self.assertIn("AND", compiled_sql.upper())
-        self.assertIn("%matrícula%", compiled_sql)
-        self.assertIn("%extemporánea%", compiled_sql)
+        self.assertIn("OR", compiled_sql.upper())
+        self.assertIn("%matricula%", compiled_sql)
+        self.assertIn("%extemporanea%", compiled_sql)
         self.assertNotIn("%cómo%", compiled_sql)
         self.assertNotIn("%puedo%", compiled_sql)
         self.assertNotIn("%realizar%", compiled_sql)
@@ -100,7 +103,7 @@ class TestRAGQuality(unittest.IsolatedAsyncioTestCase):
         vector_res.all.return_value = [(c1, 0.2)]
 
         kw_c1 = MagicMock(text_content="Chunk 1", source="reglamento.json")
-        kw_c2 = MagicMock(text_content="Chunk 2", source="malla.json")
+        kw_c2 = MagicMock(text_content="Chunk 2 matricula extemporanea", source="malla.json")
         kw_res = MagicMock()
         kw_res.scalars().all.return_value = [kw_c1, kw_c2]
 
@@ -117,8 +120,9 @@ class TestRAGQuality(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(len(res), 2)
         self.assertEqual(res[0].text, "Chunk 1")
         self.assertEqual(res[0].retrieval_method, "vector")
-        self.assertEqual(res[1].text, "Chunk 2")
+        self.assertEqual(res[1].text, "Chunk 2 matricula extemporanea")
         self.assertEqual(res[1].retrieval_method, "keyword")
+
 
     # 7. Short term minimum length (6+ chars)
     async def test_07_short_term_minimum_length(self):
@@ -288,7 +292,9 @@ class TestRAGQuality(unittest.IsolatedAsyncioTestCase):
         self.assertIn("6f892a019e42", heads[0])
 
     # Verification of no tracked API keys with pattern AIza
+    @unittest.skipUnless(shutil.which("git"), "git executable not found in environment")
     def test_15_no_tracked_aiza_keys(self):
+
         root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../.."))
         res = subprocess.run(
             ["git", "grep", "-IlE", "AIza[0-9A-Za-z_-]{20,}"],

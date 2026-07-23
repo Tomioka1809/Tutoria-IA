@@ -36,3 +36,24 @@ class TutorAssignmentRequiredError(DomainException):
 
 class StreakUnavailableForRoleError(DomainException):
     pass
+
+class LLMServiceError(DomainException, RuntimeError):
+    """Excepción base para errores del servicio LLM externo."""
+    pass
+
+
+class LLMAuthenticationError(LLMServiceError):
+    """API Key inválida o error de autenticación con el servicio LLM."""
+    pass
+
+class LLMQuotaError(LLMServiceError):
+    """Exceso de cuota o rate limit alcanzado en el servicio LLM."""
+    pass
+
+class LLMTimeoutError(LLMServiceError):
+    """Timeout de comunicación con el servicio LLM."""
+    pass
+
+class LLMNetworkError(LLMServiceError):
+    """Error de red o conectividad con el servicio LLM."""
+    pass
