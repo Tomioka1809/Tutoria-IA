@@ -44,7 +44,7 @@ React-Native/
 │       ├── dataset/golden_set.json      # Golden Set Oficial de 15 casos estratificados
 │       ├── dataset/golden_set_32_historico.json # Banco histórico de 32 casos (Hash e58db793...)
 │       ├── dataset/golden_set_manifest.json # Manifiesto de trazabilidad formal (models: gemini-3.5-flash-lite / gemini-embedding-2)
-│       ├── resultados/                  # Directorio de resultados activos (ausente hasta corrida oficial)
+│       ├── resultados/                  # Directorio de resultados activos oficiales (eval_results.json, eval_results.csv)
 │       │   └── historico_32/            # Resultados históricos archivados (eval_results_32.json, eval_results_32.csv)
 │       ├── evaluation_support.py        # Soporte técnico de retries, rate-limiter, hash e identidades
 │       ├── test_retrieval.py            # Evaluador de la etapa de recuperación RAG
@@ -156,9 +156,12 @@ React-Native/
 | `FRONT-003` | Frontend / Calendario | Separación formalizada entre actividades personales locales (`useActivityStore`) y tutorías persistidas (`useSessionStore`). | Media | RESUELTO_EN_FASE_4C |
 | `FRONT-004` | Frontend / Datos Reales | Eliminación de datos ficticios visibles y resolución determinista de tutor. | Media | RESUELTO_EN_FASE_4D |
 | `FRONT-005` | Frontend / Calidad Estática | Cierre de advertencias ESLint (36 a 0), corrección semántica de dependencias de hooks y script `verify:quality`. | Baja | RESUELTO_EN_FASE_4E |
-| `F5-001` | Banco de Pruebas RAG | Trazabilidad y robustez del banco RAG. Modo estricto sin fallback, reintentos de capa única, rate-limiter de 15s, sanitización de logs, escritura atómica de artefactos JSON/CSV y aislamiento transaccional por usuario temporal. | Alta | **RESUELTO_TECNICAMENTE_EN_FASE_5C / PENDIENTE_CIERRE_CUANTITATIVO_EN_FASE_5D** |
+| `F5-001` | Banco de Pruebas RAG | Trazabilidad y robustez del banco RAG de 15 casos. Modo estricto sin fallback, reintentos de capa única, rate-limiter de 15s, sanitización de logs, escritura atómica de artefactos JSON/CSV y aislamiento transaccional por usuario temporal. **RESUELTO_TECNICAMENTE_EN_FASE_5C**. | Alta | **CERRADO_CON_RESULTADOS_OFICIALES_Y_ANALISIS_CUANTITATIVO_EN_FASE_5D** |
 | `F5-002` | Banco de Pruebas RAG | Interrupción de la corrida masiva previa de 32 casos por HTTP 429 `RESOURCE_EXHAUSTED`. Se determinó redefinir formalmente el alcance del benchmark a 15 casos estratificados deterministas. La corrida previa fue interrumpida manualmente y sus resultados parciales no serán reutilizados. | Alta | **MITIGADA_POR_REDEFINICION_FORMAL_DEL_ALCANCE** |
-| `F5-003` | Banco de Pruebas RAG | La primera ejecución del benchmark oficial de 15 casos fue interrumpida al recibir HTTP 404 `NOT_FOUND` indicando que `gemini-2.5-flash` ya no estaba disponible para proyectos nuevos. La corrida fue interrumpida, no generó métricas oficiales, los resultados activos fueron retirados, los hashes protegidos permanecieron intactos y no quedaron usuarios temporales residuales. | Alta | **RESUELTO_TECNICAMENTE_POR_MIGRACION_A_GEMINI_3_5_FLASH_LITE / PENDIENTE_VALIDACION_EN_BENCHMARK_5C** |
+| `F5-003` | Banco de Pruebas RAG | Migración del modelo generativo activo a `gemini-3.5-flash-lite` para reemplazar el modelo previo discontinuado. Ejecución oficial completada sin errores de infraestructura. | Alta | **CERRADO_TRAS_VALIDACION_EXITOSA_CON_GEMINI_3_5_FLASH_LITE_EN_FASE_5C** |
+| `F5D-001` | Banco de Pruebas RAG | Baja recuperación vectorial en consultas internas (10 de los 12 casos obtuvieron precisión y cobertura 0.0; las causas se presentan como hipótesis para diagnóstico posterior). | Alta | **REGISTRADO_COMO_RECOMENDACION_FASE_POSTERIOR** |
+| `F5D-002` | Banco de Pruebas RAG | Abstención inconsistente en consultas fuera de dominio (alucinación en 2 de 3 casos). | Media | **REGISTRADO_COMO_RECOMENDACION_FASE_POSTERIOR** |
+| `F5D-003` | Banco de Pruebas RAG | Limitaciones conocidas en clasificación agregada (`success` en ID 8 con texto de abstención) y detección de frases léxicas de abstención (ID 29). | Media | **REGISTRADO_COMO_RECOMENDACION_FASE_POSTERIOR** |
 | `TEST-001` | Banco de Pruebas | Vulnerabilidad a cuotas gratuitas de la API de Gemini (HTTP 429) en ejecuciones masivas del benchmark. | Media | Mitigado con `GeminiRateLimiter` (15s) y redefinición a 15 casos con `gemini-3.5-flash-lite` |
 
 ---
@@ -223,11 +226,13 @@ npx expo start
 - **Fase 0:** Criterios obligatorios de auditoría satisfechos (`PASS=5, FAIL=0`).
 - **Fase 5A:** Completada (Infraestructura, retries y verificadores de integridad estáticos).
 - **Fase 5B:** Completada (Ejecución parcial controlada completada sobre los casos 1, 16 y 26, con tres casos procesados, cero errores de infraestructura, artefactos temporales y cero usuarios temporales residuales).
-- **Fase 5C:** En preparación (Infraestructura de 5C preparada y validada localmente con `gemini-3.5-flash-lite`; benchmark oficial de 15 casos pendiente de ejecución en la Fase 5C).
-- **Fase 5D:** Pendiente de los resultados oficiales de 5C (Análisis cuantitativo, actualización documental y cierre pendientes de la Fase 5D; la Fase 5D comenzará después de obtener los resultados oficiales de 5C).
+- **Fase 5C:** COMPLETADA (Ejecución oficial del benchmark RAG de 15 casos completada con `gemini-3.5-flash-lite` sin errores de infraestructura).
+- **Fase 5D:** COMPLETADA (Análisis cuantitativo, actualización documental y cierre formal completados).
+- **Fase 5:** CERRADA.
+- **Fase 6:** PENDIENTE.
 
 ---
 
 ## 13. Conclusión
 
-La auditoría de la **Fase 0** y la refactorización técnica de la **Fase 5** confirman que el proyecto **TutorIA** posee una infraestructura técnica implementada y validada localmente. La decisión formal de ajustar el alcance del benchmark a un **Golden Set oficial estratificado de 15 casos** (`facil: 7, ambiguo: 5, fuera_de_alcance: 3`) preserva la trazabilidad completa mediante el manifiesto `golden_set_manifest.json` (configurado con `gemini-3.5-flash-lite` y `gemini-embedding-2`) y el archivo histórico `golden_set_32_historico.json`. El hallazgo `F5-001` registra el estado **RESUELTO_TECNICAMENTE_EN_FASE_5C / PENDIENTE_CIERRE_CUANTITATIVO_EN_FASE_5D**, la incidencia `F5-002` queda registrada como **MITIGADA_POR_REDEFINICION_FORMAL_DEL_ALCANCE**, y la incidencia `F5-003` queda registrada como **RESUELTO_TECNICAMENTE_POR_MIGRACION_A_GEMINI_3_5_FLASH_LITE / PENDIENTE_VALIDACION_EN_BENCHMARK_5C**, dejando la ejecución del benchmark oficial de 15 casos pendiente en la Fase 5C, mientras que el análisis cuantitativo y el cierre definitivo pertenecerán a la Fase 5D.
+La auditoría de la **Fase 0** y la ejecución formal de la **Fase 5** (Subfases 5A, 5B, 5C y 5D) confirman que el proyecto **TutorIA** cuenta con un marco de evaluación RAG reproducible, aislado y trazable. La ejecución del benchmark sobre el **Golden Set oficial de 15 casos** (`facil: 7, ambiguo: 5, fuera_de_alcance: 3`) concluyó con 0 errores de infraestructura. El hallazgo `F5-001` queda registrado como **CERRADO_CON_RESULTADOS_OFICIALES_Y_ANALISIS_CUANTITATIVO_EN_FASE_5D**, la incidencia `F5-002` como **MITIGADA_POR_REDEFINICION_FORMAL_DEL_ALCANCE**, y la incidencia `F5-003` como **CERRADO_TRAS_VALIDACION_EXITOSA_CON_GEMINI_3_5_FLASH_LITE_EN_FASE_5C**, declarando formalmente la **Fase 5 CERRADA**.
