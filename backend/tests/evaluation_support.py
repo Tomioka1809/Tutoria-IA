@@ -263,9 +263,9 @@ def is_official_complete_run(
     if is_partial:
         return False
     return (
-        total_cases == 32 and
-        selected_cases == 32 and
-        completed_cases == 32 and
+        total_cases == 15 and
+        selected_cases == 15 and
+        completed_cases == 15 and
         infra_errors == 0 and
         skipped == 0
     )

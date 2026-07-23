@@ -1,3 +1,4 @@
+import json
 import os
 import io
 import csv
@@ -145,26 +146,26 @@ def test_non_existent_id_rejected():
         parse_case_ids("1, 99", valid_ids={1, 2, 3})
 
 # 10. CASE_LIMIT=32 sigue siendo ejecución parcial
-def test_case_limit_32_is_partial():
-    cfg = EvaluationConfig(case_limit=32)
+def test_case_limit_15_is_partial():
+    cfg = EvaluationConfig(case_limit=15)
     is_partial = (cfg.case_limit is not None or cfg.case_ids is not None)
     assert is_partial is True
-    assert is_official_complete_run(32, 32, 32, 0, 0, is_partial=is_partial) is False
+    assert is_official_complete_run(15, 15, 15, 0, 0, is_partial=is_partial) is False
 
 # 11. CASE_IDS con todos los 32 IDs sigue siendo parcial
-def test_case_ids_all_32_is_partial():
+def test_case_ids_all_15_is_partial():
     all_32 = list(range(1, 33))
     cfg = EvaluationConfig(case_ids=all_32)
     is_partial = (cfg.case_limit is not None or cfg.case_ids is not None)
     assert is_partial is True
-    assert is_official_complete_run(32, 32, 32, 0, 0, is_partial=is_partial) is False
+    assert is_official_complete_run(15, 15, 15, 0, 0, is_partial=is_partial) is False
 
 # 12. Sin filtros puede ser oficial
 def test_no_filters_can_be_official():
     cfg = EvaluationConfig(case_limit=None, case_ids=None)
     is_partial = (cfg.case_limit is not None or cfg.case_ids is not None)
     assert is_partial is False
-    assert is_official_complete_run(32, 32, 32, 0, 0, is_partial=is_partial) is True
+    assert is_official_complete_run(15, 15, 15, 0, 0, is_partial=is_partial) is True
 
 # 13. Directorio oficial rechazado para filtros
 def test_official_dir_rejected_for_filters():
@@ -761,8 +762,8 @@ def test_technical_errors_excluded_from_metrics_summary():
 
 # 65. Los resultados oficiales siguen protegidos
 def test_official_results_protection_policy():
-    assert is_official_complete_run(32, 32, 32, 1, 0, is_partial=False) is False
-    assert is_official_complete_run(32, 32, 32, 0, 0, is_partial=False) is True
+    assert is_official_complete_run(15, 15, 15, 1, 0, is_partial=False) is False
+    assert is_official_complete_run(15, 15, 15, 0, 0, is_partial=False) is True
 
 # 66. Un 429 en embedding realiza exactamente 1 + EVAL_MAX_RETRIES solicitudes
 def test_embedding_429_exact_attempts_without_nesting():
@@ -1517,3 +1518,184 @@ def test_real_artifact_export_parsed_with_csv_reader():
     assert idx_gen == 11
     assert data_row[idx_emb] == "2"
     assert data_row[idx_gen] == "3"
+
+
+# === PRUEBAS ADICIONALES DE LA MIGRACIÓN OFICIAL A 15 CASOS Y MANIFIESTO ===
+
+def test_official_golden_set_15_cases_exact_ids():
+    base_dir = Path(__file__).resolve().parent.parent
+    golden_path = base_dir / "dataset" / "golden_set.json"
+    assert golden_path.exists()
+    with open(golden_path, "r", encoding="utf-8") as f:
+        golden_set = json.load(f)
+    assert len(golden_set) == 15
+    ids = {item["id"] for item in golden_set}
+    assert ids == {1, 3, 6, 8, 10, 13, 15, 16, 18, 20, 23, 25, 26, 29, 32}
+
+def test_official_golden_set_category_distribution():
+    base_dir = Path(__file__).resolve().parent.parent
+    golden_path = base_dir / "dataset" / "golden_set.json"
+    with open(golden_path, "r", encoding="utf-8") as f:
+        golden_set = json.load(f)
+    cat_counts = {}
+    for item in golden_set:
+        c = item["categoria"]
+        cat_counts[c] = cat_counts.get(c, 0) + 1
+    assert cat_counts == {"facil": 7, "ambiguo": 5, "fuera_de_alcance": 3}
+
+def test_historical_golden_set_32_cases_intact():
+    base_dir = Path(__file__).resolve().parent.parent
+    golden_32_path = base_dir / "dataset" / "golden_set_32_historico.json"
+    assert golden_32_path.exists()
+    h32 = compute_golden_set_hash(golden_32_path)
+    assert h32 == "e58db793eb82e26d7f0a84e32b9369b725131b2d9513dbcd3fa13fdf036438b1"
+    with open(golden_32_path, "r", encoding="utf-8") as f:
+        historical_set = json.load(f)
+    assert len(historical_set) == 32
+    assert [x["id"] for x in historical_set] == list(range(1, 33))
+
+def test_golden_set_manifest_coherence_full():
+    base_dir = Path(__file__).resolve().parent.parent
+    manifest_path = base_dir / "dataset" / "golden_set_manifest.json"
+    golden_15_path = base_dir / "dataset" / "golden_set.json"
+    assert manifest_path.exists()
+    with open(manifest_path, "r", encoding="utf-8") as f:
+        manifest = json.load(f)
+    assert manifest["schema_version"] == "1.0"
+    assert manifest["official_case_count"] == 15
+    assert manifest["historical_case_count"] == 32
+    assert manifest["historical_golden_set_path"] == "backend/tests/dataset/golden_set_32_historico.json"
+    assert manifest["historical_golden_set_sha256"] == "e58db793eb82e26d7f0a84e32b9369b725131b2d9513dbcd3fa13fdf036438b1"
+    assert manifest["official_golden_set_path"] == "backend/tests/dataset/golden_set.json"
+    assert manifest["official_golden_set_sha256"] == compute_golden_set_hash(golden_15_path)
+    assert manifest["selection_method"] == "muestreo_sistematico_estratificado_determinista"
+    assert manifest["preserve_original_ids"] is True
+    assert manifest["selected_source_ids"] == [1, 3, 6, 8, 10, 13, 15, 16, 18, 20, 23, 25, 26, 29, 32]
+    assert manifest["category_distribution"] == {"facil": 7, "ambiguo": 5, "fuera_de_alcance": 3}
+    assert manifest["models"] == {"generation": "gemini-2.5-flash", "embedding": "gemini-embedding-2"}
+    assert manifest["official_completion_criteria"] == {
+        "total_cases": 15, "selected_cases": 15, "completed_cases": 15,
+        "infrastructure_errors": 0, "skipped_cases": 0, "is_complete": True
+    }
+    assert isinstance(manifest["reason"], str) and len(manifest["reason"]) > 0
+
+def test_deterministic_selection_reproduces_exact_original_objects():
+    base_dir = Path(__file__).resolve().parent.parent
+    golden_32_path = base_dir / "dataset" / "golden_set_32_historico.json"
+    golden_15_path = base_dir / "dataset" / "golden_set.json"
+    with open(golden_32_path, "r", encoding="utf-8") as f:
+        historical_set = json.load(f)
+    with open(golden_15_path, "r", encoding="utf-8") as f:
+        official_set = json.load(f)
+    historical_by_id = {item["id"]: item for item in historical_set}
+    for item_15 in official_set:
+        item_id = item_15["id"]
+        orig_item = historical_by_id[item_id]
+        assert item_15 == orig_item
+
+def test_archived_historical_results_hashes():
+    base_dir = Path(__file__).resolve().parent.parent
+    hist_json = base_dir / "resultados" / "historico_32" / "eval_results_32.json"
+    hist_csv = base_dir / "resultados" / "historico_32" / "eval_results_32.csv"
+    assert hist_json.exists()
+    assert hist_csv.exists()
+    assert compute_golden_set_hash(hist_json) == "5e3c6837f8e3afabaf73bdce2f730a9615f837a67d6ce7e45bd11ac20195e34f"
+    assert compute_golden_set_hash(hist_csv) == "4f0bf77f5647e6c730cb7ece159386bfdaec34f1c7fdd2e0adf6989a653add3c"
+
+def test_absent_active_results_is_pending_state():
+    base_dir = Path(__file__).resolve().parent.parent
+    json_path = base_dir / "resultados" / "eval_results.json"
+    csv_path = base_dir / "resultados" / "eval_results.csv"
+    assert not json_path.exists()
+    assert not csv_path.exists()
+
+def test_official_completion_criteria_15_cases():
+    assert is_official_complete_run(15, 15, 15, 0, 0, is_partial=False) is True
+    assert is_official_complete_run(15, 15, 15, 1, 0, is_partial=False) is False
+    assert is_official_complete_run(32, 32, 32, 0, 0, is_partial=False) is False
+
+def test_filtered_run_with_15_ids_is_partial():
+    all_15_ids = [1, 3, 6, 8, 10, 13, 15, 16, 18, 20, 23, 25, 26, 29, 32]
+    cfg = EvaluationConfig(case_ids=all_15_ids)
+    is_partial = (cfg.case_limit is not None or cfg.case_ids is not None)
+    assert is_partial is True
+    assert is_official_complete_run(15, 15, 15, 0, 0, is_partial=is_partial) is False
+
+def test_artifact_payload_export_15_cases():
+    cfg = EvaluationConfig(run_id="run_15_test")
+    official_ids = [1, 3, 6, 8, 10, 13, 15, 16, 18, 20, 23, 25, 26, 29, 32]
+    consolidated = [
+        {
+            "id": c_id, "categoria": "facil", "pregunta": f"P{c_id}", "status": "success",
+            "attempts": 1, "embedding_requests": 1, "generation_requests": 1,
+            "technical_error": None, "precision": 1.0, "cobertura": 1.0,
+            "pertinencia": 1.0, "bot_response": "OK"
+        }
+        for c_id in official_ids
+    ]
+    payload, csv_str = build_export_payloads(
+        consolidated=consolidated,
+        config=cfg,
+        golden_hash="hash15",
+        total_golden_cases=15,
+        selected_items=consolidated,
+        completed_count=15,
+        infra_error_count=0,
+        skipped_count=0,
+        is_complete=True,
+        cat_summary={"facil": {"total_casos": 15, "precision": 1.0, "cobertura": 1.0, "pertinencia": 1.0}},
+        globales={"precision_global": 1.0, "cobertura_global": 1.0, "pertinencia_global": 1.0}
+    )
+    assert payload["total_cases"] == 15
+    assert payload["selected_cases"] == 15
+    assert payload["completed_cases"] == 15
+    assert payload["is_complete"] is True
+    reader = list(csv.reader(io.StringIO(csv_str)))
+    assert len(reader) == 16  # 1 header + 15 rows
+
+def test_historical_results_not_confused_with_active():
+    base_dir = Path(__file__).resolve().parent.parent
+    active_json = base_dir / "resultados" / "eval_results.json"
+    hist_json = base_dir / "resultados" / "historico_32" / "eval_results_32.json"
+    assert not active_json.exists()
+    assert hist_json.exists()
+
+def test_manifest_all_fields_validation():
+    base_dir = Path(__file__).resolve().parent.parent
+    manifest_path = base_dir / "dataset" / "golden_set_manifest.json"
+    assert manifest_path.exists()
+    with open(manifest_path, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    required_keys = [
+        "schema_version", "official_case_count", "historical_case_count",
+        "historical_golden_set_path", "historical_golden_set_sha256",
+        "official_golden_set_path", "official_golden_set_sha256",
+        "selection_method", "preserve_original_ids", "selected_source_ids",
+        "category_distribution", "models", "official_completion_criteria", "reason"
+    ]
+    for k in required_keys:
+        assert k in data, f"Falta clave {k} en manifiesto"
+
+def test_case_coherence_all_15_official_cases():
+    base_dir = Path(__file__).resolve().parent.parent
+    golden_path = base_dir / "dataset" / "golden_set.json"
+    with open(golden_path, "r", encoding="utf-8") as f:
+        golden_set = json.load(f)
+    for case in golden_set:
+        c_id = case["id"]
+        c_cat = case["categoria"]
+        c_q = case["pregunta"]
+        json_item = {
+            "id": c_id, "categoria": c_cat, "pregunta": c_q, "status": "success",
+            "attempts": 1, "technical_error": None, "precision": 1.0, "cobertura": 1.0, "pertinencia": 1.0
+        }
+        csv_row = [str(c_id), c_cat, "success", "1", "", c_q, "1.0", "1.0", "1.0", "BotResp", "1", "1"]
+        errs = validate_case_coherence(item_golden=case, item_json=json_item, csv_row=csv_row, is_new_format=True)
+        assert errs == []
+
+def test_verify_evaluation_integrity_main_function_execution():
+    from tests.verify_evaluation_integrity import main as verify_main
+    try:
+        verify_main()
+    except SystemExit as e:
+        assert e.code == 0

@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0",
+  "official_case_count": 15,
+  "historical_case_count": 32,
+  "historical_golden_set_path": "backend/tests/dataset/golden_set_32_historico.json",
+  "historical_golden_set_sha256": "e58db793eb82e26d7f0a84e32b9369b725131b2d9513dbcd3fa13fdf036438b1",
+  "official_golden_set_path": "backend/tests/dataset/golden_set.json",
+  "official_golden_set_sha256": "736ee36115717130945a3f8902eba4aec93c556a8b14da129c071bdde8b84a75",
+  "selection_method": "muestreo_sistematico_estratificado_determinista",
+  "preserve_original_ids": true,
+  "selected_source_ids": [
+    1, 3, 6, 8, 10, 13, 15,
+    16, 18, 20, 23, 25,
+    26, 29, 32
+  ],
+  "category_distribution": {
+    "facil": 7,
+    "ambiguo": 5,
+    "fuera_de_alcance": 3
+  },
+  "models": {
+    "generation": "gemini-2.5-flash",
+    "embedding": "gemini-embedding-2"
+  },
+  "official_completion_criteria": {
+    "total_cases": 15,
+    "selected_cases": 15,
+    "completed_cases": 15,
+    "infrastructure_errors": 0,
+    "skipped_cases": 0,
+    "is_complete": true
+  },
+  "reason": "alcance experimental ajustado al nivel gratuito disponible, sin requisito contractual previo que obligara a utilizar 32 casos."
+}

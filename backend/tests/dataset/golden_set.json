@@ -4,255 +4,217 @@
     "categoria": "facil",
     "pregunta": "¿Cuál es el objetivo principal del Reglamento de Tutoría Académica de la UNSAAC?",
     "respuesta_esperada": "Establecer las normas, procedimientos y lineamientos para la organización, planificación, ejecución y evaluación del sistema de tutoría universitaria para estudiantes.",
-    "articulos_referencia": ["Art. 1 - Reglamento de Tutoría de Estudiantes UNSAAC"],
-    "palabras_clave_esperadas": ["normas", "tutoría", "estudiantes", "planificación", "evaluación"]
-  },
-  {
-    "id": 2,
-    "categoria": "facil",
-    "pregunta": "¿Cuáles son los tipos de tutoría académica que ofrece la universidad?",
-    "respuesta_esperada": "La tutoría puede ser individual o grupal, atendiendo aspectos académicos, personales y vocacionales.",
-    "articulos_referencia": ["Art. 5 - Reglamento de Tutoría de Estudiantes UNSAAC"],
-    "palabras_clave_esperadas": ["individual", "grupal", "académico", "personal"]
+    "articulos_referencia": [
+      "Art. 1 - Reglamento de Tutoría de Estudiantes UNSAAC"
+    ],
+    "palabras_clave_esperadas": [
+      "normas",
+      "tutoría",
+      "estudiantes",
+      "planificación",
+      "evaluación"
+    ]
   },
   {
     "id": 3,
     "categoria": "facil",
     "pregunta": "¿Qué es una tutoría individual?",
     "respuesta_esperada": "Es la atención personalizada impartida por un docente tutor a un estudiante tutorado para resolver problemas académicos o de adaptación.",
-    "articulos_referencia": ["Art. 6 - Reglamento de Tutoría de Estudiantes UNSAAC"],
-    "palabras_clave_esperadas": ["personalizada", "docente tutor", "estudiante"]
-  },
-  {
-    "id": 4,
-    "categoria": "facil",
-    "pregunta": "¿Qué es la tutoría grupal?",
-    "respuesta_esperada": "Es la atención brindada a un grupo reducido de estudiantes para tratar temas comunes de orientación, metodologías de estudio o adaptación universitaria.",
-    "articulos_referencia": ["Art. 7 - Reglamento de Tutoría de Estudiantes UNSAAC"],
-    "palabras_clave_esperadas": ["grupo", "orientación", "metodologías"]
-  },
-  {
-    "id": 5,
-    "categoria": "facil",
-    "pregunta": "¿Quién es el responsable de asignar a los tutores académicos?",
-    "respuesta_esperada": "La Dirección de Escuela Profesional en coordinación con la Comisión Permanente de Tutoría de la Facultad.",
-    "articulos_referencia": ["Art. 12 - Reglamento de Tutoría de Estudiantes UNSAAC"],
-    "palabras_clave_esperadas": ["Escuela Profesional", "Comisión", "Tutoría"]
+    "articulos_referencia": [
+      "Art. 6 - Reglamento de Tutoría de Estudiantes UNSAAC"
+    ],
+    "palabras_clave_esperadas": [
+      "personalizada",
+      "docente tutor",
+      "estudiante"
+    ]
   },
   {
     "id": 6,
     "categoria": "facil",
     "pregunta": "¿Cuáles son las obligaciones del estudiante tutorado?",
     "respuesta_esperada": "Asistir puntualmente a las sesiones de tutoría programadas, brindar información veraz y cumplir con el plan de trabajo establecido con su tutor.",
-    "articulos_referencia": ["Art. 15 - Reglamento de Tutoría de Estudiantes UNSAAC"],
-    "palabras_clave_esperadas": ["asistir", "sesiones", "plan de trabajo", "cumplir"]
-  },
-  {
-    "id": 7,
-    "categoria": "facil",
-    "pregunta": "¿Cuáles son los deberes de los docentes tutores?",
-    "respuesta_esperada": "Elaborar el plan de tutoría, atender a los estudiantes asignados, registrar las fichas de atención y presentar informes periódicos.",
-    "articulos_referencia": ["Art. 18 - Reglamento de Tutoría de Estudiantes UNSAAC"],
-    "palabras_clave_esperadas": ["plan de tutoría", "atender", "fichas de atención", "informes"]
+    "articulos_referencia": [
+      "Art. 15 - Reglamento de Tutoría de Estudiantes UNSAAC"
+    ],
+    "palabras_clave_esperadas": [
+      "asistir",
+      "sesiones",
+      "plan de trabajo",
+      "cumplir"
+    ]
   },
   {
     "id": 8,
     "categoria": "facil",
     "pregunta": "¿Qué servicios ofrece el Comedor Universitario de la UNSAAC?",
     "respuesta_esperada": "Ofrece raciones alimenticias de desayuno, almuerzo y cena para los estudiantes beneficiarios evaluados por Bienestar Universitario.",
-    "articulos_referencia": ["Servicios de Bienestar Universitario y Comedor UNSAAC"],
-    "palabras_clave_esperadas": ["raciones", "desayuno", "almuerzo", "cena", "Bienestar"]
-  },
-  {
-    "id": 9,
-    "categoria": "facil",
-    "pregunta": "¿Qué requisitos se necesitan para solicitar el carné de biblioteca?",
-    "respuesta_esperada": "Ficha de matricula del semestre vigente, documento de identidad (DNI) y fotografía tamaño carné.",
-    "articulos_referencia": ["Servicios de Biblioteca y Hemeroteca UNSAAC"],
-    "palabras_clave_esperadas": ["ficha de matrícula", "DNI", "fotografía", "biblioteca"]
+    "articulos_referencia": [
+      "Servicios de Bienestar Universitario y Comedor UNSAAC"
+    ],
+    "palabras_clave_esperadas": [
+      "raciones",
+      "desayuno",
+      "almuerzo",
+      "cena",
+      "Bienestar"
+    ]
   },
   {
     "id": 10,
     "categoria": "facil",
     "pregunta": "¿Cuántos créditos como máximo se pueden matricular por semestre ordinario?",
     "respuesta_esperada": "El máximo regular permitido es de 22 créditos por semestre académico ordinario, salvo excepciones por alto rendimiento.",
-    "articulos_referencia": ["Reglamento Académico / Malla Curricular UNSAAC"],
-    "palabras_clave_esperadas": ["22 créditos", "máximo", "semestre"]
-  },
-  {
-    "id": 11,
-    "categoria": "facil",
-    "pregunta": "¿Qué es la reserva de matrícula?",
-    "respuesta_esperada": "Es el derecho del estudiante a solicitar la suspensión temporal de sus estudios hasta por un máximo de 3 años lectivos sin perder su vacante.",
-    "articulos_referencia": ["Reglamento de Matrícula UNSAAC"],
-    "palabras_clave_esperadas": ["reserva", "suspensión", "3 años", "vacante"]
-  },
-  {
-    "id": 12,
-    "categoria": "facil",
-    "pregunta": "¿Qué asignaturas comprende el Plan de Estudios 2025 de Ingeniería de Sistemas?",
-    "respuesta_esperada": "Comprende asignaturas de formación general, básica, específica y de especialidad en inteligencia artificial, ingeniería de software y redes.",
-    "articulos_referencia": ["Malla Curricular Plan de Estudios 2025 Ingeniería de Sistemas UNSAAC"],
-    "palabras_clave_esperadas": ["formación general", "específica", "inteligencia artificial", "software"]
+    "articulos_referencia": [
+      "Reglamento Académico / Malla Curricular UNSAAC"
+    ],
+    "palabras_clave_esperadas": [
+      "22 créditos",
+      "máximo",
+      "semestre"
+    ]
   },
   {
     "id": 13,
     "categoria": "facil",
     "pregunta": "¿Cuál es la duración del semestre académico 2026-I según el cronograma?",
     "respuesta_esperada": "Inicia el 30 de marzo de 2026 y concluye el 20 de agosto de 2026 (16 semanas lectivas).",
-    "articulos_referencia": ["Cronograma y Calendario Académico Semestre UNSAAC"],
-    "palabras_clave_esperadas": ["30 de marzo", "20 de agosto", "16 semanas"]
-  },
-  {
-    "id": 14,
-    "categoria": "facil",
-    "pregunta": "¿Qué es el examen de aplazados y quiénes tienen derecho a rendirlo?",
-    "respuesta_esperada": "Es un examen extraordinario de evaluación para estudiantes que desaprobaron una asignatura pero alcanzaron la nota mínima de presentación requerida.",
-    "articulos_referencia": ["Glosario de Términos Académicos UNSAAC"],
-    "palabras_clave_esperadas": ["aplazados", "extraordinario", "desaprobaron", "nota mínima"]
+    "articulos_referencia": [
+      "Cronograma y Calendario Académico Semestre UNSAAC"
+    ],
+    "palabras_clave_esperadas": [
+      "30 de marzo",
+      "20 de agosto",
+      "16 semanas"
+    ]
   },
   {
     "id": 15,
     "categoria": "facil",
     "pregunta": "¿Qué trámite se debe seguir para justificar faltas a las sesiones de tutoría?",
     "respuesta_esperada": "Presentar una solicitud documentada ante el tutor o la Dirección de Escuela dentro de los tres días hábiles posteriores a la inasistencia.",
-    "articulos_referencia": ["Art. 22 - Reglamento de Tutoría de Estudiantes UNSAAC"],
-    "palabras_clave_esperadas": ["solicitud", "tres días", "inasistencia", "justificar"]
+    "articulos_referencia": [
+      "Art. 22 - Reglamento de Tutoría de Estudiantes UNSAAC"
+    ],
+    "palabras_clave_esperadas": [
+      "solicitud",
+      "tres días",
+      "inasistencia",
+      "justificar"
+    ]
   },
   {
     "id": 16,
     "categoria": "ambiguo",
     "pregunta": "Si estoy en riesgo académico por jalar cursos varias veces, ¿mi tutor me puede ayudar a evitar la sanción?",
     "respuesta_esperada": "El tutor brinda orientación académica y elabora un plan de acompañamiento especial, pero la sanción por tercera o cuarta matrícula la aplica la autoridad competente según el Estatuto Universitario.",
-    "articulos_referencia": ["Art. 25 - Reglamento de Tutoría de Estudiantes UNSAAC"],
-    "palabras_clave_esperadas": ["riesgo académico", "acompañamiento", "orientación", "Estatuto"]
-  },
-  {
-    "id": 17,
-    "categoria": "ambiguo",
-    "pregunta": "¿Puedo cambiar de tutor si considero que no me atiende adecuadamente?",
-    "respuesta_esperada": "Sí, el estudiante puede solicitar el cambio mediante solicitud fundamentada ante la Comisión de Tutoría de la Escuela Profesional.",
-    "articulos_referencia": ["Art. 14 - Reglamento de Tutoría de Estudiantes UNSAAC"],
-    "palabras_clave_esperadas": ["cambio de tutor", "solicitud", "Comisión de Tutoría"]
+    "articulos_referencia": [
+      "Art. 25 - Reglamento de Tutoría de Estudiantes UNSAAC"
+    ],
+    "palabras_clave_esperadas": [
+      "riesgo académico",
+      "acompañamiento",
+      "orientación",
+      "Estatuto"
+    ]
   },
   {
     "id": 18,
     "categoria": "ambiguo",
     "pregunta": "Tengo cursos del Plan 2017 y me quiero pasar al Plan 2025 de Ingeniería de Sistemas, ¿qué hago?",
     "respuesta_esperada": "Debes solicitar un proceso de convalidación y adecuación curricular aprobada por la Comisión Académica de la Escuela Profesional.",
-    "articulos_referencia": ["Malla Curricular Plan de Estudios 2017/2025 Ingeniería de Sistemas UNSAAC"],
-    "palabras_clave_esperadas": ["convalidación", "adecuación", "Plan 2017", "Plan 2025"]
-  },
-  {
-    "id": 19,
-    "categoria": "ambiguo",
-    "pregunta": "¿Cómo funciona el programa de movilidad e intercambio estudiantil OCRI?",
-    "respuesta_esperada": "Permite realizar un semestre o año académico en universidades nacionales o internacionales bajo convenio, manteniendo la condición de estudiante UNSAAC.",
-    "articulos_referencia": ["Reglamento de Intercambio Estudiantil y Movilidad Académica OCRI UNSAAC"],
-    "palabras_clave_esperadas": ["movilidad", "intercambio", "OCRI", "convenio"]
+    "articulos_referencia": [
+      "Malla Curricular Plan de Estudios 2017/2025 Ingeniería de Sistemas UNSAAC"
+    ],
+    "palabras_clave_esperadas": [
+      "convalidación",
+      "adecuación",
+      "Plan 2017",
+      "Plan 2025"
+    ]
   },
   {
     "id": 20,
     "categoria": "ambiguo",
     "pregunta": "¿Cuáles son los requisitos mínimos para postular a una beca de comedor universitario?",
     "respuesta_esperada": "Estar matriculado en el semestre actual, acreditar situación socioeconómica de vulnerabilidad evaluada por asistenta social y rendimiento académico satisfactorio.",
-    "articulos_referencia": ["Servicios de Bienestar Universitario y Comedor UNSAAC"],
-    "palabras_clave_esperadas": ["socioeconómica", "vulnerabilidad", "asistenta social", "matriculado"]
-  },
-  {
-    "id": 21,
-    "categoria": "ambiguo",
-    "pregunta": "Si pierdo mi cita de tutoría por problemas de salud, ¿tengo sanción en mi racha o récord?",
-    "respuesta_esperada": "Debes justificar tu falta con certificado médico dentro del plazo normativo para reprogramar la sesión sin perder tu récord ni ser considerado omiso.",
-    "articulos_referencia": ["Art. 23 - Reglamento de Tutoría de Estudiantes UNSAAC"],
-    "palabras_clave_esperadas": ["justificar", "médico", "reprogramar", "récord"]
-  },
-  {
-    "id": 22,
-    "categoria": "ambiguo",
-    "pregunta": "¿Un docente puede negarse a realizar la función de tutor académico?",
-    "respuesta_esperada": "La función de tutoría es obligatoria para los docentes ordinarios de la UNSAAC como parte de su carga lectiva y no lectiva.",
-    "articulos_referencia": ["Art. 10 - Reglamento de Tutoría de Estudiantes UNSAAC"],
-    "palabras_clave_esperadas": ["obligatoria", "docentes ordinarios", "carga lectiva"]
+    "articulos_referencia": [
+      "Servicios de Bienestar Universitario y Comedor UNSAAC"
+    ],
+    "palabras_clave_esperadas": [
+      "socioeconómica",
+      "vulnerabilidad",
+      "asistenta social",
+      "matriculado"
+    ]
   },
   {
     "id": 23,
     "categoria": "ambiguo",
     "pregunta": "¿Cuántos estudiantes como máximo se le pueden asignar a un solo tutor docente?",
     "respuesta_esperada": "El número máximo recomendado es de 15 a 20 estudiantes tutorados por docente en cada semestre académico.",
-    "articulos_referencia": ["Art. 13 - Reglamento de Tutoría de Estudiantes UNSAAC"],
-    "palabras_clave_esperadas": ["15", "20", "estudiantes", "máximo"]
-  },
-  {
-    "id": 24,
-    "categoria": "ambiguo",
-    "pregunta": "¿Se puede hacer tutoría durante las vacaciones o receso universitario?",
-    "respuesta_esperada": "Salvo casos especiales autorizados para nivelación o riesgo, la tutoría regular se ejecuta durante el desarrollo del semestre lectivo.",
-    "articulos_referencia": ["Art. 9 - Reglamento de Tutoría de Estudiantes UNSAAC"],
-    "palabras_clave_esperadas": ["semestre lectivo", "regular", "autorizados"]
+    "articulos_referencia": [
+      "Art. 13 - Reglamento de Tutoría de Estudiantes UNSAAC"
+    ],
+    "palabras_clave_esperadas": [
+      "15",
+      "20",
+      "estudiantes",
+      "máximo"
+    ]
   },
   {
     "id": 25,
     "categoria": "ambiguo",
     "pregunta": "¿Qué ocurre si el tutor no presenta sus informes trimestrales de tutoría?",
     "respuesta_esperada": "Constituye un incumplimiento de deberes docentes y la Dirección de Escuela lo informa al Decanato para las acciones administrativas pertinentes.",
-    "articulos_referencia": ["Art. 30 - Reglamento de Tutoría de Estudiantes UNSAAC"],
-    "palabras_clave_esperadas": ["incumplimiento", "informes", "Decanato", "acciones"]
+    "articulos_referencia": [
+      "Art. 30 - Reglamento de Tutoría de Estudiantes UNSAAC"
+    ],
+    "palabras_clave_esperadas": [
+      "incumplimiento",
+      "informes",
+      "Decanato",
+      "acciones"
+    ]
   },
   {
     "id": 26,
     "categoria": "fuera_de_alcance",
     "pregunta": "¿Cuál es la receta tradicional para preparar el cuy chactado cusqueño?",
     "respuesta_esperada": "No tengo esa información en mi base de datos de la universidad ni en el reglamento de tutorías de la UNSAAC.",
-    "articulos_referencia": ["NO_APLICA"],
-    "palabras_clave_esperadas": ["No tengo esa información", "base de datos"]
-  },
-  {
-    "id": 27,
-    "categoria": "fuera_de_alcance",
-    "pregunta": "¿Quién ganó la Champions League en el año 2022?",
-    "respuesta_esperada": "No tengo esa información en mi base de datos de la universidad ni en el reglamento de tutorías.",
-    "articulos_referencia": ["NO_APLICA"],
-    "palabras_clave_esperadas": ["No tengo esa información", "base de datos"]
-  },
-  {
-    "id": 28,
-    "categoria": "fuera_de_alcance",
-    "pregunta": "¿Cuáles son las ecuaciones de Maxwell de la teoría electromagnética?",
-    "respuesta_esperada": "No tengo esa información en la base de datos de la universidad ni en el reglamento de tutorías.",
-    "articulos_referencia": ["NO_APLICA"],
-    "palabras_clave_esperadas": ["No tengo esa información", "base de datos"]
+    "articulos_referencia": [
+      "NO_APLICA"
+    ],
+    "palabras_clave_esperadas": [
+      "No tengo esa información",
+      "base de datos"
+    ]
   },
   {
     "id": 29,
     "categoria": "fuera_de_alcance",
     "pregunta": "¿Cómo tramito mi pasaporte en la oficina de Migraciones del Perú?",
     "respuesta_esperada": "No tengo esa información en mi base de datos institucional de la UNSAAC.",
-    "articulos_referencia": ["NO_APLICA"],
-    "palabras_clave_esperadas": ["No tengo esa información", "base de datos"]
-  },
-  {
-    "id": 30,
-    "categoria": "fuera_de_alcance",
-    "pregunta": "¿Cuáles son los precios de los pasajes de tren a Machu Picchu?",
-    "respuesta_esperada": "No tengo esa información en la base de datos oficial de la universidad.",
-    "articulos_referencia": ["NO_APLICA"],
-    "palabras_clave_esperadas": ["No tengo esa información", "base de datos"]
-  },
-  {
-    "id": 31,
-    "categoria": "fuera_de_alcance",
-    "pregunta": "¿Cuál es el procedimiento de matrícula de la Universidad Nacional Mayor de San Marcos (UNMSM)?",
-    "respuesta_esperada": "No tengo esa información en mi base de datos de la UNSAAC.",
-    "articulos_referencia": ["NO_APLICA"],
-    "palabras_clave_esperadas": ["No tengo esa información", "UNSAAC"]
+    "articulos_referencia": [
+      "NO_APLICA"
+    ],
+    "palabras_clave_esperadas": [
+      "No tengo esa información",
+      "base de datos"
+    ]
   },
   {
     "id": 32,
     "categoria": "fuera_de_alcance",
     "pregunta": "¿Cómo se calcula la derivada de una función vectorial trigonométrica en R3?",
     "respuesta_esperada": "No tengo esa información en la base de datos sobre el reglamento de tutoría y servicios de la UNSAAC.",
-    "articulos_referencia": ["NO_APLICA"],
-    "palabras_clave_esperadas": ["No tengo esa información", "base de datos"]
+    "articulos_referencia": [
+      "NO_APLICA"
+    ],
+    "palabras_clave_esperadas": [
+      "No tengo esa información",
+      "base de datos"
+    ]
   }
 ]
