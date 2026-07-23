@@ -3,6 +3,7 @@ import hashlib
 import inspect
 import json
 import logging
+import math
 import os
 import re
 import shutil
@@ -21,7 +22,7 @@ class InfrastructureError(Exception):
     """Excepción lanzada cuando ocurre un error de infraestructura no recuperable."""
     def __init__(self, message: str, attempts: int = 1, error_type: str = "InfrastructureError"):
         super().__init__(message)
-        self.sanitized_message = sanitize_secret_message(message)
+        self.sanitized_message = truncate_technical_error(message)
         self.attempts = attempts
         self.error_type = error_type
 
@@ -29,9 +30,30 @@ class NonRetryableError(Exception):
     """Excepción lanzada cuando ocurre un error no transitorio que no debe reintentarse."""
     def __init__(self, message: str, attempts: int = 1, error_type: str = "NonRetryableError"):
         super().__init__(message)
-        self.sanitized_message = sanitize_secret_message(message)
+        self.sanitized_message = truncate_technical_error(message)
         self.attempts = attempts
         self.error_type = error_type
+
+def derive_case_eval_identity(run_id: str, case_id: int) -> Dict[str, str]:
+    """
+    Función pura para derivar la identidad temporal determinista de cada caso de prueba.
+    Garantiza aislamiento total entre ejecuciones y entre casos.
+    student_code incluye el token completo de 12 caracteres (longitud total: 18 caracteres).
+    """
+    token = hashlib.sha256(run_id.encode("utf-8")).hexdigest()[:12]
+    email = f"eval_temp_{token}_{case_id}@eval.unsaac.edu.pe"
+    student_code = f"EV{token}{case_id:04d}"
+    full_name = f"EVAL {token} CASE {case_id}"
+    marker = f"eval_run_{token}"
+
+    return {
+        "token": token,
+        "email": email,
+        "student_code": student_code,
+        "full_name": full_name,
+        "marker": marker,
+        "role": "estudiante"
+    }
 
 def sanitize_secret_message(msg: str) -> str:
     """
@@ -50,14 +72,12 @@ def sanitize_secret_message(msg: str) -> str:
             return f"{scheme}[REDACTED]:[REDACTED]@"
         return f"{scheme}[REDACTED]@"
 
-    # Sanitize userinfo in URLs (greedy match for userinfo up to the last @ before host)
     cleaned = re.sub(
         r'([a-zA-Z0-9\+\-\.]+://)([^/\s]+)@',
         _sanitize_url,
         msg
     )
 
-    # Sanitize parameters (password, passwd, token, secret, api_key, key)
     cleaned = re.sub(
         r'(?:api_key|apikey|token|password|passwd|secret|key)\s*[:=]\s*["\']?[A-Za-z0-9_\-\.]{4,}["\']?',
         '[REDACTED]',
@@ -65,7 +85,6 @@ def sanitize_secret_message(msg: str) -> str:
         flags=re.IGNORECASE
     )
 
-    # Sanitize Bearer tokens
     cleaned = re.sub(
         r'Bearer\s+[A-Za-z0-9_\-\.]+',
         'Bearer [REDACTED]',
@@ -75,12 +94,67 @@ def sanitize_secret_message(msg: str) -> str:
 
     return cleaned
 
+def truncate_technical_error(msg: str, max_len: int = 300) -> str:
+    """
+    Sanitiza y limita el mensaje técnico a una longitud razonable sin cortar secretos parcialmente
+    ni incluir payloads pesados, links o metadata del SDK de Gemini.
+    """
+    if not msg:
+        return ""
+
+    cleaned = sanitize_secret_message(msg)
+
+    # Filter out verbose SDK JSON payloads, metadata and links
+    cleaned = re.sub(r'https?://\S+', '[LINK_REDACTED]', cleaned)
+    cleaned = re.sub(r'quotaFailure\s*\{[^}]*\}', '[QUOTA_FAILURE_DETAILS]', cleaned, flags=re.DOTALL)
+    cleaned = re.sub(r'metadata\s*\{[^}]*\}', '[METADATA_REDACTED]', cleaned, flags=re.DOTALL)
+
+    if len(cleaned) <= max_len:
+        return cleaned
+
+    truncated = cleaned[:max_len]
+    last_space = truncated.rfind(" ")
+    if last_space > max_len // 2:
+        truncated = truncated[:last_space]
+
+    return truncated + " ... [TRUNCATED]"
+
+def extract_retry_delay(exc_or_msg: Any) -> Optional[float]:
+    """Extrae la recomendación de espera (RetryInfo) de representaciones del SDK o cadenas de error."""
+    msg = str(exc_or_msg)
+    patterns = [
+        r'[\'"]?retryDelay[\'"]?\s*:\s*[\'"]?(\d+(?:\.\d+)?)s?[\'"]?',
+        r'(?:retry\s+in|retrydelay:?|retry_after:?)\s*(\d+(?:\.\d+)?)s?',
+        r'retry\s+after\s+(\d+(?:\.\d+)?)s?'
+    ]
+    for pattern in patterns:
+        match = re.search(pattern, msg, re.IGNORECASE)
+        if match:
+            try:
+                val = float(match.group(1))
+                if math.isfinite(val) and val >= 0:
+                    return val
+            except ValueError:
+                pass
+    return None
+
+def classify_error_category(exc: Exception) -> str:
+    """Clasifica una excepción en una categoría de diagnóstico concisa."""
+    msg = str(exc).lower()
+    if "429" in msg or "resource_exhausted" in msg or "quota" in msg:
+        return "gemini_quota_exceeded_429"
+    if "503" in msg or "unavailable" in msg:
+        return "gemini_service_unavailable_503"
+    if isinstance(exc, (TimeoutError, asyncio.TimeoutError)) or "timeout" in msg:
+        return "timeout"
+    if "401" in msg or "403" in msg or "api_key" in msg or "unauthorized" in msg:
+        return "authentication_error"
+    if "database" in msg or "psycopg" in msg or "sqlalchemy" in msg or "connection refused" in msg:
+        return "database_error"
+    return "unexpected_infrastructure_error"
+
 def generate_secure_run_id(manual_id: Optional[str] = None) -> str:
-    """
-    Genera o valida un run_id seguro.
-    Diferencia None (generar automático) de cadenas vacías/espacios (rechazar).
-    Rechaza caracteres especiales y separadores de ruta.
-    """
+    """Genera o valida un run_id seguro."""
     if manual_id is not None:
         cleaned = manual_id.strip()
         if not cleaned:
@@ -94,10 +168,7 @@ def generate_secure_run_id(manual_id: Optional[str] = None) -> str:
     return f"eval_run_{timestamp}_{random_hex}"
 
 def parse_case_ids(env_str: Optional[str], valid_ids: Optional[set] = None) -> Optional[List[int]]:
-    """
-    Parsea una cadena de IDs separados por comas.
-    Rechaza cadenas vacías intermedias, valores no numéricos, duplicados e IDs inexistentes.
-    """
+    """Parsea una cadena de IDs separados por comas."""
     if env_str is None:
         return None
     raw_str = env_str.strip()
@@ -152,11 +223,7 @@ def validate_output_directory(
     repo_root: Path,
     official_dir: Path
 ) -> Path:
-    """
-    Valida las políticas de directorio de salida utilizando pathlib.Path.resolve() e is_relative_to().
-    Las ejecuciones oficiales escriben solo en official_dir.
-    Las ejecuciones parciales exigen EVAL_OUTPUT_DIR fuera de official_dir y dentro de repo_root o /tmp.
-    """
+    """Valida las políticas de directorio de salida."""
     official_dir = official_dir.resolve()
     repo_root = repo_root.resolve()
     tmp_root = Path("/tmp").resolve()
@@ -192,10 +259,7 @@ def is_official_complete_run(
     skipped: int,
     is_partial: bool = False
 ) -> bool:
-    """
-    Determina si una ejecución es oficial y completa.
-    Retorna False si la ejecución fue configurada con filtros (is_partial=True).
-    """
+    """Determina si una ejecución es oficial y completa."""
     if is_partial:
         return False
     return (
@@ -213,6 +277,8 @@ class EvaluationConfig:
         initial_backoff: Optional[float] = None,
         max_backoff: Optional[float] = None,
         inter_case_delay: Optional[float] = None,
+        generation_min_interval: Optional[float] = None,
+        retry_after_safety: Optional[float] = None,
         case_limit: Optional[int] = None,
         case_ids: Optional[List[int]] = None,
         output_dir: Optional[str] = None,
@@ -239,6 +305,18 @@ class EvaluationConfig:
         if self.inter_case_delay < 0:
             raise ValueError("EVAL_INTER_CASE_DELAY_SECONDS debe ser no negativo")
 
+        env_gen_interval = os.getenv("EVAL_GENERATION_MIN_INTERVAL_SECONDS")
+        raw_gen_interval = generation_min_interval if generation_min_interval is not None else (float(env_gen_interval) if env_gen_interval else 15.0)
+        if type(raw_gen_interval) is bool or not isinstance(raw_gen_interval, (int, float)) or not math.isfinite(raw_gen_interval) or raw_gen_interval < 0:
+            raise ValueError("EVAL_GENERATION_MIN_INTERVAL_SECONDS debe ser un número finito mayor o igual a 0")
+        self.generation_min_interval = float(raw_gen_interval)
+
+        env_safety = os.getenv("EVAL_RETRY_AFTER_SAFETY_SECONDS")
+        raw_safety = retry_after_safety if retry_after_safety is not None else (float(env_safety) if env_safety else 2.0)
+        if type(raw_safety) is bool or not isinstance(raw_safety, (int, float)) or not math.isfinite(raw_safety) or raw_safety < 0:
+            raise ValueError("EVAL_RETRY_AFTER_SAFETY_SECONDS debe ser un número finito mayor o igual a 0")
+        self.retry_after_safety = float(raw_safety)
+
         env_limit = os.getenv("EVAL_CASE_LIMIT")
         self.case_limit = case_limit if case_limit is not None else (int(env_limit) if env_limit else None)
         if self.case_limit is not None and self.case_limit < 0:
@@ -259,10 +337,7 @@ class EvaluationConfig:
         self.run_id = generate_secure_run_id(raw_run_id)
 
 def is_transient_error(exc: Exception) -> bool:
-    """
-    Determina si un error es transitorio (red, timeout, 429, 500, 502, 503, 504).
-    Devuelve False para errores 400, 401, 403, API_KEY_INVALID o errores de validación/código.
-    """
+    """Determina si un error es transitorio."""
     if isinstance(exc, (NonRetryableError, InfrastructureError)):
         return False
     if isinstance(exc, (ValueError, KeyError, TypeError, json.JSONDecodeError, AttributeError)):
@@ -297,10 +372,7 @@ async def execute_with_retry(
     config: Optional[EvaluationConfig] = None,
     sleep_fn: Optional[Callable[[float], Any]] = None
 ) -> Tuple[Any, int]:
-    """
-    Ejecuta una operación con reintentos adicionales configurados en EVAL_MAX_RETRIES.
-    Retorna (resultado, cantidad_real_de_intentos).
-    """
+    """Ejecuta una operación con reintentos adicionales configurados."""
     cfg = config or EvaluationConfig()
     sleep = sleep_fn or asyncio.sleep
 
@@ -319,54 +391,101 @@ async def execute_with_retry(
                     res = await res
             return res, attempts
         except Exception as exc:
-            sanitized_msg = sanitize_secret_message(str(exc))
+            trunc_msg = truncate_technical_error(str(exc))
             err_type = type(exc).__name__
+            err_cat = classify_error_category(exc)
 
             if not is_transient_error(exc):
-                logger.warning(f"Error no transitorio detectado en intento {attempts}: {err_type} - {sanitized_msg}")
-                raise NonRetryableError(sanitized_msg, attempts=attempts, error_type=err_type) from exc
+                logger.warning("Error no transitorio: %s (%s) en intento %d: %s", err_cat, err_type, attempts, trunc_msg)
+                raise NonRetryableError(trunc_msg, attempts=attempts, error_type=err_type) from exc
 
             if attempts >= max_attempts:
-                logger.error(f"Reintentos agotados tras {attempts} intentos: {err_type} - {sanitized_msg}")
-                raise InfrastructureError(sanitized_msg, attempts=attempts, error_type=err_type) from exc
+                logger.error("Reintentos agotados tras %d intentos: %s (%s)", attempts, err_cat, err_type)
+                raise InfrastructureError(trunc_msg, attempts=attempts, error_type=err_type) from exc
 
-            wait_time = min(backoff, cfg.max_backoff)
-            logger.info(f"Reintento {attempts}/{max_attempts} por error transitorio ({err_type}). Esperando {wait_time:.2f}s...")
+            retry_after = extract_retry_delay(exc)
+            if retry_after is not None:
+                wait_time = max(backoff, retry_after + cfg.retry_after_safety)
+            else:
+                wait_time = min(backoff, cfg.max_backoff)
+
+            logger.info("Error transitorio: %s (intento %d/%d, espera %.1fs)", err_cat, attempts, max_attempts, wait_time)
 
             res_sleep = sleep(wait_time)
             if asyncio.iscoroutine(res_sleep):
                 await res_sleep
             backoff *= 2.0
 
+class GeminiRateLimiter:
+    """Limitador de cuota serializado para solicitudes de generación de Gemini."""
+    def __init__(
+        self,
+        min_interval_seconds: float = 15.0,
+        time_fn: Optional[Callable[[], float]] = None,
+        sleep_fn: Optional[Callable[[float], Any]] = None
+    ):
+        if type(min_interval_seconds) is bool or not isinstance(min_interval_seconds, (int, float)) or not math.isfinite(min_interval_seconds) or min_interval_seconds < 0:
+            raise ValueError("min_interval_seconds debe ser un número finito mayor o igual a 0")
+        self.min_interval = float(min_interval_seconds)
+        self._lock = asyncio.Lock()
+        self.last_request_time: Optional[float] = None
+        self.time_fn = time_fn or time.monotonic
+        self.sleep_fn = sleep_fn or asyncio.sleep
+
+    async def wait_if_needed(self):
+        async with self._lock:
+            now = self.time_fn()
+            if self.last_request_time is not None and self.min_interval > 0:
+                elapsed = now - self.last_request_time
+                if elapsed < self.min_interval:
+                    wait_sec = self.min_interval - elapsed
+                    res = self.sleep_fn(wait_sec)
+                    if asyncio.iscoroutine(res) or inspect.iscoroutine(res):
+                        await res
+            self.last_request_time = self.time_fn()
+
 class EvaluationGeminiAdapter(LLMPort):
     """
     Adaptador de evaluación para el banco de pruebas RAG.
-    Desactiva los reintentos internos de GeminiAdapter (api_max_attempts=1)
-    y gestiona una sola capa de reintentos mediante execute_with_retry por cada llamada remota.
-    Registra trazabilidad exacta de intentos por operación con soporte de reset por caso.
+    Incrementa generation_requests solo DESPUÉS de completar la espera en el limitador.
     """
     def __init__(
         self,
         api_key: str,
         config: Optional[EvaluationConfig] = None,
-        sleep_fn: Optional[Callable[[float], Any]] = None
+        sleep_fn: Optional[Callable[[float], Any]] = None,
+        rate_limiter: Optional[GeminiRateLimiter] = None
     ):
         self.config = config or EvaluationConfig()
         self.sleep_fn = sleep_fn
+        self.rate_limiter = rate_limiter or GeminiRateLimiter(
+            min_interval_seconds=self.config.generation_min_interval,
+            sleep_fn=sleep_fn
+        )
+
+        async def _on_before_generate():
+            if self.rate_limiter:
+                await self.rate_limiter.wait_if_needed()
+            self.generation_requests += 1
+
         self.adapter = GeminiAdapter(
             api_key=api_key,
             allow_embedding_fallback=False,
             allow_generation_fallback=False,
-            api_max_attempts=1
+            api_max_attempts=1,
+            before_generate_request=_on_before_generate
         )
         self.reset_attempt_counters()
 
     def reset_attempt_counters(self):
         self.last_embedding_attempts = 0
         self.last_generation_attempts = 0
+        self.embedding_requests = 0
+        self.generation_requests = 0
 
     async def compute_embedding(self, text: str) -> List[float]:
         async def _op():
+            self.embedding_requests += 1
             return await self.adapter.compute_embedding(text)
 
         try:
@@ -427,10 +546,7 @@ def atomic_write_artifact_pair(
     copy_fn: Callable = shutil.copy2,
     replace_fn: Callable = os.replace
 ) -> None:
-    """
-    Escribe conjuntamente y de forma atómica el par JSON y CSV.
-    Restaura el estado previo de los archivos tanto si existían como si NO existían originalmente.
-    """
+    """Escribe conjuntamente y de forma atómica el par JSON y CSV."""
     j_path = Path(json_path).resolve()
     c_path = Path(csv_path).resolve()
 
@@ -454,7 +570,6 @@ def atomic_write_artifact_pair(
     created_baks: List[Path] = []
 
     try:
-        # Step 1: Write and fsync both temp files
         with open(j_tmp, "w", encoding="utf-8") as f:
             f.write(json_content)
             f.flush()
@@ -465,7 +580,6 @@ def atomic_write_artifact_pair(
             f.flush()
             os.fsync(f.fileno())
 
-        # Step 2: Create backups if originals exist (originals remain intact during backup creation)
         if json_existed:
             copy_fn(j_path, j_bak)
             created_baks.append(j_bak)
@@ -474,12 +588,10 @@ def atomic_write_artifact_pair(
             copy_fn(c_path, c_bak)
             created_baks.append(c_bak)
 
-        # Step 3: Replace target files with temp files
         try:
             replace_fn(j_tmp, j_path)
             replace_fn(c_tmp, c_path)
         except Exception as replace_err:
-            # Rollback targets
             if json_existed and j_bak in created_baks and j_bak.exists():
                 replace_fn(j_bak, j_path)
             elif not json_existed and j_path.exists():
@@ -492,7 +604,6 @@ def atomic_write_artifact_pair(
 
             raise replace_err
 
-        # Cleanup backup files after success
         for bak in created_baks:
             if bak.exists():
                 try:
@@ -500,12 +611,10 @@ def atomic_write_artifact_pair(
                 except OSError:
                     pass
 
-        # Sync directory after success
         for d in set([j_dir, c_dir]):
             _sync_dir(d)
 
     except Exception:
-        # Rollback targets if exception happened before or during replace
         if json_existed and j_bak in created_baks and j_bak.exists():
             try:
                 replace_fn(j_bak, j_path)
@@ -522,7 +631,6 @@ def atomic_write_artifact_pair(
         elif not csv_existed and c_path.exists():
             c_path.unlink(missing_ok=True)
 
-        # Clean up any leftover backup or temp files
         for bak in created_baks:
             if bak.exists():
                 try:
@@ -619,11 +727,7 @@ def classify_case_result(
     technical_error: Optional[str] = None,
     is_skipped: bool = False
 ) -> str:
-    """
-    Clasifica semánticamente el resultado funcional de un caso.
-    - fuera_de_alcance: success si pertinencia >= 1.0 (se abstuvo); de lo contrario model_failure.
-    - facil/ambiguo: model_failure si cobertura == 0 y pertinencia <= 0.3; de lo contrario success.
-    """
+    """Clasifica semánticamente el resultado funcional de un caso."""
     if is_skipped:
         return "skipped"
     if technical_error is not None or cobertura is None or pertinencia is None:
@@ -641,9 +745,7 @@ def classify_case_result(
             return "success"
 
 def calculate_global_metrics(detalles_casos: List[Dict[str, Any]]) -> Tuple[Dict[str, float], Dict[str, Any]]:
-    """
-    Calcula métricas globales y por categoría excluyendo casos con errores de infraestructura o skipped.
-    """
+    """Calcula métricas globales y por categoría excluyendo casos con errores de infraestructura o skipped."""
     evaluables = [
         c for c in detalles_casos
         if c.get("status") in ("success", "model_failure") or
