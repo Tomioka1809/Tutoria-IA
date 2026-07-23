@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from app.domain.entities.user import UserOut
 from app.domain.entities.service_type import ServiceTypeOut
 
@@ -19,5 +19,4 @@ class TutorAssignmentOut(BaseModel):
     tutor: UserOut
     service_type: ServiceTypeOut
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

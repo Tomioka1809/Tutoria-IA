@@ -4,7 +4,7 @@ from sqlalchemy.future import select
 from sqlalchemy.orm import selectinload
 from sqlalchemy import func
 from typing import List, Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from app.infrastructure.api.dependencies import get_db, get_current_active_admin
 from app.domain.entities.user import UserOut, UserCreate
@@ -53,8 +53,7 @@ class CorpusChunkOut(BaseModel):
     id: int
     source: str
     text_content: str
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class QuoteCreate(BaseModel):
     text: str
@@ -62,13 +61,11 @@ class QuoteCreate(BaseModel):
 class QuoteOut(BaseModel):
     id: int
     text: str
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class AdminUserOut(UserOut):
     current_load: int = 0
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 @router.get("/stats", response_model=AdminStats)
 async def get_admin_stats(db: AsyncSession = Depends(get_db), _: User = Depends(get_current_active_admin)):
