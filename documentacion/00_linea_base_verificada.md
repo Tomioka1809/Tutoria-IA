@@ -163,6 +163,12 @@ React-Native/
 | `F5D-002` | Banco de Pruebas RAG | Abstención inconsistente en consultas fuera de dominio (alucinación en 2 de 3 casos). | Media | **REGISTRADO_COMO_RECOMENDACION_FASE_POSTERIOR** |
 | `F5D-003` | Banco de Pruebas RAG | Limitaciones conocidas en clasificación agregada (`success` en ID 8 con texto de abstención) y detección de frases léxicas de abstención (ID 29). | Media | **REGISTRADO_COMO_RECOMENDACION_FASE_POSTERIOR** |
 | `TEST-001` | Banco de Pruebas | Vulnerabilidad a cuotas gratuitas de la API de Gemini (HTTP 429) en ejecuciones masivas del benchmark. | Media | Mitigado con `GeminiRateLimiter` (15s) y redefinición a 15 casos con `gemini-3.5-flash-lite` |
+| `F6A-001` | Auditoría Fase 6A | Advertencias de deprecación por sintaxis `class Config:` de Pydantic V1 en modelos y DTOs del backend. | Media | **CERRADO_EN_FASE_6B_1** |
+| `F6A-002` | Auditoría Fase 6A | Warning documental `MODULE_TYPELESS_PACKAGE_JSON` en validación de empaquetado del frontend. | Baja | **ACEPTADO_COMO_OBSERVACION_INFORMATIVA** |
+| `F6A-003` | Auditoría Fase 6A | Banner provisional y estados pendientes documentados en `06_reporte_final.md`. | Media | **CERRADO_EN_FASE_6C** |
+| `F6A-004` | Auditoría Fase 6A | Ausencia de validación explícita de `APP_ENV` y protección contra claves `SECRET_KEY` débiles o por defecto en producción. | Alta | **CERRADO_EN_FASE_6B_2** |
+| `F6A-005` | Auditoría Fase 6A | Ausencia de canal automatizado de integración continua (CI/CD). | Baja | **REGISTRADO_COMO_MEJORA_FUTURA** |
+| `F6A-006` | Auditoría Fase 6A | Permisividad con contraseñas por defecto de PostgreSQL (`DB_PASSWORD=postgres`) en entornos de producción. | Alta | **CERRADO_EN_FASE_6B_2** |
 
 ---
 
@@ -212,27 +218,43 @@ npx expo start
   ```
 - **Ejecución del suite de evaluación del Chatbot RAG (Paper IEEE):**
   ```bash
-  # Pruebas unitarias de integridad y aislamiento (al menos 127 pruebas locales aprobadas)
-  PYTHONPATH=backend backend/venv/bin/python -m pytest -q --durations=15 backend/tests/unit/test_evaluation_integrity.py backend/tests/unit/test_rag_quality.py backend/tests/unit/test_chat_use_cases.py
+  # Pruebas unitarias de integridad y aislamiento (164 pruebas locales aprobadas)
+  PYTHONPATH=backend backend/venv/bin/python -m pytest -q --durations=15 backend/tests/unit/test_runtime_security.py backend/tests/unit/test_evaluation_integrity.py backend/tests/unit/test_rag_quality.py backend/tests/unit/test_chat_use_cases.py
 
-  # Verificador estático de integridad de artefactos
+  # Verificador estático de integridad de artefactos (24 verificaciones aprobadas)
   PYTHONPATH=backend backend/venv/bin/python backend/tests/verify_evaluation_integrity.py
   ```
 
 ---
 
-## 12. Criterio de cierre de la Fase 0 y Estado de la Fase 5
+## 12. Criterio de cierre y estado consolidado de la Fase 6
 
-- **Fase 0:** Criterios obligatorios de auditoría satisfechos (`PASS=5, FAIL=0`).
-- **Fase 5A:** Completada (Infraestructura, retries y verificadores de integridad estáticos).
-- **Fase 5B:** Completada (Ejecución parcial controlada completada sobre los casos 1, 16 y 26, con tres casos procesados, cero errores de infraestructura, artefactos temporales y cero usuarios temporales residuales).
-- **Fase 5C:** COMPLETADA (Ejecución oficial del benchmark RAG de 15 casos completada con `gemini-3.5-flash-lite` sin errores de infraestructura).
-- **Fase 5D:** COMPLETADA (Análisis cuantitativo, actualización documental y cierre formal completados).
-- **Fase 5:** CERRADA.
-- **Fase 6:** PENDIENTE.
+### Commits Registrados en la Fase 6:
+- `cfd78b8`: *"refactor: migrar modelos a configuración Pydantic V2"* (Fase 6B-1)
+- `bafa79e`: *"fix: endurecer configuración de seguridad en producción"* (Fase 6B-2)
+
+### Resultados Técnicos Consolidados:
+- 15 clases migradas mediante `ConfigDict` (Pydantic V2).
+- 164 pruebas unitarias aprobadas al cerrar la Fase 6C (0 fallidas; 162 al cerrar la Fase 6B tras incorporar 18 pruebas de seguridad, y 2 pruebas documentales añadidas en la Fase 6C).
+- 1 warning externo de `google-genai` (cero warnings en código del proyecto).
+- 24 verificaciones de integridad RAG aprobadas (0 fallidas).
+- Cinco verificadores frontend finalizados con exit code 0 (`verify:quality`, `lint`, `type-check`, etc.).
+- Cero secretos reales expuestos en la base de código.
+- `APP_ENV` admite los entornos `development`, `test` y `production`.
+- Bloqueo estricto de `SECRET_KEY` insegura en entorno `production`.
+- Bloqueo estricto de `DB_PASSWORD` por defecto en entorno `production`.
+
+### Estado Final de las Fases:
+- **Fase 0 (Auditoría Inicial):** **COMPLETADA**
+- **Fase 5 (Benchmark RAG y Análisis Cuantitativo):** **CERRADA**
+- **Fase 6A (Auditoría Integral y Definición del Estado Final):** **COMPLETADA**
+- **Fase 6B (Migración Pydantic V2 y Seguridad por Entorno):** **COMPLETADA**
+- **Fase 6C (Cierre Documental Definitivo):** **COMPLETADA**
+- **Fase 6 (Cierre Técnico del Proyecto):** **CIERRE_TECNICO_COMPLETADO**
+- **Fase 6D:** **ENTREGA_E_INTEGRACION_GIT**
 
 ---
 
 ## 13. Conclusión
 
-La auditoría de la **Fase 0** y la ejecución formal de la **Fase 5** (Subfases 5A, 5B, 5C y 5D) confirman que el proyecto **TutorIA** cuenta con un marco de evaluación RAG reproducible, aislado y trazable. La ejecución del benchmark sobre el **Golden Set oficial de 15 casos** (`facil: 7, ambiguo: 5, fuera_de_alcance: 3`) concluyó con 0 errores de infraestructura. El hallazgo `F5-001` queda registrado como **CERRADO_CON_RESULTADOS_OFICIALES_Y_ANALISIS_CUANTITATIVO_EN_FASE_5D**, la incidencia `F5-002` como **MITIGADA_POR_REDEFINICION_FORMAL_DEL_ALCANCE**, y la incidencia `F5-003` como **CERRADO_TRAS_VALIDACION_EXITOSA_CON_GEMINI_3_5_FLASH_LITE_EN_FASE_5C**, declarando formalmente la **Fase 5 CERRADA**.
+La auditoría de la **Fase 0**, el cierre del benchmark de la **Fase 5** y el desarrollo técnico de la **Fase 6** (Subfases 6A, 6B y 6C) confirman que **TutorIA** satisface de manera verificable los estándares de arquitectura hexagonal, integridad de datos, seguridad por entorno y calidad de pruebas automatizadas. Todos los hallazgos críticos de auditoría han sido remediados o integrados como recomendaciones posteriores, declarando la **Fase 6** en estado **CIERRE_TECNICO_COMPLETADO**.

@@ -160,6 +160,13 @@ El desempeño cuantitativo actual del pipeline RAG es insuficiente para uso en p
 8. Desacoplar formalmente en el reporte de métricas el éxito de retrieval, generación y abstención.
 9. Toda nueva evaluación deberá registrarse como una corrida independiente (nuevo `Run ID`), preservando la corrida oficial `fase5c_official15_flashlite_20260723T033328Z` como línea base histórica.
 
+### Conclusión y Cierre de la Fase 6
+- **Integridad de Artefactos Oficiales:** Los resultados cuantitativos oficiales del benchmark de 15 casos (`eval_results.json`, `eval_results.csv`, `golden_set.json`, `golden_set_manifest.json`) y el archivo histórico de 32 casos se mantuvieron intactos con sus hashes SHA-256 verificados.
+- **Sin Repetición del Benchmark:** Durante la Fase 6 no se repitió el benchmark RAG ni se realizaron solicitudes adicionales a la API de Gemini.
+- **Ampliación de Pruebas Automatizadas:** La suite de pruebas unitarias del backend se amplió de 144 a 162 pruebas aprobadas en la Fase 6B (seguridad por entorno `APP_ENV`) y alcanzó 164 pruebas aprobadas al cerrar la Fase 6C tras incorporar 2 pruebas unitarias de verificación documental.
+- **Verificación de Integridad:** El verificador estático de integridad RAG conservó el resultado de 24 pruebas pasadas y 0 fallidas (24 PASS, 0 FAIL).
+- **Recomendaciones Posteriores:** Las incidencias `F5D-001` (recuperación vectorial), `F5D-002` (abstención fuera de dominio) y `F5D-003` (heurísticas del evaluador) permanecen como recomendaciones técnicas para fases posteriores. No se atribuyen causas no demostradas a los resultados de recuperación semántica.
+
 ---
 
 ## 8. Estado Final de las Fases
@@ -169,4 +176,8 @@ El desempeño cuantitativo actual del pipeline RAG es insuficiente para uso en p
 - **Fase 5C (Ejecución del Benchmark Oficial de 15 Casos):** **COMPLETADA**
 - **Fase 5D (Análisis Cuantitativo y Cierre de Documentación):** **COMPLETADA**
 - **FASE 5:** **CERRADA**
-- **FASE 6:** **PENDIENTE**
+- **Fase 6A (Auditoría Integral):** **COMPLETADA**
+- **Fase 6B (Migración Pydantic V2 y Seguridad por Entorno):** **COMPLETADA**
+- **Fase 6C (Cierre Documental Definitivo):** **COMPLETADA**
+- **FASE 6:** **CIERRE_TECNICO_COMPLETADO**
+- **Fase 6D:** **ENTREGA_E_INTEGRACION_GIT**

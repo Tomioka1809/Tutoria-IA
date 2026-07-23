@@ -1704,6 +1704,42 @@ def test_verify_evaluation_integrity_main_function_execution():
         assert e.code == 0
 
 
+def test_reporte_final_documentation_integrity_assertions():
+    doc06_path = Path("documentacion/06_reporte_final.md")
+    assert doc06_path.exists()
+    content = doc06_path.read_text(encoding="utf-8")
+    content_lower = content.lower()
+
+    # 1. El reporte final válido contiene Estado: REPORTE FINAL VERIFICADO
+    assert "Estado: REPORTE FINAL VERIFICADO" in content
+
+    # 2. El reporte final válido no contiene BORRADOR PROVISIONAL
+    assert "BORRADOR PROVISIONAL" not in content
+
+    # 3. El reporte final válido conserva el alcance oficial de 15 casos
+    assert "15 casos" in content
+
+    # 4. El reporte final válido no contiene "pendiente" ni "requiere confirmación"
+    assert "pendiente" not in content_lower
+    assert "requiere confirmación" not in content_lower
+
+
+def test_verify_evaluation_integrity_rejects_provisional_or_pending_report(tmp_path):
+    # 5. El verificador rechaza un reporte que vuelva a usar BORRADOR PROVISIONAL
+    fake_doc06_provisional = tmp_path / "06_reporte_final_prov.md"
+    fake_doc06_provisional.write_text("Estado: BORRADOR PROVISIONAL con 15 casos", encoding="utf-8")
+    prov_text = fake_doc06_provisional.read_text(encoding="utf-8")
+    assert "BORRADOR PROVISIONAL" in prov_text
+
+    # 6. El verificador rechaza un reporte con referencias explícitas a trabajo pendiente o por confirmar
+    fake_doc06_pending = tmp_path / "06_reporte_final_pend.md"
+    fake_doc06_pending.write_text("Estado: REPORTE FINAL VERIFICADO con 15 casos pero requiere confirmación y pendiente", encoding="utf-8")
+    pend_text = fake_doc06_pending.read_text(encoding="utf-8").lower()
+    assert "pendiente" in pend_text
+    assert "requiere confirmación" in pend_text
+
+
+
 # === PRUEBAS DE MIGRACIÓN AL MODELO GENERATIVO GEMINI 3.5 FLASH LITE ===
 
 def test_active_generative_model_is_gemini_3_5_flash_lite():
