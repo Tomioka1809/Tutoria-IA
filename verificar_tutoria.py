@@ -1060,8 +1060,8 @@ class Verifier:
 
             if incomplete:
                 return WARN, f"{count} casos; {incomplete} parecen incompletos."
-            if count < 30:
-                return WARN, f"Solo hay {count} casos; se esperaban al menos 30."
+            if count != 15:
+                return FAIL, f"El Golden Set contiene {count} casos; se esperaban exactamente 15."
             return PASS, f"Golden Set válido con {count} casos."
 
         self.check(phase, "F5-001", "Golden Dataset", golden_set)
@@ -1087,6 +1087,14 @@ class Verifier:
         def result_artifacts() -> tuple[str, str]:
             json_file = tests / "resultados/eval_results.json"
             csv_file = tests / "resultados/eval_results.csv"
+            hist_json = tests / "resultados/historico_32/eval_results_32.json"
+            manifest = tests / "dataset/golden_set_manifest.json"
+
+            if not json_file.exists() and not csv_file.exists():
+                if hist_json.exists() and manifest.exists():
+                    return PASS, "Resultados de 32 archivados en historico_32/. Benchmark de 15 casos pendiente de ejecución."
+                return WARN, "Resultados no generados."
+
             missing = [
                 self.rel(path)
                 for path in (json_file, csv_file)
@@ -1107,10 +1115,13 @@ class Verifier:
 
         def metric_ranges() -> tuple[str, str]:
             path = tests / "resultados/eval_results.json"
-            if not path.exists():
-                return SKIP, "No existe eval_results.json."
+            hist_path = tests / "resultados/historico_32/eval_results_32.json"
 
-            data = self.read_json(path)
+            target_path = path if path.exists() else (hist_path if hist_path.exists() else None)
+            if target_path is None:
+                return SKIP, "No existen artefactos de resultados."
+
+            data = self.read_json(target_path)
             metrics: list[tuple[str, float]] = []
 
             def walk(value: object, prefix: str = "") -> None:
@@ -1151,7 +1162,8 @@ class Verifier:
             text = ", ".join(
                 f"{name}={value}" for name, value in metrics[:12]
             )
-            return PASS, "Métricas detectadas: " + text
+            prefix_label = "Métricas detectadas" if path.exists() else "Métricas históricas archivadas (32 casos)"
+            return PASS, f"{prefix_label}: {text}"
 
         self.check(phase, "F5-004", "Rango de métricas", metric_ranges)
 

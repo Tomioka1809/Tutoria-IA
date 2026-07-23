@@ -12,9 +12,12 @@ El proyecto está dividido en dos partes principales:
 
 1. **Backend (`/backend`):**
    - **Framework:** [FastAPI](https://fastapi.tiangolo.com/) (Python 3.12+)
-   - **Base de Datos:** [PostgreSQL](https://www.postgresql.org/)
+   - **Base de Datos:** [PostgreSQL](https://www.postgresql.org/) con `pgvector`
    - **ORM & Migraciones:** [SQLAlchemy](https://www.sqlalchemy.org/) (Async) y [Alembic](https://alembic.sqlalchemy.org/)
-   - **IA:** Integración con la API de Google Gemini (Google AI Studio)
+   - **IA & Modelos Gemini:** Integración oficial con Google Gemini API (`google-genai`).
+     - **Modelo Generativo Activo:** `gemini-3.5-flash-lite`
+     - **Modelo de Embedding Activo:** `gemini-embedding-2` (768 dimensiones)
+     - **Modelo Generativo Anterior:** `gemini-2.5-flash`
 
 2. **Frontend (`/frontend`):**
    - **Framework:** [React Native](https://reactnative.dev/) con [Expo](https://expo.dev/) (SDK 54)

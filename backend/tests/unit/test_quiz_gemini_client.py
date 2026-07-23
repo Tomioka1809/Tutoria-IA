@@ -68,7 +68,7 @@ class TestQuizGeminiClient(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(res, "{}")
 
     @patch("urllib.request.urlopen")
-    def test_uses_gemini_2_5_flash_model(self, mock_urlopen):
+    def test_uses_gemini_3_5_flash_lite_model(self, mock_urlopen):
         mock_response = MagicMock()
         mock_response.read.return_value = json.dumps({
             "candidates": [{"content": {"parts": [{"text": "OK"}]}}]
@@ -78,7 +78,8 @@ class TestQuizGeminiClient(unittest.IsolatedAsyncioTestCase):
 
         call_gemini_sync("my_secret_key", {"test": "payload"})
         req = mock_urlopen.call_args[0][0]
-        self.assertIn("gemini-2.5-flash:generateContent", req.full_url)
+        self.assertIn("gemini-3.5-flash-lite:generateContent", req.full_url)
+        self.assertNotIn("gemini-2.5-flash:generateContent", req.full_url)
         self.assertIn("key=my_secret_key", req.full_url)
 
     @patch("app.infrastructure.adapters.quiz_gemini_client.call_gemini_sync")

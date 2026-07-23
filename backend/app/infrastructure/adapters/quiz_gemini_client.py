@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 
 def call_gemini_sync(api_key: str, payload: Mapping[str, object]) -> str:
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key}"
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key={api_key}"
     req = urllib.request.Request(
         url,
         data=json.dumps(payload).encode("utf-8"),

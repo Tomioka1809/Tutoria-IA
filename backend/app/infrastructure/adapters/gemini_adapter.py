@@ -1,18 +1,39 @@
-from typing import List, Dict
+from typing import List, Dict, Optional, Callable, Any
 from google import genai
 from google.genai import types
 import logging
+import asyncio
+import inspect
 from app.application.ports.llm_port import LLMPort
 
 logger = logging.getLogger(__name__)
 
 
 class GeminiAdapter(LLMPort):
-    def __init__(self, api_key: str, allow_embedding_fallback: bool = True):
+    def __init__(
+        self,
+        api_key: str,
+        allow_embedding_fallback: bool = True,
+        allow_generation_fallback: bool = True,
+        api_max_attempts: int = 3,
+        before_generate_request: Optional[Callable[[], Any]] = None
+    ):
+        if type(api_max_attempts) is bool or not isinstance(api_max_attempts, int) or api_max_attempts < 1:
+            raise ValueError("api_max_attempts debe ser un entero mayor o igual a 1")
+
         self.api_key = api_key
         self.allow_embedding_fallback = allow_embedding_fallback
+        self.allow_generation_fallback = allow_generation_fallback
+        self.api_max_attempts = api_max_attempts
+        self.before_generate_request = before_generate_request
         # We use the async client to avoid blocking the event loop
         self.client = genai.Client(api_key=api_key) if api_key else None
+
+    async def _trigger_before_generate(self):
+        if self.before_generate_request:
+            res = self.before_generate_request()
+            if asyncio.iscoroutine(res) or inspect.iscoroutine(res):
+                await res
 
     async def generate_response(
         self,
@@ -22,6 +43,8 @@ class GeminiAdapter(LLMPort):
         tools: List = None
     ) -> str:
         if not self.api_key or not self.client:
+            if not self.allow_generation_fallback:
+                raise RuntimeError("GEMINI_API_KEY is missing in strict generation mode.")
             return (
                 "¡Hola! Soy TutorIA 🦖. Mi cerebro requiere que configures "
                 "la variable `GEMINI_API_KEY`. Por ahora estoy en modo de simulación."
@@ -43,14 +66,15 @@ class GeminiAdapter(LLMPort):
         # Construct a map of tool functions to lookup by name
         tool_map = {func.__name__: func for func in tools} if tools else {}
 
-        import asyncio
-        max_retries = 3
+        max_retries = self.api_max_attempts
         for attempt in range(max_retries):
             try:
                 # We allow up to 5 manual tool execution steps to avoid infinite loops
                 for _ in range(5):
+                    await self._trigger_before_generate()
+
                     response = await self.client.aio.models.generate_content(
-                        model='gemini-2.5-flash',
+                        model='gemini-3.5-flash-lite',
                         contents=contents,
                         config=types.GenerateContentConfig(
                             system_instruction=system_instruction,
@@ -69,13 +93,12 @@ class GeminiAdapter(LLMPort):
                             func = tool_map.get(call.name)
                             if func:
                                 try:
-                                    import inspect
                                     if inspect.iscoroutinefunction(func):
                                         result = await func(**call.args)
                                     else:
                                         result = func(**call.args)
                                 except Exception as ex:
-                                    logger.error("Error executing tool %s: %s", call.name, ex)
+                                    logger.error("Error executing tool %s: %s", getattr(call, "name", "tool"), ex)
                                     result = f"Error al ejecutar la herramienta: {str(ex)}"
                             else:
                                 result = f"Error: Herramienta '{call.name}' no encontrada."
@@ -96,6 +119,8 @@ class GeminiAdapter(LLMPort):
                     else:
                         return response.text or ""
 
+                if not self.allow_generation_fallback and (not response or not response.text):
+                    raise RuntimeError("Gemini limit reached without text response")
                 return response.text or "🦖 ¡Ups! Superé mi límite de razonamiento interno buscando tus datos."
 
             except Exception as e:
@@ -106,10 +131,10 @@ class GeminiAdapter(LLMPort):
                     await asyncio.sleep(wait_time)
                     continue
 
+                if not self.allow_generation_fallback:
+                    raise e
+
                 logger.error("Gemini API Exception: %s", e)
-                # Offline RAG fallback when API quota is exhausted
-                if "corpus" in system_instruction.lower():
-                    return "No cuento con información suficiente en la base oficial de la UNSAAC para responder con certeza."
                 return "No cuento con información suficiente en la base oficial de la UNSAAC para responder con certeza."
 
     async def compute_embedding(self, text: str) -> List[float]:
@@ -118,8 +143,7 @@ class GeminiAdapter(LLMPort):
                 raise RuntimeError("GEMINI_API_KEY is missing in strict embedding mode.")
             return self._fallback_embedding(text)
 
-        import asyncio
-        max_retries = 3
+        max_retries = self.api_max_attempts
         for attempt in range(max_retries):
             try:
                 response = await self.client.aio.models.embed_content(
@@ -153,7 +177,6 @@ class GeminiAdapter(LLMPort):
                 return self._fallback_embedding(text)
 
     def _fallback_embedding(self, text: str) -> List[float]:
-        # Deterministic pseudo-embedding for testing when offline or rate-limited
         import hashlib
         import math
         vec = [0.0] * 768

@@ -28,7 +28,7 @@ graph LR
     subgraph Generation ["4. Generación Fundamentada"]
         SystemPrompt["System Prompt (Grounding & Formatting)"]
         FunctionCalling["Tool Calling (Tutores, Eventos)"]
-        GeminiFlash["Gemini 2.5 Flash"]
+        GeminiFlash["Gemini 3.5 Flash Lite"]
     end
 
     JSONs --> Prefixer --> DictToText --> GeminiEmbed --> PGVector
@@ -49,8 +49,8 @@ graph LR
 
 ### 2.2 Embeddings (Representación Vectorial)
 - **Implementación Actual:** Se utiliza el SDK `google-genai` en `GeminiAdapter.compute_embedding()`.
-- **Modelo:** `gemini-embedding-2` configurado con `output_dimensionality=768`.
-- **Observación:** Los modelos anteriores retirados (modelo anterior / modelo retirado) fueron unificados a `gemini-embedding-2` en la Fase 3.
+- **Modelo Activo:** `gemini-embedding-2` configurado con `output_dimensionality=768`.
+- **Observación:** Los modelos de embedding anteriores fueron unificados a `gemini-embedding-2` en la Fase 3, preservando la dimensión de 768 y los 304 vectores almacenados en PostgreSQL.
 
 ### 2.3 Almacenamiento Vectorial (`pgvector` en PostgreSQL)
 - **Esquema:** Tabla `corpus_chunks` con columna `embedding VECTOR(768)`.
@@ -62,7 +62,9 @@ graph LR
 - **Fallback Léxico Controlado:** Si la búsqueda vectorial no completa `limit`, se ejecuta un fallback léxico que exige coincidencia conjunta `AND` para 2+ términos significativos (o término exacto de 6+ caracteres en búsquedas cortas) sin duplicar ni superar `keyword_fallback_limit=2`.
 - **Script de Regeneración Estricta:** `backend/scripts/rebuild_corpus_embeddings.py` utiliza `GeminiAdapter` con `allow_embedding_fallback=False` para evitar pseudoembeddings en la BD.
 
-### 2.5 Generación y Grounding (*Gemini 2.5 Flash*)
+### 2.5 Generación y Grounding (*Gemini 3.5 Flash Lite*)
+- **Modelo Generativo Activo:** `gemini-3.5-flash-lite` (reemplaza al modelo anterior `gemini-2.5-flash` para todas las llamadas reales de generación, incluyendo Tool Calling y evaluación).
+- **Modelo Generativo Anterior:** `gemini-2.5-flash` (discontinuado para proyectos nuevos con HTTP 404 NOT_FOUND).
 - **Inyección de Contexto:** Los fragmentos recuperados incluyen su fuente descriptiva (`[Fuente: ...]`). Si no hay fragmentos que superen el umbral 0.45, el contexto adopta el marcador `NO HAY FRAGMENTOS RELEVANTES DEL CORPUS PARA ESTA CONSULTA.`.
 - **Política de Abstención Estricta:** Prohibidas expresiones como "según internet" o "conocimiento general". El bot responde obligatoriamente: *"No cuento con información suficiente en la base oficial de la UNSAAC para responder con certeza."*
 
