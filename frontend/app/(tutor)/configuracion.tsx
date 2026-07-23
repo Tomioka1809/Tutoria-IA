@@ -172,7 +172,7 @@ export default function ConfiguracionScreen() {
               fontWeight: '500',
               marginTop: 4,
             }}>
-              {tr('profile.code')}: {user?.tutor_code || tr('common.notSpecified')}
+              {tr('profile.codeLabel')}: {user?.tutor_code || tr('common.notSpecified')}
             </Text>
           </View>
         </View>

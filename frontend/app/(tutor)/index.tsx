@@ -249,7 +249,7 @@ export default function DashboardScreen() {
                   <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
                     <Feather name="hash" size={16} color={colors.primary} />
                     <Text style={{ marginLeft: 8, color: colors.text }}>
-                      {t('profile.code')}: <Text style={{ fontWeight: 'bold' }}>{selectedStudent.student_code || t('dashboard.notRegistered')}</Text>
+                      {t('profile.codeLabel')}: <Text style={{ fontWeight: 'bold' }}>{selectedStudent.student_code || t('dashboard.notRegistered')}</Text>
                     </Text>
                   </View>
                   

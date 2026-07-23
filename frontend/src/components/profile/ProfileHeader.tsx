@@ -93,7 +93,7 @@ export function ProfileHeader({ user }: ProfileHeaderProps) {
             fontWeight: '500',
             marginTop: 4,
           }}>
-            {t('profile.code', { code: isStudent ? (user?.student_code || '2123456') : (user?.tutor_code || 'T-212345') })}
+            {t('profile.code', { code: isStudent ? (user?.student_code || t('common.notSpecified')) : (user?.tutor_code || t('common.notSpecified')) })}
           </Text>
           {isStudent ? (
             <>

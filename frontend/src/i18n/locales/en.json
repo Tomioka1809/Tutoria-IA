@@ -95,6 +95,7 @@
   "profile": {
     "title": "Profile",
     "code": "Code: {{code}}",
+    "codeLabel": "Code",
     "semester": "Semester: {{semester}}",
     "myTutor": "My tutor",
     "settings": "Settings",
