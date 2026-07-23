@@ -230,7 +230,7 @@ def main():
                 manifest.get("preserve_original_ids") is True and
                 manifest.get("selected_source_ids") == sorted(list(OFFICIAL_15_IDS)) and
                 manifest.get("category_distribution") == {"facil": 7, "ambiguo": 5, "fuera_de_alcance": 3} and
-                manifest.get("models") == {"generation": "gemini-2.5-flash", "embedding": "gemini-embedding-2"} and
+                manifest.get("models") == {"generation": "gemini-3.5-flash-lite", "embedding": "gemini-embedding-2"} and
                 manifest.get("official_completion_criteria") == {
                     "total_cases": 15, "selected_cases": 15, "completed_cases": 15,
                     "infrastructure_errors": 0, "skipped_cases": 0, "is_complete": True

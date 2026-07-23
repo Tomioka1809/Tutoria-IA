@@ -1572,7 +1572,7 @@ def test_golden_set_manifest_coherence_full():
     assert manifest["preserve_original_ids"] is True
     assert manifest["selected_source_ids"] == [1, 3, 6, 8, 10, 13, 15, 16, 18, 20, 23, 25, 26, 29, 32]
     assert manifest["category_distribution"] == {"facil": 7, "ambiguo": 5, "fuera_de_alcance": 3}
-    assert manifest["models"] == {"generation": "gemini-2.5-flash", "embedding": "gemini-embedding-2"}
+    assert manifest["models"] == {"generation": "gemini-3.5-flash-lite", "embedding": "gemini-embedding-2"}
     assert manifest["official_completion_criteria"] == {
         "total_cases": 15, "selected_cases": 15, "completed_cases": 15,
         "infrastructure_errors": 0, "skipped_cases": 0, "is_complete": True
@@ -1699,3 +1699,105 @@ def test_verify_evaluation_integrity_main_function_execution():
         verify_main()
     except SystemExit as e:
         assert e.code == 0
+
+
+# === PRUEBAS DE MIGRACIÓN AL MODELO GENERATIVO GEMINI 3.5 FLASH LITE ===
+
+def test_active_generative_model_is_gemini_3_5_flash_lite():
+    async def _run():
+        adapter = GeminiAdapter(api_key="fake_key")
+        called_models = []
+
+        async def mock_generate_content(model, contents, config=None):
+            called_models.append(model)
+            mock_resp = MagicMock()
+            mock_resp.text = "Respuesta de prueba"
+            mock_resp.function_calls = []
+            return mock_resp
+
+        adapter.client = MagicMock()
+        adapter.client.aio.models.generate_content = mock_generate_content
+
+        res = await adapter.generate_response("instruction", [], "user_msg")
+        assert res == "Respuesta de prueba"
+        assert called_models == ["gemini-3.5-flash-lite"]
+        assert "gemini-2.5-flash" not in called_models
+    asyncio.run(_run())
+
+def test_active_embedding_model_remains_gemini_embedding_2():
+    async def _run():
+        adapter = GeminiAdapter(api_key="fake_key")
+        called_models = []
+
+        async def mock_embed_content(model, contents, config=None):
+            called_models.append(model)
+            mock_resp = MagicMock()
+            mock_resp.embeddings = [MagicMock(values=[0.1] * 768)]
+            return mock_resp
+
+        adapter.client = MagicMock()
+        adapter.client.aio.models.embed_content = mock_embed_content
+
+        res = await adapter.compute_embedding("texto")
+        assert len(res) == 768
+        assert called_models == ["gemini-embedding-2"]
+    asyncio.run(_run())
+
+def test_manifest_records_gemini_3_5_flash_lite_and_embedding_2():
+    base_dir = Path(__file__).resolve().parent.parent
+    manifest_path = base_dir / "dataset" / "golden_set_manifest.json"
+    assert manifest_path.exists()
+    with open(manifest_path, "r", encoding="utf-8") as f:
+        manifest = json.load(f)
+    assert manifest["models"]["generation"] == "gemini-3.5-flash-lite"
+    assert manifest["models"]["embedding"] == "gemini-embedding-2"
+
+def test_run_eval_payload_records_gemini_3_5_flash_lite_and_embedding_2():
+    cfg = EvaluationConfig(run_id="test_run")
+    payload, _ = build_export_payloads(
+        consolidated=[],
+        config=cfg,
+        golden_hash="hash",
+        total_golden_cases=0,
+        selected_items=[],
+        completed_count=0,
+        infra_error_count=0,
+        skipped_count=0,
+        is_complete=False,
+        cat_summary={},
+        globales={"precision_global": 0.0, "cobertura_global": 0.0, "pertinencia_global": 0.0}
+    )
+    assert payload["models"]["generation_model"] == "gemini-3.5-flash-lite"
+    assert payload["models"]["embedding_model"] == "gemini-embedding-2"
+    assert payload["models"]["generation_model"] != "gemini-2.5-flash"
+    assert "gemini-2.5-flash" not in payload["models"].values()
+
+def test_manifest_and_runner_declare_exact_same_models():
+    base_dir = Path(__file__).resolve().parent.parent
+    manifest_path = base_dir / "dataset" / "golden_set_manifest.json"
+    assert manifest_path.exists()
+    with open(manifest_path, "r", encoding="utf-8") as f:
+        manifest = json.load(f)
+
+    cfg = EvaluationConfig(run_id="test_run")
+    payload, _ = build_export_payloads(
+        consolidated=[],
+        config=cfg,
+        golden_hash="hash",
+        total_golden_cases=0,
+        selected_items=[],
+        completed_count=0,
+        infra_error_count=0,
+        skipped_count=0,
+        is_complete=False,
+        cat_summary={},
+        globales={"precision_global": 0.0, "cobertura_global": 0.0, "pertinencia_global": 0.0}
+    )
+
+    manifest_gen = manifest["models"]["generation"]
+    manifest_emb = manifest["models"]["embedding"]
+    runner_gen = payload["models"]["generation_model"]
+    runner_emb = payload["models"]["embedding_model"]
+
+    assert manifest_gen == runner_gen == "gemini-3.5-flash-lite"
+    assert manifest_emb == runner_emb == "gemini-embedding-2"

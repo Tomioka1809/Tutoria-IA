@@ -74,7 +74,7 @@ class GeminiAdapter(LLMPort):
                     await self._trigger_before_generate()
 
                     response = await self.client.aio.models.generate_content(
-                        model='gemini-2.5-flash',
+                        model='gemini-3.5-flash-lite',
                         contents=contents,
                         config=types.GenerateContentConfig(
                             system_instruction=system_instruction,

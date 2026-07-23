@@ -58,7 +58,7 @@ def build_export_payloads(
         "skipped_cases": skipped_count,
         "is_complete": is_complete,
         "models": {
-            "generation_model": "gemini-2.5-flash",
+            "generation_model": "gemini-3.5-flash-lite",
             "embedding_model": "gemini-embedding-2"
         },
         "evaluation_config": {

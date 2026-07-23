@@ -19,7 +19,7 @@
     "fuera_de_alcance": 3
   },
   "models": {
-    "generation": "gemini-2.5-flash",
+    "generation": "gemini-3.5-flash-lite",
     "embedding": "gemini-embedding-2"
   },
   "official_completion_criteria": {
