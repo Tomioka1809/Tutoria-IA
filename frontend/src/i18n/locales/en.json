@@ -64,6 +64,7 @@
     "no": "No",
     "loading": "Loading...",
     "notSpecified": "Not specified",
+    "retry": "Retry",
     "version": "Version {{version}}"
   },
   "dashboard": {
