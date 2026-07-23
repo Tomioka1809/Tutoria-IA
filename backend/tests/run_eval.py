@@ -82,7 +82,7 @@ def build_export_payloads(
     }
 
     csv_buffer = io.StringIO()
-    writer = csv.writer(csv_buffer)
+    writer = csv.writer(csv_buffer, lineterminator="\n")
     writer.writerow([
         "ID", "Categoria", "Estado_Ejecucion", "Intentos", "Error_Tecnico",
         "Pregunta", "Precision", "Cobertura", "Pertinencia", "Respuesta_Bot",
