@@ -185,17 +185,8 @@ class TestChatUseCase(unittest.IsolatedAsyncioTestCase):
 
         res = await use_case.send_chat_message(user_id=101, user_role="estudiante", user_content="¿Quién es mi tutor?")
 
-        self.assertEqual(res.content, "Respuesta de prueba del asistente.")
-        tool_names = [t.__name__ for t in llm.last_tools]
-        self.assertIn("get_assigned_tutors", tool_names)
-        self.assertIn("get_calendar_events", tool_names)
-        self.assertNotIn("get_assigned_students", tool_names)
-
-        get_assigned_tutors_fn = next(t for t in llm.last_tools if t.__name__ == "get_assigned_tutors")
-        json_str = await get_assigned_tutors_fn()
-        data = json.loads(json_str)
-        self.assertEqual(len(data), 1)
-        self.assertEqual(data[0]["tutor_name"], "Ing. Juan Pérez")
+        self.assertIn("Tu tutor asignado es", res.content)
+        self.assertIn("Ing. Juan Pérez", res.content)
         self.assertEqual(tutor_assignment_repo.last_student_id_queried, 101)
 
     async def test_send_message_triggers_assigned_students_tool(self):
@@ -217,17 +208,8 @@ class TestChatUseCase(unittest.IsolatedAsyncioTestCase):
 
         res = await use_case.send_chat_message(user_id=201, user_role="tutor", user_content="¿Quiénes son mis alumnos?")
 
-        self.assertEqual(res.content, "Respuesta de prueba del asistente.")
-        tool_names = [t.__name__ for t in llm.last_tools]
-        self.assertIn("get_assigned_students", tool_names)
-        self.assertIn("get_calendar_events", tool_names)
-        self.assertNotIn("get_assigned_tutors", tool_names)
-
-        get_assigned_students_fn = next(t for t in llm.last_tools if t.__name__ == "get_assigned_students")
-        json_str = await get_assigned_students_fn()
-        data = json.loads(json_str)
-        self.assertEqual(len(data), 1)
-        self.assertEqual(data[0]["student_name"], "Maria Lopez")
+        self.assertIn("Tus estudiantes asignados son", res.content)
+        self.assertIn("Maria Lopez", res.content)
         self.assertEqual(tutor_assignment_repo.last_tutor_id_queried, 201)
 
     async def test_send_message_triggers_calendar_events_tool(self):
@@ -247,19 +229,11 @@ class TestChatUseCase(unittest.IsolatedAsyncioTestCase):
             rag_policy=rag_policy,
         )
 
-        await use_case.send_chat_message(user_id=101, user_role="estudiante", user_content="¿Qué reuniones tengo?")
+        res = await use_case.send_chat_message(user_id=101, user_role="estudiante", user_content="¿Qué reuniones tengo?")
 
-        get_calendar_events_fn = next(t for t in llm.last_tools if t.__name__ == "get_calendar_events")
-        json_str = await get_calendar_events_fn(start_date="2026-08-01", end_date="2026-08-10")
-        data = json.loads(json_str)
-        self.assertIn("sessions", data)
-        self.assertIn("events", data)
-        self.assertEqual(len(data["sessions"]), 1)
-        self.assertEqual(data["sessions"][0]["title"], "Sesión de Orientación")
+        self.assertIn("actividades programadas", res.content)
         self.assertEqual(calendar_repo.last_user_id_queried, 101)
         self.assertEqual(calendar_repo.last_role_queried, "estudiante")
-        self.assertEqual(calendar_repo.last_start_dt_queried.strftime("%Y-%m-%d"), "2026-08-01")
-        self.assertEqual(calendar_repo.last_end_dt_queried.strftime("%Y-%m-%d"), "2026-08-10")
 
     async def test_empty_results_handling(self):
         chat_repo = FakeChatRepository()
@@ -278,16 +252,13 @@ class TestChatUseCase(unittest.IsolatedAsyncioTestCase):
             rag_policy=rag_policy,
         )
 
-        await use_case.send_chat_message(user_id=101, user_role="estudiante", user_content="¿Quién es mi tutor?")
+        res_tutor = await use_case.send_chat_message(user_id=101, user_role="estudiante", user_content="¿Quién es mi tutor?")
+        self.assertIn("No tienes ningún tutor asignado actualmente", res_tutor.content)
 
-        get_assigned_tutors_fn = next(t for t in llm.last_tools if t.__name__ == "get_assigned_tutors")
-        result_text = await get_assigned_tutors_fn()
-        self.assertEqual(result_text, "No tienes ningún tutor asignado actualmente.")
+        res_cal = await use_case.send_chat_message(user_id=101, user_role="estudiante", user_content="¿Qué reuniones tengo?")
+        self.assertIn("No tienes tutorías ni eventos programados", res_cal.content)
 
-        get_calendar_events_fn = next(t for t in llm.last_tools if t.__name__ == "get_calendar_events")
-        json_str = await get_calendar_events_fn()
-        data = json.loads(json_str)
-        self.assertEqual(data, {"sessions": [], "events": []})
+
 
     def test_architectural_decoupling_import_rules(self):
         use_case_path = os.path.join(

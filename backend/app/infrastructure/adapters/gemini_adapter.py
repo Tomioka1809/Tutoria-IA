@@ -6,7 +6,36 @@ import asyncio
 import inspect
 from app.application.ports.llm_port import LLMPort
 
+from app.domain.exceptions import (
+    LLMServiceError,
+    LLMAuthenticationError,
+    LLMQuotaError,
+    LLMTimeoutError,
+    LLMNetworkError,
+)
+
 logger = logging.getLogger(__name__)
+
+
+def _classify_gemini_error(e: Exception) -> tuple[str, Exception]:
+    err_str = str(e)
+    err_lower = err_str.lower()
+    if (
+        "api_key_invalid" in err_lower
+        or "api key not valid" in err_lower
+        or "invalid api key" in err_lower
+        or "missing api key" in err_lower
+        or "401" in err_str
+        or ("403" in err_str and "permission" in err_lower)
+    ):
+        return "authentication", LLMAuthenticationError("Fallo de autenticación con el servicio Gemini API")
+    if "429" in err_str or "resource_exhausted" in err_lower or "quota" in err_lower:
+        return "quota", LLMQuotaError("Límite de cuota alcanzado en el servicio Gemini API")
+    if "timeout" in err_lower or "timed out" in err_lower or "deadlineexceeded" in err_lower:
+        return "timeout", LLMTimeoutError("Timeout al comunicarse con el servicio Gemini API")
+    if "network error" in err_lower or "connection" in err_lower or "urlopen error" in err_lower or "unavailable" in err_lower:
+        return "network", LLMNetworkError("Error de conectividad de red con Gemini API")
+    return "unclassified", LLMServiceError(f"Error del servicio Gemini API: {type(e).__name__}")
 
 
 class GeminiAdapter(LLMPort):
@@ -44,7 +73,7 @@ class GeminiAdapter(LLMPort):
     ) -> str:
         if not self.api_key or not self.client:
             if not self.allow_generation_fallback:
-                raise RuntimeError("GEMINI_API_KEY is missing in strict generation mode.")
+                raise LLMAuthenticationError("GEMINI_API_KEY is missing in strict generation mode.")
             return (
                 "¡Hola! Soy TutorIA 🦖. Mi cerebro requiere que configures "
                 "la variable `GEMINI_API_KEY`. Por ahora estoy en modo de simulación."
@@ -98,8 +127,8 @@ class GeminiAdapter(LLMPort):
                                     else:
                                         result = func(**call.args)
                                 except Exception as ex:
-                                    logger.error("Error executing tool %s: %s", getattr(call, "name", "tool"), ex)
-                                    result = f"Error al ejecutar la herramienta: {str(ex)}"
+                                    logger.error("Error executing tool %s: %s", getattr(call, "name", "tool"), type(ex).__name__)
+                                    result = "No fue posible consultar esta información en este momento."
                             else:
                                 result = f"Error: Herramienta '{call.name}' no encontrada."
 
@@ -120,27 +149,28 @@ class GeminiAdapter(LLMPort):
                         return response.text or ""
 
                 if not self.allow_generation_fallback and (not response or not response.text):
-                    raise RuntimeError("Gemini limit reached without text response")
-                return response.text or "🦖 ¡Ups! Superé mi límite de razonamiento interno buscando tus datos."
+                    raise LLMServiceError("Gemini limit reached without text response")
+                return response.text or "El servicio de TutorIA no está disponible temporalmente. Inténtalo nuevamente en unos minutos."
+
 
             except Exception as e:
-                err_str = str(e)
-                if ("429" in err_str or "RESOURCE_EXHAUSTED" in err_str or "quota" in err_str.lower()) and attempt < max_retries - 1:
+                err_type, typed_exc = _classify_gemini_error(e)
+                if err_type == "quota" and attempt < max_retries - 1:
                     wait_time = (attempt + 1) * 5
-                    logger.warning("429 Quota limit hit. Retrying in %ds... (attempt %d/%d)", wait_time, attempt + 1, max_retries)
+                    logger.warning("Quota limit hit for generation. Retrying in %ds... (attempt %d/%d)", wait_time, attempt + 1, max_retries)
                     await asyncio.sleep(wait_time)
                     continue
 
                 if not self.allow_generation_fallback:
-                    raise e
+                    raise typed_exc from e
 
-                logger.error("Gemini API Exception: %s", e)
-                return "No cuento con información suficiente en la base oficial de la UNSAAC para responder con certeza."
+                logger.error("Gemini API Error (generate_response): category=%s, exception_type=%s", err_type, type(e).__name__)
+                return "El servicio de TutorIA no está disponible temporalmente. Inténtalo nuevamente en unos minutos."
 
     async def compute_embedding(self, text: str) -> List[float]:
         if not self.api_key or not self.client:
             if not self.allow_embedding_fallback:
-                raise RuntimeError("GEMINI_API_KEY is missing in strict embedding mode.")
+                raise LLMAuthenticationError("GEMINI_API_KEY is missing in strict embedding mode.")
             return self._fallback_embedding(text)
 
         max_retries = self.api_max_attempts
@@ -159,22 +189,23 @@ class GeminiAdapter(LLMPort):
                         return [float(v) for v in vals]
 
                 if not self.allow_embedding_fallback:
-                    raise RuntimeError("Gemini embedding returned invalid structure or length")
+                    raise LLMServiceError("Gemini embedding returned invalid structure or length")
                 logger.error("Gemini embedding returned invalid structure or length")
                 return self._fallback_embedding(text)
             except Exception as e:
-                err_str = str(e)
-                if ("429" in err_str or "RESOURCE_EXHAUSTED" in err_str or "quota" in err_str.lower()) and attempt < max_retries - 1:
+                err_type, typed_exc = _classify_gemini_error(e)
+                if err_type == "quota" and attempt < max_retries - 1:
                     wait_time = (attempt + 1) * 5
-                    logger.warning("429 Quota limit hit for embedding. Retrying in %ds...", wait_time)
+                    logger.warning("Quota limit hit for embedding. Retrying in %ds...", wait_time)
                     await asyncio.sleep(wait_time)
                     continue
 
                 if not self.allow_embedding_fallback:
-                    raise RuntimeError(f"Gemini Embedding failed in strict mode: {e}") from e
+                    raise typed_exc from e
 
-                logger.error("Gemini Embedding Exception: %s", e)
+                logger.error("Gemini Embedding Error: category=%s, exception_type=%s", err_type, type(e).__name__)
                 return self._fallback_embedding(text)
+
 
     def _fallback_embedding(self, text: str) -> List[float]:
         import hashlib
