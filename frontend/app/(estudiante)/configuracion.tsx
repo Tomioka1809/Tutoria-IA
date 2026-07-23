@@ -172,7 +172,7 @@ export default function ConfiguracionScreen() {
                 fontWeight: '500',
                 marginTop: 4,
               }}>
-                {tr('profile.code')}: {user?.student_code || '2123456'}
+                {tr('profile.codeLabel')}: {user?.student_code || tr('common.notSpecified')}
               </Text>
               <Text style={{
                 fontSize: 12,

@@ -27,7 +27,7 @@ export default function PerfilTutorScreen() {
     },
     {
       iconName: 'award' as const,
-      label: t('profile.code'),
+      label: t('profile.codeLabel'),
       value: user?.tutor_code || t('common.notSpecified'),
     },
     {

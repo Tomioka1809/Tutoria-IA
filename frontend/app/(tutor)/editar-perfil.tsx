@@ -26,8 +26,12 @@ export default function EditarPerfilScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const paddingTop = Math.max(insets.top, 16);
-  // Bottom tab bar height — keep button above it
-  const tabBarHeight = Platform.OS === 'ios' ? 88 : 76;
+  const minimumBottomPadding = Platform.OS === 'ios' ? 24 : 12;
+  const bottomPadding = Math.max(insets.bottom, minimumBottomPadding);
+  const tabBarBaseHeight = 62;
+  const totalTabBarHeight = tabBarBaseHeight + bottomPadding;
+  const extraPadding = 24;
+  const scrollBottomPadding = totalTabBarHeight + extraPadding;
 
   const { user, updateProfile, profileImage, setProfileImage } = useAuthStore();
 
@@ -114,7 +118,7 @@ export default function EditarPerfilScreen() {
     <View style={{ flex: 1, backgroundColor: colors.background }}>
       <ScrollView
         contentContainerStyle={{
-          paddingBottom: tabBarHeight + 24,
+          paddingBottom: scrollBottomPadding,
         }}
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"

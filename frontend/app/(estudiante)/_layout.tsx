@@ -3,6 +3,7 @@ import { Tabs, usePathname } from 'expo-router';
 import React from 'react';
 import { Platform, Text } from 'react-native';
 
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { HapticTab } from '@/components/haptic-tab';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { TutoriaTabBarButton } from '@/src/components/tutoria/TutoriaTabBarButton';
@@ -13,6 +14,11 @@ export default function TabLayout() {
   const pathname = usePathname();
   const { t } = useTranslation();
   const { colors } = useTheme();
+  const insets = useSafeAreaInsets();
+
+  const minimumBottomPadding = Platform.OS === 'ios' ? 24 : 12;
+  const bottomPadding = Math.max(insets.bottom, minimumBottomPadding);
+  const tabBarBaseHeight = 62;
 
   return (
     <Tabs
@@ -30,8 +36,8 @@ export default function TabLayout() {
         tabBarStyle: {
           borderTopWidth: 1,
           borderTopColor: colors.border,
-          height: Platform.OS === 'ios' ? 88 : 76,
-          paddingBottom: Platform.OS === 'ios' ? 24 : 14,
+          height: tabBarBaseHeight + bottomPadding,
+          paddingBottom: bottomPadding,
           paddingTop: 8,
           backgroundColor: colors.surface,
           position: 'absolute',
