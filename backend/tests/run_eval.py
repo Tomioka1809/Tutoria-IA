@@ -1,10 +1,12 @@
 import asyncio
 import csv
+import io
 import json
 import os
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import List, Dict, Any, Tuple
 
 # Add parent backend directory to sys.path to allow imports
 backend_dir = Path(__file__).resolve().parent.parent
@@ -22,11 +24,87 @@ from tests.evaluation_support import (
     atomic_write_artifact_pair,
     calculate_global_metrics,
     sanitize_secret_message,
+    truncate_technical_error,
     validate_output_directory,
     is_official_complete_run,
     classify_case_result,
     filter_golden_set_cases
 )
+
+def build_export_payloads(
+    consolidated: List[Dict[str, Any]],
+    config: EvaluationConfig,
+    golden_hash: str,
+    total_golden_cases: int,
+    selected_items: List[Dict[str, Any]],
+    completed_count: int,
+    infra_error_count: int,
+    skipped_count: int,
+    is_complete: bool,
+    cat_summary: Dict[str, Any],
+    globales: Dict[str, float]
+) -> Tuple[Dict[str, Any], str]:
+    """Construye pura y atómicamente la estructura del diccionario JSON y la cadena CSV exportables."""
+    export_payload = {
+        "schema_version": "1.0.0",
+        "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+        "run_id": config.run_id,
+        "golden_set_path": "dataset/golden_set.json",
+        "golden_set_sha256": golden_hash,
+        "total_cases": total_golden_cases,
+        "selected_cases": len(selected_items),
+        "completed_cases": completed_count,
+        "infrastructure_errors": infra_error_count,
+        "skipped_cases": skipped_count,
+        "is_complete": is_complete,
+        "models": {
+            "generation_model": "gemini-2.5-flash",
+            "embedding_model": "gemini-embedding-2"
+        },
+        "evaluation_config": {
+            "max_retries": config.max_retries,
+            "initial_backoff_seconds": config.initial_backoff,
+            "max_backoff_seconds": config.max_backoff,
+            "inter_case_delay_seconds": config.inter_case_delay,
+            "generation_min_interval_seconds": config.generation_min_interval,
+            "retry_after_safety_seconds": config.retry_after_safety,
+            "case_limit": config.case_limit,
+            "case_ids": config.case_ids
+        },
+        "metric_definitions": {
+            "precision": "Proporción de fragmentos recuperados en Top-K que contienen palabras clave o referencias esperadas",
+            "cobertura": "Proporción de artículos de referencia esperados que fueron recuperados por pgvector",
+            "pertinencia": "Heurística léxica de pertinencia y abstención para fuera de alcance"
+        },
+        "metricas_globales": globales,
+        "desglose_categoria": cat_summary,
+        "detalles_casos": consolidated
+    }
+
+    csv_buffer = io.StringIO()
+    writer = csv.writer(csv_buffer)
+    writer.writerow([
+        "ID", "Categoria", "Estado_Ejecucion", "Intentos", "Error_Tecnico",
+        "Pregunta", "Precision", "Cobertura", "Pertinencia", "Respuesta_Bot",
+        "Solicitudes_Embedding", "Solicitudes_Generacion"
+    ])
+    for row in consolidated:
+        writer.writerow([
+            row["id"],
+            row["categoria"],
+            row["status"],
+            row["attempts"],
+            truncate_technical_error(row.get("technical_error") or ""),
+            row["pregunta"],
+            row["precision"] if row["precision"] is not None else "",
+            row["cobertura"] if row["cobertura"] is not None else "",
+            row["pertinencia"] if row["pertinencia"] is not None else "",
+            row["bot_response"].replace("\n", " ") if row.get("bot_response") else "",
+            row.get("embedding_requests", 0),
+            row.get("generation_requests", 0)
+        ])
+
+    return export_payload, csv_buffer.getvalue()
 
 async def main():
     print("\n" + "="*80)
@@ -105,6 +183,8 @@ async def main():
                 "pregunta": question,
                 "status": "skipped",
                 "attempts": 0,
+                "embedding_requests": 0,
+                "generation_requests": 0,
                 "technical_error": None,
                 "precision": None,
                 "cobertura": None,
@@ -119,6 +199,9 @@ async def main():
         is_ret_infra = ret.get("status") == "infrastructure_error"
         is_gen_infra = gen.get("status") == "infrastructure_error"
 
+        emb_req = ret.get("embedding_requests", 0) + gen.get("embedding_requests", 0)
+        gen_req = gen.get("generation_requests", 0)
+
         if is_ret_infra or is_gen_infra:
             infra_error_count += 1
             tech_err = ret.get("technical_error") or gen.get("technical_error") or "Fallo de infraestructura no especificado"
@@ -129,7 +212,9 @@ async def main():
                 "pregunta": question,
                 "status": "infrastructure_error",
                 "attempts": attempts,
-                "technical_error": sanitize_secret_message(tech_err),
+                "embedding_requests": emb_req,
+                "generation_requests": gen_req,
+                "technical_error": truncate_technical_error(tech_err),
                 "precision": None,
                 "cobertura": None,
                 "pertinencia": None,
@@ -154,6 +239,8 @@ async def main():
                 "pregunta": question,
                 "status": status,
                 "attempts": attempts,
+                "embedding_requests": emb_req,
+                "generation_requests": gen_req,
                 "technical_error": None,
                 "precision": prec,
                 "cobertura": cob,
@@ -192,61 +279,22 @@ async def main():
 
     print("-" * 70)
 
-    # Prepare JSON & CSV payloads
-    export_payload = {
-        "schema_version": "1.0.0",
-        "generated_at_utc": datetime.now(timezone.utc).isoformat(),
-        "run_id": config.run_id,
-        "golden_set_path": "dataset/golden_set.json",
-        "golden_set_sha256": golden_hash,
-        "total_cases": total_golden_cases,
-        "selected_cases": len(selected_items),
-        "completed_cases": completed_count,
-        "infrastructure_errors": infra_error_count,
-        "skipped_cases": skipped_count,
-        "is_complete": is_complete,
-        "models": {
-            "generation_model": "gemini-2.5-flash",
-            "embedding_model": "gemini-embedding-2"
-        },
-        "evaluation_config": {
-            "max_retries": config.max_retries,
-            "initial_backoff_seconds": config.initial_backoff,
-            "max_backoff_seconds": config.max_backoff,
-            "inter_case_delay_seconds": config.inter_case_delay,
-            "case_limit": config.case_limit,
-            "case_ids": config.case_ids
-        },
-        "metric_definitions": {
-            "precision": "Proporción de fragmentos recuperados en Top-K que contienen palabras clave o referencias esperadas",
-            "cobertura": "Proporción de artículos de referencia esperados que fueron recuperados por pgvector",
-            "pertinencia": "Heurística léxica de pertinencia y abstención para fuera de alcance"
-        },
-        "metricas_globales": globales,
-        "desglose_categoria": cat_summary,
-        "detalles_casos": consolidated
-    }
-
-    import io
-    csv_buffer = io.StringIO()
-    writer = csv.writer(csv_buffer)
-    writer.writerow(["ID", "Categoria", "Estado_Ejecucion", "Intentos", "Error_Tecnico", "Pregunta", "Precision", "Cobertura", "Pertinencia", "Respuesta_Bot"])
-    for row in consolidated:
-        writer.writerow([
-            row["id"],
-            row["categoria"],
-            row["status"],
-            row["attempts"],
-            row["technical_error"] or "",
-            row["pregunta"],
-            row["precision"] if row["precision"] is not None else "",
-            row["cobertura"] if row["cobertura"] is not None else "",
-            row["pertinencia"] if row["pertinencia"] is not None else "",
-            row["bot_response"].replace("\n", " ") if row["bot_response"] else ""
-        ])
+    # Build export payloads using pure function
+    export_payload, csv_str = build_export_payloads(
+        consolidated=consolidated,
+        config=config,
+        golden_hash=golden_hash,
+        total_golden_cases=total_golden_cases,
+        selected_items=selected_items,
+        completed_count=completed_count,
+        infra_error_count=infra_error_count,
+        skipped_count=skipped_count,
+        is_complete=is_complete,
+        cat_summary=cat_summary,
+        globales=globales
+    )
 
     json_str = json.dumps(export_payload, ensure_ascii=False, indent=2)
-    csv_str = csv_buffer.getvalue()
 
     # Rule: If official run attempt but is NOT complete (e.g. infra_error_count > 0 or filters applied)
     if not is_partial and not is_complete:
