@@ -1,11 +1,13 @@
 import os
+import io
+import csv
 import tempfile
 import pytest
 import shutil
 import asyncio
 import unittest.mock
 from pathlib import Path
-from unittest.mock import MagicMock, AsyncMock
+from unittest.mock import MagicMock, AsyncMock, call
 
 from app.application.dtos.rag_dtos import RAGRetrievalPolicy, RetrievedChunkDTO
 from app.application.use_cases.chat_use_cases import ChatUseCase
@@ -13,10 +15,15 @@ from app.infrastructure.adapters.gemini_adapter import GeminiAdapter
 
 from tests.test_retrieval import RetrievalEvaluator, run_retrieval_benchmark
 from tests.test_generation import GenerationEvaluator, run_generation_benchmark
+from tests.run_eval import build_export_payloads
 
 from tests.evaluation_support import (
     EvaluationConfig,
     EvaluationGeminiAdapter,
+    GeminiRateLimiter,
+    derive_case_eval_identity,
+    truncate_technical_error,
+    extract_retry_delay,
     execute_with_retry,
     is_transient_error,
     sanitize_secret_message,
@@ -42,11 +49,11 @@ from tests.verify_evaluation_integrity import (
 # 1. Retry exitoso y número de intentos
 def test_retry_success_and_attempts():
     async def _run():
-        calls = 0
+        calls_count = 0
         async def mock_op():
-            nonlocal calls
-            calls += 1
-            if calls < 3:
+            nonlocal calls_count
+            calls_count += 1
+            if calls_count < 3:
                 raise ConnectionError("503 Service Unavailable")
             return "SUCCESS"
 
@@ -56,16 +63,16 @@ def test_retry_success_and_attempts():
 
         assert res == "SUCCESS"
         assert attempts == 3
-        assert calls == 3
+        assert calls_count == 3
     asyncio.run(_run())
 
 # 2. InfrastructureError conserva attempts
 def test_infrastructure_error_retains_attempts():
     async def _run():
-        calls = 0
+        calls_count = 0
         async def mock_op():
-            nonlocal calls
-            calls += 1
+            nonlocal calls_count
+            calls_count += 1
             raise ConnectionError("500 Internal Server Error")
 
         sleep_mock = AsyncMock()
@@ -582,6 +589,7 @@ def test_rag_retrieval_policy_contract_values():
 def test_search_similar_receives_keyword_only_args():
     async def _run():
         mock_db = AsyncMock()
+        mock_db.add = MagicMock()
         mock_repo = AsyncMock()
         mock_chunk = RetrievedChunkDTO(text="Texto del reglamento UNSAAC", source="Reglamento")
         mock_repo.search_similar.return_value = [mock_chunk]
@@ -609,6 +617,7 @@ def test_retrieved_chunk_dto_transformation_to_text():
 def test_invalid_retrieved_object_produces_infra_error():
     async def _run():
         mock_db = AsyncMock()
+        mock_db.add = MagicMock()
         mock_repo = AsyncMock()
         mock_repo.search_similar.return_value = ["invalid_str_object"]
 
@@ -651,6 +660,7 @@ def test_send_chat_message_named_arguments_invocation():
         mock_user.id = 42
         mock_user.role = "estudiante"
         mock_db = AsyncMock()
+        mock_db.add = MagicMock()
 
         mock_use_case = AsyncMock()
         mock_msg = MagicMock()
@@ -661,7 +671,8 @@ def test_send_chat_message_named_arguments_invocation():
              unittest.mock.patch("tests.test_generation.ChatRepository"), \
              unittest.mock.patch("tests.test_generation.CorpusRepository"), \
              unittest.mock.patch("tests.test_generation.TutorAssignmentRepository"), \
-             unittest.mock.patch("tests.test_generation.CalendarRepository"):
+             unittest.mock.patch("tests.test_generation.CalendarRepository"), \
+             unittest.mock.patch.object(GenerationEvaluator, "cleanup_case_eval_user", new_callable=AsyncMock):
             evaluator = GenerationEvaluator()
             item = {"id": 1, "categoria": "facil", "pregunta": "¿Consulta?", "palabras_clave_esperadas": []}
             res = await evaluator.evaluate_item(item, mock_user, mock_db)
@@ -708,8 +719,10 @@ def test_chat_use_case_construction_failure_produces_infra_error():
         mock_user.id = 10
         mock_user.role = "tutor"
         mock_db = AsyncMock()
+        mock_db.add = MagicMock()
 
-        with unittest.mock.patch("tests.test_generation.ChatUseCase", side_effect=RuntimeError("Error en dependencias de ChatUseCase")):
+        with unittest.mock.patch("tests.test_generation.ChatUseCase", side_effect=RuntimeError("Error en dependencias de ChatUseCase")), \
+             unittest.mock.patch.object(GenerationEvaluator, "cleanup_case_eval_user", new_callable=AsyncMock):
             evaluator = GenerationEvaluator()
             item = {"id": 1, "categoria": "facil", "pregunta": "¿Consulta?", "palabras_clave_esperadas": []}
             res = await evaluator.evaluate_item(item, mock_user, mock_db)
@@ -725,8 +738,9 @@ def test_failure_creating_eval_user_produces_diagnostics_for_all_selected():
             {"id": 2, "categoria": "ambiguo", "pregunta": "P2"}
         ]
         with unittest.mock.patch("tests.test_generation.SessionLocal") as mock_session_cls, \
-             unittest.mock.patch("tests.test_generation.GenerationEvaluator.get_or_create_eval_user", side_effect=RuntimeError("BD inalcanzable")):
+             unittest.mock.patch("tests.test_generation.GenerationEvaluator.create_case_eval_user", side_effect=RuntimeError("BD inalcanzable")):
             mock_db = AsyncMock()
+            mock_db.add = MagicMock()
             mock_session_cls.return_value.__aenter__.return_value = mock_db
 
             results = await run_generation_benchmark("dummy_path", items=golden_subset)
@@ -753,10 +767,10 @@ def test_official_results_protection_policy():
 # 66. Un 429 en embedding realiza exactamente 1 + EVAL_MAX_RETRIES solicitudes
 def test_embedding_429_exact_attempts_without_nesting():
     async def _run():
-        calls = 0
+        calls_count = 0
         async def mock_embed(*args, **kwargs):
-            nonlocal calls
-            calls += 1
+            nonlocal calls_count
+            calls_count += 1
             raise ConnectionError("429 RESOURCE_EXHAUSTED")
 
         sleep_mock = AsyncMock()
@@ -766,17 +780,17 @@ def test_embedding_429_exact_attempts_without_nesting():
         with unittest.mock.patch.object(GeminiAdapter, "compute_embedding", side_effect=mock_embed):
             with pytest.raises(InfrastructureError) as exc_info:
                 await eval_llm.compute_embedding("texto")
-            assert calls == 4  # 1 inicial + 3 reintentos = 4
+            assert calls_count == 4
             assert exc_info.value.attempts == 4
     asyncio.run(_run())
 
 # 67. Un 429 en generación realiza exactamente 1 + EVAL_MAX_RETRIES solicitudes
 def test_generation_429_exact_attempts_without_nesting():
     async def _run():
-        calls = 0
+        calls_count = 0
         async def mock_gen(*args, **kwargs):
-            nonlocal calls
-            calls += 1
+            nonlocal calls_count
+            calls_count += 1
             raise ConnectionError("503 Service Unavailable")
 
         sleep_mock = AsyncMock()
@@ -786,7 +800,7 @@ def test_generation_429_exact_attempts_without_nesting():
         with unittest.mock.patch.object(GeminiAdapter, "generate_response", side_effect=mock_gen):
             with pytest.raises(InfrastructureError) as exc_info:
                 await eval_llm.generate_response("instruction", [], "user_msg")
-            assert calls == 3  # 1 inicial + 2 reintentos = 3
+            assert calls_count == 3
             assert exc_info.value.attempts == 3
     asyncio.run(_run())
 
@@ -797,6 +811,7 @@ def test_send_chat_message_invoked_once_on_gemini_failure():
         mock_user.id = 1
         mock_user.role = "estudiante"
         mock_db = AsyncMock()
+        mock_db.add = MagicMock()
 
         send_calls = 0
         async def mock_send(*args, **kwargs):
@@ -811,7 +826,8 @@ def test_send_chat_message_invoked_once_on_gemini_failure():
              unittest.mock.patch("tests.test_generation.ChatRepository"), \
              unittest.mock.patch("tests.test_generation.CorpusRepository"), \
              unittest.mock.patch("tests.test_generation.TutorAssignmentRepository"), \
-             unittest.mock.patch("tests.test_generation.CalendarRepository"):
+             unittest.mock.patch("tests.test_generation.CalendarRepository"), \
+             unittest.mock.patch.object(GenerationEvaluator, "cleanup_case_eval_user", new_callable=AsyncMock):
             evaluator = GenerationEvaluator()
             item = {"id": 1, "categoria": "facil", "pregunta": "P1", "palabras_clave_esperadas": []}
             res = await evaluator.evaluate_item(item, mock_user, mock_db)
@@ -848,7 +864,6 @@ def test_generation_failure_does_not_duplicate_save_message():
         with pytest.raises(RuntimeError):
             await use_case.send_chat_message(user_id=1, user_role="estudiante", user_content="Hola")
 
-        # save_message was called ONLY for the user message, NOT for assistant
         assert mock_chat_repo.save_message.call_count == 1
         assert mock_chat_repo.save_message.call_args[0][1] == "user"
     asyncio.run(_run())
@@ -857,6 +872,7 @@ def test_generation_failure_does_not_duplicate_save_message():
 def test_pg_failure_in_retrieval_does_not_retrigger_embedding():
     async def _run():
         mock_db = AsyncMock()
+        mock_db.add = MagicMock()
         mock_repo = AsyncMock()
         embed_calls = 0
 
@@ -868,24 +884,25 @@ def test_pg_failure_in_retrieval_does_not_retrigger_embedding():
         mock_repo.search_similar.side_effect = ConnectionError("DB Timeout 500")
 
         with unittest.mock.patch("tests.test_retrieval.CorpusRepository", return_value=mock_repo):
-            evaluator = RetrievalEvaluator()
+            cfg = EvaluationConfig(initial_backoff=0.001)
+            evaluator = RetrievalEvaluator(config=cfg)
             evaluator.llm.compute_embedding = mock_embed
             item = {"id": 1, "categoria": "facil", "pregunta": "P1", "articulos_referencia": [], "palabras_clave_esperadas": []}
 
-            res = await evaluator.evaluate_item(item, mock_db)
+            res = await evaluator.evaluate_item(item, mock_db, config=cfg)
             assert res["status"] == "infrastructure_error"
             assert embed_calls == 1
-            assert mock_repo.search_similar.call_count == 4  # 1 initial + 3 retries = 4
+            assert mock_repo.search_similar.call_count == 4
     asyncio.run(_run())
 
 # 71. attempts coincide con la cantidad real de intentos
 def test_attempts_matches_actual_attempts_count():
     async def _run():
-        calls = 0
+        calls_count = 0
         async def mock_embed(*args, **kwargs):
-            nonlocal calls
-            calls += 1
-            if calls < 2:
+            nonlocal calls_count
+            calls_count += 1
+            if calls_count < 2:
                 raise ConnectionError("503 Error")
             return [0.2] * 768
 
@@ -897,16 +914,16 @@ def test_attempts_matches_actual_attempts_count():
             vec = await eval_llm.compute_embedding("consulta")
             assert len(vec) == 768
             assert eval_llm.last_embedding_attempts == 2
-            assert calls == 2
+            assert calls_count == 2
     asyncio.run(_run())
 
 # 72. API_KEY_INVALID realiza exactamente un intento
 def test_api_key_invalid_exact_one_attempt():
     async def _run():
-        calls = 0
+        calls_count = 0
         async def mock_gen(*args, **kwargs):
-            nonlocal calls
-            calls += 1
+            nonlocal calls_count
+            calls_count += 1
             raise ValueError("API key not valid. API_KEY_INVALID")
 
         sleep_mock = AsyncMock()
@@ -916,7 +933,7 @@ def test_api_key_invalid_exact_one_attempt():
         with unittest.mock.patch.object(GeminiAdapter, "generate_response", side_effect=mock_gen):
             with pytest.raises(NonRetryableError) as exc_info:
                 await eval_llm.generate_response("instr", [], "msg")
-            assert calls == 1
+            assert calls_count == 1
             assert exc_info.value.attempts == 1
     asyncio.run(_run())
 
@@ -960,11 +977,11 @@ def test_no_real_sleeps_in_tests():
     async def _run():
         sleep_mock = AsyncMock()
         cfg = EvaluationConfig(max_retries=2, initial_backoff=10.0)
-        calls = 0
+        calls_count = 0
         async def mock_op():
-            nonlocal calls
-            calls += 1
-            if calls < 2:
+            nonlocal calls_count
+            calls_count += 1
+            if calls_count < 2:
                 raise ConnectionError("503 Error")
             return "OK"
 
@@ -983,13 +1000,12 @@ def test_no_real_network_connections():
     adapter = GeminiAdapter(api_key="", allow_embedding_fallback=False, allow_generation_fallback=False)
     assert adapter.client is None
 
-# === NUEVAS PRUEBAS FASE 5B: TRAZABILIDAD Y REINICIO DE CONTADORES POR CASO ===
-
 # 78. Embedding usa 3 intentos y generación 1: el caso registra attempts=3
 def test_embedding_3_attempts_generation_1_attempt_records_3():
     async def _run():
         mock_user = MagicMock(id=1, role="estudiante")
         mock_db = AsyncMock()
+        mock_db.add = MagicMock()
 
         evaluator = GenerationEvaluator()
 
@@ -1005,7 +1021,8 @@ def test_embedding_3_attempts_generation_1_attempt_records_3():
              unittest.mock.patch("tests.test_generation.ChatRepository"), \
              unittest.mock.patch("tests.test_generation.CorpusRepository"), \
              unittest.mock.patch("tests.test_generation.TutorAssignmentRepository"), \
-             unittest.mock.patch("tests.test_generation.CalendarRepository"):
+             unittest.mock.patch("tests.test_generation.CalendarRepository"), \
+             unittest.mock.patch.object(GenerationEvaluator, "cleanup_case_eval_user", new_callable=AsyncMock):
             item = {"id": 1, "categoria": "facil", "pregunta": "P1", "palabras_clave_esperadas": []}
             res = await evaluator.evaluate_item(item, mock_user, mock_db)
             assert res["status"] == "success"
@@ -1017,6 +1034,7 @@ def test_embedding_1_attempt_generation_3_attempts_records_3():
     async def _run():
         mock_user = MagicMock(id=1, role="estudiante")
         mock_db = AsyncMock()
+        mock_db.add = MagicMock()
 
         evaluator = GenerationEvaluator()
 
@@ -1032,7 +1050,8 @@ def test_embedding_1_attempt_generation_3_attempts_records_3():
              unittest.mock.patch("tests.test_generation.ChatRepository"), \
              unittest.mock.patch("tests.test_generation.CorpusRepository"), \
              unittest.mock.patch("tests.test_generation.TutorAssignmentRepository"), \
-             unittest.mock.patch("tests.test_generation.CalendarRepository"):
+             unittest.mock.patch("tests.test_generation.CalendarRepository"), \
+             unittest.mock.patch.object(GenerationEvaluator, "cleanup_case_eval_user", new_callable=AsyncMock):
             item = {"id": 1, "categoria": "facil", "pregunta": "P1", "palabras_clave_esperadas": []}
             res = await evaluator.evaluate_item(item, mock_user, mock_db)
             assert res["status"] == "success"
@@ -1044,6 +1063,7 @@ def test_embedding_2_attempts_generation_fails_on_1_records_attempts_2():
     async def _run():
         mock_user = MagicMock(id=1, role="estudiante")
         mock_db = AsyncMock()
+        mock_db.add = MagicMock()
 
         evaluator = GenerationEvaluator()
 
@@ -1059,7 +1079,8 @@ def test_embedding_2_attempts_generation_fails_on_1_records_attempts_2():
              unittest.mock.patch("tests.test_generation.ChatRepository"), \
              unittest.mock.patch("tests.test_generation.CorpusRepository"), \
              unittest.mock.patch("tests.test_generation.TutorAssignmentRepository"), \
-             unittest.mock.patch("tests.test_generation.CalendarRepository"):
+             unittest.mock.patch("tests.test_generation.CalendarRepository"), \
+             unittest.mock.patch.object(GenerationEvaluator, "cleanup_case_eval_user", new_callable=AsyncMock):
             item = {"id": 1, "categoria": "facil", "pregunta": "P1", "palabras_clave_esperadas": []}
             res = await evaluator.evaluate_item(item, mock_user, mock_db)
             assert res["status"] == "infrastructure_error"
@@ -1072,10 +1093,14 @@ def test_counters_reset_before_next_case():
         eval_llm = EvaluationGeminiAdapter(api_key="fake")
         eval_llm.last_embedding_attempts = 5
         eval_llm.last_generation_attempts = 5
+        eval_llm.embedding_requests = 10
+        eval_llm.generation_requests = 10
 
         eval_llm.reset_attempt_counters()
         assert eval_llm.last_embedding_attempts == 0
         assert eval_llm.last_generation_attempts == 0
+        assert eval_llm.embedding_requests == 0
+        assert eval_llm.generation_requests == 0
     asyncio.run(_run())
 
 # 82. Un fallo guarda el número de intentos en last_embedding_attempts o last_generation_attempts
@@ -1090,7 +1115,7 @@ def test_failure_stores_attempts_in_counters():
         with unittest.mock.patch.object(GeminiAdapter, "compute_embedding", side_effect=failing_embed):
             with pytest.raises(InfrastructureError):
                 await eval_llm.compute_embedding("query")
-            assert eval_llm.last_embedding_attempts == 4  # 1 initial + 3 retries
+            assert eval_llm.last_embedding_attempts == 4
     asyncio.run(_run())
 
 # 83. api_max_attempts inválido es rechazado
@@ -1106,3 +1131,389 @@ def test_api_max_attempts_validation():
         GeminiAdapter(api_key="", api_max_attempts=True)
     with pytest.raises(ValueError):
         GeminiAdapter(api_key="", api_max_attempts=1.5)
+
+# === NUEVAS PRUEBAS GATE FASE 5C: IDENTIDAD DE 18 CHARS & EXACTAMENTE UN ROLLBACK EN LIMPIEZA ===
+
+# 84. student_code contiene el token completo de 12 chars y tiene una longitud máxima de 18
+def test_derive_case_eval_identity_token_and_length():
+    id_run1 = derive_case_eval_identity("run_A", 1)
+    id_run2 = derive_case_eval_identity("run_B", 1)
+    id_case2 = derive_case_eval_identity("run_A", 2)
+
+    token = id_run1["token"]
+    student_code = id_run1["student_code"]
+
+    assert token in student_code
+    assert student_code.startswith("EV" + token)
+    assert len(student_code) <= 18
+    assert student_code != id_run2["student_code"]
+    assert student_code != id_case2["student_code"]
+
+# 85. Mismatches de verificación en cleanup ejecutan EXACTAMENTE 2 SELECTs, 0 DELETE, 0 commit, 1 rollback (Usuario Real)
+def test_cleanup_mismatch_real_user_single_rollback():
+    async def _run():
+        mock_db = AsyncMock()
+        mock_db.add = MagicMock()
+        mock_user = MagicMock(id=10, email="real_student@unsaac.edu.pe", role="estudiante")
+        mock_profile = MagicMock(user_id=10, student_code="REAL001", full_name="Estudiante Real")
+
+        mock_db.execute.side_effect = [
+            MagicMock(scalars=lambda: MagicMock(first=lambda: mock_user)),
+            MagicMock(scalars=lambda: MagicMock(first=lambda: mock_profile))
+        ]
+
+        evaluator = GenerationEvaluator()
+        with pytest.raises(InfrastructureError):
+            await evaluator.cleanup_case_eval_user(mock_db, user_id=10, run_id="run_test", case_id=1)
+
+        assert mock_db.execute.call_count == 2
+        assert mock_db.commit.call_count == 0
+        assert mock_db.rollback.call_count == 1
+    asyncio.run(_run())
+
+# 86. Mismatch de correo: 2 SELECTs, 0 DELETE, 0 commit, 1 rollback
+def test_cleanup_mismatch_email_single_rollback():
+    async def _run():
+        mock_db = AsyncMock()
+        mock_db.add = MagicMock()
+        identity = derive_case_eval_identity("run_test", 1)
+        mock_user = MagicMock(id=10, email="eval_temp_wrong@eval.unsaac.edu.pe", role="estudiante")
+        mock_profile = MagicMock(user_id=10, student_code=identity["student_code"], full_name=identity["full_name"])
+
+        mock_db.execute.side_effect = [
+            MagicMock(scalars=lambda: MagicMock(first=lambda: mock_user)),
+            MagicMock(scalars=lambda: MagicMock(first=lambda: mock_profile))
+        ]
+
+        evaluator = GenerationEvaluator()
+        with pytest.raises(InfrastructureError):
+            await evaluator.cleanup_case_eval_user(mock_db, user_id=10, run_id="run_test", case_id=1)
+
+        assert mock_db.execute.call_count == 2
+        assert mock_db.commit.call_count == 0
+        assert mock_db.rollback.call_count == 1
+    asyncio.run(_run())
+
+# 87. Mismatch de rol: 2 SELECTs, 0 DELETE, 0 commit, 1 rollback
+def test_cleanup_mismatch_role_single_rollback():
+    async def _run():
+        mock_db = AsyncMock()
+        mock_db.add = MagicMock()
+        identity = derive_case_eval_identity("run_test", 1)
+        mock_user = MagicMock(id=10, email=identity["email"], role="tutor")
+        mock_profile = MagicMock(user_id=10, student_code=identity["student_code"], full_name=identity["full_name"])
+
+        mock_db.execute.side_effect = [
+            MagicMock(scalars=lambda: MagicMock(first=lambda: mock_user)),
+            MagicMock(scalars=lambda: MagicMock(first=lambda: mock_profile))
+        ]
+
+        evaluator = GenerationEvaluator()
+        with pytest.raises(InfrastructureError):
+            await evaluator.cleanup_case_eval_user(mock_db, user_id=10, run_id="run_test", case_id=1)
+
+        assert mock_db.execute.call_count == 2
+        assert mock_db.commit.call_count == 0
+        assert mock_db.rollback.call_count == 1
+    asyncio.run(_run())
+
+# 88. Mismatch de student_code: 2 SELECTs, 0 DELETE, 0 commit, 1 rollback
+def test_cleanup_mismatch_student_code_single_rollback():
+    async def _run():
+        mock_db = AsyncMock()
+        mock_db.add = MagicMock()
+        identity = derive_case_eval_identity("run_test", 1)
+        mock_user = MagicMock(id=10, email=identity["email"], role="estudiante")
+        mock_profile = MagicMock(user_id=10, student_code="EV_WRONG_CODE", full_name=identity["full_name"])
+
+        mock_db.execute.side_effect = [
+            MagicMock(scalars=lambda: MagicMock(first=lambda: mock_user)),
+            MagicMock(scalars=lambda: MagicMock(first=lambda: mock_profile))
+        ]
+
+        evaluator = GenerationEvaluator()
+        with pytest.raises(InfrastructureError):
+            await evaluator.cleanup_case_eval_user(mock_db, user_id=10, run_id="run_test", case_id=1)
+
+        assert mock_db.execute.call_count == 2
+        assert mock_db.commit.call_count == 0
+        assert mock_db.rollback.call_count == 1
+    asyncio.run(_run())
+
+# 89. Mismatch de full_name: 2 SELECTs, 0 DELETE, 0 commit, 1 rollback
+def test_cleanup_mismatch_full_name_single_rollback():
+    async def _run():
+        mock_db = AsyncMock()
+        mock_db.add = MagicMock()
+        identity = derive_case_eval_identity("run_test", 1)
+        mock_user = MagicMock(id=10, email=identity["email"], role="estudiante")
+        mock_profile = MagicMock(user_id=10, student_code=identity["student_code"], full_name="WRONG NAME")
+
+        mock_db.execute.side_effect = [
+            MagicMock(scalars=lambda: MagicMock(first=lambda: mock_user)),
+            MagicMock(scalars=lambda: MagicMock(first=lambda: mock_profile))
+        ]
+
+        evaluator = GenerationEvaluator()
+        with pytest.raises(InfrastructureError):
+            await evaluator.cleanup_case_eval_user(mock_db, user_id=10, run_id="run_test", case_id=1)
+
+        assert mock_db.execute.call_count == 2
+        assert mock_db.commit.call_count == 0
+        assert mock_db.rollback.call_count == 1
+    asyncio.run(_run())
+
+# 90. Mismatch de user_id en perfil: 2 SELECTs, 0 DELETE, 0 commit, 1 rollback
+def test_cleanup_mismatch_profile_user_id_single_rollback():
+    async def _run():
+        mock_db = AsyncMock()
+        mock_db.add = MagicMock()
+        identity = derive_case_eval_identity("run_test", 1)
+        mock_user = MagicMock(id=10, email=identity["email"], role="estudiante")
+        mock_profile = MagicMock(user_id=999, student_code=identity["student_code"], full_name=identity["full_name"])
+
+        mock_db.execute.side_effect = [
+            MagicMock(scalars=lambda: MagicMock(first=lambda: mock_user)),
+            MagicMock(scalars=lambda: MagicMock(first=lambda: mock_profile))
+        ]
+
+        evaluator = GenerationEvaluator()
+        with pytest.raises(InfrastructureError):
+            await evaluator.cleanup_case_eval_user(mock_db, user_id=10, run_id="run_test", case_id=1)
+
+        assert mock_db.execute.call_count == 2
+        assert mock_db.commit.call_count == 0
+        assert mock_db.rollback.call_count == 1
+    asyncio.run(_run())
+
+# 91. Validación exacta de parámetros DELETE mediante compile().params
+def test_cleanup_valid_user_exact_delete_parameters():
+    async def _run():
+        mock_db = AsyncMock()
+        mock_db.add = MagicMock()
+        identity = derive_case_eval_identity("run_params", 1)
+        mock_user = MagicMock(id=10, email=identity["email"], role="estudiante")
+        mock_profile = MagicMock(user_id=10, student_code=identity["student_code"], full_name=identity["full_name"])
+
+        exec_statements = []
+        def mock_exec(stmt, *args, **kwargs):
+            exec_statements.append(stmt)
+            stmt_str = str(stmt)
+            if "users" in stmt_str and "SELECT" in stmt_str:
+                return MagicMock(scalars=lambda: MagicMock(first=lambda: mock_user))
+            if "student_profiles" in stmt_str and "SELECT" in stmt_str:
+                return MagicMock(scalars=lambda: MagicMock(first=lambda: mock_profile))
+            if "conversations" in stmt_str and "SELECT" in stmt_str:
+                return MagicMock(scalars=lambda: MagicMock(all=lambda: [99]))
+            return MagicMock()
+
+        mock_db.execute.side_effect = mock_exec
+        evaluator = GenerationEvaluator()
+
+        await evaluator.cleanup_case_eval_user(mock_db, user_id=10, run_id="run_params", case_id=1)
+
+        delete_stmts = [s for s in exec_statements if hasattr(s, "table") or "DELETE" in str(s).upper()]
+        assert len(delete_stmts) == 4
+
+        # 1. DELETE Message (conversation_id == 99)
+        msg_stmt = delete_stmts[0]
+        assert msg_stmt.table.name == "messages"
+        msg_params = list(msg_stmt.compile().params.values())
+        assert msg_params == [[99]] or msg_params == [99] or 99 in msg_params[0]
+
+        # 2. DELETE Conversation (student_id == 10)
+        conv_stmt = delete_stmts[1]
+        assert conv_stmt.table.name == "conversations"
+        assert list(conv_stmt.compile().params.values()) == [10]
+
+        # 3. DELETE StudentProfile (user_id == 10)
+        prof_stmt = delete_stmts[2]
+        assert prof_stmt.table.name == "student_profiles"
+        assert list(prof_stmt.compile().params.values()) == [10]
+
+        # 4. DELETE User (id == 10)
+        user_stmt = delete_stmts[3]
+        assert user_stmt.table.name == "users"
+        assert list(user_stmt.compile().params.values()) == [10]
+
+        assert mock_db.commit.call_count == 1
+        assert mock_db.rollback.call_count == 0
+    asyncio.run(_run())
+
+# 92. Aislamiento estricto de dos casos con repositorios independientes y FakeChatUseCase
+def test_real_isolation_strict_two_repositories_and_fake_use_case():
+    async def _run():
+        events_log = []
+        repo1_calls = []
+        repo2_calls = []
+
+        class FakeChatRepository:
+            def __init__(self, repo_id):
+                self.repo_id = repo_id
+
+            async def get_history(self, uid):
+                if self.repo_id == 1:
+                    repo1_calls.append(uid)
+                else:
+                    repo2_calls.append(uid)
+                return []
+
+        repo1 = FakeChatRepository(1)
+        repo2 = FakeChatRepository(2)
+
+        def repo_factory(user_id):
+            if user_id == 101:
+                return repo1
+            return repo2
+
+        evaluator = GenerationEvaluator(config=EvaluationConfig(generation_min_interval=0))
+        mock_db = AsyncMock()
+        mock_db.add = MagicMock()
+
+        async def mock_create(db, case_id, cfg):
+            events_log.append(f"create_case_{case_id}")
+            identity = derive_case_eval_identity(cfg.run_id, case_id)
+            u = MagicMock(id=100 + case_id, role="estudiante")
+            return u, identity
+
+        async def mock_cleanup(db, user_id, run_id, case_id):
+            events_log.append(f"cleanup_case_{case_id}")
+
+        evaluator.create_case_eval_user = mock_create
+        evaluator.cleanup_case_eval_user = mock_cleanup
+
+        async def mock_send_chat_message(user_id, user_role, user_content):
+            case_num = user_id - 100
+            repo = repo_factory(user_id)
+            history = await repo.get_history(user_id)
+            assert history == []
+            events_log.append(f"obtener_historial_case_{case_num}")
+            events_log.append(f"enviar_case_{case_num}")
+            return MagicMock(content=f"Respuesta caso {case_num}")
+
+        mock_use_case = AsyncMock()
+        mock_use_case.send_chat_message.side_effect = mock_send_chat_message
+
+        with unittest.mock.patch("tests.test_generation.ChatUseCase", return_value=mock_use_case), \
+             unittest.mock.patch("tests.test_generation.ChatRepository"), \
+             unittest.mock.patch("tests.test_generation.CorpusRepository"), \
+             unittest.mock.patch("tests.test_generation.TutorAssignmentRepository"), \
+             unittest.mock.patch("tests.test_generation.CalendarRepository"):
+
+            item1 = {"id": 1, "categoria": "facil", "pregunta": "P1", "palabras_clave_esperadas": []}
+            item2 = {"id": 2, "categoria": "facil", "pregunta": "P2", "palabras_clave_esperadas": []}
+
+            res1 = await evaluator.evaluate_item(item1, None, mock_db, config=EvaluationConfig(generation_min_interval=0))
+            res2 = await evaluator.evaluate_item(item2, None, mock_db, config=EvaluationConfig(generation_min_interval=0))
+
+            assert res1["status"] == "success"
+            assert res2["status"] == "success"
+
+            expected_sequence = [
+                "create_case_1", "obtener_historial_case_1", "enviar_case_1", "cleanup_case_1",
+                "create_case_2", "obtener_historial_case_2", "enviar_case_2", "cleanup_case_2"
+            ]
+            assert events_log == expected_sequence
+            assert repo1_calls == [101]
+            assert repo2_calls == [102]
+            assert 101 not in repo2_calls
+    asyncio.run(_run())
+
+# 93. Cancelación del limitador no incrementa generation_requests y no llama a generate_content
+def test_rate_limiter_cancellation_does_not_increment_counter():
+    async def _run():
+        async def cancelling_sleep(sec):
+            raise asyncio.CancelledError()
+
+        limiter = GeminiRateLimiter(min_interval_seconds=15.0, sleep_fn=cancelling_sleep)
+        limiter.last_request_time = 100.0
+
+        eval_llm = EvaluationGeminiAdapter(
+            api_key="fake",
+            config=EvaluationConfig(generation_min_interval=0),
+            rate_limiter=limiter
+        )
+        eval_llm.rate_limiter.time_fn = lambda: 105.0
+
+        mock_gen = AsyncMock()
+        eval_llm.adapter.client = MagicMock()
+        eval_llm.adapter.client.aio.models.generate_content = mock_gen
+
+        with pytest.raises(asyncio.CancelledError):
+            await eval_llm.generate_response("system", [], "msg")
+
+        assert eval_llm.generation_requests == 0
+        assert mock_gen.call_count == 0
+    asyncio.run(_run())
+
+# 94. test_two_tool_steps sin pausas reales usando generation_min_interval=0
+def test_two_tool_steps_count_as_two_requests_no_real_wait():
+    async def _run():
+        calls_count = 0
+        async def mock_gen(*args, **kwargs):
+            nonlocal calls_count
+            calls_count += 1
+            if calls_count == 1:
+                call_func = MagicMock()
+                call_func.name = "get_time"
+                call_func.args = {}
+                cand = MagicMock()
+                cand.content = "tool_call_content"
+                return MagicMock(function_calls=[call_func], candidates=[cand])
+            return MagicMock(function_calls=None, text="Respuesta final tras tool")
+
+        eval_llm = EvaluationGeminiAdapter(
+            api_key="fake_key",
+            config=EvaluationConfig(generation_min_interval=0)
+        )
+        eval_llm.adapter.client = MagicMock()
+        eval_llm.adapter.client.aio.models.generate_content.side_effect = mock_gen
+
+        def get_time():
+            return "12:00"
+
+        start_t = asyncio.get_event_loop().time()
+        res = await eval_llm.generate_response("system", [], "pregunta", tools=[get_time])
+        end_t = asyncio.get_event_loop().time()
+
+        assert res == "Respuesta final tras tool"
+        assert eval_llm.generation_requests == 2
+        assert (end_t - start_t) < 0.1
+    asyncio.run(_run())
+
+# 95. Prueba estricta de exportación de artefactos parseando CSV mediante csv.reader por posición
+def test_real_artifact_export_parsed_with_csv_reader():
+    cfg = EvaluationConfig(run_id="run_csv_strict")
+    consolidated = [
+        {
+            "id": 1, "categoria": "facil", "pregunta": "¿P1?", "status": "success",
+            "attempts": 1, "embedding_requests": 2, "generation_requests": 3,
+            "technical_error": None, "precision": 1.0, "cobertura": 1.0,
+            "pertinencia": 1.0, "bot_response": "Respuesta"
+        }
+    ]
+    payload, csv_str = build_export_payloads(
+        consolidated=consolidated,
+        config=cfg,
+        golden_hash="hash123",
+        total_golden_cases=1,
+        selected_items=[{"id": 1}],
+        completed_count=1,
+        infra_error_count=0,
+        skipped_count=0,
+        is_complete=True,
+        cat_summary={"facil": {"total_casos": 1, "precision": 1.0, "cobertura": 1.0, "pertinencia": 1.0}},
+        globales={"precision_global": 1.0, "cobertura_global": 1.0, "pertinencia_global": 1.0}
+    )
+
+    reader = list(csv.reader(io.StringIO(csv_str)))
+    header = reader[0]
+    data_row = reader[1]
+
+    idx_emb = header.index("Solicitudes_Embedding")
+    idx_gen = header.index("Solicitudes_Generacion")
+
+    assert idx_emb == 10
+    assert idx_gen == 11
+    assert data_row[idx_emb] == "2"
+    assert data_row[idx_gen] == "3"
