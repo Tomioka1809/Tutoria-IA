@@ -11,11 +11,11 @@
 
 ## 2. Estado de Git
 
-- **Rama actual:** `test/fase-5-banco-pruebas-rag` (HEAD `7bb53da`).
+- **Rama actual:** `test/fase-5-banco-pruebas-rag` (HEAD `0372c9b`).
 - **Estado del árbol de trabajo (*working tree*):** Cambios locales de refactorización de prueba no comprometidos.
 - **Configuración de remotos:** Sin upstream configurado para la rama actual de trabajo.
-- **Último commit registrado:** `7bb53da` - *"test: cubrir cuota aislamiento y limpieza RAG"*.
-- **Commits locales de la Fase 5:** Ocho commits acumulados desde el commit base `b0d339b`.
+- **Último commit registrado:** `0372c9b` - *"docs: formalizar alcance y subfases del benchmark RAG"*.
+- **Commits locales de la Fase 5:** Nueve commits acumulados desde el commit base `b0d339b`.
 
 ---
 
@@ -27,7 +27,7 @@ Se constata la presencia física de la siguiente jerarquía de directorios y com
 React-Native/
 ├── .env.example                         # Plantilla de configuración de entorno
 ├── docker-compose.yml                   # Orquestación de PostgreSQL pgvector y FastAPI
-├── README.md                            # Documentación general de inicio rápido
+├── README.md                            # Documentación general de inicio rápido (Modelo activo: gemini-3.5-flash-lite)
 ├── verificar_tutoria.py                 # Runner automatizado de verificación de fases
 ├── backend/                             # API Backend en FastAPI (Python 3.14 / 3.12)
 │   ├── alembic/                         # Migraciones de base de datos SQLAlchemy
@@ -39,11 +39,11 @@ React-Native/
 │   │   ├── main.py                      # Punto de entrada ASGI
 │   │   ├── domain/                      # Entidades, excepciones y esquemas de dominio
 │   │   ├── application/                 # Servicios de aplicación, casos de uso y puertos
-│   │   └── infrastructure/              # API FastAPI, adaptadores Gemini, DB y seguridad
+│   │   └── infrastructure/              # API FastAPI, adaptadores Gemini (gemini-3.5-flash-lite), DB y seguridad
 │   └── tests/                           # Suite de evaluación RAG (Golden dataset + evaluadores)
 │       ├── dataset/golden_set.json      # Golden Set Oficial de 15 casos estratificados
 │       ├── dataset/golden_set_32_historico.json # Banco histórico de 32 casos (Hash e58db793...)
-│       ├── dataset/golden_set_manifest.json # Manifiesto de trazabilidad formal (15 oficiales / 32 históricos)
+│       ├── dataset/golden_set_manifest.json # Manifiesto de trazabilidad formal (models: gemini-3.5-flash-lite / gemini-embedding-2)
 │       ├── resultados/                  # Directorio de resultados activos (ausente hasta corrida oficial)
 │       │   └── historico_32/            # Resultados históricos archivados (eval_results_32.json, eval_results_32.csv)
 │       ├── evaluation_support.py        # Soporte técnico de retries, rate-limiter, hash e identidades
@@ -51,7 +51,7 @@ React-Native/
 │       ├── test_generation.py           # Evaluador de la etapa de generación LLM
 │       ├── run_eval.py                  # Runner de evaluación de benchmark
 │       ├── verify_evaluation_integrity.py # Verificador estático de integridad de artefactos
-│       └── unit/                        # Suite unitaria (105+ tests en test_evaluation_integrity.py, 127 tests totales)
+│       └── unit/                        # Suite unitaria (108+ tests en test_evaluation_integrity.py, 130 tests totales)
 ├── frontend/                            # Aplicación Móvil React Native (Expo SDK 54)
 │   ├── app/                             # Enrutamiento Expo Router por roles
 │   ├── src/                             # Componentes, API clients, Zustand stores e i18n
@@ -88,7 +88,10 @@ React-Native/
 - **Alembic:** `1.18.4`
 - **Pydantic:** `2.13.4`
 - **pgvector:** Integración nativa (`pgvector.sqlalchemy`)
-- **Google GenAI:** SDK oficial `google-genai`
+- **Google GenAI SDK:** `google-genai`
+- **Modelo Generativo Activo:** `gemini-3.5-flash-lite`
+- **Modelo de Embedding Activo:** `gemini-embedding-2` (768 dimensiones)
+- **Modelo Generativo Anterior:** `gemini-2.5-flash`
 
 ### 4.3 Frontend (`frontend/package.json`)
 - **Expo SDK:** `~54.0.36`
@@ -125,7 +128,7 @@ React-Native/
 
 | Afirmación | Documento de origen | Evidencia encontrada | Clasificación | Observación |
 |---|---|---|---|---|
-| Google Gemini API utiliza `gemini-embedding-2` para embeddings de 768 dim. | `README.md`, `00_inventario.md`, `03_pipeline_rag.md` | Modelos anteriores fueron unificados a `gemini-embedding-2` en la Fase 3. Modo estricto sin fallback activado en evaluadores de Fase 5. | `RESOLVIDO_EN_FASE_3` | Se unificó `gemini-embedding-2` en código y documentación técnica. |
+| Google Gemini API utiliza `gemini-embedding-2` para embeddings de 768 dim y `gemini-3.5-flash-lite` para generación. | `README.md`, `00_inventario.md`, `03_pipeline_rag.md` | `GeminiAdapter` utiliza `gemini-3.5-flash-lite` para respuestas y Tool Calling, y `gemini-embedding-2` para vectores de 768 dim. | `RESOLVIDO_EN_FASE_5C` | Se actualizó `gemini-3.5-flash-lite` como modelo generativo activo y `gemini-embedding-2` como embedding. |
 | CorpusRepository realiza búsquedas por distancia L2 (`<->`). | `00_inventario.md`, `03_pipeline_rag.md` | En `corpus_repository.py` se invoca `cosine_distance` (`<=>`) e inyecta búsqueda por texto. | `CONTRADICTORIO` | El código fue modificado para usar distancia Coseno, pero la doc previa citaba L2. |
 | La carpeta `domain/schemas/` está vacía. | `00_inventario.md`, `02_backend_arquitectura.md` | Existe `backend/app/domain/schemas/__init__.py` que exporta todos los DTOs de Pydantic. | `CONTRADICTORIO` | El directorio fue poblado en refactorizaciones previas. |
 | `QuizAPI.generateQuiz` usa `fetch` sin cabecera `Authorization`. | `04_frontend.md` | En `frontend/src/api/services.ts` se inyecta `Authorization: Bearer <token>` desde Zustand. | `CONTRADICTORIO` | El servicio frontend ya adjunta el Bearer token si el usuario está autenticado. |
@@ -134,7 +137,7 @@ React-Native/
 | El RAG no posee umbral de similitud (*score threshold*). | `03_pipeline_rag.md`, `06_reporte_final.md` | Implementado `max_cosine_distance=0.45` en `CorpusRepository` y `RAGRetrievalPolicy`. | `RESUELTO_EN_CODIGO` | Filtro por distancia coseno activado en código para descartar fragmentos irrelevantes. |
 | La tabla `corpus_chunks` incluye un índice vectorial `HNSW`. | `03_pipeline_rag.md` | Creada migración Alembic `6f892a019e42_add_hnsw_index_to_corpus_chunks.py` con `vector_cosine_ops`. | `PENDIENTE_DE_DESPLIEGUE` | Migración HNSW preparada en código, pendiente de aplicación en base de datos PostgreSQL real. |
 | ChatUseCase ejecuta consultas SQL directas de infraestructura. | `02_backend_arquitectura.md` | En `chat_use_cases.py` se desacoplaron las herramientas usando puertos abstractos. | `RESUELTO_EN_FASE_2` | Resuelto en la Fase 2C2B. |
-| El sistema está totalmente operativo sin restricciones. | `06_reporte_final.md` | Al hacer solicitudes masivas se pueden experimentar errores HTTP 429 (`RESOURCE_EXHAUSTED`) por cuotas de Gemini API. | `RESTRICCION_EXTERNA_DOCUMENTADA` | El sistema es funcional en su arquitectura principal, pero la ejecución masiva del benchmark está condicionada por las cuotas externas de Gemini. Mitigado mediante el benchmark oficial de 15 casos, rate-limiter de 15 segundos, control estricto de errores y protección de resultados incompletos. |
+| El sistema está totalmente operativo sin restricciones. | `06_reporte_final.md` | Al hacer solicitudes masivas se pueden experimentar errores HTTP 429 (`RESOURCE_EXHAUSTED`) o indisponibilidad de modelo previo. | `RESTRICCION_EXTERNA_DOCUMENTADA` | El sistema es funcional en su arquitectura principal, pero la ejecución masiva del benchmark está condicionada por las cuotas externas de Gemini. Mitigado mediante el benchmark oficial de 15 casos, rate-limiter de 15s, migración a `gemini-3.5-flash-lite`, control estricto de errores y protección de resultados incompletos. |
 
 ---
 
@@ -155,13 +158,14 @@ React-Native/
 | `FRONT-005` | Frontend / Calidad Estática | Cierre de advertencias ESLint (36 a 0), corrección semántica de dependencias de hooks y script `verify:quality`. | Baja | RESUELTO_EN_FASE_4E |
 | `F5-001` | Banco de Pruebas RAG | Trazabilidad y robustez del banco RAG. Modo estricto sin fallback, reintentos de capa única, rate-limiter de 15s, sanitización de logs, escritura atómica de artefactos JSON/CSV y aislamiento transaccional por usuario temporal. | Alta | **RESUELTO_TECNICAMENTE_EN_FASE_5C / PENDIENTE_CIERRE_CUANTITATIVO_EN_FASE_5D** |
 | `F5-002` | Banco de Pruebas RAG | Interrupción de la corrida masiva previa de 32 casos por HTTP 429 `RESOURCE_EXHAUSTED`. Se determinó redefinir formalmente el alcance del benchmark a 15 casos estratificados deterministas. La corrida previa fue interrumpida manualmente y sus resultados parciales no serán reutilizados. | Alta | **MITIGADA_POR_REDEFINICION_FORMAL_DEL_ALCANCE** |
-| `TEST-001` | Banco de Pruebas | Vulnerabilidad a cuotas gratuitas de la API de Gemini (HTTP 429) en ejecuciones masivas del benchmark. | Media | Mitigado con `GeminiRateLimiter` (15s) y redefinición a 15 casos |
+| `F5-003` | Banco de Pruebas RAG | La primera ejecución del benchmark oficial de 15 casos fue interrumpida al recibir HTTP 404 `NOT_FOUND` indicando que `gemini-2.5-flash` ya no estaba disponible para proyectos nuevos. La corrida fue interrumpida, no generó métricas oficiales, los resultados activos fueron retirados, los hashes protegidos permanecieron intactos y no quedaron usuarios temporales residuales. | Alta | **RESUELTO_TECNICAMENTE_POR_MIGRACION_A_GEMINI_3_5_FLASH_LITE / PENDIENTE_VALIDACION_EN_BENCHMARK_5C** |
+| `TEST-001` | Banco de Pruebas | Vulnerabilidad a cuotas gratuitas de la API de Gemini (HTTP 429) en ejecuciones masivas del benchmark. | Media | Mitigado con `GeminiRateLimiter` (15s) y redefinición a 15 casos con `gemini-3.5-flash-lite` |
 
 ---
 
 ## 9. Riesgos antes de modificar el proyecto
 
-1. **Cuotas de API (Google AI Studio):** El nuevo alcance oficial de 15 casos minimiza el riesgo de agotamiento de cuota durante el benchmark. Se debe mantener el rate-limiter de 15s por solicitud.
+1. **Cuotas de API (Google AI Studio):** El nuevo alcance oficial de 15 casos con `gemini-3.5-flash-lite` minimiza el riesgo de agotamiento de cuota durante el benchmark. Se debe mantener el rate-limiter de 15s por solicitud.
 2. **Desincronización de Base de Datos:** Alterar modelos SQLAlchemy sin generar y aplicar la migración correspondiente en Alembic desincronizará la base de datos en Docker.
 3. **Dirección IP en dispositivos físicos:** Modificar `client.ts` sin mantener la autodetección de `hostUri` puede romper la conexión de la app móvil en dispositivos reales Expo Go.
 
@@ -205,7 +209,7 @@ npx expo start
   ```
 - **Ejecución del suite de evaluación del Chatbot RAG (Paper IEEE):**
   ```bash
-  # Pruebas unitarias de integridad y aislamiento (al menos 123 pruebas locales aprobadas)
+  # Pruebas unitarias de integridad y aislamiento (al menos 127 pruebas locales aprobadas)
   PYTHONPATH=backend backend/venv/bin/python -m pytest -q --durations=15 backend/tests/unit/test_evaluation_integrity.py backend/tests/unit/test_rag_quality.py backend/tests/unit/test_chat_use_cases.py
 
   # Verificador estático de integridad de artefactos
@@ -219,11 +223,11 @@ npx expo start
 - **Fase 0:** Criterios obligatorios de auditoría satisfechos (`PASS=5, FAIL=0`).
 - **Fase 5A:** Completada (Infraestructura, retries y verificadores de integridad estáticos).
 - **Fase 5B:** Completada (Ejecución parcial controlada completada sobre los casos 1, 16 y 26, con tres casos procesados, cero errores de infraestructura, artefactos temporales y cero usuarios temporales residuales).
-- **Fase 5C:** En preparación (Infraestructura de 5C preparada y validada localmente; benchmark oficial de 15 casos pendiente de ejecución en la Fase 5C).
+- **Fase 5C:** En preparación (Infraestructura de 5C preparada y validada localmente con `gemini-3.5-flash-lite`; benchmark oficial de 15 casos pendiente de ejecución en la Fase 5C).
 - **Fase 5D:** Pendiente de los resultados oficiales de 5C (Análisis cuantitativo, actualización documental y cierre pendientes de la Fase 5D; la Fase 5D comenzará después de obtener los resultados oficiales de 5C).
 
 ---
 
 ## 13. Conclusión
 
-La auditoría de la **Fase 0** y la refactorización técnica de la **Fase 5** confirman que el proyecto **TutorIA** posee una infraestructura técnica implementada y validada localmente. La decisión formal de ajustar el alcance del benchmark a un **Golden Set oficial estratificado de 15 casos** (`facil: 7, ambiguo: 5, fuera_de_alcance: 3`) preserva la trazabilidad completa mediante el manifiesto `golden_set_manifest.json` y el archivo histórico `golden_set_32_historico.json`. El hallazgo `F5-001` registra el estado **RESUELTO_TECNICAMENTE_EN_FASE_5C / PENDIENTE_CIERRE_CUANTITATIVO_EN_FASE_5D**, mientras que la incidencia `F5-002` queda registrada como **MITIGADA_POR_REDEFINICION_FORMAL_DEL_ALCANCE**, dejando el benchmark oficial de 15 casos pendiente de ejecución en la Fase 5C, mientras que el análisis cuantitativo y el cierre definitivo pertenecerán a la Fase 5D.
+La auditoría de la **Fase 0** y la refactorización técnica de la **Fase 5** confirman que el proyecto **TutorIA** posee una infraestructura técnica implementada y validada localmente. La decisión formal de ajustar el alcance del benchmark a un **Golden Set oficial estratificado de 15 casos** (`facil: 7, ambiguo: 5, fuera_de_alcance: 3`) preserva la trazabilidad completa mediante el manifiesto `golden_set_manifest.json` (configurado con `gemini-3.5-flash-lite` y `gemini-embedding-2`) y el archivo histórico `golden_set_32_historico.json`. El hallazgo `F5-001` registra el estado **RESUELTO_TECNICAMENTE_EN_FASE_5C / PENDIENTE_CIERRE_CUANTITATIVO_EN_FASE_5D**, la incidencia `F5-002` queda registrada como **MITIGADA_POR_REDEFINICION_FORMAL_DEL_ALCANCE**, y la incidencia `F5-003` queda registrada como **RESUELTO_TECNICAMENTE_POR_MIGRACION_A_GEMINI_3_5_FLASH_LITE / PENDIENTE_VALIDACION_EN_BENCHMARK_5C**, dejando la ejecución del benchmark oficial de 15 casos pendiente en la Fase 5C, mientras que el análisis cuantitativo y el cierre definitivo pertenecerán a la Fase 5D.

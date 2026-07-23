@@ -3,7 +3,7 @@
 Este documento describe la metodología de evaluación, la migración desde el banco histórico de 32 casos hacia el **Golden Dataset Oficial de 15 casos estratificados**, el manifiesto de trazabilidad, la especificación de métricas (**Precisión, Cobertura y Pertinencia**), y las salvaguardas de integridad de la **Fase 5C**.
 
 > ⚠️ **ADVERTENCIA DE LÍNEA BASE HISTÓRICA E INTEGRIDAD DE DATOS:**
-> Los 32 casos originales han sido migrados formalmente al banco histórico `backend/tests/dataset/golden_set_32_historico.json` y sus resultados anteriores han sido archivados en `backend/tests/resultados/historico_32/` preservando sus hashes SHA-256 históricos obligatorios. El **benchmark oficial definitivo de la Fase 5C utiliza 15 casos estratificados** en `backend/tests/dataset/golden_set.json`. Las métricas históricas de 32 casos no son directamente comparables con las métricas del nuevo benchmark de 15 casos.
+> Los 32 casos originales han sido migrados formalmente al banco histórico `backend/tests/dataset/golden_set_32_historico.json` y sus resultados anteriores han sido archivados en `backend/tests/resultados/historico_32/` preservando sus hashes SHA-256 históricos obligatorios. El **benchmark oficial definitivo de la Fase 5C utiliza 15 casos estratificados** en `backend/tests/dataset/golden_set.json` evaluados con el modelo generativo activo **`gemini-3.5-flash-lite`** y el modelo de embedding **`gemini-embedding-2`**. Las métricas históricas de 32 casos no son directamente comparables con las métricas del nuevo benchmark de 15 casos.
 
 ---
 
@@ -11,14 +11,14 @@ Este documento describe la metodología de evaluación, la migración desde el b
 
 El suite de pruebas evalúa el desempeño del sistema RAG en dos etapas consecutivas:
 
-1. **Evaluación de Recuperación Vectorial (*Retrieval*):** Mide la capacidad de `pgvector` y del modelo de embedding (`gemini-embedding-2`) para recuperar los fragmentos relevantes del corpus normativo de la UNSAAC.
-2. **Evaluación de Generación y Grounding (*Generation & LLM*):** Mide la capacidad del modelo `gemini-2.5-flash` para generar respuestas precisas, fundamentadas en el reglamento, sin alucinaciones y respetando la política de abstención en preguntas fuera de dominio.
+1. **Evaluación de Recuperación Vectorial (*Retrieval*):** Mide la capacidad de `pgvector` y del modelo de embedding activo (`gemini-embedding-2`, 768 dim) para recuperar los fragmentos relevantes del corpus normativo de la UNSAAC.
+2. **Evaluación de Generación y Grounding (*Generation & LLM*):** Mide la capacidad del modelo generativo activo `gemini-3.5-flash-lite` (modelo anterior: `gemini-2.5-flash`) para generar respuestas precisas, fundamentadas en el reglamento, sin alucinaciones y respetando la política de abstención en preguntas fuera de dominio.
 
 ```mermaid
 graph LR
     Manifest["Manifiesto Trazabilidad (golden_set_manifest.json)"] --> GoldenSet["Golden Dataset Oficial (15 Casos)"]
     GoldenSet --> TestRetrieval["test_retrieval.py (pgvector Search)"]
-    GoldenSet --> TestGeneration["test_generation.py (ChatUseCase + Gemini)"]
+    GoldenSet --> TestGeneration["test_generation.py (ChatUseCase + Gemini 3.5 Flash Lite)"]
     TestRetrieval --> RunEval["run_eval.py (Rate-Limiter 15s + Atomic Pair Write)"]
     TestGeneration --> RunEval
     RunEval --> ExportJSON["resultados/eval_results.json (Formato Atómico)"]
@@ -42,6 +42,7 @@ El benchmark oficial definitivo utiliza un muestreo sistemático estratificado d
   - **`selection_method`:** `"muestreo_sistematico_estratificado_determinista"`
   - **`historical_golden_set_sha256`:** `e58db793eb82e26d7f0a84e32b9369b725131b2d9513dbcd3fa13fdf036438b1`
   - **`official_golden_set_sha256`:** `736ee36115717130945a3f8902eba4aec93c556a8b14da129c071bdde8b84a75`
+  - **`models`:** `{"generation": "gemini-3.5-flash-lite", "embedding": "gemini-embedding-2"}`
 
 ---
 
@@ -49,6 +50,7 @@ El benchmark oficial definitivo utiliza un muestreo sistemático estratificado d
 
 - **Hallazgo `F5-001` (Trazabilidad y Robustez):** **`RESUELTO_TECNICAMENTE_EN_FASE_5C / PENDIENTE_CIERRE_CUANTITATIVO_EN_FASE_5D`**. La infraestructura técnica está preparada (modo estricto sin fallbacks silenciosos, retries de capa única, rate-limiter de 15s por solicitud real de generación, sanitización de logs técnicos, escritura conjuntamente atómica de JSON y CSV, y aislamiento atómico por usuario temporal determinista). La ejecución oficial del benchmark de 15 casos pertenece a la Fase 5C; mientras que el análisis cuantitativo y el cierre definitivo pertenecerán a la Fase 5D.
 - **Incidencia `F5-002` (Interrupción por Cuota Externa 429):** **`MITIGADA_POR_REDEFINICION_FORMAL_DEL_ALCANCE`**. Sirve como evidencia histórica de la interrupción de la corrida masiva previa por errores HTTP 429 `RESOURCE_EXHAUSTED`. No se determinó un límite diario fijo mediante pruebas locales y los resultados parciales de 32 fueron descartados. La nueva ejecución oficial comenzará desde cero sobre el dataset estratificado de 15 casos. La política de reintentos utiliza backoff exponencial acotado.
+- **Incidencia `F5-003` (Indisponibilidad del Modelo Generativo Anterior):** **`RESUELTO_TECNICAMENTE_POR_MIGRACION_A_GEMINI_3_5_FLASH_LITE / PENDIENTE_VALIDACION_EN_BENCHMARK_5C`**. La primera ejecución del benchmark oficial de 15 casos no pudo completarse porque el proyecto nuevo recibió HTTP 404 `NOT_FOUND` indicando que `gemini-2.5-flash` ya no estaba disponible para usuarios nuevos. La corrida fue interrumpida inmediatamente, no generó métricas oficiales, los resultados activos fueron retirados, los hashes protegidos permanecieron intactos y no quedaron usuarios temporales residuales. Se migró el modelo generativo activo a `gemini-3.5-flash-lite`, disponiendo de mayor margen operativo para el benchmark. La corrida oficial comenzará desde cero en la Fase 5C y la Fase 5D aún no ha comenzado.
 
 ---
 
@@ -79,7 +81,7 @@ Para prevenir que un fallo técnico contamine las métricas del sistema, la **Fa
 
 - **Definición de Ejecución Parcial:** Cualquier presencia de los filtros `EVAL_CASE_LIMIT` o `EVAL_CASE_IDS` define automáticamente una ejecución parcial (`is_partial = True`), **incluso si el filtro contiene los 15 IDs oficiales**. Toda ejecución parcial exige `EVAL_OUTPUT_DIR` y finaliza con `is_complete = False`.
 - **Escritura Atómica Paritaria (`atomic_write_artifact_pair`):** Escribe conjuntamente JSON y CSV usando temporales `.tmp` y respaldos `.bak`. Si ocurre un fallo en cualquier etapa o reemplazo, **ambos archivos originales se restauran conjuntamente**.
-- **Verificador de Integridad (`verify_evaluation_integrity.py`):** Valida el manifiesto, los archivos históricos archivados en `historico_32/`, el Golden Set oficial de 15 casos, la coincidencia de métricas dentro de la tolerancia 0.0001 y distingue el estado pendiente previo a la corrida oficial.
+- **Verificador de Integridad (`verify_evaluation_integrity.py`):** Valida el manifiesto, los archivos históricos archivados en `historico_32/`, el Golden Set oficial de 15 casos, la coincidencia de métricas dentro de la tolerancia 0.0001, la presencia del modelo activo `gemini-3.5-flash-lite` y distingue el estado pendiente previo a la corrida oficial.
 
 ---
 
@@ -87,7 +89,7 @@ Para prevenir que un fallo técnico contamine las métricas del sistema, la **Fa
 
 - **Fase 5A:** Completada (Infraestructura, retries y verificadores estáticos).
 - **Fase 5B:** Completada (Ejecución parcial controlada completada sobre los casos 1, 16 y 26, con tres casos procesados, cero errores de infraestructura, artefactos temporales y cero usuarios temporales residuales).
-- **Fase 5C:** Infraestructura técnica preparada y validada localmente, con el benchmark oficial de 15 casos pendiente de ejecución en la Fase 5C.
+- **Fase 5C:** Infraestructura técnica preparada y validada localmente con `gemini-3.5-flash-lite`, con el benchmark oficial de 15 casos pendiente de ejecución en la Fase 5C.
 - **Fase 5D:** Análisis cuantitativo, actualización documental y cierre pendientes de la Fase 5D (la Fase 5D comenzará después de obtener los resultados oficiales de 5C).
 
 Para ejecutar la verificación y el benchmark cuando esté disponible el entorno:
@@ -96,7 +98,7 @@ Para ejecutar la verificación y el benchmark cuando esté disponible el entorno
 # 1. Ejecutar el verificador estático de integridad (sin Gemini ni DB):
 PYTHONPATH=backend backend/venv/bin/python backend/tests/verify_evaluation_integrity.py
 
-# 2. Ejecutar la suite de pruebas unitarias del evaluador (al menos 123 pruebas locales aprobadas):
+# 2. Ejecutar la suite de pruebas unitarias del evaluador (al menos 127 pruebas locales aprobadas):
 PYTHONPATH=backend backend/venv/bin/python -m pytest -q backend/tests/unit/test_evaluation_integrity.py backend/tests/unit/test_rag_quality.py backend/tests/unit/test_chat_use_cases.py
 
 # 3. Ejecutar el benchmark oficial de 15 casos (cuando el entorno lo autorice):

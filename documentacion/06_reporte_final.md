@@ -10,8 +10,8 @@ Este documento representa el informe consolidado en progreso del proceso de audi
 ## 1. Resumen Ejecutivo del Proyecto
 
 - **Estado General:** El sistema cuenta con una arquitectura Hexagonal sólida en el Backend (FastAPI, PostgreSQL `pgvector`) y una aplicación móvil Expo SDK 54 en el Frontend.
-- **RAG & LLM:** Integración con Google Gemini (`gemini-2.5-flash` y `gemini-embedding-2`) combinando recuperación vectorial semántica con ejecución de herramientas en tiempo real (*Tool Calling*). Modo estricto sin fallbacks silenciosos activado en la suite de evaluación.
-- **Evaluación Experimental (Paper IEEE):** Redefinición formal del alcance experimental del proyecto hacia un **Golden Set oficial estratificado de 15 casos** (`facil: 7, ambiguo: 5, fuera_de_alcance: 3`). Fase 5A completada (Integridad y robustez del evaluador); Fase 5B completada (Ejecución parcial controlada completada sobre los casos 1, 16 y 26, con tres casos procesados, cero errores de infraestructura, artefactos temporales y cero usuarios temporales residuales); infraestructura técnica de 5C preparada y validada localmente con suite unitaria (127 pruebas locales aprobadas) y verificadores de integridad estáticos, con la corrida oficial de 15 casos pendiente de ejecución en la Fase 5C. Los 32 casos históricos fueron preservados en `dataset/golden_set_32_historico.json` (Hash `e58db793...`) y sus resultados anteriores archivados en `resultados/historico_32/`. El hallazgo `F5-001` registra el estado **`RESUELTO_TECNICAMENTE_EN_FASE_5C / PENDIENTE_CIERRE_CUANTITATIVO_EN_FASE_5D`**, mientras que la incidencia `F5-002` fue registrada como **`MITIGADA_POR_REDEFINICION_FORMAL_DEL_ALCANCE`**. El análisis cuantitativo y el cierre pertenecerán a la Fase 5D (la cual comenzará después de obtener los resultados oficiales de 5C).
+- **RAG & LLM:** Integración con Google Gemini (modelo generativo activo `gemini-3.5-flash-lite`, modelo de embedding activo `gemini-embedding-2` de 768 dim, modelo generativo anterior `gemini-2.5-flash`) combinando recuperación vectorial semántica con ejecución de herramientas en tiempo real (*Tool Calling*). Modo estricto sin fallbacks silenciosos activado en la suite de evaluación.
+- **Evaluación Experimental (Paper IEEE):** Redefinición formal del alcance experimental del proyecto hacia un **Golden Set oficial estratificado de 15 casos** (`facil: 7, ambiguo: 5, fuera_de_alcance: 3`). Fase 5A completada (Integridad y robustez del evaluador); Fase 5B completada (Ejecución parcial controlada completada sobre los casos 1, 16 y 26, con tres casos procesados, cero errores de infraestructura, artefactos temporales y cero usuarios temporales residuales); infraestructura técnica de 5C preparada y validada localmente con suite unitaria (130 pruebas locales aprobadas) y verificadores de integridad estáticos, con la corrida oficial de 15 casos pendiente de ejecución en la Fase 5C usando `gemini-3.5-flash-lite`. Los 32 casos históricos fueron preservados en `dataset/golden_set_32_historico.json` (Hash `e58db793...`) y sus resultados anteriores archivados en `resultados/historico_32/`. El hallazgo `F5-001` registra el estado **`RESUELTO_TECNICAMENTE_EN_FASE_5C / PENDIENTE_CIERRE_CUANTITATIVO_EN_FASE_5D`**, la incidencia `F5-002` fue registrada como **`MITIGADA_POR_REDEFINICION_FORMAL_DEL_ALCANCE`**, y la incidencia `F5-003` fue registrada como **`RESUELTO_TECNICAMENTE_POR_MIGRACION_A_GEMINI_3_5_FLASH_LITE / PENDIENTE_VALIDACION_EN_BENCHMARK_5C`**. El análisis cuantitativo y el cierre pertenecerán a la Fase 5D (la cual comenzará después de obtener los resultados oficiales de 5C).
 
 ---
 
@@ -21,6 +21,7 @@ Este documento representa el informe consolidado en progreso del proceso de audi
 |---|---|---|---|---|
 | **Banco de Pruebas** | Inconsistencia entre cifras históricas documentadas y artefactos de evaluación. | **Alto** | **RESUELTO_TECNICAMENTE_EN_FASE_5C / PENDIENTE_CIERRE_CUANTITATIVO_EN_FASE_5D** | Implementados reintentos de capa única, modo estricto, rate-limiter 15s, sanitización de logs, escritura atómica JSON/CSV y usuario temporal determinista. Medición cuantitativa oficial **pendiente de la finalización de la Fase 5C; análisis cuantitativo, actualización documental y cierre pendientes de la Fase 5D**. |
 | **Banco de Pruebas** | Interrupción de la corrida masiva previa de 32 casos por error HTTP 429 `RESOURCE_EXHAUSTED`. | **Alto** | **MITIGADA_POR_REDEFINICION_FORMAL_DEL_ALCANCE** | Redefinición formal del benchmark a 15 casos estratificados deterministas. Corrida previa de 32 interrumpida manualmente; resultados no reutilizados. Medición oficial **pendiente de ejecución de 15 casos en la Fase 5C**. |
+| **Banco de Pruebas** | Interrupción de la primera ejecución de 15 casos por error HTTP 404 `NOT_FOUND` al estar `gemini-2.5-flash` no disponible para proyectos nuevos. | **Alto** | **RESUELTO_TECNICAMENTE_POR_MIGRACION_A_GEMINI_3_5_FLASH_LITE / PENDIENTE_VALIDACION_EN_BENCHMARK_5C** | Migrado el modelo generativo activo a `gemini-3.5-flash-lite` para todas las llamadas reales de generación. La corrida fue interrumpida, no generó métricas oficiales, los resultados activos fueron retirados y no quedaron usuarios temporales residuales. La ejecución comenzará desde cero en la Fase 5C. |
 | **Pipeline RAG** | `CorpusRepository` utilizaba distancia euclidiana L2 (`<->`) en lugar de distancia Coseno (`<=>`). | **Alto** | **Resuelto** | Actualizado `corpus_repository.py` utilizando `cosine_distance()` para alineación vectorial semántica. |
 | **Arquitectura Backend** | `ChatUseCase` ejecuta consultas SQL directas sobre SQLAlchemy para las herramientas de *Tool Calling*. | **Alto** | **Resuelto** | Desacopladas las herramientas en `ChatUseCase` hacia repositorios y puertos abstractos. |
 | **Frontend API** | `QuizAPI.generateQuiz` realizaba peticiones `fetch` sin inyectar la cabecera `Authorization: Bearer <token>`. | **Medio** | **Resuelto** | Migrado a cliente Axios inyectando dinámicamente el token JWT desde `useAuthStore`. |
@@ -54,6 +55,8 @@ Este documento representa el informe consolidado en progreso del proceso de audi
 ### Fase 5 — Robustez, Control de Cuota, Aislamiento y Redefinición del Benchmark RAG (15 Casos)
 
 #### 3.1 Correcciones Técnicas Implementadas
+- **Modelo Generativo Activo `gemini-3.5-flash-lite`:** Reemplazado `gemini-2.5-flash` en `GeminiAdapter` para respuestas conversacionales, pasos de Tool Calling y evaluación.
+- **Modelo de Embedding Preservado:** Mantenido `gemini-embedding-2` con dimensión 768.
 - **Modo Estricto Sin Fallback:** Activado `allow_embedding_fallback=False` y `allow_generation_fallback=False` en los evaluadores para evitar degradaciones no detectadas.
 - **Una Sola Capa de Reintentos:** `GeminiAdapter` se configura con `api_max_attempts=1` y la política de reintentos con backoff exponencial acotado se centraliza en `execute_with_retry`.
 - **Clasificación Estricta de Errores:** Diferenciación entre errores no transitorios (`NonRetryableError`) y errores transitorios (`InfrastructureError`).
@@ -70,12 +73,12 @@ Este documento representa el informe consolidado en progreso del proceso de audi
 #### 3.2 Migración al Benchmark Oficial de 15 Casos y Trazabilidad
 - **Golden Set Oficial de 15 Casos:** Selección determinista por muestreo sistemático estratificado (`facil: 7, ambiguo: 5, fuera_de_alcance: 3`) sobre los IDs originales `{1, 3, 6, 8, 10, 13, 15, 16, 18, 20, 23, 25, 26, 29, 32}`.
 - **Preservación del Banco Histórico:** El dataset original de 32 casos fue guardado en `backend/tests/dataset/golden_set_32_historico.json` con hash SHA-256 obligatorio `e58db793eb82e26d7f0a84e32b9369b725131b2d9513dbcd3fa13fdf036438b1`.
-- **Manifiesto de Trazabilidad:** Creado `backend/tests/dataset/golden_set_manifest.json` documentando el mapeo formal, hashes, modelos y criterios de completitud oficial (`15/15/15/0/0`).
+- **Manifiesto de Trazabilidad:** Creado `backend/tests/dataset/golden_set_manifest.json` documentando el mapeo formal, hashes, modelos (`gemini-3.5-flash-lite` y `gemini-embedding-2`) y criterios de completitud oficial (`15/15/15/0/0`).
 - **Archivado Histórico de Resultados:** Los resultados anteriores de 32 casos fueron trasladados a `backend/tests/resultados/historico_32/` preservando sus hashes `5e3c6837...` y `4f0bf77f...`.
-- **Estado de `F5-001` y `F5-002`:** `F5-001` registrado como **`RESUELTO_TECNICAMENTE_EN_FASE_5C / PENDIENTE_CIERRE_CUANTITATIVO_EN_FASE_5D`** y `F5-002` registrado como **`MITIGADA_POR_REDEFINICION_FORMAL_DEL_ALCANCE`**.
+- **Estado de `F5-001`, `F5-002` y `F5-003`:** `F5-001` registrado como **`RESUELTO_TECNICAMENTE_EN_FASE_5C / PENDIENTE_CIERRE_CUANTITATIVO_EN_FASE_5D`**, `F5-002` registrado como **`MITIGADA_POR_REDEFINICION_FORMAL_DEL_ALCANCE`**, y `F5-003` registrado como **`RESUELTO_TECNICAMENTE_POR_MIGRACION_A_GEMINI_3_5_FLASH_LITE / PENDIENTE_VALIDACION_EN_BENCHMARK_5C`**.
 
 #### 3.3 Validaciones de Infraestructura Comprobadas
-- **Suite Unitaria:** 127 pruebas unitarias aprobadas (con 2 warnings de dependencias externas Pydantic V2 / Python 3.17).
+- **Suite Unitaria:** 130 pruebas unitarias aprobadas (con 2 warnings de dependencias externas Pydantic V2 / Python 3.17).
 - **Verificador de Integridad Estática:** `verify_evaluation_integrity.py` en estado **PASS** (exit code 0).
 - **Verificador Automatizado:** `python3 verificar_tutoria.py --fase 5 --verbose` en estado **PASS=4, WARN=0, FAIL=0, SKIP=1** (Resultado general: APROBADO).
 
@@ -104,7 +107,8 @@ Para la redacción del **Paper IEEE**, se sugiere resaltar los siguientes elemen
 │ 1. SECCIÓN DE ARQUITECTURA DEL SISTEMA                                     │
 │    - Destacar el diseño en Arquitectura Hexagonal que aísla la lógica de   │
 │      tutoría de los adaptadores de Gemini y PostgreSQL.                     │
-│    - Citar la combinación de RAG con Function Calling en tiempo real.       │
+│    - Citar la combinación de RAG con Function Calling en tiempo real usando │
+│      el modelo generativo activo Gemini 3.5 Flash Lite.                     │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │ 2. SECCIÓN DE EXPERIMENTOS Y METODOLOGÍA DE EVALUACIÓN (EXPERIMENTAL SETUP) │
 │    - Presentar la metodología de evaluación sobre el Golden Set estratificado│
