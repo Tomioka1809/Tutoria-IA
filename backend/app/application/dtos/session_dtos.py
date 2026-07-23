@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 class SessionAccessDTO(BaseModel):
     id: int
@@ -6,5 +6,4 @@ class SessionAccessDTO(BaseModel):
     tutor_id: int
     status: str
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

@@ -6,6 +6,24 @@ Esta guía contiene todas las instrucciones necesarias para clonar, configurar y
 
 ---
 
+## 📌 Estado de las Fases del Proyecto
+
+- **Fase 5 (Benchmark RAG y Análisis Cuantitativo):** **CERRADA**
+- **Fase 6A (Auditoría Integral y Seguridad):** **COMPLETADA**
+- **Fase 6B (Migración Pydantic V2 y Seguridad por Entorno):** **COMPLETADA** (162 pruebas aprobadas al cierre de Fase 6B)
+- **Fase 6C (Cierre Documental Definitivo):** **CIERRE DOCUMENTAL COMPLETADO** (164 pruebas aprobadas al cierre de Fase 6C)
+- **Cierre Técnico del Proyecto:** **COMPLETADO**
+- **Suite de Pruebas Automatizadas:** **164 pruebas unitarias aprobadas, 0 fallidas** (144 iniciales, 162 al cerrar Fase 6B, y 164 al cerrar Fase 6C).
+- **Fase 6D:** Corresponde únicamente a integración Git, pull request y entrega operativa.
+
+### 🔒 Entornos y Seguridad de Configuración (Fase 6B-2)
+- `APP_ENV` admite los entornos: `development`, `test` y `production`.
+- En entorno `production`, se bloquean automáticamente configuraciones inseguras de `SECRET_KEY` (claves de menos de 32 caracteres, la clave predeterminada de desarrollo o placeholders documentales).
+- En entorno `production`, se bloquean contraseñas de base de datos por defecto o inseguras para `DB_PASSWORD`.
+- En entornos `development` y `test`, se conservan las configuraciones por defecto para desarrollo local y ejecución de pruebas automatizadas.
+
+---
+
 ## 🛠️ Tecnologías y Arquitectura
 
 El proyecto está dividido en dos partes principales:

@@ -413,10 +413,18 @@ def main():
 
     if doc06_path.exists():
         doc06_content = doc06_path.read_text(encoding="utf-8")
-        if "BORRADOR PROVISIONAL" in doc06_content and "15 casos" in doc06_content:
-            report_pass("documentacion/06_reporte_final.md declara el aviso de BORRADOR PROVISIONAL y el alcance de 15 casos")
+        doc06_lower = doc06_content.lower()
+        if (
+            "BORRADOR PROVISIONAL" not in doc06_content
+            and "Estado: REPORTE FINAL VERIFICADO" in doc06_content
+            and "15 casos" in doc06_content
+            and ("Fase 6B: COMPLETADA" in doc06_content or "Fase 6B" in doc06_content)
+            and "pendiente" not in doc06_lower
+            and "requiere confirmación" not in doc06_lower
+        ):
+            report_pass("documentacion/06_reporte_final.md declara el estado final verificado y el alcance oficial de 15 casos")
         else:
-            report_fail("documentacion/06_reporte_final.md no incluye la advertencia de BORRADOR PROVISIONAL para 15 casos")
+            report_fail("documentacion/06_reporte_final.md no declara el estado final verificado o conserva términos provisionales/pendientes")
     else:
         report_fail("Falta documentacion/06_reporte_final.md")
 

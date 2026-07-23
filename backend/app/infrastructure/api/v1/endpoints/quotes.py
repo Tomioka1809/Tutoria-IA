@@ -5,7 +5,7 @@ from sqlalchemy.sql.expression import func
 
 from app.infrastructure.api.dependencies import get_db
 from app.infrastructure.database.models.motivational_quote import MotivationalQuote
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 router = APIRouter()
 
@@ -13,8 +13,8 @@ class QuoteOut(BaseModel):
     id: int
     text: str
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
+
 
 @router.get("/random", response_model=QuoteOut)
 async def get_random_quote(db: AsyncSession = Depends(get_db)):
