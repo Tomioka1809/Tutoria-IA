@@ -6,7 +6,7 @@ import { reportApiError } from '../services/error-feedback';
 interface SessionState {
   sessions: Session[];
   isLoading: boolean;
-  fetchSessions: () => Promise<void>;
+  fetchSessions: () => Promise<boolean>;
   createSession: (sessionData: {
     student_id?: number;
     tutor_id: number;
@@ -27,13 +27,15 @@ interface SessionState {
 export const useSessionStore = create<SessionState>((set) => ({
   sessions: [],
   isLoading: false,
-  fetchSessions: async () => {
+  fetchSessions: async (): Promise<boolean> => {
     set({ isLoading: true });
     try {
       const response = await client.get<Session[]>('/sessions/');
       set({ sessions: response.data });
+      return true;
     } catch (error) {
-      reportApiError(error, 'errors.loadSessions');
+      reportApiError(error, 'errors.loadSessions', { notify: false });
+      return false;
     } finally {
       set({ isLoading: false });
     }

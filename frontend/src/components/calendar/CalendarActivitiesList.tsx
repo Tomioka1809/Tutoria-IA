@@ -11,6 +11,7 @@ interface CalendarActivitiesListProps {
   onAddPress: () => void;
   onViewPress?: (activity: CalendarItem) => void;
   onDeletePress: (activity: CalendarItem) => void;
+  bottomPadding?: number;
 }
 
 export function CalendarActivitiesList({
@@ -19,6 +20,7 @@ export function CalendarActivitiesList({
   onAddPress,
   onViewPress,
   onDeletePress,
+  bottomPadding,
 }: CalendarActivitiesListProps) {
   const isTutor = userRole === 'tutor' || userRole === 'admin';
   const { colors } = useTheme();
@@ -133,7 +135,11 @@ export function CalendarActivitiesList({
         </Pressable>
       </View>
 
-      <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+      <ScrollView
+        className="flex-1"
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: bottomPadding ?? 24 }}
+      >
         {activities.length > 0 ? (
           activities.map((activity) => {
             const dateStr = activity.dateStr;

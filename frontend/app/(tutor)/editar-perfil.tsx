@@ -1,5 +1,5 @@
 // app/(tutor)/editar-perfil.tsx
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import {
   View,
   Text,
@@ -11,6 +11,7 @@ import {
   Image,
   ActivityIndicator,
   StyleSheet,
+  KeyboardAvoidingView,
 } from 'react-native';
 import { useFocusEffect, useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -25,6 +26,8 @@ export default function EditarPerfilScreen() {
   const { t } = useTranslation();
   const router = useRouter();
   const insets = useSafeAreaInsets();
+  const scrollViewRef = useRef<ScrollView>(null);
+
   const paddingTop = Math.max(insets.top, 16);
   const minimumBottomPadding = Platform.OS === 'ios' ? 24 : 12;
   const bottomPadding = Math.max(insets.bottom, minimumBottomPadding);
@@ -55,6 +58,24 @@ export default function EditarPerfilScreen() {
       setPendingImage(profileImage);
     }, [user, profileImage])
   );
+
+  // ── Navigation ────────────────────────────────────────────────
+  const handleBack = () => {
+    if (router.canGoBack()) {
+      router.back();
+      return;
+    }
+
+    router.replace('/(tutor)/configuracion' as any);
+  };
+
+  const handleFocusLastField = () => {
+    requestAnimationFrame(() => {
+      scrollViewRef.current?.scrollToEnd({
+        animated: true,
+      });
+    });
+  };
 
   // ── Image picker ──────────────────────────────────────────────
   const handlePickImage = async () => {
@@ -115,13 +136,21 @@ export default function EditarPerfilScreen() {
 
   // ── Render ────────────────────────────────────────────────────
   return (
-    <View style={{ flex: 1, backgroundColor: colors.background }}>
+    <KeyboardAvoidingView
+      style={{ flex: 1, backgroundColor: colors.background }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={0}
+    >
       <ScrollView
+        ref={scrollViewRef}
+        style={{ flex: 1 }}
         contentContainerStyle={{
+          flexGrow: 1,
           paddingBottom: scrollBottomPadding,
         }}
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
+        keyboardDismissMode={Platform.OS === 'ios' ? 'interactive' : 'on-drag'}
       >
         {/* ── Purple Header ───────────────────────────────────── */}
         <View
@@ -136,7 +165,7 @@ export default function EditarPerfilScreen() {
         >
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Pressable
-              onPress={() => router.replace('/(tutor)/configuracion' as any)}
+              onPress={handleBack}
               style={{ marginRight: 16, padding: 4 }}
               hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
             >
@@ -183,7 +212,7 @@ export default function EditarPerfilScreen() {
                   resizeMode="cover"
                 />
               ) : (
-                <View style={[styles.avatar, { backgroundColor: '#CBD5E1', borderColor: colors.surface }]} />
+                <View style={[styles.avatar, { backgroundColor: colors.border, borderColor: colors.surface }]} />
               )}
 
               {/* Pencil button */}
@@ -216,7 +245,7 @@ export default function EditarPerfilScreen() {
               value={nombre}
               onChangeText={setNombre}
               placeholder={t('editProfile.namePlaceholder')}
-              placeholderTextColor="#C4C4D4"
+              placeholderTextColor={colors.textSecondary}
               returnKeyType="next"
               autoCorrect={false}
             />
@@ -229,7 +258,7 @@ export default function EditarPerfilScreen() {
               value={codigo}
               onChangeText={setCodigo}
               placeholder={t('editProfile.codePlaceholder')}
-              placeholderTextColor="#C4C4D4"
+              placeholderTextColor={colors.textSecondary}
               keyboardType="numeric"
               returnKeyType="next"
             />
@@ -242,7 +271,7 @@ export default function EditarPerfilScreen() {
               value={celular}
               onChangeText={setCelular}
               placeholder={t('editProfile.phonePlaceholder')}
-              placeholderTextColor="#C4C4D4"
+              placeholderTextColor={colors.textSecondary}
               keyboardType="phone-pad"
               returnKeyType="next"
             />
@@ -255,8 +284,9 @@ export default function EditarPerfilScreen() {
               value={experiencia}
               onChangeText={setExperiencia}
               placeholder={t('editProfile.expertisePlaceholder')}
-              placeholderTextColor="#C4C4D4"
+              placeholderTextColor={colors.textSecondary}
               returnKeyType="next"
+              onFocus={handleFocusLastField}
             />
           </View>
 
@@ -267,15 +297,16 @@ export default function EditarPerfilScreen() {
               value={oficina}
               onChangeText={setOficina}
               placeholder={t('editProfile.officePlaceholder')}
-              placeholderTextColor="#C4C4D4"
+              placeholderTextColor={colors.textSecondary}
               returnKeyType="done"
+              onFocus={handleFocusLastField}
             />
           </View>
 
           {/* ── Botones de acción ─────────────────────────────── */}
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 8 }}>
             <Pressable
-              onPress={() => router.replace('/(tutor)/configuracion' as any)}
+              onPress={handleBack}
               disabled={saving}
               style={({ pressed }) => ({
                 flex: 1,
@@ -338,7 +369,7 @@ export default function EditarPerfilScreen() {
           </View>
         </View>
       </ScrollView>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -375,7 +406,6 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 14,
     fontWeight: '700',
-    /* color dynamically applied */
     marginBottom: 8,
   },
   input: {
@@ -386,6 +416,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: Platform.OS === 'ios' ? 14 : 11,
     fontSize: 15,
-    /* color dynamically applied */
   },
 });
