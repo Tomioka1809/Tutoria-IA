@@ -64,6 +64,9 @@
     "no": "No",
     "loading": "Cargando...",
     "notSpecified": "No especificado",
+    "retry": "Reintentar",
+    "showMore": "Ver más",
+    "showLess": "Ver menos",
     "version": "Versión {{version}}"
   },
   "dashboard": {

@@ -1,20 +1,39 @@
 import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { Platform } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '@/src/theme/ThemeContext';
 
 export default function AdminLayout() {
   const { t } = useTranslation();
-  const { colors, isDark } = useTheme();
+  const { colors } = useTheme();
+  const insets = useSafeAreaInsets();
+
+  const minimumBottomPadding = Platform.OS === 'ios' ? 24 : 12;
+  const bottomPadding = Math.max(insets.bottom, minimumBottomPadding);
+  const tabBarBaseHeight = 62;
 
   return (
     <Tabs screenOptions={{
       headerShown: true,
       headerStyle: { backgroundColor: colors.background },
       headerTitleStyle: { color: colors.text, fontWeight: 'bold' },
-      tabBarStyle: { backgroundColor: colors.surface, borderTopWidth: 1, borderTopColor: isDark ? '#FFFFFF' : colors.border },
-      tabBarActiveTintColor: isDark ? '#FFFFFF' : colors.primary,
-      tabBarInactiveTintColor: isDark ? '#FFFFFF' : colors.textSecondary,
+      tabBarActiveTintColor: colors.primary,
+      tabBarInactiveTintColor: colors.textSecondary,
+      tabBarHideOnKeyboard: true,
+      tabBarStyle: {
+        backgroundColor: colors.surface,
+        borderTopWidth: 1,
+        borderTopColor: colors.border,
+        height: tabBarBaseHeight + bottomPadding,
+        paddingBottom: bottomPadding,
+        paddingTop: 8,
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+      },
     }}>
       <Tabs.Screen 
         name="index" 
