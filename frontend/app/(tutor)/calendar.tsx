@@ -1,7 +1,8 @@
 // app/(tutor)/calendar.tsx
 import React, { useState } from 'react';
 import { useTheme } from '@/src/theme/ThemeContext';
-import { View, Text, Modal, Pressable } from 'react-native';
+import { View, Text, Modal, Pressable, Platform, ActivityIndicator } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useCalendar } from '@/src/components/calendar/useCalendar';
 import { CalendarHeader } from '@/src/components/calendar/CalendarHeader';
 import { CalendarMonthView } from '@/src/components/calendar/CalendarMonthView';
@@ -9,6 +10,7 @@ import { CalendarActivitiesList } from '@/src/components/calendar/CalendarActivi
 import { AddActivityModal } from '@/src/components/calendar/AddActivityModal';
 import { ActivityDetailsModal } from '@/src/components/calendar/ActivityDetailsModal';
 import { useTranslation } from 'react-i18next';
+import { Feather } from '@expo/vector-icons';
 
 interface UnifiedActivity {
   id: string;
@@ -28,6 +30,15 @@ interface UnifiedActivity {
 export default function CalendarScreen() {
   const { colors } = useTheme();
   const { t } = useTranslation();
+
+  const insets = useSafeAreaInsets();
+  const screenTopPadding = Math.max(insets.top + 16, 64);
+  const minimumBottomPadding = Platform.OS === 'ios' ? 24 : 12;
+  const bottomPadding = Math.max(insets.bottom, minimumBottomPadding);
+  const tabBarBaseHeight = 62;
+  const totalTabBarHeight = tabBarBaseHeight + bottomPadding;
+  const scrollBottomPadding = totalTabBarHeight + 24;
+
   const {
     user,
     selectedDate,
@@ -43,6 +54,9 @@ export default function CalendarScreen() {
     deleteActivity,
     changeBackendSessionStatus,
     students,
+    isDataLoading,
+    loadError,
+    retryLoad,
     fetchTutorData,
   } = useCalendar();
 
@@ -65,34 +79,57 @@ export default function CalendarScreen() {
   const isAnyModalOpen = isAddModalOpen || activityToDelete !== null || activityToView !== null;
 
   return (
-    <View style={{ flex: 1, backgroundColor: colors.background, paddingTop: 64 }}>
+    <View style={{ flex: 1, backgroundColor: colors.background, paddingTop: screenTopPadding }}>
       {/* El fondo se vuelve semi-transparente cuando hay un modal abierto */}
       <View style={{ flex: 1, opacity: isAnyModalOpen ? 0.35 : 1 }}>
         <CalendarHeader />
 
-        <CalendarMonthView
-          currentMonth={currentMonth}
-          prevMonth={prevMonth}
-          nextMonth={nextMonth}
-          weekDays={weekDays}
-          days={days}
-          selectedDate={selectedDate}
-          setSelectedDate={setSelectedDate}
-          hasActivities={hasActivities}
-        />
+        {isDataLoading ? (
+          <ActivityIndicator color={colors.primary} style={{ marginTop: 40 }} />
+        ) : loadError ? (
+          <View style={{ backgroundColor: colors.surface, marginHorizontal: 24, padding: 24, borderRadius: 16, alignItems: 'center', borderWidth: 1, borderColor: colors.border, marginTop: 20 }}>
+            <Feather name="alert-circle" size={32} color={colors.danger} style={{ marginBottom: 10 }} />
+            <Text style={{ color: colors.text, textAlign: 'center', marginBottom: 16 }}>{loadError}</Text>
+            <Pressable
+              onPress={retryLoad}
+              style={{
+                backgroundColor: colors.primary,
+                paddingHorizontal: 20,
+                paddingVertical: 10,
+                borderRadius: 12,
+              }}
+            >
+              <Text style={{ color: 'white', fontWeight: 'bold' }}>{t('common.retry')}</Text>
+            </Pressable>
+          </View>
+        ) : (
+          <>
+            <CalendarMonthView
+              currentMonth={currentMonth}
+              prevMonth={prevMonth}
+              nextMonth={nextMonth}
+              weekDays={weekDays}
+              days={days}
+              selectedDate={selectedDate}
+              setSelectedDate={setSelectedDate}
+              hasActivities={hasActivities}
+            />
 
-        <CalendarActivitiesList
-          activities={filteredActivities}
-          userRole={user?.role}
-          onAddPress={() => {
-            if (user?.role === 'tutor' || user?.role === 'admin') {
-              fetchTutorData();
-            }
-            setIsAddModalOpen(true);
-          }}
-          onViewPress={(activity) => setActivityToView(activity)}
-          onDeletePress={(activity) => setActivityToDelete(activity)}
-        />
+            <CalendarActivitiesList
+              activities={filteredActivities}
+              userRole={user?.role}
+              bottomPadding={scrollBottomPadding}
+              onAddPress={() => {
+                if (user?.role === 'tutor' || user?.role === 'admin') {
+                  fetchTutorData();
+                }
+                setIsAddModalOpen(true);
+              }}
+              onViewPress={(activity) => setActivityToView(activity)}
+              onDeletePress={(activity) => setActivityToDelete(activity)}
+            />
+          </>
+        )}
       </View>
 
       {/* Modal para añadir actividad */}

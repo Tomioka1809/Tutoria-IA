@@ -36,27 +36,49 @@ export function useCalendar() {
 
   const [students, setStudents] = useState<User[]>([]);
   const [isDataLoading, setIsDataLoading] = useState(false);
+  const [loadError, setLoadError] = useState<string | null>(null);
 
-  const fetchTutorData = useCallback(async () => {
-    setIsDataLoading(true);
+  const fetchTutorData = useCallback(async (): Promise<boolean> => {
     try {
       const studRes = await client.get<User[]>('/tutors/students');
       setStudents(studRes.data);
+      return true;
     } catch (e) {
-      reportApiError(e, 'errors.loadTutorData');
-    } finally {
-      setIsDataLoading(false);
+      reportApiError(e, 'errors.loadTutorData', { notify: false });
+      return false;
     }
   }, []);
 
-  useEffect(() => {
-    fetchSessions();
-    clearPastActivities();
+  const loadCalendarData = useCallback(async () => {
+    setIsDataLoading(true);
+    setLoadError(null);
+    try {
+      clearPastActivities();
 
-    if (userRole === 'tutor' || userRole === 'admin') {
-      fetchTutorData();
+      const sessionsOk = await fetchSessions();
+      let tutorOk = true;
+
+      if (userRole === 'tutor' || userRole === 'admin') {
+        tutorOk = await fetchTutorData();
+      }
+
+      if (!sessionsOk || !tutorOk) {
+        setLoadError(
+          t('errors.network', {
+            defaultValue: 'No fue posible conectarse con el servidor. Revisa tu conexión a internet.'
+          })
+        );
+      } else {
+        setLoadError(null);
+      }
+    } finally {
+      setIsDataLoading(false);
     }
-  }, [userRole, fetchSessions, clearPastActivities, fetchTutorData]);
+  }, [userRole, fetchSessions, clearPastActivities, fetchTutorData, t]);
+
+  useEffect(() => {
+    loadCalendarData();
+  }, [loadCalendarData]);
 
   const allItems = useMemo(() => {
     const actInputs: LocalActivityInput[] = activities;
@@ -220,6 +242,8 @@ export function useCalendar() {
     changeBackendSessionStatus,
     students,
     isDataLoading,
+    loadError,
+    retryLoad: loadCalendarData,
     fetchTutorData,
   };
 }
