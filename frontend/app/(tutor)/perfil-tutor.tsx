@@ -1,6 +1,6 @@
 // app/(tutor)/perfil-tutor.tsx
 import React from 'react';
-import { View, Text, ScrollView, Pressable, Image } from 'react-native';
+import { View, Text, ScrollView, Pressable, Image, Platform } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Feather from '@expo/vector-icons/Feather';
@@ -17,7 +17,21 @@ export default function PerfilTutorScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const paddingTop = Math.max(insets.top, 16);
+  const minimumBottomPadding = Platform.OS === 'ios' ? 24 : 12;
+  const bottomPadding = Math.max(insets.bottom, minimumBottomPadding);
+  const tabBarBaseHeight = 62;
+  const totalTabBarHeight = tabBarBaseHeight + bottomPadding;
+  const scrollBottomPadding = totalTabBarHeight + 24;
+
   const { user, profileImage } = useAuthStore();
+
+  const handleBack = () => {
+    if (router.canGoBack()) {
+      router.back();
+      return;
+    }
+    router.replace('/(tutor)/profile' as any);
+  };
 
   const infoRows = [
     {
@@ -50,7 +64,7 @@ export default function PerfilTutorScreen() {
   return (
     <ScrollView
       style={{ flex: 1, backgroundColor: colors.background }}
-      contentContainerStyle={{ paddingBottom: 130 }}
+      contentContainerStyle={{ paddingBottom: scrollBottomPadding }}
       showsVerticalScrollIndicator={false}
     >
       {/* ─── Encabezado morado ─────────────────────────────── */}
@@ -66,7 +80,7 @@ export default function PerfilTutorScreen() {
       >
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Pressable
-            onPress={() => router.replace('/(tutor)/profile' as any)}
+            onPress={handleBack}
             style={{ marginRight: 16 }}
             hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
           >

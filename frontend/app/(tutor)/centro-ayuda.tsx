@@ -1,6 +1,6 @@
 // app/(tutor)/centro-ayuda.tsx
 import React from 'react';
-import { View, Text, ScrollView, Pressable } from 'react-native';
+import { View, Text, ScrollView, Pressable, Platform } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Feather from '@expo/vector-icons/Feather';
@@ -23,6 +23,20 @@ export default function CentroAyudaScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const paddingTop = Math.max(insets.top, 16);
+  const minimumBottomPadding = Platform.OS === 'ios' ? 24 : 12;
+  const bottomPadding = Math.max(insets.bottom, minimumBottomPadding);
+  const tabBarBaseHeight = 62;
+  const totalTabBarHeight = tabBarBaseHeight + bottomPadding;
+  const scrollBottomPadding = totalTabBarHeight + 24;
+
+  const handleBack = () => {
+    if (router.canGoBack()) {
+      router.back();
+      return;
+    }
+    router.replace('/(tutor)/profile' as any);
+  };
+
   const faqItems = [1, 2, 3].map((item) => ({
     question: t(`help.question${item}`),
     answer: t(`help.answer${item}`),
@@ -31,7 +45,7 @@ export default function CentroAyudaScreen() {
   return (
     <ScrollView
       style={{ flex: 1, backgroundColor: colors.background }}
-      contentContainerStyle={{ paddingBottom: 130 }}
+      contentContainerStyle={{ paddingBottom: scrollBottomPadding }}
       showsVerticalScrollIndicator={false}
     >
       {/* ─── Header morado ─────────────────────────────────── */}
@@ -55,7 +69,7 @@ export default function CentroAyudaScreen() {
           }}
         >
           <Pressable
-            onPress={() => router.replace('/(tutor)/profile' as any)}
+            onPress={handleBack}
             style={{ marginRight: 16 }}
             hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
           >

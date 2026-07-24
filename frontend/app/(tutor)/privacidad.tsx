@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, ScrollView, Pressable, Switch } from 'react-native';
+import { View, Text, ScrollView, Pressable, Switch, Platform } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Feather from '@expo/vector-icons/Feather';
@@ -13,14 +13,27 @@ export default function PrivacidadScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const paddingTop = Math.max(insets.top, 16);
+  const minimumBottomPadding = Platform.OS === 'ios' ? 24 : 12;
+  const bottomPadding = Math.max(insets.bottom, minimumBottomPadding);
+  const tabBarBaseHeight = 62;
+  const totalTabBarHeight = tabBarBaseHeight + bottomPadding;
+  const scrollBottomPadding = totalTabBarHeight + 24;
 
   const [hideAcademicInfo, setHideAcademicInfo] = React.useState(true);
   const [visibleOnlyTutors, setVisibleOnlyTutors] = React.useState(false);
 
+  const handleBack = () => {
+    if (router.canGoBack()) {
+      router.back();
+      return;
+    }
+    router.replace('/(tutor)/profile' as any);
+  };
+
   return (
     <ScrollView
       style={{ flex: 1, backgroundColor: colors.background }}
-      contentContainerStyle={{ paddingBottom: 130 }}
+      contentContainerStyle={{ paddingBottom: scrollBottomPadding }}
       showsVerticalScrollIndicator={false}
     >
       {/* Header Container */}
@@ -38,7 +51,7 @@ export default function PrivacidadScreen() {
           alignItems: 'center',
           marginBottom: 20,
         }}>
-          <Pressable onPress={() => router.replace('/(tutor)/profile' as any)} style={{ marginRight: 16 }}>
+          <Pressable onPress={handleBack} style={{ marginRight: 16 }}>
             <Feather name="arrow-left" size={24} color="white" />
           </Pressable>
           <Text style={{

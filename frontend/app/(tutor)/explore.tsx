@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, ScrollView, Pressable } from 'react-native';
+import { View, Text, ScrollView, Pressable, Platform } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
 import { useTheme } from '@/src/theme/ThemeContext';
 import { useTranslation } from 'react-i18next';
@@ -9,6 +10,13 @@ export default function TutorExploreScreen() {
   const { colors, isDark } = useTheme();
   const { t } = useTranslation();
   const router = useRouter();
+
+  const insets = useSafeAreaInsets();
+  const minimumBottomPadding = Platform.OS === 'ios' ? 24 : 12;
+  const bottomPadding = Math.max(insets.bottom, minimumBottomPadding);
+  const tabBarBaseHeight = 62;
+  const totalTabBarHeight = tabBarBaseHeight + bottomPadding;
+  const scrollBottomPadding = totalTabBarHeight + 24;
 
   const services = [
     {
@@ -43,7 +51,7 @@ export default function TutorExploreScreen() {
   return (
     <ScrollView
       style={{ flex: 1, backgroundColor: colors.background }}
-      contentContainerStyle={{ paddingHorizontal: 24, paddingTop: 64, paddingBottom: 120 }}
+      contentContainerStyle={{ paddingHorizontal: 24, paddingTop: 64, paddingBottom: scrollBottomPadding }}
       showsVerticalScrollIndicator={false}
     >
       <View style={{ marginBottom: 24 }}>
