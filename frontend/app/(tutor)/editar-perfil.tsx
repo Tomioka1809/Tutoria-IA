@@ -1,4 +1,5 @@
-import React, { useState, useCallback } from 'react';
+// app/(tutor)/editar-perfil.tsx
+import React, { useState, useCallback, useRef } from 'react';
 import {
   View,
   Text,
@@ -10,6 +11,7 @@ import {
   Image,
   ActivityIndicator,
   StyleSheet,
+  KeyboardAvoidingView,
 } from 'react-native';
 import { useFocusEffect, useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -24,6 +26,8 @@ export default function EditarPerfilScreen() {
   const { t } = useTranslation();
   const router = useRouter();
   const insets = useSafeAreaInsets();
+  const scrollViewRef = useRef<ScrollView>(null);
+
   const paddingTop = Math.max(insets.top, 16);
   const minimumBottomPadding = Platform.OS === 'ios' ? 24 : 12;
   const bottomPadding = Math.max(insets.bottom, minimumBottomPadding);
@@ -63,6 +67,14 @@ export default function EditarPerfilScreen() {
     }
 
     router.replace('/(tutor)/configuracion' as any);
+  };
+
+  const handleFocusLastField = () => {
+    requestAnimationFrame(() => {
+      scrollViewRef.current?.scrollToEnd({
+        animated: true,
+      });
+    });
   };
 
   // ── Image picker ──────────────────────────────────────────────
@@ -124,13 +136,21 @@ export default function EditarPerfilScreen() {
 
   // ── Render ────────────────────────────────────────────────────
   return (
-    <View style={{ flex: 1, backgroundColor: colors.background }}>
+    <KeyboardAvoidingView
+      style={{ flex: 1, backgroundColor: colors.background }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={0}
+    >
       <ScrollView
+        ref={scrollViewRef}
+        style={{ flex: 1 }}
         contentContainerStyle={{
+          flexGrow: 1,
           paddingBottom: scrollBottomPadding,
         }}
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
+        keyboardDismissMode={Platform.OS === 'ios' ? 'interactive' : 'on-drag'}
       >
         {/* ── Purple Header ───────────────────────────────────── */}
         <View
@@ -266,6 +286,7 @@ export default function EditarPerfilScreen() {
               placeholder={t('editProfile.expertisePlaceholder')}
               placeholderTextColor={colors.textSecondary}
               returnKeyType="next"
+              onFocus={handleFocusLastField}
             />
           </View>
 
@@ -278,6 +299,7 @@ export default function EditarPerfilScreen() {
               placeholder={t('editProfile.officePlaceholder')}
               placeholderTextColor={colors.textSecondary}
               returnKeyType="done"
+              onFocus={handleFocusLastField}
             />
           </View>
 
@@ -347,7 +369,7 @@ export default function EditarPerfilScreen() {
           </View>
         </View>
       </ScrollView>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
