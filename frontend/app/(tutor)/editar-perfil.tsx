@@ -1,4 +1,3 @@
-// app/(tutor)/editar-perfil.tsx
 import React, { useState, useCallback } from 'react';
 import {
   View,
@@ -55,6 +54,16 @@ export default function EditarPerfilScreen() {
       setPendingImage(profileImage);
     }, [user, profileImage])
   );
+
+  // ── Navigation ────────────────────────────────────────────────
+  const handleBack = () => {
+    if (router.canGoBack()) {
+      router.back();
+      return;
+    }
+
+    router.replace('/(tutor)/configuracion' as any);
+  };
 
   // ── Image picker ──────────────────────────────────────────────
   const handlePickImage = async () => {
@@ -136,7 +145,7 @@ export default function EditarPerfilScreen() {
         >
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Pressable
-              onPress={() => router.replace('/(tutor)/configuracion' as any)}
+              onPress={handleBack}
               style={{ marginRight: 16, padding: 4 }}
               hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
             >
@@ -183,7 +192,7 @@ export default function EditarPerfilScreen() {
                   resizeMode="cover"
                 />
               ) : (
-                <View style={[styles.avatar, { backgroundColor: '#CBD5E1', borderColor: colors.surface }]} />
+                <View style={[styles.avatar, { backgroundColor: colors.border, borderColor: colors.surface }]} />
               )}
 
               {/* Pencil button */}
@@ -216,7 +225,7 @@ export default function EditarPerfilScreen() {
               value={nombre}
               onChangeText={setNombre}
               placeholder={t('editProfile.namePlaceholder')}
-              placeholderTextColor="#C4C4D4"
+              placeholderTextColor={colors.textSecondary}
               returnKeyType="next"
               autoCorrect={false}
             />
@@ -229,7 +238,7 @@ export default function EditarPerfilScreen() {
               value={codigo}
               onChangeText={setCodigo}
               placeholder={t('editProfile.codePlaceholder')}
-              placeholderTextColor="#C4C4D4"
+              placeholderTextColor={colors.textSecondary}
               keyboardType="numeric"
               returnKeyType="next"
             />
@@ -242,7 +251,7 @@ export default function EditarPerfilScreen() {
               value={celular}
               onChangeText={setCelular}
               placeholder={t('editProfile.phonePlaceholder')}
-              placeholderTextColor="#C4C4D4"
+              placeholderTextColor={colors.textSecondary}
               keyboardType="phone-pad"
               returnKeyType="next"
             />
@@ -255,7 +264,7 @@ export default function EditarPerfilScreen() {
               value={experiencia}
               onChangeText={setExperiencia}
               placeholder={t('editProfile.expertisePlaceholder')}
-              placeholderTextColor="#C4C4D4"
+              placeholderTextColor={colors.textSecondary}
               returnKeyType="next"
             />
           </View>
@@ -267,7 +276,7 @@ export default function EditarPerfilScreen() {
               value={oficina}
               onChangeText={setOficina}
               placeholder={t('editProfile.officePlaceholder')}
-              placeholderTextColor="#C4C4D4"
+              placeholderTextColor={colors.textSecondary}
               returnKeyType="done"
             />
           </View>
@@ -275,7 +284,7 @@ export default function EditarPerfilScreen() {
           {/* ── Botones de acción ─────────────────────────────── */}
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 8 }}>
             <Pressable
-              onPress={() => router.replace('/(tutor)/configuracion' as any)}
+              onPress={handleBack}
               disabled={saving}
               style={({ pressed }) => ({
                 flex: 1,
@@ -375,7 +384,6 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 14,
     fontWeight: '700',
-    /* color dynamically applied */
     marginBottom: 8,
   },
   input: {
@@ -386,6 +394,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: Platform.OS === 'ios' ? 14 : 11,
     fontSize: 15,
-    /* color dynamically applied */
   },
 });

@@ -1,4 +1,3 @@
-// src/components/profile/ProfileHeader.tsx
 import React from 'react';
 import { View, Text, Image } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -41,7 +40,7 @@ export function ProfileHeader({ user }: ProfileHeaderProps) {
         </Text>
       </View>
       
-      {/* Student Card */}
+      {/* Student/Tutor Card */}
       <View style={{
         backgroundColor: colors.surface,
         borderRadius: 24,
@@ -63,7 +62,7 @@ export function ProfileHeader({ user }: ProfileHeaderProps) {
               width: 64,
               height: 64,
               borderRadius: 32,
-              backgroundColor: '#CBD5E1',
+              backgroundColor: colors.border,
               marginRight: 16,
             }}
             resizeMode="cover"
@@ -73,7 +72,7 @@ export function ProfileHeader({ user }: ProfileHeaderProps) {
             width: 64,
             height: 64,
             borderRadius: 32,
-            backgroundColor: '#CBD5E1',
+            backgroundColor: colors.border,
             marginRight: 16,
           }} />
         )}
@@ -85,7 +84,7 @@ export function ProfileHeader({ user }: ProfileHeaderProps) {
             fontWeight: 'bold',
             color: colors.text,
           }}>
-            {user?.full_name || 'Sebastián Quispe'}
+            {user?.full_name || t('common.notSpecified')}
           </Text>
           <Text style={{
             fontSize: 13,
@@ -103,7 +102,7 @@ export function ProfileHeader({ user }: ProfileHeaderProps) {
                 fontWeight: '500',
                 marginTop: 2,
               }} numberOfLines={1}>
-                {user?.email || 'estudiante@unsaac.edu.pe'}
+                {user?.email || t('common.notSpecified')}
               </Text>
               <Text style={{
                 fontSize: 11,
@@ -121,7 +120,7 @@ export function ProfileHeader({ user }: ProfileHeaderProps) {
               fontWeight: '500',
               marginTop: 2,
             }} numberOfLines={1}>
-              {user?.email || 'tutor@unsaac.edu.pe'}
+              {user?.email || t('common.notSpecified')}
             </Text>
           )}
         </View>
@@ -142,4 +141,3 @@ export function ProfileHeader({ user }: ProfileHeaderProps) {
     </View>
   );
 }
-
