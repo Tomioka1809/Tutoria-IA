@@ -4,10 +4,13 @@ import { useRouter, Link } from 'expo-router';
 import client from '../../src/api/client';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '@/src/theme/ThemeContext';
+import { TutorIAAvatar } from '@/src/components/tutoria/TutorIAAvatar';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function RegisterScreen() {
   const { t } = useTranslation();
   const { colors } = useTheme();
+  const insets = useSafeAreaInsets();
 
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
@@ -92,9 +95,18 @@ export default function RegisterScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={{ flex: 1, backgroundColor: colors.background }}
     >
-      <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }} className="px-6 py-12">
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
+          justifyContent: 'center',
+          paddingBottom: Math.max(insets.bottom + 24, 48),
+        }}
+        className="px-6 pt-12"
+      >
         <View className="items-center mb-6">
-          <Text className="text-4xl mb-1">🦖</Text>
+          <View style={{ marginBottom: 12 }}>
+            <TutorIAAvatar size={64} />
+          </View>
           <Text style={{ color: colors.text, fontSize: 24, fontWeight: 'bold' }}>
             {t('auth.register.title') || 'Crear Cuenta'}
           </Text>
