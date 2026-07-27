@@ -4,6 +4,7 @@ import { useRouter, useLocalSearchParams } from 'expo-router';
 import client from '../../src/api/client';
 import { useTheme } from '@/src/theme/ThemeContext';
 import { Feather } from '@expo/vector-icons';
+import { TutorIAAvatar } from '@/src/components/tutoria/TutorIAAvatar';
 
 export default function ResetPasswordScreen() {
   const { colors } = useTheme();
@@ -87,7 +88,9 @@ export default function ResetPasswordScreen() {
         </Pressable>
 
         <View className="items-center mb-8">
-          <Text className="text-5xl mb-2">🦖</Text>
+          <View style={{ marginBottom: 12 }}>
+            <TutorIAAvatar size={72} />
+          </View>
           <Text style={{ color: colors.text, fontSize: 30, fontWeight: 'bold' }}>TutorIA</Text>
           <Text style={{ color: colors.primary, fontSize: 14, textAlign: 'center', marginTop: 4 }}>
             Restablecer Contraseña
