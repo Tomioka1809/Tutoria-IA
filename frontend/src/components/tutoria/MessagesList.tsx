@@ -4,6 +4,7 @@ import { ScrollView, View, Text, ActivityIndicator } from 'react-native';
 import { Conversation } from '@/src/types';
 import { useTheme } from '@/src/theme/ThemeContext';
 import { useTranslation } from 'react-i18next';
+import { TutorIAAvatar } from '@/src/components/tutoria/TutorIAAvatar';
 
 // Helper function to parse and render bold text marked with ** and line breaks
 const renderFormattedText = (text: string, isUser: boolean, colors: any, isDark: boolean) => {
@@ -69,7 +70,7 @@ export function MessagesList({
             >
               {!isUser ? (
                 <View style={{ backgroundColor: colors.surface }} className="w-8 h-8 rounded-full  items-center justify-center border border-primary/20 mr-2 self-end shadow-sm">
-                  <Text className="text-base">🦖</Text>
+                  <TutorIAAvatar size={28} />
                 </View>
               ) : null}
 
@@ -106,10 +107,10 @@ export function MessagesList({
       {isSending ? (
         <View className="flex-row mb-4 justify-start items-center">
           <View style={{ backgroundColor: colors.surface }} className="w-8 h-8 rounded-full  items-center justify-center border border-primary/20 mr-2 shadow-sm">
-            <Text className="text-base">🦖</Text>
+            <TutorIAAvatar size={28} />
           </View>
           <View style={{ backgroundColor: colors.surface }} className=" border border-primary/10 rounded-2xl rounded-tl-none px-4 py-3 shadow-sm">
-            <Text className="text-xs font-semibold italic" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(17,17,48,0.5)' }}>🦖 {t('tutoring.thinking')}</Text>
+            <Text className="text-xs font-semibold italic" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(17,17,48,0.5)' }}>{t('tutoring.thinking')}</Text>
           </View>
         </View>
       ) : null}
