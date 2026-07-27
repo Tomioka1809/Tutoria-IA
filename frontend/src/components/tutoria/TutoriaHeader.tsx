@@ -9,16 +9,12 @@ interface TutoriaHeaderProps {
   onBackPress?: () => void;
 }
 
-export function TutoriaHeader({ onRefresh, onBackPress }: TutoriaHeaderProps) {
+export function TutoriaHeader({ onRefresh }: TutoriaHeaderProps) {
   const { colors } = useTheme();
   const { t } = useTranslation();
   return (
     <View style={{ backgroundColor: colors.surface }} className=" border-b border-border px-6 pt-16 pb-4 flex-row items-center justify-between">
       <View className="flex-row items-center flex-1">
-        <Pressable onPress={onBackPress} className="mr-3 p-1">
-          <Text className="text-xl" style={{ color: colors.text }}>←</Text>
-        </Pressable>
-
         <View className="w-10 h-10 rounded-full bg-primary/10 items-center justify-center border border-primary/25 mr-3">
           <Text className="text-xl">🦖</Text>
         </View>
