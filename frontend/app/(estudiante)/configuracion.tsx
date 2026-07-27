@@ -117,7 +117,6 @@ export default function ConfiguracionScreen() {
                 {t.config}
               </Text>
             </View>
-            <Feather name="settings" size={24} color="white" />
           </View>
 
           {/* Student Card */}
@@ -172,7 +171,7 @@ export default function ConfiguracionScreen() {
                 fontWeight: '500',
                 marginTop: 4,
               }}>
-                {tr('profile.codeLabel')}: {user?.student_code || tr('common.notSpecified')}
+                {tr('editProfile.code')}: {user?.student_code || tr('common.notSpecified')}
               </Text>
               <Text style={{
                 fontSize: 12,

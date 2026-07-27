@@ -81,7 +81,6 @@ export default function AdminConfiguracionScreen() {
               {tr('admin.adminSettings')}
             </Text>
           </View>
-          <Feather name="settings" size={24} color="white" />
         </View>
 
         {/* Admin Card */}
