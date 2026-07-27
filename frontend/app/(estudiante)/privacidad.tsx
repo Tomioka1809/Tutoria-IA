@@ -275,9 +275,9 @@ export default function PrivacidadScreen() {
       {/* Safety Bottom Card */}
       <View style={{ paddingHorizontal: 24 }}>
         <View style={{
-          backgroundColor: '#FAF5FF',
+          backgroundColor: colors.primaryLight,
           borderWidth: 1,
-          borderColor: '#E9D5FF',
+          borderColor: colors.border,
           borderRadius: 20,
           padding: 16,
           flexDirection: 'row',
@@ -287,7 +287,7 @@ export default function PrivacidadScreen() {
             width: 40,
             height: 40,
             borderRadius: 20,
-            backgroundColor: colors.primary,
+            backgroundColor: colors.success,
             alignItems: 'center',
             justifyContent: 'center',
             marginRight: 16,
