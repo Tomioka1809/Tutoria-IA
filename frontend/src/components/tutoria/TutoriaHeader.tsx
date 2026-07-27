@@ -3,6 +3,7 @@ import React from 'react';
 import { useTheme } from '@/src/theme/ThemeContext';
 import { useTranslation } from 'react-i18next';
 import { View, Text, Pressable } from 'react-native';
+import { TutorIAAvatar } from '@/src/components/tutoria/TutorIAAvatar';
 
 interface TutoriaHeaderProps {
   onRefresh: () => void;
@@ -16,7 +17,7 @@ export function TutoriaHeader({ onRefresh }: TutoriaHeaderProps) {
     <View style={{ backgroundColor: colors.surface }} className=" border-b border-border px-6 pt-16 pb-4 flex-row items-center justify-between">
       <View className="flex-row items-center flex-1">
         <View className="w-10 h-10 rounded-full bg-primary/10 items-center justify-center border border-primary/25 mr-3">
-          <Text className="text-xl">🦖</Text>
+          <TutorIAAvatar size={36} />
         </View>
 
         <View className="flex-1">

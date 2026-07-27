@@ -6,14 +6,18 @@ import { useTheme } from '@/src/theme/ThemeContext';
 interface TutoriaTabBarButtonProps {
   children?: React.ReactNode;
   onPress?: (event: GestureResponderEvent) => void;
+  accessibilityLabel?: string;
 }
 
 export function TutoriaTabBarButton({ onPress, ...props }: TutoriaTabBarButtonProps) {
   const { colors } = useTheme();
   return (
     <Pressable
-      onPress={onPress}
       {...props}
+      onPress={onPress}
+      accessibilityRole="button"
+      accessibilityLabel={props.accessibilityLabel ?? 'TutorIA'}
+      hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
       style={{
         top: -18,
         justifyContent: 'center',
@@ -46,7 +50,7 @@ export function TutoriaTabBarButton({ onPress, ...props }: TutoriaTabBarButtonPr
         }}
       >
         <Image
-          source={require('@/assets/images/icon.png')}
+          source={require('@/assets/images/tutoria-logo.png')}
           style={{
             width: 52,
             height: 52,
