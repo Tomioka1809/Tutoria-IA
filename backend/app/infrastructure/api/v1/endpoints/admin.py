@@ -253,22 +253,27 @@ async def execute_sorteo(period: str = "2026-I", db: AsyncSession = Depends(get_
     if not tutors:
         raise HTTPException(status_code=400, detail="No hay tutores activos para realizar el sorteo.")
         
+    # Carga actual por tutor, leida una sola vez. La sesion usa autoflush=False, por lo que
+    # contar dentro del bucle devolveria siempre el estado previo al sorteo y permitiria
+    # superar max_capacity. El contador se mantiene en memoria y se incrementa por asignacion.
+    loads_res = await db.execute(
+        select(TutorAssignment.tutor_id, func.count(TutorAssignment.id))
+        .where(TutorAssignment.academic_period == period)
+        .group_by(TutorAssignment.tutor_id)
+    )
+    loads = {tutor_id: count for tutor_id, count in loads_res.all()}
+
     assigned_count = 0
     tutor_index = 0
-    
+
     for student in unassigned_students:
         attempts = 0
         assigned = False
         while attempts < len(tutors):
             current_tutor = tutors[tutor_index]
             max_cap = current_tutor.tutor_profile.max_capacity if current_tutor.tutor_profile else 15
-            
-            load_res = await db.execute(
-                select(func.count(TutorAssignment.id))
-                .where(TutorAssignment.tutor_id == current_tutor.id, TutorAssignment.academic_period == period)
-            )
-            load = load_res.scalar() or 0
-            
+            load = loads.get(current_tutor.id, 0)
+
             if load < max_cap:
                 new_assign = TutorAssignment(
                     student_id=student.id,
@@ -277,6 +282,7 @@ async def execute_sorteo(period: str = "2026-I", db: AsyncSession = Depends(get_
                     academic_period=period
                 )
                 db.add(new_assign)
+                loads[current_tutor.id] = load + 1
                 assigned_count += 1
                 assigned = True
                 tutor_index = (tutor_index + 1) % len(tutors)
@@ -284,12 +290,21 @@ async def execute_sorteo(period: str = "2026-I", db: AsyncSession = Depends(get_
             else:
                 tutor_index = (tutor_index + 1) % len(tutors)
                 attempts += 1
-        
+
         if not assigned:
-            break 
+            break
 
     await db.commit()
-    return {"message": f"Sorteo finalizado. {assigned_count} estudiantes asignados."}
+
+    unassigned_count = len(unassigned_students) - assigned_count
+    message = f"Sorteo finalizado. {assigned_count} estudiantes asignados."
+    if unassigned_count > 0:
+        message += f" {unassigned_count} sin asignar por falta de cupo en los tutores activos."
+    return {
+        "message": message,
+        "assigned": assigned_count,
+        "unassigned": unassigned_count,
+    }
 
 @router.get("/corpus", response_model=List[CorpusChunkOut])
 async def get_corpus(db: AsyncSession = Depends(get_db), _: User = Depends(get_current_active_admin)):
