@@ -43,7 +43,8 @@ class ChatRepositoryPort(ABC):
         pass
 
     @abstractmethod
-    async def get_history(self, conversation_id: int) -> List[Any]:
+    async def get_history(self, conversation_id: int, limit: int | None = None) -> List[Any]:
+        """Historial en orden cronologico. Con limit devuelve solo los ultimos N mensajes."""
         pass
 
 from app.application.dtos.rag_dtos import RetrievedChunkDTO

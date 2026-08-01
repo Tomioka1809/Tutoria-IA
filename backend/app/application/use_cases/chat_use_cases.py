@@ -21,6 +21,11 @@ ABSTENTION_MESSAGE = (
     "para responder con certeza."
 )
 
+# Ventana de contexto conversacional. Sin tope, cada turno reenvia la conversacion
+# completa al LLM y el costo por mensaje crece de forma indefinida. El valor cubre con
+# holgura los ultimos 6 mensajes que consultan las heuristicas de malla y seguimiento.
+HISTORY_WINDOW_MESSAGES = 20
+
 
 def _normalize_text_pure(text: str) -> str:
     if not text:
@@ -296,7 +301,9 @@ class ChatUseCase:
         await self.chat_repo.save_message(conversation.id, "user", user_content)
 
         # 2. Get conversation history
-        history_msgs = await self.chat_repo.get_history(conversation.id)
+        history_msgs = await self.chat_repo.get_history(
+            conversation.id, limit=HISTORY_WINDOW_MESSAGES
+        )
 
         # 3. Check ambiguous follow-up for "Y tutoría general?"
         if is_ambiguous_tutoria_general_followup(user_content, history_msgs):

@@ -62,10 +62,21 @@ class ChatRepository(ChatRepositoryPort):
         await self.db.refresh(msg)
         return msg
 
-    async def get_history(self, conversation_id: int) -> List[Message]:
+    async def get_history(self, conversation_id: int, limit: int | None = None) -> List[Message]:
+        if limit is None:
+            result = await self.db.execute(
+                select(Message)
+                .where(Message.conversation_id == conversation_id)
+                .order_by(Message.sent_at.asc())
+            )
+            return list(result.scalars().all())
+
+        # Los ultimos N se obtienen ordenando descendente en la base de datos y revirtiendo
+        # despues, para no traer la conversacion completa solo para descartarla.
         result = await self.db.execute(
             select(Message)
             .where(Message.conversation_id == conversation_id)
-            .order_by(Message.sent_at.asc())
+            .order_by(Message.sent_at.desc(), Message.id.desc())
+            .limit(limit)
         )
-        return list(result.scalars().all())
+        return list(reversed(result.scalars().all()))

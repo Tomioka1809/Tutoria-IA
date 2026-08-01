@@ -51,8 +51,8 @@ class FakeChatRepository(ChatRepositoryPort):
         self.messages.append(msg)
         return msg
 
-    async def get_history(self, conversation_id: int):
-        return self.messages
+    async def get_history(self, conversation_id: int, limit: int | None = None):
+        return self.messages[-limit:] if limit else self.messages
 
 
 class SpyLLM(LLMPort):

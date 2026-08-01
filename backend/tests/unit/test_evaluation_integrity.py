@@ -1352,7 +1352,7 @@ def test_real_isolation_strict_two_repositories_and_fake_use_case():
             def __init__(self, repo_id):
                 self.repo_id = repo_id
 
-            async def get_history(self, uid):
+            async def get_history(self, uid, limit=None):
                 if self.repo_id == 1:
                     repo1_calls.append(uid)
                 else:
