@@ -1705,7 +1705,10 @@ def test_verify_evaluation_integrity_main_function_execution():
 
 
 def test_reporte_final_documentation_integrity_assertions():
-    doc06_path = Path("documentacion/06_reporte_final.md")
+    # Resuelto desde __file__ (misma convencion que verify_evaluation_integrity.py) para que
+    # el test no dependa del directorio de trabajo desde el que se invoque pytest.
+    repo_root = Path(__file__).resolve().parents[3]
+    doc06_path = repo_root / "documentacion" / "06_reporte_final.md"
     assert doc06_path.exists()
     content = doc06_path.read_text(encoding="utf-8")
     content_lower = content.lower()
