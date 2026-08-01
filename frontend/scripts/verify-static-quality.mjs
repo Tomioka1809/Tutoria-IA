@@ -47,7 +47,6 @@ const targetFiles = [
   'app/_layout.tsx',
   'app/auth/forgot-password.tsx',
   'app/auth/login.tsx',
-  'components/hello-wave.tsx',
   'src/components/dashboard/ServicesGrid.tsx',
   'src/components/dashboard/useDashboard.ts',
   'src/components/tutoria/MessageInputBar.tsx',
