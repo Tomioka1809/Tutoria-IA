@@ -45,6 +45,42 @@ def validate_secret_key_for_environment(app_env: str, secret_key: str) -> None:
         raise ValueError("SECRET_KEY debe tener al menos 32 caracteres en producción.")
 
 
+def parse_cors_origins(raw_origins: str | None) -> list[str]:
+    """Convierte 'https://a.pe, https://b.pe/' en ['https://a.pe', 'https://b.pe']."""
+    if raw_origins is None:
+        return []
+    origins = []
+    for candidate in str(raw_origins).split(","):
+        origin = candidate.strip().rstrip("/")
+        if origin and origin not in origins:
+            origins.append(origin)
+    return origins
+
+
+def resolve_cors_origins(app_env: str, raw_origins: str | None) -> list[str]:
+    """Origenes permitidos por entorno.
+
+    En produccion la lista es obligatoria y explicita: el comodin habilita a cualquier
+    sitio a emitir peticiones contra la API. En desarrollo se mantiene abierto porque
+    Expo sirve la app web desde puertos e IP de LAN variables.
+    """
+    env_clean = validate_environment_name(app_env)
+    origins = parse_cors_origins(raw_origins)
+
+    if env_clean == "production":
+        if not origins:
+            raise ValueError(
+                "CORS_ALLOWED_ORIGINS debe declarar al menos un origen en producción."
+            )
+        if "*" in origins:
+            raise ValueError(
+                "CORS_ALLOWED_ORIGINS no puede usar '*' en producción; declare los orígenes explícitamente."
+            )
+        return origins
+
+    return origins or ["*"]
+
+
 
 
 class Settings:
@@ -61,11 +97,25 @@ class Settings:
     # Gemini API Key for Chatbot
     GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
 
+    # Origenes permitidos para CORS, separados por coma. Obligatorio en produccion.
+    CORS_ALLOWED_ORIGINS: str = os.getenv("CORS_ALLOWED_ORIGINS", "")
+
 
 settings = Settings()
+
+
+def get_cors_origins() -> list[str]:
+    return resolve_cors_origins(
+        os.getenv("APP_ENV", settings.APP_ENV),
+        os.getenv("CORS_ALLOWED_ORIGINS", settings.CORS_ALLOWED_ORIGINS),
+    )
 
 
 def validate_runtime_security() -> None:
     current_env = validate_environment_name(os.getenv("APP_ENV", settings.APP_ENV))
     current_key = os.getenv("SECRET_KEY", settings.SECRET_KEY)
     validate_secret_key_for_environment(current_env, current_key)
+    # Falla al arrancar si produccion no declara origenes, en lugar de servir con comodin.
+    resolve_cors_origins(
+        current_env, os.getenv("CORS_ALLOWED_ORIGINS", settings.CORS_ALLOWED_ORIGINS)
+    )
