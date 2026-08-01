@@ -6,8 +6,9 @@ from pydantic import BaseModel
 from typing import List
 import json
 
-from app.infrastructure.api.dependencies import get_db
+from app.infrastructure.api.dependencies import get_db, get_current_user
 from app.infrastructure.database.models.corpus_chunk import CorpusChunk
+from app.infrastructure.database.models.user import User
 from app.infrastructure.config.config import settings
 from app.infrastructure.adapters.quiz_gemini_client import call_gemini_api
 
@@ -25,7 +26,10 @@ class QuizQuestionOut(BaseModel):
 
 
 @router.get("/generate", response_model=List[QuizQuestionOut])
-async def generate_quiz(db: AsyncSession = Depends(get_db)):
+async def generate_quiz(
+    db: AsyncSession = Depends(get_db),
+    _: User = Depends(get_current_user),
+):
     if not settings.GEMINI_API_KEY:
         raise HTTPException(status_code=500, detail="GEMINI_API_KEY no está configurada en el backend.")
 
