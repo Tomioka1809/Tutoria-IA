@@ -1,7 +1,7 @@
 // app/(tutor)/calendar.tsx
 import React, { useState } from 'react';
 import { useTheme } from '@/src/theme/ThemeContext';
-import { View, Text, Modal, Pressable, Platform, ActivityIndicator } from 'react-native';
+import { View, Text, Modal, Pressable, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useCalendar } from '@/src/components/calendar/useCalendar';
 import { CalendarHeader } from '@/src/components/calendar/CalendarHeader';
@@ -9,8 +9,8 @@ import { CalendarMonthView } from '@/src/components/calendar/CalendarMonthView';
 import { CalendarActivitiesList } from '@/src/components/calendar/CalendarActivitiesList';
 import { AddActivityModal } from '@/src/components/calendar/AddActivityModal';
 import { ActivityDetailsModal } from '@/src/components/calendar/ActivityDetailsModal';
+import { CalendarLoadState } from '@/src/components/calendar/CalendarLoadState';
 import { useTranslation } from 'react-i18next';
-import { Feather } from '@expo/vector-icons';
 
 interface UnifiedActivity {
   id: string;
@@ -84,52 +84,32 @@ export default function CalendarScreen() {
       <View style={{ flex: 1, opacity: isAnyModalOpen ? 0.35 : 1 }}>
         <CalendarHeader />
 
-        {isDataLoading ? (
-          <ActivityIndicator color={colors.primary} style={{ marginTop: 40 }} />
-        ) : loadError ? (
-          <View style={{ backgroundColor: colors.surface, marginHorizontal: 24, padding: 24, borderRadius: 16, alignItems: 'center', borderWidth: 1, borderColor: colors.border, marginTop: 20 }}>
-            <Feather name="alert-circle" size={32} color={colors.danger} style={{ marginBottom: 10 }} />
-            <Text style={{ color: colors.text, textAlign: 'center', marginBottom: 16 }}>{loadError}</Text>
-            <Pressable
-              onPress={retryLoad}
-              style={{
-                backgroundColor: colors.primary,
-                paddingHorizontal: 20,
-                paddingVertical: 10,
-                borderRadius: 12,
-              }}
-            >
-              <Text style={{ color: 'white', fontWeight: 'bold' }}>{t('common.retry')}</Text>
-            </Pressable>
-          </View>
-        ) : (
-          <>
-            <CalendarMonthView
-              currentMonth={currentMonth}
-              prevMonth={prevMonth}
-              nextMonth={nextMonth}
-              weekDays={weekDays}
-              days={days}
-              selectedDate={selectedDate}
-              setSelectedDate={setSelectedDate}
-              hasActivities={hasActivities}
-            />
+        <CalendarLoadState isLoading={isDataLoading} error={loadError} onRetry={retryLoad}>
+          <CalendarMonthView
+            currentMonth={currentMonth}
+            prevMonth={prevMonth}
+            nextMonth={nextMonth}
+            weekDays={weekDays}
+            days={days}
+            selectedDate={selectedDate}
+            setSelectedDate={setSelectedDate}
+            hasActivities={hasActivities}
+          />
 
-            <CalendarActivitiesList
-              activities={filteredActivities}
-              userRole={user?.role}
-              bottomPadding={scrollBottomPadding}
-              onAddPress={() => {
-                if (user?.role === 'tutor' || user?.role === 'admin') {
-                  fetchTutorData();
-                }
-                setIsAddModalOpen(true);
-              }}
-              onViewPress={(activity) => setActivityToView(activity)}
-              onDeletePress={(activity) => setActivityToDelete(activity)}
-            />
-          </>
-        )}
+          <CalendarActivitiesList
+            activities={filteredActivities}
+            userRole={user?.role}
+            bottomPadding={scrollBottomPadding}
+            onAddPress={() => {
+              if (user?.role === 'tutor' || user?.role === 'admin') {
+                fetchTutorData();
+              }
+              setIsAddModalOpen(true);
+            }}
+            onViewPress={(activity) => setActivityToView(activity)}
+            onDeletePress={(activity) => setActivityToDelete(activity)}
+          />
+        </CalendarLoadState>
       </View>
 
       {/* Modal para añadir actividad */}

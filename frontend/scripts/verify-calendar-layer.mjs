@@ -135,15 +135,40 @@ if (!useCalendarContent.includes('errors.loadTutorData')) {
   console.error('❌ FAIL: useCalendar.ts no utiliza errors.loadTutorData');
   process.exit(1);
 }
-if (/reportApiError\([^)]*errors\.loadTutorData[^)]*notify:\s*false/i.test(useCalendarContent)) {
-  console.error('❌ FAIL: fetchTutorData utiliza notify:false incorrectamente');
-  process.exit(1);
-}
 if (useCalendarContent.includes('console.error')) {
   console.error('❌ FAIL: useCalendar.ts contiene console.error');
   process.exit(1);
 }
 console.log('✅ PASS: useCalendar.ts verificado sin fechas duras, sin fallback serviceTypeId y con loadTutorData visible');
+
+// 14b. El fallo de carga del calendario debe llegar a la persona usuaria.
+// fetchTutorData y fetchSessions reportan con notify:false a proposito, para no emitir
+// un aviso ademas del bloque de error en pantalla. Esa decision solo es valida mientras
+// el hook exponga el estado y AMBAS pantallas lo rendericen; si una no lo hace, el error
+// queda invisible y el calendario aparece vacio sin explicacion.
+if (!useCalendarContent.includes('loadError') || !useCalendarContent.includes('retryLoad')) {
+  console.error('❌ FAIL 14b: useCalendar.ts no expone loadError y retryLoad');
+  process.exit(1);
+}
+if (!/setLoadError\(/.test(useCalendarContent)) {
+  console.error('❌ FAIL 14b: useCalendar.ts no registra el fallo de carga en loadError');
+  process.exit(1);
+}
+const calendarScreens = [
+  ['app/(estudiante)/calendar.tsx', readFile('app/(estudiante)/calendar.tsx')],
+  ['app/(tutor)/calendar.tsx', readFile('app/(tutor)/calendar.tsx')],
+];
+for (const [relPath, content] of calendarScreens) {
+  if (!content.includes('loadError')) {
+    console.error(`❌ FAIL 14b: ${relPath} no muestra loadError; el fallo de carga queda silencioso`);
+    process.exit(1);
+  }
+  if (!content.includes('retryLoad')) {
+    console.error(`❌ FAIL 14b: ${relPath} no ofrece reintentar la carga`);
+    process.exit(1);
+  }
+}
+console.log('✅ PASS 14b: El fallo de carga del calendario es visible y reintentable en ambas pantallas');
 
 // Check AddActivityModal: no selectedDate.setHours
 if (addActivityModalContent.includes('selectedDate.setHours')) {
