@@ -16,6 +16,11 @@ from app.application.dtos.rag_dtos import RAGRetrievalPolicy, RetrievedChunkDTO
 
 logger = logging.getLogger(__name__)
 
+ABSTENTION_MESSAGE = (
+    "No cuento con información suficiente en la base oficial de la UNSAAC "
+    "para responder con certeza."
+)
+
 
 def _normalize_text_pure(text: str) -> str:
     if not text:
@@ -36,8 +41,11 @@ def classify_intent(user_content: str, user_role: str = "estudiante") -> str:
         "gracias", "muchas gracias", "cuentame algo", "necesito ayuda",
         "ayuda", "ok", "vale", "esta bien"
     ]
+    # SOCIAL se separa de UNKNOWN: un saludo debe recibir respuesta conversacional,
+    # mientras que una consulta sustantiva sin clasificar debe intentar recuperacion
+    # y abstenerse si el corpus no la respalda.
     if norm in greetings_thanks:
-        return "UNKNOWN"
+        return "SOCIAL"
 
     calendar_keywords = [
         "proxima tutoria", "siguiente tutoria", "tutoria programada", "tutorias programadas",
@@ -375,11 +383,14 @@ class ChatUseCase:
             assistant_msg = await self.chat_repo.save_message(conversation.id, "assistant", content)
             return assistant_msg
 
-        # 7. DOCUMENTAL_UNSAAC, MIXED, or UNKNOWN: Call LLM generate_response
+        # 7. DOCUMENTAL_UNSAAC, MIXED, UNKNOWN o SOCIAL: respuesta generada por el LLM.
+        # SOCIAL (saludos, agradecimientos) no consulta el corpus. El resto si lo hace:
+        # una consulta sustantiva sin evidencia documental se abstiene aqui, en codigo,
+        # en lugar de delegar la abstencion a una instruccion del prompt.
         retrieved_chunks: list[RetrievedChunkDTO] = []
         seen_texts: set[str] = set()
 
-        if intent != "UNKNOWN":
+        if intent != "SOCIAL":
             subtopics = decompose_multi_topic_query(rag_query)
             if len(subtopics) > 1:
                 for st in subtopics:
@@ -419,6 +430,17 @@ class ChatUseCase:
             )
             if malla_clarification:
                 assistant_msg = await self.chat_repo.save_message(conversation.id, "assistant", malla_clarification)
+                return assistant_msg
+
+            # Corte de abstencion: sin fragmentos del corpus no se invoca al LLM, de modo que
+            # no pueda responder una consulta institucional desde su conocimiento propio.
+            if not retrieved_chunks:
+                logger.info(
+                    "Abstencion por falta de evidencia documental (intent=%s)", intent
+                )
+                assistant_msg = await self.chat_repo.save_message(
+                    conversation.id, "assistant", ABSTENTION_MESSAGE
+                )
                 return assistant_msg
 
         if retrieved_chunks:
