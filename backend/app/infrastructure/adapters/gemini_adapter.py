@@ -167,7 +167,11 @@ class GeminiAdapter(LLMPort):
                 logger.error("Gemini API Error (generate_response): category=%s, exception_type=%s", err_type, type(e).__name__)
                 return "El servicio de TutorIA no está disponible temporalmente. Inténtalo nuevamente en unos minutos."
 
-    async def compute_embedding(self, text: str) -> List[float]:
+    async def compute_embedding(
+        self,
+        text: str,
+        task_type: str = "RETRIEVAL_QUERY",
+    ) -> List[float]:
         if not self.api_key or not self.client:
             if not self.allow_embedding_fallback:
                 raise LLMAuthenticationError("GEMINI_API_KEY is missing in strict embedding mode.")
@@ -180,7 +184,10 @@ class GeminiAdapter(LLMPort):
                     model='gemini-embedding-2',
                     contents=text,
                     config=types.EmbedContentConfig(
-                        output_dimensionality=768
+                        output_dimensionality=768,
+                        # La busqueda es asimetrica: el corpus se indexa como
+                        # documento y la consulta se embebe como consulta.
+                        task_type=task_type,
                     )
                 )
                 if response and hasattr(response, "embeddings") and response.embeddings:

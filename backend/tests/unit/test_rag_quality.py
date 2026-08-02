@@ -289,7 +289,9 @@ class TestRAGQuality(unittest.IsolatedAsyncioTestCase):
         )
         heads = res.stdout.strip().splitlines()
         self.assertEqual(len(heads), 1, f"Expected 1 alembic head, got: {heads}")
-        self.assertIn("6f892a019e42", heads[0])
+        # Actualizar al agregar una migracion: la garantia que importa es que la
+        # cadena siga siendo lineal y con una sola cabeza.
+        self.assertIn("a1c4e7b90d21", heads[0])
 
     # Verification of no tracked API keys with pattern AIza
     @unittest.skipUnless(shutil.which("git"), "git executable not found in environment")

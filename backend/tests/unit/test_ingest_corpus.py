@@ -1,0 +1,117 @@
+"""Ingesta incremental del corpus a pgvector (Fase 3)."""
+import unittest
+from unittest.mock import AsyncMock
+
+from app.infrastructure.adapters.gemini_adapter import GeminiAdapter
+from app.domain.exceptions import LLMAuthenticationError
+from scripts.ingest_corpus import (
+    TASK_TYPE_INDEXACION,
+    clasificar,
+    hash_contenido,
+)
+
+
+def _frag(fid: str, texto: str) -> dict:
+    return {
+        "fragment_id": fid,
+        "texto": texto,
+        "hash": hash_contenido(texto),
+        "documento": "Doc",
+        "articulo": None,
+        "source": "doc",
+    }
+
+
+class TestHash(unittest.TestCase):
+    def test_es_estable_para_el_mismo_texto(self):
+        self.assertEqual(hash_contenido("texto normativo"), hash_contenido("texto normativo"))
+
+    def test_cambia_ante_cualquier_edicion(self):
+        self.assertNotEqual(hash_contenido("veinticinco (25)"), hash_contenido("veintiseis (26)"))
+
+
+class TestClasificacion(unittest.TestCase):
+    def setUp(self):
+        self.fragmentos = [_frag("a#1", "uno"), _frag("a#2", "dos"), _frag("b#1", "tres")]
+
+    def test_todo_es_nuevo_contra_un_indice_vacio(self):
+        nuevos, modificados, obsoletos = clasificar(self.fragmentos, {})
+        self.assertEqual(len(nuevos), 3)
+        self.assertEqual(modificados, [])
+        self.assertEqual(obsoletos, [])
+
+    def test_no_reembebe_lo_que_no_cambio(self):
+        """El ahorro central: agregar un documento no debe recostar el corpus entero."""
+        existentes = {f["fragment_id"]: f["hash"] for f in self.fragmentos[:2]}
+        nuevos, modificados, _ = clasificar(self.fragmentos, existentes)
+
+        self.assertEqual([f["fragment_id"] for f in nuevos], ["b#1"])
+        self.assertEqual(modificados, [])
+
+    def test_detecta_un_fragmento_editado_por_su_hash(self):
+        existentes = {f["fragment_id"]: f["hash"] for f in self.fragmentos}
+        existentes["a#2"] = "hash-viejo"
+
+        nuevos, modificados, _ = clasificar(self.fragmentos, existentes)
+        self.assertEqual(nuevos, [])
+        self.assertEqual([f["fragment_id"] for f in modificados], ["a#2"])
+
+    def test_marca_como_obsoleto_lo_que_ya_no_esta_en_el_corpus(self):
+        """Al reemplazar malla_curricular_2017 por malla_2017 hay que borrar los viejos."""
+        existentes = {"a#1": self.fragmentos[0]["hash"], "viejo#9": "h"}
+        _, _, obsoletos = clasificar(self.fragmentos, existentes)
+        self.assertEqual(obsoletos, ["viejo#9"])
+
+    def test_forzar_reembebe_todo(self):
+        existentes = {f["fragment_id"]: f["hash"] for f in self.fragmentos}
+        nuevos, modificados, _ = clasificar(self.fragmentos, existentes, forzar=True)
+        self.assertEqual(len(nuevos), 3)
+        self.assertEqual(modificados, [])
+
+
+class TestEmbeddingAsimetrico(unittest.IsolatedAsyncioTestCase):
+    async def test_la_indexacion_usa_retrieval_document(self):
+        """La busqueda es asimetrica: documento y consulta no se embeben igual."""
+        adapter = GeminiAdapter(api_key="clave")
+        adapter.client = AsyncMock()
+        adapter.client.aio.models.embed_content.return_value = type(
+            "R", (), {"embeddings": [type("E", (), {"values": [0.1] * 768})()]}
+        )()
+
+        await adapter.compute_embedding("texto", task_type=TASK_TYPE_INDEXACION)
+
+        config = adapter.client.aio.models.embed_content.call_args.kwargs["config"]
+        self.assertEqual(config.task_type, "RETRIEVAL_DOCUMENT")
+        self.assertEqual(config.output_dimensionality, 768)
+
+    async def test_la_consulta_usa_retrieval_query_por_defecto(self):
+        adapter = GeminiAdapter(api_key="clave")
+        adapter.client = AsyncMock()
+        adapter.client.aio.models.embed_content.return_value = type(
+            "R", (), {"embeddings": [type("E", (), {"values": [0.1] * 768})()]}
+        )()
+
+        await adapter.compute_embedding("cuando me matriculo")
+
+        config = adapter.client.aio.models.embed_content.call_args.kwargs["config"]
+        self.assertEqual(config.task_type, "RETRIEVAL_QUERY")
+
+
+class TestModoEstricto(unittest.IsolatedAsyncioTestCase):
+    async def test_sin_clave_falla_en_vez_de_devolver_el_pseudo_embedding(self):
+        """Un vector basura almacenado degrada la busqueda sin dejar rastro.
+
+        Es preferible una siembra incompleta y visible a un corpus envenenado.
+        """
+        adapter = GeminiAdapter(api_key="", allow_embedding_fallback=False)
+        with self.assertRaises(LLMAuthenticationError):
+            await adapter.compute_embedding("texto", task_type=TASK_TYPE_INDEXACION)
+
+    async def test_el_fallback_sigue_disponible_cuando_se_permite(self):
+        adapter = GeminiAdapter(api_key="", allow_embedding_fallback=True)
+        vector = await adapter.compute_embedding("texto")
+        self.assertEqual(len(vector), 768)
+
+
+if __name__ == "__main__":
+    unittest.main()
