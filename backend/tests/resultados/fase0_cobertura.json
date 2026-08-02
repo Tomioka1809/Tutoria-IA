@@ -1,0 +1,329 @@
+{
+  "casos_en_alcance": 12,
+  "cubierto": 1,
+  "parcial": 9,
+  "ausente": 2,
+  "techo_alcanzable": 0.0833,
+  "casos_que_citan_articulado": 7,
+  "documentos_citados_ausentes": {},
+  "detalle": [
+    {
+      "id": 1,
+      "categoria": "facil",
+      "pregunta": "¿Cuál es el objetivo principal del Reglamento de Tutoría Académica de la UNSAAC?",
+      "veredicto": "PARCIAL",
+      "ratio": 0.6,
+      "ratio_corpus": 0.8,
+      "mejor_unidad": "glosario.json#glosario_universitario",
+      "palabras_halladas": [
+        "tutoría",
+        "estudiantes",
+        "evaluación"
+      ],
+      "palabras_faltantes": [
+        "normas",
+        "planificación"
+      ],
+      "documentos_citados": [
+        "Art. 1 - Reglamento de Tutoría de Estudiantes UNSAAC"
+      ],
+      "documentos_ausentes": [],
+      "articulos_citados": [
+        "Art. 1 - Reglamento de Tutoría de Estudiantes UNSAAC"
+      ]
+    },
+    {
+      "id": 3,
+      "categoria": "facil",
+      "pregunta": "¿Qué es una tutoría individual?",
+      "veredicto": "PARCIAL",
+      "ratio": 0.6667,
+      "ratio_corpus": 1.0,
+      "mejor_unidad": "preguntas_frecuentes.json[28]",
+      "palabras_halladas": [
+        "docente tutor",
+        "estudiante"
+      ],
+      "palabras_faltantes": [
+        "personalizada"
+      ],
+      "documentos_citados": [
+        "Art. 6 - Reglamento de Tutoría de Estudiantes UNSAAC"
+      ],
+      "documentos_ausentes": [],
+      "articulos_citados": [
+        "Art. 6 - Reglamento de Tutoría de Estudiantes UNSAAC"
+      ]
+    },
+    {
+      "id": 6,
+      "categoria": "facil",
+      "pregunta": "¿Cuáles son las obligaciones del estudiante tutorado?",
+      "veredicto": "AUSENTE",
+      "ratio": 0.25,
+      "ratio_corpus": 0.25,
+      "mejor_unidad": "preguntas_frecuentes.json[27]",
+      "palabras_halladas": [
+        "sesiones"
+      ],
+      "palabras_faltantes": [
+        "asistir",
+        "plan de trabajo",
+        "cumplir"
+      ],
+      "documentos_citados": [
+        "Art. 15 - Reglamento de Tutoría de Estudiantes UNSAAC"
+      ],
+      "documentos_ausentes": [],
+      "articulos_citados": [
+        "Art. 15 - Reglamento de Tutoría de Estudiantes UNSAAC"
+      ]
+    },
+    {
+      "id": 8,
+      "categoria": "facil",
+      "pregunta": "¿Qué servicios ofrece el Comedor Universitario de la UNSAAC?",
+      "veredicto": "CUBIERTO",
+      "ratio": 1.0,
+      "ratio_corpus": 1.0,
+      "mejor_unidad": "servicios_bienestar.json#estructura_de_servicios",
+      "palabras_halladas": [
+        "raciones",
+        "desayuno",
+        "almuerzo",
+        "cena",
+        "Bienestar"
+      ],
+      "palabras_faltantes": [],
+      "documentos_citados": [
+        "Servicios de Bienestar Universitario y Comedor UNSAAC"
+      ],
+      "documentos_ausentes": [],
+      "articulos_citados": []
+    },
+    {
+      "id": 10,
+      "categoria": "facil",
+      "pregunta": "¿Cuántos créditos como máximo se pueden matricular por semestre ordinario?",
+      "veredicto": "PARCIAL",
+      "ratio": 0.6667,
+      "ratio_corpus": 1.0,
+      "mejor_unidad": "glosario.json#glosario_universitario",
+      "palabras_halladas": [
+        "máximo",
+        "semestre"
+      ],
+      "palabras_faltantes": [
+        "22 créditos"
+      ],
+      "documentos_citados": [
+        "Reglamento Académico / Malla Curricular UNSAAC"
+      ],
+      "documentos_ausentes": [],
+      "articulos_citados": []
+    },
+    {
+      "id": 13,
+      "categoria": "facil",
+      "pregunta": "¿Cuál es la duración del semestre académico 2026-I según el cronograma?",
+      "veredicto": "PARCIAL",
+      "ratio": 0.6667,
+      "ratio_corpus": 0.6667,
+      "mejor_unidad": "cronograma_academico.json#semestre_2026_I",
+      "palabras_halladas": [
+        "30 de marzo",
+        "20 de agosto"
+      ],
+      "palabras_faltantes": [
+        "16 semanas"
+      ],
+      "documentos_citados": [
+        "Cronograma y Calendario Académico Semestre UNSAAC"
+      ],
+      "documentos_ausentes": [],
+      "articulos_citados": []
+    },
+    {
+      "id": 15,
+      "categoria": "facil",
+      "pregunta": "¿Qué trámite se debe seguir para justificar faltas a las sesiones de tutoría?",
+      "veredicto": "PARCIAL",
+      "ratio": 0.75,
+      "ratio_corpus": 0.75,
+      "mejor_unidad": "preguntas_frecuentes.json[39]",
+      "palabras_halladas": [
+        "solicitud",
+        "inasistencia",
+        "justificar"
+      ],
+      "palabras_faltantes": [
+        "tres días"
+      ],
+      "documentos_citados": [
+        "Art. 22 - Reglamento de Tutoría de Estudiantes UNSAAC"
+      ],
+      "documentos_ausentes": [],
+      "articulos_citados": [
+        "Art. 22 - Reglamento de Tutoría de Estudiantes UNSAAC"
+      ]
+    },
+    {
+      "id": 16,
+      "categoria": "ambiguo",
+      "pregunta": "Si estoy en riesgo académico por jalar cursos varias veces, ¿mi tutor me puede ayudar a evitar la sanción?",
+      "veredicto": "PARCIAL",
+      "ratio": 0.5,
+      "ratio_corpus": 0.75,
+      "mejor_unidad": "glosario.json#glosario_universitario",
+      "palabras_halladas": [
+        "acompañamiento",
+        "Estatuto"
+      ],
+      "palabras_faltantes": [
+        "riesgo académico",
+        "orientación"
+      ],
+      "documentos_citados": [
+        "Art. 25 - Reglamento de Tutoría de Estudiantes UNSAAC"
+      ],
+      "documentos_ausentes": [],
+      "articulos_citados": [
+        "Art. 25 - Reglamento de Tutoría de Estudiantes UNSAAC"
+      ]
+    },
+    {
+      "id": 18,
+      "categoria": "ambiguo",
+      "pregunta": "Tengo cursos del Plan 2017 y me quiero pasar al Plan 2025 de Ingeniería de Sistemas, ¿qué hago?",
+      "veredicto": "AUSENTE",
+      "ratio": 0.0,
+      "ratio_corpus": 0.0,
+      "mejor_unidad": "",
+      "palabras_halladas": [],
+      "palabras_faltantes": [
+        "convalidación",
+        "adecuación",
+        "Plan 2017",
+        "Plan 2025"
+      ],
+      "documentos_citados": [
+        "Malla Curricular Plan de Estudios 2017/2025 Ingeniería de Sistemas UNSAAC"
+      ],
+      "documentos_ausentes": [],
+      "articulos_citados": []
+    },
+    {
+      "id": 20,
+      "categoria": "ambiguo",
+      "pregunta": "¿Cuáles son los requisitos mínimos para postular a una beca de comedor universitario?",
+      "veredicto": "PARCIAL",
+      "ratio": 0.5,
+      "ratio_corpus": 1.0,
+      "mejor_unidad": "glosario.json#glosario_universitario",
+      "palabras_halladas": [
+        "socioeconómica",
+        "vulnerabilidad"
+      ],
+      "palabras_faltantes": [
+        "asistenta social",
+        "matriculado"
+      ],
+      "documentos_citados": [
+        "Servicios de Bienestar Universitario y Comedor UNSAAC"
+      ],
+      "documentos_ausentes": [],
+      "articulos_citados": []
+    },
+    {
+      "id": 23,
+      "categoria": "ambiguo",
+      "pregunta": "¿Cuántos estudiantes como máximo se le pueden asignar a un solo tutor docente?",
+      "veredicto": "PARCIAL",
+      "ratio": 0.75,
+      "ratio_corpus": 1.0,
+      "mejor_unidad": "glosario.json#glosario_universitario",
+      "palabras_halladas": [
+        "20",
+        "estudiantes",
+        "máximo"
+      ],
+      "palabras_faltantes": [
+        "15"
+      ],
+      "documentos_citados": [
+        "Art. 13 - Reglamento de Tutoría de Estudiantes UNSAAC"
+      ],
+      "documentos_ausentes": [],
+      "articulos_citados": [
+        "Art. 13 - Reglamento de Tutoría de Estudiantes UNSAAC"
+      ]
+    },
+    {
+      "id": 25,
+      "categoria": "ambiguo",
+      "pregunta": "¿Qué ocurre si el tutor no presenta sus informes trimestrales de tutoría?",
+      "veredicto": "PARCIAL",
+      "ratio": 0.5,
+      "ratio_corpus": 0.5,
+      "mejor_unidad": "reglamento_tutoria.json#estructura_tutorial",
+      "palabras_halladas": [
+        "informes",
+        "Decanato"
+      ],
+      "palabras_faltantes": [
+        "incumplimiento",
+        "acciones"
+      ],
+      "documentos_citados": [
+        "Art. 30 - Reglamento de Tutoría de Estudiantes UNSAAC"
+      ],
+      "documentos_ausentes": [],
+      "articulos_citados": [
+        "Art. 30 - Reglamento de Tutoría de Estudiantes UNSAAC"
+      ]
+    },
+    {
+      "id": 26,
+      "categoria": "fuera_de_alcance",
+      "pregunta": "¿Cuál es la receta tradicional para preparar el cuy chactado cusqueño?",
+      "veredicto": "FUERA_DE_ALCANCE",
+      "ratio": 0.0,
+      "ratio_corpus": 0.0,
+      "mejor_unidad": "",
+      "palabras_halladas": [],
+      "palabras_faltantes": [],
+      "documentos_citados": [],
+      "documentos_ausentes": [],
+      "articulos_citados": []
+    },
+    {
+      "id": 29,
+      "categoria": "fuera_de_alcance",
+      "pregunta": "¿Cómo tramito mi pasaporte en la oficina de Migraciones del Perú?",
+      "veredicto": "FUERA_DE_ALCANCE",
+      "ratio": 0.0,
+      "ratio_corpus": 0.0,
+      "mejor_unidad": "",
+      "palabras_halladas": [],
+      "palabras_faltantes": [],
+      "documentos_citados": [],
+      "documentos_ausentes": [],
+      "articulos_citados": []
+    },
+    {
+      "id": 32,
+      "categoria": "fuera_de_alcance",
+      "pregunta": "¿Cómo se calcula la derivada de una función vectorial trigonométrica en R3?",
+      "veredicto": "FUERA_DE_ALCANCE",
+      "ratio": 0.0,
+      "ratio_corpus": 0.0,
+      "mejor_unidad": "",
+      "palabras_halladas": [],
+      "palabras_faltantes": [],
+      "documentos_citados": [],
+      "documentos_ausentes": [],
+      "articulos_citados": []
+    }
+  ],
+  "golden_set": "oficial"
+}
