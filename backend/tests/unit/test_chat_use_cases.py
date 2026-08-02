@@ -62,6 +62,7 @@ class FakeCorpusRepository(CorpusRepositoryPort):
         query_text: str | None,
         max_cosine_distance: float,
         keyword_fallback_limit: int,
+        **_politica_hibrida,
     ):
         return [
             RetrievedChunkDTO(

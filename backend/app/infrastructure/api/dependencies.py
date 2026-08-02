@@ -148,7 +148,7 @@ def get_chat_use_case(db: AsyncSession = Depends(get_db)) -> ChatUseCase:
     tutor_assignment_repo = TutorAssignmentRepository(db)
     calendar_repo = CalendarRepository(db)
     llm = GeminiAdapter(api_key=settings.GEMINI_API_KEY)
-    rag_policy = RAGRetrievalPolicy(limit=6, max_cosine_distance=0.45, keyword_fallback_limit=2)
+    rag_policy = RAGRetrievalPolicy(limit=6, max_cosine_distance=0.34, keyword_fallback_limit=2)
     return ChatUseCase(
         chat_repo=chat_repo,
         corpus_repo=corpus_repo,

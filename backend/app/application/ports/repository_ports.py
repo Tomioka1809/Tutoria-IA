@@ -59,7 +59,15 @@ class CorpusRepositoryPort(ABC):
         query_text: str | None,
         max_cosine_distance: float,
         keyword_fallback_limit: int,
+        candidatos_por_rama: int = 20,
+        rrf_k: int = 60,
+        min_ts_rank: float = 0.05,
     ) -> List[RetrievedChunkDTO]:
+        """Recupera fragmentos combinando busqueda vectorial y de texto completo.
+
+        Los tres ultimos parametros tienen valor por defecto para no romper a los
+        dobles de prueba que ya implementan este puerto.
+        """
         pass
 
     @abstractmethod

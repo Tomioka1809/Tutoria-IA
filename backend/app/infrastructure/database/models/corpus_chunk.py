@@ -1,7 +1,17 @@
-from sqlalchemy import Integer, String, Text
+from sqlalchemy import Computed, Integer, String, Text
+from sqlalchemy.dialects.postgresql import TSVECTOR
 from sqlalchemy.orm import Mapped, mapped_column
 from pgvector.sqlalchemy import Vector
 from app.infrastructure.database.base_class import Base
+
+# Expresion de la columna generada. Debe coincidir con la migracion
+# b2f8d3c15e47; se declara aqui para que SQLAlchemy sepa que la calcula el motor
+# y la excluya de los INSERT y UPDATE.
+_EXPRESION_BUSQUEDA = (
+    "setweight(to_tsvector('spanish', coalesce(documento, '')), 'A') || "
+    "setweight(to_tsvector('spanish', coalesce(articulo, '')), 'A') || "
+    "setweight(to_tsvector('spanish', coalesce(text_content, '')), 'B')"
+)
 
 class CorpusChunk(Base):
     __tablename__ = "corpus_chunks"
@@ -22,3 +32,12 @@ class CorpusChunk(Base):
     # Procedencia citable, para que la respuesta pueda referenciar la norma.
     documento: Mapped[str] = mapped_column(String(255), nullable=True)
     articulo: Mapped[str] = mapped_column(String(32), nullable=True)
+
+    # Indice de texto completo en espanol, con el titulo del fragmento pesado por
+    # encima del cuerpo. La calcula Postgres, de modo que no puede quedar
+    # desincronizada del texto.
+    busqueda_ts: Mapped[str] = mapped_column(
+        TSVECTOR,
+        Computed(_EXPRESION_BUSQUEDA, persisted=True),
+        nullable=True,
+    )

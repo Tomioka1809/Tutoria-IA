@@ -14,7 +14,7 @@ from app.application.dtos.rag_dtos import RetrievedChunkDTO, RAGRetrievalPolicy
 from app.application.use_cases.chat_use_cases import ChatUseCase
 from app.infrastructure.database.repositories.corpus_repository import (
     CorpusRepository,
-    _normalized_stopword_key,
+    fusionar_rrf,
 )
 from scripts.rebuild_corpus_embeddings import rebuild_corpus_embeddings
 
@@ -46,82 +46,129 @@ class TestRAGQuality(unittest.IsolatedAsyncioTestCase):
         repo_sig = inspect.signature(CorpusRepository.search_similar)
         self.assertEqual(list(port_sig.parameters.keys()), list(repo_sig.parameters.keys()))
 
-    # 4. Normalized stop words key ("cómo" -> "como", "qué" -> "que")
-    def test_04_normalized_stopword_key(self):
-        self.assertEqual(_normalized_stopword_key("cómo"), "como")
-        self.assertEqual(_normalized_stopword_key("qué"), "que")
-        self.assertEqual(_normalized_stopword_key("dónde"), "donde")
-        self.assertEqual(_normalized_stopword_key("cuál"), "cual")
-        self.assertEqual(_normalized_stopword_key("matrícula"), "matricula")
+    # 4. Reciprocal Rank Fusion entre la rama vectorial y la lexica.
+    # Reemplaza a la prueba de normalizacion de tildes: esa responsabilidad pasa a
+    # la configuracion 'spanish' de Postgres, que ademas lematiza (con ella
+    # "matricularse" encuentra "Matricula", cosa que el normalizador no hacia).
+    def test_04_reciprocal_rank_fusion(self):
+        vectorial = [10, 20, 30]
+        lexica = [30, 40]
 
-    # 5. Lexical fallback OR matching & preservation of accented terms
-    async def test_05_lexical_fallback_accent_and_matching(self):
+        puntajes = fusionar_rrf([vectorial, lexica], k=60)
 
+        # 30 aparece en ambas ramas, asi que acumula y debe encabezar la fusion
+        # pese a ir tercero en la vectorial y primero en la lexica.
+        self.assertEqual(max(puntajes, key=puntajes.get), 30)
+        self.assertAlmostEqual(puntajes[10], 1 / 61)
+        self.assertAlmostEqual(puntajes[30], 1 / 63 + 1 / 61)
+        # Un id presente en una sola rama conserva su aporte.
+        self.assertAlmostEqual(puntajes[40], 1 / 62)
+
+    def test_04b_rrf_sin_resultados(self):
+        self.assertEqual(fusionar_rrf([[], []]), {})
+
+    # 5. La rama lexica usa el indice de texto completo, no LIKE sobre la tabla.
+    async def test_05_lexical_branch_uses_fulltext_index(self):
         mock_db = AsyncMock()
         repo = CorpusRepository(db=mock_db)
 
         vector_res = MagicMock()
         vector_res.all.return_value = []
 
-        kw_c1 = MagicMock(text_content="Requisitos para matrícula extemporánea UNSAAC", source="reglamento.json")
-        kw_res = MagicMock()
-        kw_res.scalars().all.return_value = [kw_c1]
+        chunk = MagicMock(
+            id=7,
+            text_content="Requisitos para matrícula extemporánea UNSAAC",
+            source="reglamento",
+            documento="Reglamento Académico UNSAAC",
+            articulo="Art. 9",
+        )
+        lex_res = MagicMock()
+        lex_res.all.return_value = [(chunk, 0.9)]
 
-        mock_db.execute.side_effect = [vector_res, kw_res]
+        mock_db.execute.side_effect = [vector_res, lex_res]
 
-        query = "¿Cómo puedo realizar la matrícula extemporánea?"
         results = await repo.search_similar(
-            query_embedding=[0.1]*768,
+            query_embedding=[0.1] * 768,
             limit=5,
-            query_text=query,
+            query_text="¿Cómo puedo realizar la matrícula extemporánea?",
             max_cosine_distance=0.45,
-            keyword_fallback_limit=2
+            keyword_fallback_limit=2,
         )
 
         self.assertEqual(len(results), 1)
-        self.assertEqual(results[0].text, "Requisitos para matrícula extemporánea UNSAAC")
-        self.assertEqual(results[0].retrieval_method, "keyword")
+        self.assertEqual(results[0].retrieval_method, "texto")
+        # La procedencia viaja con el fragmento para que la respuesta pueda citarla.
+        self.assertEqual(results[0].articulo, "Art. 9")
+        self.assertEqual(results[0].documento, "Reglamento Académico UNSAAC")
 
-        self.assertEqual(mock_db.execute.call_count, 2)
-        kw_call_stmt = mock_db.execute.call_args_list[1][0][0]
-        compiled_sql = str(kw_call_stmt.compile(compile_kwargs={"literal_binds": True}))
+        # Se compila con parametros ligados: el tipo regconfig del primer
+        # argumento de plainto_tsquery no tiene renderizador literal.
+        sql = str(mock_db.execute.call_args_list[1][0][0].compile())
+        # El operador @@ contra plainto_tsquery aprovecha el indice GIN; el LIKE
+        # anterior obligaba a recorrer la tabla entera en cada consulta.
+        self.assertIn("@@", sql)
+        self.assertIn("plainto_tsquery", sql)
+        self.assertIn("ts_rank_cd", sql)
+        self.assertNotIn("LIKE", sql.upper())
 
-        self.assertIn("OR", compiled_sql.upper())
-        self.assertIn("%matricula%", compiled_sql)
-        self.assertIn("%extemporanea%", compiled_sql)
-        self.assertNotIn("%cómo%", compiled_sql)
-        self.assertNotIn("%puedo%", compiled_sql)
-        self.assertNotIn("%realizar%", compiled_sql)
-
-    # 6. Keyword fallback deduplication and limit
+    # 6. Deduplicacion y limite sobre el resultado fusionado
     async def test_06_no_duplicates_and_limit_respected(self):
         mock_db = AsyncMock()
         repo = CorpusRepository(db=mock_db)
 
-        c1 = MagicMock(text_content="Chunk 1", source="reglamento.json")
+        c1 = MagicMock(id=1, text_content="Chunk 1", source="reglamento",
+                       documento="Doc", articulo=None)
+        # Mismo texto con otro id: no debe ocupar dos de los pocos lugares que
+        # se le entregan al LLM.
+        c1_dup = MagicMock(id=2, text_content="Chunk 1", source="reglamento",
+                           documento="Doc", articulo=None)
+        c2 = MagicMock(id=3, text_content="Chunk 2 matricula", source="malla",
+                       documento="Doc", articulo=None)
+
         vector_res = MagicMock()
         vector_res.all.return_value = [(c1, 0.2)]
+        lex_res = MagicMock()
+        lex_res.all.return_value = [(c1_dup, 0.8), (c2, 0.5)]
 
-        kw_c1 = MagicMock(text_content="Chunk 1", source="reglamento.json")
-        kw_c2 = MagicMock(text_content="Chunk 2 matricula extemporanea", source="malla.json")
-        kw_res = MagicMock()
-        kw_res.scalars().all.return_value = [kw_c1, kw_c2]
-
-        mock_db.execute.side_effect = [vector_res, kw_res]
+        mock_db.execute.side_effect = [vector_res, lex_res]
 
         res = await repo.search_similar(
-            query_embedding=[0.1]*768,
+            query_embedding=[0.1] * 768,
             limit=2,
             query_text="requisitos matricula extemporanea",
             max_cosine_distance=0.45,
-            keyword_fallback_limit=2
+            keyword_fallback_limit=2,
         )
 
-        self.assertEqual(len(res), 2)
-        self.assertEqual(res[0].text, "Chunk 1")
-        self.assertEqual(res[0].retrieval_method, "vector")
-        self.assertEqual(res[1].text, "Chunk 2 matricula extemporanea")
-        self.assertEqual(res[1].retrieval_method, "keyword")
+        self.assertEqual([r.text for r in res], ["Chunk 1", "Chunk 2 matricula"])
+        self.assertLessEqual(len(res), 2)
+
+    # 6b. Un fragmento hallado por ambas ramas se marca como hibrido y encabeza.
+    async def test_06b_hybrid_hit_ranks_first(self):
+        mock_db = AsyncMock()
+        repo = CorpusRepository(db=mock_db)
+
+        solo_vector = MagicMock(id=1, text_content="A", source="s", documento="D", articulo=None)
+        ambos = MagicMock(id=2, text_content="B", source="s", documento="D", articulo=None)
+
+        vector_res = MagicMock()
+        vector_res.all.return_value = [(solo_vector, 0.1), (ambos, 0.3)]
+        lex_res = MagicMock()
+        lex_res.all.return_value = [(ambos, 0.9)]
+
+        mock_db.execute.side_effect = [vector_res, lex_res]
+
+        res = await repo.search_similar(
+            query_embedding=[0.1] * 768,
+            limit=5,
+            query_text="consulta",
+            max_cosine_distance=0.45,
+            keyword_fallback_limit=2,
+        )
+
+        self.assertEqual(res[0].text, "B")
+        self.assertEqual(res[0].retrieval_method, "hibrido")
+        self.assertEqual(res[1].retrieval_method, "vector")
 
 
     # 7. Short term minimum length (6+ chars)
@@ -291,7 +338,7 @@ class TestRAGQuality(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(len(heads), 1, f"Expected 1 alembic head, got: {heads}")
         # Actualizar al agregar una migracion: la garantia que importa es que la
         # cadena siga siendo lineal y con una sola cabeza.
-        self.assertIn("a1c4e7b90d21", heads[0])
+        self.assertIn("b2f8d3c15e47", heads[0])
 
     # Verification of no tracked API keys with pattern AIza
     @unittest.skipUnless(shutil.which("git"), "git executable not found in environment")

@@ -408,6 +408,9 @@ class ChatUseCase:
                         query_text=st,
                         max_cosine_distance=self.rag_policy.max_cosine_distance,
                         keyword_fallback_limit=self.rag_policy.keyword_fallback_limit,
+                        candidatos_por_rama=self.rag_policy.candidatos_por_rama,
+                        rrf_k=self.rag_policy.rrf_k,
+                        min_ts_rank=self.rag_policy.min_ts_rank,
                     )
                     for c in st_chunks:
                         if c.text not in seen_texts:
@@ -425,6 +428,9 @@ class ChatUseCase:
                     query_text=rag_query,
                     max_cosine_distance=self.rag_policy.max_cosine_distance,
                     keyword_fallback_limit=self.rag_policy.keyword_fallback_limit,
+                    candidatos_por_rama=self.rag_policy.candidatos_por_rama,
+                    rrf_k=self.rag_policy.rrf_k,
+                    min_ts_rank=self.rag_policy.min_ts_rank,
                 )
 
             # Check plan ambiguity for malla curricular queries

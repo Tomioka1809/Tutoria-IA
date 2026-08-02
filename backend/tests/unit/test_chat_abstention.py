@@ -76,7 +76,7 @@ class StubCorpusRepository:
         self.chunks = chunks
 
     async def search_similar(self, embedding, *, limit, query_text,
-                             max_cosine_distance, keyword_fallback_limit):
+                             max_cosine_distance, keyword_fallback_limit, **_politica_hibrida):
         return list(self.chunks)
 
 

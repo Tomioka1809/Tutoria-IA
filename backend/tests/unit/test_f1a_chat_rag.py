@@ -104,6 +104,7 @@ class TrackingCorpusRepository(CorpusRepositoryPort):
         query_text: str | None,
         max_cosine_distance: float,
         keyword_fallback_limit: int,
+        **_politica_hibrida,
     ):
         self.search_similar_calls += 1
         return self.chunks
