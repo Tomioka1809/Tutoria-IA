@@ -1,0 +1,429 @@
+{
+  "generado_utc": "2026-08-02T22:47:23.803162+00:00",
+  "golden_set": "v2",
+  "politica": {
+    "limit": 6,
+    "max_cosine_distance": 0.34,
+    "keyword_fallback_limit": 2,
+    "candidatos_por_rama": 20,
+    "rrf_k": 60,
+    "min_ts_rank": 0.05,
+    "peso_autoridad": 0.2
+  },
+  "casos_evaluados": 23,
+  "casos_totales": 23,
+  "resumen": {
+    "casos_en_alcance": 20,
+    "acierto_articulo": 0.9375,
+    "acierto_documento": 1.0,
+    "cobertura_palabras_media": 0.9333,
+    "abstencion_fuera_de_alcance": 1.0
+  },
+  "detalle": [
+    {
+      "id": 101,
+      "dominio": "tutoria",
+      "categoria": "facil",
+      "pregunta": "¿Cuántos estudiantes como máximo se le pueden asignar a un tutor?",
+      "fuera_de_alcance": false,
+      "chunks_recuperados": 6,
+      "citas_recuperadas": [
+        "Art. 10 - Reglamento de Tutoría Académica UNSAAC",
+        "Art. 13 - Reglamento de Tutoría Académica UNSAAC",
+        "Art. 14 - Reglamento de Tutoría Académica UNSAAC",
+        "Art. 6 - Reglamento de Tutoría Académica UNSAAC",
+        "Art. 8 - Reglamento de Tutoría Académica UNSAAC"
+      ],
+      "acierto_articulo": true,
+      "acierto_documento": true,
+      "cobertura_palabras": 1.0,
+      "palabras_faltantes": []
+    },
+    {
+      "id": 102,
+      "dominio": "tutoria",
+      "categoria": "facil",
+      "pregunta": "¿Cuál es la naturaleza y alcance del Reglamento de Tutoría?",
+      "fuera_de_alcance": false,
+      "chunks_recuperados": 6,
+      "citas_recuperadas": [
+        "Art. 1 - Reglamento de Tutoría Académica UNSAAC",
+        "Art. 3 - Reglamento de Tutoría Académica UNSAAC",
+        "Art. 4 - Reglamento de Tutoría Académica UNSAAC",
+        "Art. 5 - Reglamento de Tutoría Académica UNSAAC",
+        "Art. 6 - Reglamento de Tutoría Académica UNSAAC",
+        "Art. 7 - Reglamento de Tutoría Académica UNSAAC"
+      ],
+      "acierto_articulo": true,
+      "acierto_documento": true,
+      "cobertura_palabras": 1.0,
+      "palabras_faltantes": []
+    },
+    {
+      "id": 103,
+      "dominio": "tutoria",
+      "categoria": "facil",
+      "pregunta": "¿Mi tutor puede compartir lo que le cuento en una sesión de tutoría?",
+      "fuera_de_alcance": false,
+      "chunks_recuperados": 6,
+      "citas_recuperadas": [
+        "Art. 10 - Reglamento de Tutoría Académica UNSAAC",
+        "Art. 12 - Reglamento de Tutoría Académica UNSAAC",
+        "Art. 13 - Reglamento de Tutoría Académica UNSAAC",
+        "Art. 14 - Reglamento de Tutoría Académica UNSAAC",
+        "Art. 15 - Reglamento de Tutoría Académica UNSAAC",
+        "Art. 7 - Reglamento de Tutoría Académica UNSAAC"
+      ],
+      "acierto_articulo": true,
+      "acierto_documento": true,
+      "cobertura_palabras": 1.0,
+      "palabras_faltantes": []
+    },
+    {
+      "id": 104,
+      "dominio": "tutoria",
+      "categoria": "ambiguo",
+      "pregunta": "¿Hasta cuándo me acompaña el mismo tutor?",
+      "fuera_de_alcance": false,
+      "chunks_recuperados": 6,
+      "citas_recuperadas": [
+        "Art. 10 - Reglamento de Tutoría Académica UNSAAC",
+        "Art. 12 - Reglamento de Tutoría Académica UNSAAC",
+        "Art. 13 - Reglamento de Tutoría Académica UNSAAC",
+        "Art. 14 - Reglamento de Tutoría Académica UNSAAC",
+        "Art. 3 - Reglamento de Tutoría Académica UNSAAC"
+      ],
+      "acierto_articulo": true,
+      "acierto_documento": true,
+      "cobertura_palabras": 1.0,
+      "palabras_faltantes": []
+    },
+    {
+      "id": 105,
+      "dominio": "tutoria",
+      "categoria": "ambiguo",
+      "pregunta": "¿Quién evalúa si el programa de tutoría está funcionando?",
+      "fuera_de_alcance": false,
+      "chunks_recuperados": 6,
+      "citas_recuperadas": [
+        "Art. 10 - Reglamento de Tutoría Académica UNSAAC",
+        "Art. 16 - Reglamento de Tutoría Académica UNSAAC",
+        "Glosario General Universitario",
+        "Preguntas Frecuentes Generales UNSAAC"
+      ],
+      "acierto_articulo": true,
+      "acierto_documento": true,
+      "cobertura_palabras": 1.0,
+      "palabras_faltantes": []
+    },
+    {
+      "id": 106,
+      "dominio": "trayectoria_academica",
+      "categoria": "facil",
+      "pregunta": "¿Cuántos créditos necesito para ser considerado estudiante regular?",
+      "fuera_de_alcance": false,
+      "chunks_recuperados": 6,
+      "citas_recuperadas": [
+        "Art. 215 - Estatuto Universitario UNSAAC",
+        "Art. 3 - Reglamento Académico UNSAAC",
+        "Art. 8 - Reglamento Académico UNSAAC",
+        "Art. 84 - Estatuto Universitario UNSAAC",
+        "Art. 85 - Estatuto Universitario UNSAAC",
+        "Art. 9 - Reglamento Académico UNSAAC"
+      ],
+      "acierto_articulo": true,
+      "acierto_documento": true,
+      "cobertura_palabras": 1.0,
+      "palabras_faltantes": []
+    },
+    {
+      "id": 107,
+      "dominio": "trayectoria_academica",
+      "categoria": "facil",
+      "pregunta": "Si tengo buen promedio, ¿puedo llevar más créditos de lo normal?",
+      "fuera_de_alcance": false,
+      "chunks_recuperados": 6,
+      "citas_recuperadas": [
+        "Art. 104 - Reglamento Académico UNSAAC",
+        "Art. 105 - Reglamento Académico UNSAAC",
+        "Art. 65 - Reglamento Académico UNSAAC",
+        "Art. 77 - Reglamento Académico UNSAAC",
+        "Art. 8 - Reglamento Académico UNSAAC",
+        "Art. 9 - Reglamento Académico UNSAAC"
+      ],
+      "acierto_articulo": true,
+      "acierto_documento": true,
+      "cobertura_palabras": 1.0,
+      "palabras_faltantes": []
+    },
+    {
+      "id": 108,
+      "dominio": "trayectoria_academica",
+      "categoria": "ambiguo",
+      "pregunta": "¿Cuánto tiempo puedo seguir siendo estudiante no regular?",
+      "fuera_de_alcance": false,
+      "chunks_recuperados": 1,
+      "citas_recuperadas": [
+        "Art. 3 - Reglamento Académico UNSAAC"
+      ],
+      "acierto_articulo": true,
+      "acierto_documento": true,
+      "cobertura_palabras": 1.0,
+      "palabras_faltantes": []
+    },
+    {
+      "id": 127,
+      "dominio": "trayectoria_academica",
+      "categoria": "facil",
+      "pregunta": "¿Cuántos créditos como máximo puedo matricular por semestre?",
+      "fuera_de_alcance": false,
+      "chunks_recuperados": 6,
+      "citas_recuperadas": [
+        "Art. 104 - Reglamento Académico UNSAAC",
+        "Art. 105 - Reglamento Académico UNSAAC",
+        "Art. 8 - Reglamento Académico UNSAAC",
+        "Art. 84 - Estatuto Universitario UNSAAC",
+        "Art. 85 - Estatuto Universitario UNSAAC",
+        "Art. 9 - Reglamento Académico UNSAAC"
+      ],
+      "acierto_articulo": true,
+      "acierto_documento": true,
+      "cobertura_palabras": 1.0,
+      "palabras_faltantes": []
+    },
+    {
+      "id": 109,
+      "dominio": "trayectoria_academica",
+      "categoria": "facil",
+      "pregunta": "¿Qué cursos llevo en el primer semestre del plan 2025 de Ingeniería Informática?",
+      "fuera_de_alcance": false,
+      "chunks_recuperados": 6,
+      "citas_recuperadas": [
+        "Plan de Estudios 2025 - Ingeniería Informática y de Sistemas UNSAAC",
+        "Plan de Estudios y Malla Curricular 2025"
+      ],
+      "acierto_articulo": null,
+      "acierto_documento": true,
+      "cobertura_palabras": 1.0,
+      "palabras_faltantes": []
+    },
+    {
+      "id": 110,
+      "dominio": "apoyos",
+      "categoria": "facil",
+      "pregunta": "¿Qué servicios de apoyo al estudiante ofrece la universidad?",
+      "fuera_de_alcance": false,
+      "chunks_recuperados": 6,
+      "citas_recuperadas": [
+        "Art. 246 - Estatuto Universitario UNSAAC",
+        "Art. 247 - Estatuto Universitario UNSAAC",
+        "Preguntas Frecuentes Generales UNSAAC",
+        "Servicios de Bienestar Universitario y Comedor UNSAAC"
+      ],
+      "acierto_articulo": true,
+      "acierto_documento": true,
+      "cobertura_palabras": 1.0,
+      "palabras_faltantes": []
+    },
+    {
+      "id": 111,
+      "dominio": "apoyos",
+      "categoria": "facil",
+      "pregunta": "¿Qué oficina se encarga del bienestar de los estudiantes?",
+      "fuera_de_alcance": false,
+      "chunks_recuperados": 6,
+      "citas_recuperadas": [
+        "Art. 236 - Estatuto Universitario UNSAAC",
+        "Art. 245 - Estatuto Universitario UNSAAC",
+        "Art. 246 - Estatuto Universitario UNSAAC",
+        "Art. 253 - Estatuto Universitario UNSAAC",
+        "Art. 97 - Reglamento de Organización y Funciones UNSAAC",
+        "Art. 98 - Reglamento de Organización y Funciones UNSAAC"
+      ],
+      "acierto_articulo": true,
+      "acierto_documento": true,
+      "cobertura_palabras": 1.0,
+      "palabras_faltantes": []
+    },
+    {
+      "id": 112,
+      "dominio": "apoyos",
+      "categoria": "ambiguo",
+      "pregunta": "¿La universidad apoya a estudiantes con discapacidad?",
+      "fuera_de_alcance": false,
+      "chunks_recuperados": 3,
+      "citas_recuperadas": [
+        "Art. 13 - Reglamento de Tutoría Académica UNSAAC",
+        "Art. 246 - Estatuto Universitario UNSAAC",
+        "Servicios de Bienestar Universitario y Comedor UNSAAC"
+      ],
+      "acierto_articulo": true,
+      "acierto_documento": true,
+      "cobertura_palabras": 0.6667,
+      "palabras_faltantes": [
+        "materiales"
+      ]
+    },
+    {
+      "id": 115,
+      "dominio": "movilidad",
+      "categoria": "facil",
+      "pregunta": "Si vengo por movilidad estudiantil, ¿cuántos créditos puedo matricular?",
+      "fuera_de_alcance": false,
+      "chunks_recuperados": 6,
+      "citas_recuperadas": [
+        "Art. 207 - Estatuto Universitario UNSAAC",
+        "Art. 8 - Reglamento Académico UNSAAC",
+        "Art. 9 - Reglamento Académico UNSAAC",
+        "Preguntas Frecuentes Generales UNSAAC",
+        "Reglamento de Intercambio Estudiantil y Movilidad Academica OCRI UNSAAC"
+      ],
+      "acierto_articulo": true,
+      "acierto_documento": true,
+      "cobertura_palabras": 1.0,
+      "palabras_faltantes": []
+    },
+    {
+      "id": 116,
+      "dominio": "movilidad",
+      "categoria": "facil",
+      "pregunta": "¿Qué es un estudiante especial por convenio de movilidad?",
+      "fuera_de_alcance": false,
+      "chunks_recuperados": 6,
+      "citas_recuperadas": [
+        "Art. 207 - Estatuto Universitario UNSAAC",
+        "Art. 3 - Reglamento Académico UNSAAC",
+        "Glosario General Universitario",
+        "Reglamento de Intercambio Estudiantil y Movilidad Academica OCRI UNSAAC"
+      ],
+      "acierto_articulo": true,
+      "acierto_documento": true,
+      "cobertura_palabras": 1.0,
+      "palabras_faltantes": []
+    },
+    {
+      "id": 119,
+      "dominio": "tramites",
+      "categoria": "facil",
+      "pregunta": "¿Dónde consulto los requisitos y el costo de un trámite en la universidad?",
+      "fuera_de_alcance": false,
+      "chunks_recuperados": 6,
+      "citas_recuperadas": [
+        "Preguntas Frecuentes Generales UNSAAC",
+        "Servicios de Bienestar Universitario y Comedor UNSAAC"
+      ],
+      "acierto_articulo": null,
+      "acierto_documento": true,
+      "cobertura_palabras": 0.3333,
+      "palabras_faltantes": [
+        "procedimientos",
+        "requisitos"
+      ]
+    },
+    {
+      "id": 120,
+      "dominio": "calendario",
+      "categoria": "facil",
+      "pregunta": "¿Cuándo es la matrícula de estudiantes regulares para el semestre 2026-I?",
+      "fuera_de_alcance": false,
+      "chunks_recuperados": 6,
+      "citas_recuperadas": [
+        "Calendario Académico 2026 UNSAAC",
+        "Calendarización de Actividades Académicas Año 2026"
+      ],
+      "acierto_articulo": null,
+      "acierto_documento": true,
+      "cobertura_palabras": 1.0,
+      "palabras_faltantes": []
+    },
+    {
+      "id": 121,
+      "dominio": "calendario",
+      "categoria": "ambiguo",
+      "pregunta": "Reinicié mis estudios, ¿cuándo me matriculo?",
+      "fuera_de_alcance": false,
+      "chunks_recuperados": 6,
+      "citas_recuperadas": [
+        "Art. 10 - Reglamento Académico UNSAAC",
+        "Art. 19 - Reglamento Académico UNSAAC",
+        "Art. 20 - Reglamento Académico UNSAAC",
+        "Art. 21 - Reglamento Académico UNSAAC",
+        "Art. 4 - Reglamento Académico UNSAAC",
+        "Preguntas Frecuentes Generales UNSAAC"
+      ],
+      "acierto_articulo": null,
+      "acierto_documento": true,
+      "cobertura_palabras": 0.6667,
+      "palabras_faltantes": [
+        "febrero"
+      ]
+    },
+    {
+      "id": 122,
+      "dominio": "enrutamiento",
+      "categoria": "ambiguo",
+      "pregunta": "¿A qué oficina debo ir si tengo un problema económico o social?",
+      "fuera_de_alcance": false,
+      "chunks_recuperados": 3,
+      "citas_recuperadas": [
+        "Preguntas Frecuentes Generales UNSAAC",
+        "Servicios de Bienestar Universitario y Comedor UNSAAC"
+      ],
+      "acierto_articulo": false,
+      "acierto_documento": true,
+      "cobertura_palabras": 1.0,
+      "palabras_faltantes": []
+    },
+    {
+      "id": 123,
+      "dominio": "enrutamiento",
+      "categoria": "ambiguo",
+      "pregunta": "¿Quién supervisa la actividad de tutoría en la universidad?",
+      "fuera_de_alcance": false,
+      "chunks_recuperados": 6,
+      "citas_recuperadas": [
+        "Art. 10 - Reglamento de Tutoría Académica UNSAAC",
+        "Art. 11 - Reglamento de Tutoría Académica UNSAAC",
+        "Art. 16 - Reglamento de Tutoría Académica UNSAAC",
+        "Art. 3 - Reglamento de Tutoría Académica UNSAAC",
+        "Art. 7 - Reglamento de Tutoría Académica UNSAAC",
+        "Art. 8 - Reglamento de Tutoría Académica UNSAAC"
+      ],
+      "acierto_articulo": true,
+      "acierto_documento": true,
+      "cobertura_palabras": 1.0,
+      "palabras_faltantes": []
+    },
+    {
+      "id": 124,
+      "dominio": "fuera_de_alcance",
+      "categoria": "fuera_de_alcance",
+      "pregunta": "¿Cuál es la receta tradicional del cuy chactado cusqueño?",
+      "fuera_de_alcance": true,
+      "chunks_recuperados": 0,
+      "citas_recuperadas": [],
+      "abstencion_correcta": true
+    },
+    {
+      "id": 125,
+      "dominio": "fuera_de_alcance",
+      "categoria": "fuera_de_alcance",
+      "pregunta": "¿Cómo tramito mi pasaporte en Migraciones del Perú?",
+      "fuera_de_alcance": true,
+      "chunks_recuperados": 0,
+      "citas_recuperadas": [],
+      "abstencion_correcta": true
+    },
+    {
+      "id": 126,
+      "dominio": "fuera_de_alcance",
+      "categoria": "fuera_de_alcance",
+      "pregunta": "¿Cuánto cuesta la matrícula en la Universidad Nacional de San Agustín de Arequipa?",
+      "fuera_de_alcance": true,
+      "chunks_recuperados": 0,
+      "citas_recuperadas": [],
+      "cortado_por_institucion": "Universidad Nacional de San Agustín de Arequipa",
+      "abstencion_correcta": true
+    }
+  ]
+}

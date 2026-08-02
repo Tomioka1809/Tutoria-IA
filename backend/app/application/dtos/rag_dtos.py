@@ -35,9 +35,12 @@ class RAGRetrievalPolicy(BaseModel):
     # "derivada de una funcion" engancharia el curso "Calculo I" de la malla y
     # rompería la abstencion.
     min_ts_rank: float = Field(default=0.05, ge=0.0)
-    # Cuanto pesa la jerarquia de la fuente al reordenar. En 0 se desactiva y
-    # la fusion queda como antes, lo que permite medir su aporte por separado.
-    peso_autoridad: float = Field(default=0.5, ge=0.0)
+    # Calibrado con scripts.calibrar_peso_autoridad sobre el golden set v2 y el
+    # corpus completo: el acierto de articulo pasa de 12/16 con peso 0 a 15/16
+    # desde 0.2, sin degradar el acierto de documento, y no mejora mas alla.
+    # Se toma el menor valor que alcanza ese resultado: es la menor
+    # intervencion sobre el orden que produce la fusion.
+    peso_autoridad: float = Field(default=0.2, ge=0.0)
 
     @model_validator(mode="after")
     def validate_limits(self) -> "RAGRetrievalPolicy":
