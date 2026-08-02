@@ -155,3 +155,44 @@ class TestOrdenDeIngesta(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestGuardaDeModelo(unittest.TestCase):
+    """Cambiar la API key es inocuo; cambiar el modelo no.
+
+    Los vectores no llevan marca de la cuenta, asi que rotar credenciales no
+    afecta nada. Pero dos modelos producen espacios vectoriales distintos: una
+    distancia entre un fragmento viejo y una consulta nueva deja de significar
+    algo y la busqueda empeora sin que nada falle.
+    """
+
+    def test_un_indice_homogeneo_no_reporta_nada(self):
+        from app.infrastructure.adapters.gemini_adapter import IDENTIDAD_EMBEDDING
+        from scripts.ingest_corpus import verificar_modelo
+
+        self.assertEqual(verificar_modelo({IDENTIDAD_EMBEDDING}), [])
+
+    def test_detecta_un_modelo_ajeno(self):
+        from app.infrastructure.adapters.gemini_adapter import IDENTIDAD_EMBEDDING
+        from scripts.ingest_corpus import verificar_modelo
+
+        ajenos = verificar_modelo({IDENTIDAD_EMBEDDING, "text-embedding-004@768"})
+        self.assertEqual(ajenos, ["text-embedding-004@768"])
+
+    def test_ignora_los_chunks_sin_modelo_declarado(self):
+        """Los sembrados antes de la columna quedan en nulo; la migracion los rellena."""
+        from app.infrastructure.adapters.gemini_adapter import IDENTIDAD_EMBEDDING
+        from scripts.ingest_corpus import verificar_modelo
+
+        self.assertEqual(verificar_modelo({IDENTIDAD_EMBEDDING, None}), [])
+
+    def test_la_identidad_incluye_las_dimensiones(self):
+        """El mismo modelo a otra dimensionalidad tampoco es comparable."""
+        from app.infrastructure.adapters.gemini_adapter import (
+            DIMENSIONES_EMBEDDING,
+            IDENTIDAD_EMBEDDING,
+            MODELO_EMBEDDING,
+        )
+
+        self.assertEqual(IDENTIDAD_EMBEDDING, f"{MODELO_EMBEDDING}@{DIMENSIONES_EMBEDDING}")
+        self.assertEqual(DIMENSIONES_EMBEDDING, 768)

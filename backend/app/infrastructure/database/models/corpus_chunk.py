@@ -38,6 +38,9 @@ class CorpusChunk(Base):
     autoridad: Mapped[int] = mapped_column(
         SmallInteger, nullable=False, server_default="1", index=True
     )
+    # Espacio vectorial del que salio el embedding. Mezclar modelos vuelve las
+    # distancias incomparables entre si y degrada la busqueda en silencio.
+    modelo_embedding: Mapped[str] = mapped_column(String(64), nullable=True, index=True)
 
     # Indice de texto completo en espanol, con el titulo del fragmento pesado por
     # encima del cuerpo. La calcula Postgres, de modo que no puede quedar

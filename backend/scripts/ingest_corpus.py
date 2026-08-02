@@ -31,7 +31,10 @@ sys.path.insert(0, BACKEND_DIR)
 from sqlalchemy import delete, select  # noqa: E402
 
 import app.infrastructure.database.base  # noqa: F401,E402  registra los modelos
-from app.infrastructure.adapters.gemini_adapter import GeminiAdapter  # noqa: E402
+from app.infrastructure.adapters.gemini_adapter import (  # noqa: E402
+    IDENTIDAD_EMBEDDING,
+    GeminiAdapter,
+)
 from app.infrastructure.config.config import settings  # noqa: E402
 from app.infrastructure.database.models.corpus_chunk import CorpusChunk  # noqa: E402
 from app.application.dtos.corpus_dtos import (  # noqa: E402
@@ -136,6 +139,20 @@ def clasificar(
     return nuevos, modificados, obsoletos
 
 
+def verificar_modelo(modelos_en_indice: set[str]) -> list[str]:
+    """Detecta vectores generados con un modelo distinto al vigente.
+
+    Cambiar la API key es inocuo: los vectores viven en la base y no llevan
+    marca de la cuenta. Cambiar el modelo no lo es. Los espacios vectoriales de
+    dos modelos no son comparables, asi que una distancia coseno entre un
+    fragmento viejo y una consulta nueva deja de significar algo, y la busqueda
+    empeora sin que nada falle.
+
+    Devuelve los modelos ajenos hallados; vacio si el indice es homogeneo.
+    """
+    return sorted(m for m in modelos_en_indice if m and m != IDENTIDAD_EMBEDDING)
+
+
 async def sincronizar_metadatos(db, fragmentos: list[dict], ya_indexados: set[str]) -> int:
     """Pone al dia documento, articulo, autoridad y source sin tocar el embedding.
 
@@ -179,6 +196,25 @@ async def ingestar(dry_run: bool = False, forzar: bool = False, limite: int | No
     async with SessionLocal() as db:
         res = await db.execute(select(CorpusChunk.fragment_id, CorpusChunk.content_hash))
         existentes = {fid: h for fid, h in res.all() if fid}
+
+        res_modelos = await db.execute(select(CorpusChunk.modelo_embedding).distinct())
+        modelos_en_indice = {m for (m,) in res_modelos.all()}
+
+    ajenos = verificar_modelo(modelos_en_indice)
+    if ajenos and not forzar:
+        print("=" * 70)
+        print("EL INDICE MEZCLA MODELOS DE EMBEDDING")
+        print("=" * 70)
+        print(f"  modelo vigente : {IDENTIDAD_EMBEDDING}")
+        print(f"  en el indice   : {', '.join(ajenos)}")
+        print()
+        print("  Los espacios vectoriales de dos modelos no son comparables: una")
+        print("  distancia entre un fragmento viejo y una consulta nueva deja de")
+        print("  significar algo y la busqueda empeora sin que nada falle.")
+        print()
+        print("  Reindexa el corpus completo con el modelo vigente:")
+        print("      python -m scripts.ingest_corpus --forzar")
+        return 1
 
     nuevos, modificados, obsoletos = clasificar(fragmentos, existentes, forzar=forzar)
 
@@ -241,6 +277,7 @@ async def ingestar(dry_run: bool = False, forzar: bool = False, limite: int | No
             chunk.documento = frag["documento"]
             chunk.articulo = frag["articulo"]
             chunk.autoridad = frag["autoridad"]
+            chunk.modelo_embedding = IDENTIDAD_EMBEDDING
             chunk.source = frag["source"]
             chunk.embedding = embedding
 

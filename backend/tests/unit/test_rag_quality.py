@@ -16,7 +16,6 @@ from app.infrastructure.database.repositories.corpus_repository import (
     CorpusRepository,
     fusionar_rrf,
 )
-from scripts.rebuild_corpus_embeddings import rebuild_corpus_embeddings
 
 
 class TestRAGQuality(unittest.IsolatedAsyncioTestCase):
@@ -208,117 +207,11 @@ class TestRAGQuality(unittest.IsolatedAsyncioTestCase):
         )
         self.assertEqual(res, [])
 
-    # Functional Tests for rebuild_corpus_embeddings.py
-    @patch("scripts.rebuild_corpus_embeddings.settings")
-    @patch("scripts.rebuild_corpus_embeddings.SessionLocal")
-    @patch("scripts.rebuild_corpus_embeddings.GeminiAdapter")
-    async def test_09_rebuild_script_missing_key(self, mock_adapter_cls, mock_session_cls, mock_settings):
-        mock_settings.GEMINI_API_KEY = ""
-        with self.assertRaises(RuntimeError):
-            await rebuild_corpus_embeddings()
-        mock_session_cls.assert_not_called()
-        mock_adapter_cls.assert_not_called()
-
-    @patch("scripts.rebuild_corpus_embeddings.settings")
-    @patch("scripts.rebuild_corpus_embeddings.SessionLocal")
-    @patch("scripts.rebuild_corpus_embeddings.GeminiAdapter")
-    async def test_10_rebuild_script_normal_execution(self, mock_adapter_cls, mock_session_cls, mock_settings):
-        mock_settings.GEMINI_API_KEY = "valid_key"
-        mock_adapter = AsyncMock()
-        mock_adapter.compute_embedding.return_value = [0.1] * 768
-        mock_adapter_cls.return_value = mock_adapter
-
-        chunk1 = MagicMock(id=1, text_content="c1", embedding=None)
-        chunk2 = MagicMock(id=2, text_content="c2", embedding=None)
-
-        session_instance = AsyncMock()
-        session_result = MagicMock()
-        session_result.scalars().all.return_value = [chunk1, chunk2]
-        session_instance.execute.return_value = session_result
-        mock_session_cls.return_value.__aenter__.return_value = session_instance
-
-        count = await rebuild_corpus_embeddings(dry_run=False)
-
-        self.assertEqual(count, 2)
-        mock_adapter_cls.assert_called_once_with(api_key="valid_key", allow_embedding_fallback=False)
-        self.assertEqual(chunk1.embedding, [0.1] * 768)
-        self.assertEqual(chunk2.embedding, [0.1] * 768)
-        session_instance.commit.assert_called_once()
-        session_instance.rollback.assert_not_called()
-
-    @patch("scripts.rebuild_corpus_embeddings.settings")
-    @patch("scripts.rebuild_corpus_embeddings.SessionLocal")
-    @patch("scripts.rebuild_corpus_embeddings.GeminiAdapter")
-    async def test_11_rebuild_script_dry_run(self, mock_adapter_cls, mock_session_cls, mock_settings):
-        mock_settings.GEMINI_API_KEY = "valid_key"
-        mock_adapter = AsyncMock()
-        mock_adapter.compute_embedding.return_value = [0.2] * 768
-        mock_adapter_cls.return_value = mock_adapter
-
-        chunk1 = MagicMock(id=1, text_content="c1", embedding=None)
-        session_instance = AsyncMock()
-        session_result = MagicMock()
-        session_result.scalars().all.return_value = [chunk1]
-        session_instance.execute.return_value = session_result
-        mock_session_cls.return_value.__aenter__.return_value = session_instance
-
-        count = await rebuild_corpus_embeddings(dry_run=True)
-
-        self.assertEqual(count, 1)
-        self.assertIsNone(chunk1.embedding)
-        session_instance.commit.assert_not_called()
-        session_instance.rollback.assert_called_once()
-
-    @patch("scripts.rebuild_corpus_embeddings.settings")
-    @patch("scripts.rebuild_corpus_embeddings.SessionLocal")
-    @patch("scripts.rebuild_corpus_embeddings.GeminiAdapter")
-    async def test_12_rebuild_script_intermediate_failure(self, mock_adapter_cls, mock_session_cls, mock_settings):
-        mock_settings.GEMINI_API_KEY = "valid_key"
-        mock_adapter = AsyncMock()
-        mock_adapter.compute_embedding.side_effect = [
-            [0.1] * 768,
-            RuntimeError("API Failure on chunk 2")
-        ]
-        mock_adapter_cls.return_value = mock_adapter
-
-        chunk1 = MagicMock(id=1, text_content="c1", embedding=None)
-        chunk2 = MagicMock(id=2, text_content="c2", embedding=None)
-
-        session_instance = AsyncMock()
-        session_result = MagicMock()
-        session_result.scalars().all.return_value = [chunk1, chunk2]
-        session_instance.execute.return_value = session_result
-        mock_session_cls.return_value.__aenter__.return_value = session_instance
-
-        with self.assertRaises(RuntimeError):
-            await rebuild_corpus_embeddings(dry_run=False)
-
-        self.assertIsNone(chunk1.embedding)
-        self.assertIsNone(chunk2.embedding)
-        session_instance.commit.assert_not_called()
-        session_instance.rollback.assert_called_once()
-
-    @patch("scripts.rebuild_corpus_embeddings.settings")
-    @patch("scripts.rebuild_corpus_embeddings.SessionLocal")
-    @patch("scripts.rebuild_corpus_embeddings.GeminiAdapter")
-    async def test_13_rebuild_script_invalid_dimension(self, mock_adapter_cls, mock_session_cls, mock_settings):
-        mock_settings.GEMINI_API_KEY = "valid_key"
-        mock_adapter = AsyncMock()
-        mock_adapter.compute_embedding.return_value = [0.1] * 500
-        mock_adapter_cls.return_value = mock_adapter
-
-        chunk1 = MagicMock(id=1, text_content="c1", embedding=None)
-        session_instance = AsyncMock()
-        session_result = MagicMock()
-        session_result.scalars().all.return_value = [chunk1]
-        session_instance.execute.return_value = session_result
-        mock_session_cls.return_value.__aenter__.return_value = session_instance
-
-        with self.assertRaises(RuntimeError):
-            await rebuild_corpus_embeddings(dry_run=False)
-
-        session_instance.commit.assert_not_called()
-        session_instance.rollback.assert_called_once()
+    # Los tests de rebuild_corpus_embeddings se retiran junto con el script:
+    # re-embebia con el task_type por defecto (RETRIEVAL_QUERY), de modo que
+    # correrlo habria reindexado el corpus como consultas y roto la asimetria.
+    # Su funcion la cubre 'ingest_corpus --forzar', que si fija el task_type y
+    # registra el modelo usado.
 
     # Portable Alembic Head Test
     def test_14_portable_alembic_head(self):
@@ -339,7 +232,7 @@ class TestRAGQuality(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(len(heads), 1, f"Expected 1 alembic head, got: {heads}")
         # Actualizar al agregar una migracion: la garantia que importa es que la
         # cadena siga siendo lineal y con una sola cabeza.
-        self.assertIn("c3a9f1e42b08", heads[0])
+        self.assertIn("d5b2c8e31f74", heads[0])
 
     # Verification of no tracked API keys with pattern AIza
     @unittest.skipUnless(shutil.which("git"), "git executable not found in environment")

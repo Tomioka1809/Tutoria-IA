@@ -16,6 +16,13 @@ from app.domain.exceptions import (
 
 logger = logging.getLogger(__name__)
 
+# Identidad del espacio vectorial. Se expone porque la ingesta la registra en
+# cada chunk: mezclar vectores de modelos distintos degrada la busqueda sin
+# que nada falle, asi que el dato tiene que poder compararse.
+MODELO_EMBEDDING = "gemini-embedding-2"
+DIMENSIONES_EMBEDDING = 768
+IDENTIDAD_EMBEDDING = f"{MODELO_EMBEDDING}@{DIMENSIONES_EMBEDDING}"
+
 
 def _classify_gemini_error(e: Exception) -> tuple[str, Exception]:
     err_str = str(e)
@@ -181,10 +188,10 @@ class GeminiAdapter(LLMPort):
         for attempt in range(max_retries):
             try:
                 response = await self.client.aio.models.embed_content(
-                    model='gemini-embedding-2',
+                    model=MODELO_EMBEDDING,
                     contents=text,
                     config=types.EmbedContentConfig(
-                        output_dimensionality=768,
+                        output_dimensionality=DIMENSIONES_EMBEDDING,
                         # La busqueda es asimetrica: el corpus se indexa como
                         # documento y la consulta se embebe como consulta.
                         task_type=task_type,
