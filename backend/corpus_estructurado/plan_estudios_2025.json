@@ -1,0 +1,134 @@
+{
+  "procedencia": {
+    "documento": "Plan de Estudios 2025 - Ingeniería Informática y de Sistemas UNSAAC",
+    "tipo": "malla",
+    "universidad": "UNSAAC",
+    "resolucion": null,
+    "anio": 2025,
+    "url": null,
+    "base_legal": []
+  },
+  "fragmentos": [
+    {
+      "id": "plan_estudios_2025#semestre-1",
+      "titulo": "Primer semestre - Plan 2025",
+      "texto": "Primer semestre del Plan de Estudios 2025 de Ingeniería Informática y de Sistemas UNSAAC (6 asignaturas, 22 créditos en total).\n\n- QUG01 QUÍMICA GENERAL: 4 créditos (3 horas teóricas, 2 prácticas), sin requisitos.\n- MEG01 ALGEBRA Y GEOMETRÍA ANALÍTICA: 4 créditos (3 horas teóricas, 2 prácticas), sin requisitos.\n- HIG01 HISTORIA CRÍTICA DEL PERÚ E IDENTIDAD NACIONAL: 3 créditos (2 horas teóricas, 2 prácticas), sin requisitos.\n- FIG01 FÍSICA I: 4 créditos (3 horas teóricas, 2 prácticas), sin requisitos.\n- CBG01 ECOLOGÍA Y MEDIO AMBIENTE: 3 créditos (2 horas teóricas, 2 prácticas), sin requisitos.\n- MEG02 CÁLCULO I: 4 créditos (3 horas teóricas, 2 prácticas), sin requisitos.",
+      "seccion": [
+        "plan_de_estudios",
+        "semestre_1"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "plan_estudios_2025#semestre-2",
+      "titulo": "Segundo semestre - Plan 2025",
+      "texto": "Segundo semestre del Plan de Estudios 2025 de Ingeniería Informática y de Sistemas UNSAAC (6 asignaturas, 22 créditos en total).\n\n- LCG01 LINGÜÍSTICA Y COMUNICACIÓN HUMANA: 4 créditos (3 horas teóricas, 2 prácticas), sin requisitos.\n- MEG03 ESTADÍSTICA GENERAL: 4 créditos (3 horas teóricas, 2 prácticas), sin requisitos.\n- IFG01 PENSAMIENTO COMPUTACIONAL E INTELIGENCIA ARTIFICIAL: 3 créditos (2 horas teóricas, 2 prácticas), sin requisitos.\n- MEG04 CÁLCULO II: 4 créditos (3 horas teóricas, 2 prácticas), requisitos: MEG02.\n- IFI01 FUNDAMENTOS DE PROGRAMACIÓN: 3 créditos (2 horas teóricas, 2 prácticas), sin requisitos.\n- MEI04 MATEMÁTICAS DISCRETAS I: 4 créditos (3 horas teóricas, 2 prácticas), requisitos: MEG01.",
+      "seccion": [
+        "plan_de_estudios",
+        "semestre_2"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "plan_estudios_2025#semestre-3",
+      "titulo": "Tercer semestre - Plan 2025",
+      "texto": "Tercer semestre del Plan de Estudios 2025 de Ingeniería Informática y de Sistemas UNSAAC (6 asignaturas, 22 créditos en total).\n\n- IFI02 ALGORITMOS Y ESTRUCTURAS DE DATOS I: 4 créditos (3 horas teóricas, 2 prácticas), requisitos: IFI01, IFG01.\n- IFI03 PROGRAMACIÓN I: 2 créditos (0 horas teóricas, 4 prácticas), requisitos: IFI01.\n- MEI05 ALGEBRA LINEAL COMPUTACIONAL: 4 créditos (3 horas teóricas, 2 prácticas), requisitos: MEG01.\n- FII02 FÍSICA APLICADA A LA INFORMÁTICA: 4 créditos (3 horas teóricas, 2 prácticas), requisitos: FIG01.\n- MEI06 MATEMÁTICA DISCRETAS II: 4 créditos (3 horas teóricas, 2 prácticas), requisitos: MEI04.\n- MEI09 CALCULO III: 4 créditos (3 horas teóricas, 2 prácticas), requisitos: MEG04.",
+      "seccion": [
+        "plan_de_estudios",
+        "semestre_3"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "plan_estudios_2025#semestre-4",
+      "titulo": "Cuarto semestre - Plan 2025",
+      "texto": "Cuarto semestre del Plan de Estudios 2025 de Ingeniería Informática y de Sistemas UNSAAC (6 asignaturas, 22 créditos en total).\n\n- IFI04 ALGORITMOS Y ESTRUCTURAS DE DATOS II: 4 créditos (3 horas teóricas, 2 prácticas), requisitos: IFI02, IFI03.\n- IFI05 PROGRAMACIÓN II: 2 créditos (0 horas teóricas, 4 prácticas), requisitos: IFI02, IFI03.\n- ADI01 ORGANIZACIÓN Y DIRECCIÓN DE EMPRESAS: 4 créditos (3 horas teóricas, 2 prácticas), requisitos: 60 Cr..\n- ELI01 ELECTRÓNICA Y DISEÑO DIGITAL: 4 créditos (3 horas teóricas, 2 prácticas), requisitos: FII02.\n- IFI07 MODELOS PROBABILÍSTICOS: 4 créditos (3 horas teóricas, 2 prácticas), requisitos: MEI06, MEG03.\n- MEI08 ECUACIONES DIFERENCIALES: 4 créditos (3 horas teóricas, 2 prácticas), requisitos: MEI09.",
+      "seccion": [
+        "plan_de_estudios",
+        "semestre_4"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "plan_estudios_2025#semestre-5",
+      "titulo": "Quinto semestre - Plan 2025",
+      "texto": "Quinto semestre del Plan de Estudios 2025 de Ingeniería Informática y de Sistemas UNSAAC (6 asignaturas, 22 créditos en total).\n\n- IFI08 ANÁLISIS Y DISEÑO DE ALGORITMOS: 4 créditos (3 horas teóricas, 2 prácticas), requisitos: IFI04.\n- IFI09 PROGRAMACIÓN III: 2 créditos (0 horas teóricas, 4 prácticas), requisitos: IFI05.\n- IFI10 ANÁLISIS Y DISEÑO DE SISTEMAS DE INFORMACIÓN: 4 créditos (3 horas teóricas, 2 prácticas), requisitos: IFI04, ADI01.\n- IFI11 ORGANIZACIÓN Y ARQUITECTURA DEL COMPUTADOR: 4 créditos (3 horas teóricas, 2 prácticas), requisitos: ELI01.\n- IFI12 MÉTODOS NUMÉRICOS: 4 créditos (3 horas teóricas, 2 prácticas), requisitos: MEI08.\n- IFI13 TEORÍA DE LA COMPUTACIÓN: 4 créditos (3 horas teóricas, 2 prácticas), requisitos: IFI04.",
+      "seccion": [
+        "plan_de_estudios",
+        "semestre_5"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "plan_estudios_2025#semestre-6",
+      "titulo": "Sexto semestre - Plan 2025",
+      "texto": "Sexto semestre del Plan de Estudios 2025 de Ingeniería Informática y de Sistemas UNSAAC (5 asignaturas, 22 créditos en total).\n\n- IFI14 INTELIGENCIA ARTIFICIAL: 4 créditos (3 horas teóricas, 2 prácticas), requisitos: MEI05.\n- IFI15 FUNDAMENTOS Y DISEÑO DE BASE DE DATOS: 4 créditos (3 horas teóricas, 2 prácticas), requisitos: IFI10.\n- IFI16 SISTEMAS OPERATIVOS: 4 créditos (3 horas teóricas, 2 prácticas), requisitos: IFI11.\n- IFI17 MODELADO Y SIMULACIÓN: 4 créditos (3 horas teóricas, 2 prácticas), requisitos: IFI07, IFI12.\n- EUI01 DEPORTE: 2 créditos (0 horas teóricas, 4 prácticas), requisitos: 100 Cr..",
+      "seccion": [
+        "plan_de_estudios",
+        "semestre_6"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "plan_estudios_2025#semestre-7",
+      "titulo": "Séptimo semestre - Plan 2025",
+      "texto": "Séptimo semestre del Plan de Estudios 2025 de Ingeniería Informática y de Sistemas UNSAAC (5 asignaturas, 22 créditos en total).\n\n- IFI19 APRENDIZAJE AUTOMÁTICO: 4 créditos (3 horas teóricas, 2 prácticas), requisitos: IFI14.\n- IFI20 METODOLOGÍA Y DESARROLLO DE SOFTWARE: 5 créditos (3 horas teóricas, 4 prácticas), requisitos: IFI15.\n- IFI21 REDES DE COMPUTADORAS I: 4 créditos (3 horas teóricas, 2 prácticas), requisitos: IFI16.\n- IFI22 CIENCIA DE DATOS: 3 créditos (2 horas teóricas, 2 prácticas), requisitos: IFI14.\n- IFI23 PROYECCIÓN SOCIAL: 2 créditos (0 horas teóricas, 4 prácticas), requisitos: 120 Cr..",
+      "seccion": [
+        "plan_de_estudios",
+        "semestre_7"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "plan_estudios_2025#semestre-8",
+      "titulo": "Octavo semestre - Plan 2025",
+      "texto": "Octavo semestre del Plan de Estudios 2025 de Ingeniería Informática y de Sistemas UNSAAC (5 asignaturas, 22 créditos en total).\n\n- IFI24 PROGRAMACIÓN PARALELA Y DISTRIBUIDA: 4 créditos (3 horas teóricas, 2 prácticas), requisitos: IFI21, IFI08.\n- IFI25 APRENDIZAJE PROFUNDO: 4 créditos (3 horas teóricas, 2 prácticas), requisitos: IFI19.\n- IFI26 INGENIERÍA DE SOFTWARE I: 4 créditos (3 horas teóricas, 2 prácticas), requisitos: IFI20.\n- IFI27 REDES DE COMPUTADORAS II: 4 créditos (3 horas teóricas, 2 prácticas), requisitos: IFI21.\n- IFI28 FORMULACIÓN DE PROYECTOS DE TECNOLOGÍAS DE LA INFORMACIÓN: 3 créditos (2 horas teóricas, 2 prácticas), requisitos: IFI20.",
+      "seccion": [
+        "plan_de_estudios",
+        "semestre_8"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "plan_estudios_2025#semestre-9",
+      "titulo": "Noveno semestre - Plan 2025",
+      "texto": "Noveno semestre del Plan de Estudios 2025 de Ingeniería Informática y de Sistemas UNSAAC (4 asignaturas, 22 créditos en total).\n\n- IFI29 SEMINARIO DE INVESTIGACIÓN: 3 créditos (2 horas teóricas, 2 prácticas), requisitos: 170 Cr..\n- IFI30 INGENIERÍA DE SOFTWARE II: 4 créditos (3 horas teóricas, 2 prácticas), requisitos: IFI26.\n- IFI31 SISTEMAS INTERNET DE LA COSAS: 4 créditos (3 horas teóricas, 2 prácticas), requisitos: IFI27, IFI19.\n- IFI32 CIBERSEGURIDAD: 4 créditos (3 horas teóricas, 2 prácticas), requisitos: IFI27.",
+      "seccion": [
+        "plan_de_estudios",
+        "semestre_9"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "plan_estudios_2025#semestre-10",
+      "titulo": "Décimo semestre - Plan 2025",
+      "texto": "Décimo semestre del Plan de Estudios 2025 de Ingeniería Informática y de Sistemas UNSAAC (5 asignaturas, 22 créditos en total).\n\n- IFI33 TRABAJO DE INVESTIGACIÓN: 4 créditos (3 horas teóricas, 2 prácticas), requisitos: IFI29.\n- IFI34 DESARROLLO DE PROYECTOS DE INGENIERÍA DE SOFTWARE: 4 créditos (3 horas teóricas, 2 prácticas), requisitos: IFI28, IFI30.\n- IFI35 ADMINISTRACIÓN DE TECNOLOGÍAS DE LA INFORMACIÓN: 4 créditos (3 horas teóricas, 2 prácticas), requisitos: IFI32.\n- IFI18 DEBATE: 2 créditos (0 horas teóricas, 4 prácticas), requisitos: 180 Cr..\n- IFI66 PRÁCTICA PRE PROFESIONALES: 8 créditos (0 horas teóricas, 16 prácticas), requisitos: 180 Cr..",
+      "seccion": [
+        "plan_de_estudios",
+        "semestre_10"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "plan_estudios_2025#resumen",
+      "titulo": "Resumen del Plan de Estudios 2025",
+      "texto": "El Plan de Estudios 2025 de Ingeniería Informática y de Sistemas de la UNSAAC comprende 10 semestres, 54 asignaturas y 220 créditos en total. Primer semestre: 22 créditos. Segundo semestre: 22 créditos. Tercer semestre: 22 créditos. Cuarto semestre: 22 créditos. Quinto semestre: 22 créditos. Sexto semestre: 22 créditos. Séptimo semestre: 22 créditos. Octavo semestre: 22 créditos. Noveno semestre: 22 créditos. Décimo semestre: 22 créditos.",
+      "seccion": [
+        "plan_de_estudios",
+        "resumen"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    }
+  ]
+}
