@@ -1,5 +1,11 @@
 # Auditoría y Especificación del Pipeline RAG — TutorIA (Fase 3)
 
+> **Documento histórico.** Describe el pipeline anterior a la
+> reconstrucción del corpus y del motor de recuperación: chunking por
+> estructura JSON, corpus sin articulado y recuperación con heurísticas
+> léxicas. La operación vigente está en
+> [`07_rag_operacion.md`](07_rag_operacion.md).
+
 El pipeline de **Retrieval-Augmented Generation (RAG)** constituye el núcleo de inteligencia conversacional del proyecto **TutorIA**, responsable de fundamentar las respuestas del chatbot en la normativa oficial de la UNSAAC.
 
 ---

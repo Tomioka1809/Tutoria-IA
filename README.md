@@ -15,6 +15,48 @@ Esta guía contiene todas las instrucciones necesarias para clonar, configurar y
 - **Cierre Técnico del Proyecto:** **COMPLETADO**
 - **Suite de Pruebas Automatizadas:** **164 pruebas unitarias aprobadas, 0 fallidas** (144 iniciales, 162 al cerrar Fase 6B, y 164 al cerrar Fase 6C).
 - **Fase 6D:** Corresponde únicamente a integración Git, pull request y entrega operativa.
+- **Reconstrucción del RAG (Fases 0 a 4):** **COMPLETADA** — 387 pruebas aprobadas. Ver detalle abajo y operación en [`documentacion/07_rag_operacion.md`](documentacion/07_rag_operacion.md).
+
+---
+
+## 🔍 Reconstrucción del sistema RAG
+
+El corpus documental y el motor de recuperación se rehicieron por completo tras una auditoría que midió su precisión real.
+
+### El punto de partida
+
+La evaluación publicada reportaba precisión global 0.33, pero ese número incluía los casos fuera de alcance, que puntúan 1.0 de forma trivial porque no hay nada que recuperar. **Sobre las consultas dentro de alcance, la precisión real era 2 de 12.**
+
+La causa de fondo no estaba en la búsqueda sino en los datos: el corpus era una **paráfrasis temática** de los documentos oficiales y había perdido el articulado. El golden set pedía citas como `"Art. 15 - Reglamento de Tutoría"`, pero **no existía un solo número de artículo en los nueve archivos**, así que esa métrica era imposible de satisfacer por construcción. Algunos artículos citados (18, 22, 23, 25, 30) ni siquiera existen: el reglamento llega hasta el 16.
+
+### Qué se hizo
+
+| Fase | Trabajo |
+|---|---|
+| **0** | Auditoría de cobertura documental. Mide si el texto necesario **existe**, sin llamar a Gemini. Definió el techo alcanzable: **8.3%** |
+| **1** | Esquema único de corpus. El fragmento pasa a ser la unidad de recuperación, con procedencia citable y jerarquía como encabezado |
+| **2** | Extracción del articulado real desde los PDF oficiales, más tablas (planes de estudio) y OCR en español (calendario escaneado) |
+| **3** | Ingesta incremental, embeddings asimétricos, búsqueda híbrida con RRF y umbral calibrado |
+| **4** | Reordenamiento por autoridad de la fuente, calibrado con barrido |
+
+### Resultado
+
+| Métrica | Antes | Después |
+|---|---|---|
+| Cobertura documental (techo) | 8.3% | **100%** |
+| Acierto de artículo | imposible de medir | **15/16 (94%)** |
+| Acierto de documento | — | **20/20 (100%)** |
+| Abstención fuera de alcance | rota (0/3) | **3/3** |
+| Fragmentos citables | 0 | **1009** |
+| Pruebas automatizadas | 277 | **387** |
+
+### Decisiones que vale la pena conocer
+
+- **Nada se inventó.** Los artículos y resoluciones que no se pudieron verificar quedaron nulos y el validador los reporta como error, en vez de completarlos a ojo.
+- **Los parámetros se calibraron, no se eligieron.** El umbral de distancia estaba en 0.45 y dejaba pasar **las tres** consultas fuera de alcance; medido contra el golden set, el valor correcto es 0.34. Lo mismo con el peso de autoridad: 0.2 en lugar del 0.5 puesto a mano.
+- **La ingesta es estricta.** Ante un fallo de Gemini se detiene en vez de guardar el pseudo-embedding del *fallback*, que es indistinguible de un vector real y degrada la búsqueda en silencio.
+- **La abstención vive en código**, antes de invocar al LLM, para no depender de que el *prompt* lo convenza de callarse.
+- **El golden set v1 quedó congelado.** Sus hashes están fijados en las pruebas de integridad; el trabajo nuevo usa `golden_set_v2.json`, en un archivo aparte.
 
 ### 🔒 Entornos y Seguridad de Configuración (Fase 6B-2)
 - `APP_ENV` admite los entornos: `development`, `test` y `production`.
