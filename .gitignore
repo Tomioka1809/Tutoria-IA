@@ -8,10 +8,18 @@ backend/__pycache__/
 backend/**/*.pyc
 backend/.pytest_cache/
 venv/
+.venv/
 __pycache__/
 *.pyc
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
 
 # Node/Frontend
+node_modules/
 frontend/node_modules/
 frontend/.expo/
 frontend/dist/
@@ -28,5 +36,15 @@ frontend/android/
 *.key
 *.mobileprovision
 
+# Herramientas de analisis (salida generada, no fuente)
+graphify-out/
+.serena/
+
+# Editores
+# .vscode/ NO se ignora: frontend/.vscode/ es config compartida y esta versionada.
+.idea/
+*.swp
+
 # OS files
 .DS_Store
+Thumbs.db
