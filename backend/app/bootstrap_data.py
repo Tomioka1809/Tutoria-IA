@@ -72,26 +72,37 @@ async def ensure_users() -> None:
 
 
 async def ensure_corpus() -> None:
-    """Genera el corpus del RAG solo si esta vacio (consume cuota de Gemini)."""
+    """Pone el indice del RAG al dia desde el corpus estructurado.
+
+    Usa la ingesta incremental y no el seed antiguo: aquel leia el corpus
+    heredado -la parafrasis sin articulado- y borraba corpus_chunks entero antes
+    de reescribirlo, de modo que un arranque limpio habria pisado el corpus
+    extraido de los PDF oficiales.
+
+    Ya no hace falta el guardado de "solo si esta vacio": la ingesta compara
+    hashes y unicamente embebe lo que falta, asi que reejecutarla es barato.
+    """
     async with SessionLocal() as db:
         existing = await _count(db, CorpusChunk)
 
-    if existing:
-        print(f"[bootstrap] Corpus ya tiene {existing} chunks, se omite el seeding.")
-        return
-
     if not os.getenv("GEMINI_API_KEY"):
-        print("[bootstrap] Corpus vacio pero falta GEMINI_API_KEY, se omite el seeding.")
+        print(f"[bootstrap] Falta GEMINI_API_KEY, se omite la ingesta ({existing} chunks).")
         return
 
     if os.getenv("AUTO_SEED_CORPUS", "1") != "1":
-        print("[bootstrap] AUTO_SEED_CORPUS=0, se omite el seeding del corpus.")
+        print(f"[bootstrap] AUTO_SEED_CORPUS=0, se omite la ingesta ({existing} chunks).")
         return
 
-    from app.infrastructure.database.seed import seed_database
+    from scripts.ingest_corpus import ingestar
 
-    print("[bootstrap] Corpus vacio, generando embeddings (puede tardar varios minutos)...")
-    await seed_database()
+    print(f"[bootstrap] Actualizando el indice del RAG ({existing} chunks ya indexados)...")
+    try:
+        await ingestar()
+    except Exception as exc:
+        # La cuota de Gemini puede agotarse a mitad de camino. La ingesta es
+        # reanudable, asi que el arranque continua en vez de fallar: lo indexado
+        # queda intacto y la proxima corrida sigue donde quedo.
+        print(f"[bootstrap] Ingesta interrumpida ({type(exc).__name__}). Reanudable.")
 
 
 async def bootstrap() -> None:
