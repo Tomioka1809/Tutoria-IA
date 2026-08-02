@@ -75,11 +75,17 @@ class ResultadoCaso:
 def unidades_semanticas(datos: Any, archivo: str) -> list[tuple[str, str]]:
     """Divide un documento en las unidades que un chunk podria devolver.
 
-    Se usa la seccion de primer nivel como unidad. Es una aproximacion generosa:
-    si las palabras clave de un caso no co-ocurren ni siquiera dentro de una
-    seccion entera, ningun fragmento mas pequeno podra responderlo.
+    Soporta los dos formatos: el corpus heredado, donde la unidad es la seccion
+    de primer nivel, y el corpus estructurado, donde el fragmento ya ES la unidad
+    de recuperacion y no hace falta aproximarla.
     """
     unidades: list[tuple[str, str]] = []
+
+    if isinstance(datos, dict) and isinstance(datos.get("fragmentos"), list):
+        for frag in datos["fragmentos"]:
+            unidades.append((frag.get("id", archivo), frag.get("texto", "")))
+        return unidades
+
     if isinstance(datos, dict):
         for clave, valor in datos.items():
             unidades.append((f"{archivo}#{clave}", json.dumps(valor, ensure_ascii=False)))
@@ -89,19 +95,19 @@ def unidades_semanticas(datos: Any, archivo: str) -> list[tuple[str, str]]:
     return unidades
 
 
-def cargar_corpus() -> tuple[str, list[tuple[str, str]], dict[str, str]]:
+def cargar_corpus(directorio: str) -> tuple[str, list[tuple[str, str]], dict[str, str]]:
     """Devuelve (texto_global_normalizado, unidades_normalizadas, titulos)."""
-    if not os.path.isdir(CORPUS_DIR):
-        raise SystemExit(f"No existe el directorio de corpus: {CORPUS_DIR}")
+    if not os.path.isdir(directorio):
+        raise SystemExit(f"No existe el directorio de corpus: {directorio}")
 
     partes: list[str] = []
     unidades: list[tuple[str, str]] = []
     titulos: dict[str, str] = {}
 
-    for nombre in sorted(os.listdir(CORPUS_DIR)):
+    for nombre in sorted(os.listdir(directorio)):
         if not nombre.endswith(".json"):
             continue
-        ruta = os.path.join(CORPUS_DIR, nombre)
+        ruta = os.path.join(directorio, nombre)
         with open(ruta, encoding="utf-8") as fh:
             datos = json.load(fh)
 
@@ -109,7 +115,9 @@ def cargar_corpus() -> tuple[str, list[tuple[str, str]], dict[str, str]]:
         for etiqueta, texto in unidades_semanticas(datos, nombre):
             unidades.append((etiqueta, normalizar(texto)))
 
-        if isinstance(datos, dict):
+        if isinstance(datos, dict) and isinstance(datos.get("procedencia"), dict):
+            titulo = datos["procedencia"].get("documento", nombre)
+        elif isinstance(datos, dict):
             titulo = (
                 datos.get("reglamento")
                 or datos.get("documento")
@@ -344,9 +352,13 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Auditoria de cobertura documental del corpus")
     parser.add_argument("--set", dest="conjunto", choices=sorted(GOLDEN_SETS), default="oficial")
     parser.add_argument("--json", dest="salida_json", help="Ruta donde guardar el informe en JSON")
+    parser.add_argument(
+        "--corpus", default="corpus_estructurado",
+        help="Directorio de corpus a auditar (corpus | corpus_estructurado)",
+    )
     args = parser.parse_args()
 
-    corpus_norm, unidades, titulos = cargar_corpus()
+    corpus_norm, unidades, titulos = cargar_corpus(os.path.join(BACKEND_DIR, args.corpus))
     casos = cargar_casos(args.conjunto)
     resultados = [auditar_caso(c, corpus_norm, unidades, titulos) for c in casos]
     resumen = imprimir_informe(resultados, titulos)

@@ -91,8 +91,8 @@
       "categoria": "facil",
       "pregunta": "Si tengo buen promedio, ¿puedo llevar más créditos de lo normal?",
       "respuesta_esperada": "Sí. El estudiante con promedio ponderado igual o mayor a dieciséis (16) puntos tiene derecho a matricularse hasta en veintiséis (26) créditos.",
-      "articulos_referencia": ["Art. 8 - Reglamento Académico UNSAAC (CU-093-2017)"],
-      "palabras_clave_esperadas": ["dieciséis", "16", "veintiséis", "26", "créditos"],
+      "articulos_referencia": ["Art. 9 - Reglamento Académico UNSAAC (CU-093-2017)"],
+      "palabras_clave_esperadas": ["dieciséis", "veintiséis", "créditos"],
       "fuente": "reglamento_academico",
       "estado": "verificado"
     },
@@ -104,6 +104,17 @@
       "respuesta_esperada": "La condición de estudiante no regular no puede ser indefinida: el plazo máximo permitido es de tres (3) semestres consecutivos.",
       "articulos_referencia": ["Art. 3 - Reglamento Académico UNSAAC (CU-093-2017)"],
       "palabras_clave_esperadas": ["tres", "3", "semestres consecutivos"],
+      "fuente": "reglamento_academico",
+      "estado": "verificado"
+    },
+    {
+      "id": 127,
+      "dominio": "trayectoria_academica",
+      "categoria": "facil",
+      "pregunta": "¿Cuántos créditos como máximo puedo matricular por semestre?",
+      "respuesta_esperada": "El estudiante regular puede matricularse en un máximo de veintidós (22) créditos y un mínimo de doce (12) ofrecidos en el catálogo para el semestre académico correspondiente.",
+      "articulos_referencia": ["Art. 9 - Reglamento Académico UNSAAC (CU-093-2017)"],
+      "palabras_clave_esperadas": ["veintidós", "créditos", "mínimo", "doce"],
       "fuente": "reglamento_academico",
       "estado": "verificado"
     },
@@ -266,9 +277,9 @@
       "dominio": "enrutamiento",
       "categoria": "ambiguo",
       "pregunta": "¿Quién supervisa la actividad de tutoría en la universidad?",
-      "respuesta_esperada": "El Vicerrectorado Académico supervisa la actividad tutorial, solicitando informes y emitiendo directivas e indicaciones.",
+      "respuesta_esperada": "La actividad tutorial, sea de los tutores o de los comités tutoriales, es objeto de supervisión por el Vicerrectorado Académico, que solicita informes y emite directivas e indicaciones.",
       "articulos_referencia": ["Art. 11 - Reglamento de Tutoría Académica UNSAAC"],
-      "palabras_clave_esperadas": ["Vicerrectorado Académico", "supervisa", "informes"],
+      "palabras_clave_esperadas": ["Vicerrectorado Académico", "supervisión", "informes"],
       "fuente": "reglamento_tutoria",
       "estado": "verificado"
     },

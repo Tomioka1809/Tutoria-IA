@@ -217,10 +217,31 @@ def convertir(nombre: str, datos: Any) -> DocumentoCorpus:
     return DocumentoCorpus(procedencia=procedencia, fragmentos=fragmentos)
 
 
+def tiene_articulado(ruta: str) -> bool:
+    """True si el archivo ya fue extraido de un PDF y trae numeros de articulo.
+
+    Protege el resultado de la Fase 2: volver a correr la conversion pisaria el
+    articulado real con la parafrasis heredada, que es justamente lo que se
+    estaba corrigiendo.
+    """
+    if not os.path.exists(ruta):
+        return False
+    try:
+        with open(ruta, encoding="utf-8") as fh:
+            datos = json.load(fh)
+    except (OSError, json.JSONDecodeError):
+        return False
+    return any(f.get("articulo") for f in datos.get("fragmentos", []))
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Convierte el corpus heredado al esquema unico")
     parser.add_argument("--salida", default="corpus_estructurado")
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument(
+        "--forzar", action="store_true",
+        help="Sobrescribe incluso los documentos ya extraidos de PDF (destructivo)",
+    )
     args = parser.parse_args()
 
     destino = os.path.join(BACKEND_DIR, args.salida)
@@ -256,6 +277,9 @@ def main() -> int:
 
         if not args.dry_run:
             ruta_salida = os.path.join(destino, nombre)
+            if not args.forzar and tiene_articulado(ruta_salida):
+                print(f"{'':44s} {'':11s} omitido: ya extraido del PDF con articulado")
+                continue
             with open(ruta_salida, "w", encoding="utf-8") as fh:
                 json.dump(doc.model_dump(mode="json"), fh, ensure_ascii=False, indent=2)
 
