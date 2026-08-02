@@ -1,0 +1,598 @@
+{
+  "procedencia": {
+    "documento": "Reglamento de Tutoría Académica aprobado por Resolución Nro. CU-0220-2017-UNSAAC de 24.05.2017",
+    "tipo": "reglamento",
+    "universidad": "UNSAAC",
+    "resolucion": "Reglamento de Tutoría Académica aprobado por Resolución Nro. CU-0220-2017-UNSAAC de 24.05.2017",
+    "anio": null,
+    "url": null,
+    "base_legal": [
+      "Ley Universitaria 30220, Art. 87.5",
+      "Estatuto de la UNSAAC, Art. 195.5"
+    ]
+  },
+  "fragmentos": [
+    {
+      "id": "reglamento_tutoria#tutoria-universitaria-definicion",
+      "titulo": "Tutoria universitaria > Definicion",
+      "texto": "Tutoria universitaria > Definicion\nLa Tutoría Académica es un proceso permanente de acompañamiento durante la formación de los estudiantes, que se concreta mediante la atención personalizada o grupal brindada por docentes, buscando orientarlos y proporcionarles seguimiento a su trayectoria académica, en los aspectos psicosociales, cognitivos y afectivos del aprendizaje, para fortalecer su formación integral y asegurar su permanencia y culminación de la carrera.",
+      "seccion": [
+        "tutoria_universitaria",
+        "definicion"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#tutoria-universitaria-caracter",
+      "titulo": "Tutoria universitaria > Caracter",
+      "texto": "Tutoria universitaria > Caracter\nActividad extraclase, de responsabilidad social de la UNSAAC. Se reconoce como carga académica no lectiva. Es obligatoria la asignación de tutor al estudiante con matrícula condicionada.",
+      "seccion": [
+        "tutoria_universitaria",
+        "caracter"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#tutoria-universitaria-duracion",
+      "titulo": "Tutoria universitaria > Duracion",
+      "texto": "Tutoria universitaria > Duracion\nDesde el ingreso hasta la culminación de los estudios de pregrado.",
+      "seccion": [
+        "tutoria_universitaria",
+        "duracion"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#tutoria-universitaria-modalidad",
+      "titulo": "Tutoria universitaria > Modalidad",
+      "texto": "Tutoria universitaria > Modalidad\nPersonalizada o grupal, mediante entrevistas programadas, comentarios de trabajos u otras actividades.",
+      "seccion": [
+        "tutoria_universitaria",
+        "modalidad"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#tutoria-universitaria-tipos-de-tutoria-0",
+      "titulo": "Tutoria universitaria > Tipos de tutoria > 0",
+      "texto": "Tutoria universitaria > Tipos de tutoria > 0\nTipo: Académica. Descripcion: Orientación en métodos de estudio, organización del tiempo de trabajo y aprendizaje, selección de cursos, seguimiento del rendimiento académico y apoyo en dificultades de aprendizaje. Incluye información sobre la estructura y programación progresiva de las enseñanzas.. Dimensiones: Conocer las exigencias de las diversas opciones académicas, Aprender habilidades de estudio eficaces, Fomentar habilidades de pensamiento crítico, Identificar los estilos de aprendizaje individuales, Promover habilidades de toma de decisiones",
+      "seccion": [
+        "tutoria_universitaria",
+        "tipos_de_tutoria",
+        "0"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#tutoria-universitaria-tipos-de-tutoria-1",
+      "titulo": "Tutoria universitaria > Tipos de tutoria > 1",
+      "texto": "Tutoria universitaria > Tipos de tutoria > 1\nTipo: Personal. Descripcion: Apoyo en la adaptación a la vida universitaria, especialmente en el primer semestre. Derivación a servicios de bienestar psicológico y fortalecimiento de habilidades blandas e interpersonales.. Dimensiones: Fomentar el conocimiento y aceptación de sí mismo, Desarrollar el sentido de la responsabilidad personal, Promover habilidades interpersonales y de comunicación eficaces, Promover el trabajo en grupo y el reconocimiento de discrepancias, Fomentar la comprensión y el respeto hacia los demás",
+      "seccion": [
+        "tutoria_universitaria",
+        "tipos_de_tutoria",
+        "1"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#tutoria-universitaria-tipos-de-tutoria-2",
+      "titulo": "Tutoria universitaria > Tipos de tutoria > 2",
+      "texto": "Tutoria universitaria > Tipos de tutoria > 2\nTipo: Profesional. Descripcion: Guía sobre características, intereses, aptitudes y habilidades propias. Orientación hacia la salida profesional y el mundo del trabajo, especialmente en los últimos cursos del pregrado.. Dimensiones: Conocer las características, intereses, aptitudes y habilidades propias, Fomentar el conocimiento y el respeto por la diversidad del mundo del trabajo, Comprender la relación entre rendimiento académico y elecciones de futuro, Desarrollar una actitud positiva hacia el mundo del trabajo, Examinar la influencia de los cambios en el mundo del trabajo",
+      "seccion": [
+        "tutoria_universitaria",
+        "tipos_de_tutoria",
+        "2"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#tutoria-universitaria-proceso-asignacion",
+      "titulo": "Tutoria universitaria > Proceso asignacion",
+      "texto": "Tutoria universitaria > Proceso asignacion\nAl inicio de sus estudios, todos los estudiantes son asignados a un Tutor Académico por las Direcciones de Escuela Profesional. Esta relación se mantiene preferentemente a lo largo de toda la carrera hasta la culminación del plan curricular.",
+      "seccion": [
+        "tutoria_universitaria",
+        "proceso_asignacion"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#tutoria-universitaria-numero-maximo-tutorados",
+      "titulo": "Tutoria universitaria > Numero maximo tutorados",
+      "texto": "Tutoria universitaria > Numero maximo tutorados\nEl número de tutorados por cada profesor no supera los veinticinco (25) estudiantes en la medida de lo posible.",
+      "seccion": [
+        "tutoria_universitaria",
+        "numero_maximo_tutorados"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#tutoria-universitaria-cambio-de-tutor",
+      "titulo": "Tutoria universitaria > Cambio de tutor",
+      "texto": "Tutoria universitaria > Cambio de tutor\nCualquier estudiante puede solicitar, de forma razonada, al Comité Tutorial de la Escuela el cambio de Tutor Académico. La solicitud se resuelve previa audiencia del tutor por el Comité y, en última instancia, por el Vicerrectorado Académico.",
+      "seccion": [
+        "tutoria_universitaria",
+        "cambio_de_tutor"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#tutoria-universitaria-periodicidad",
+      "titulo": "Tutoria universitaria > Periodicidad",
+      "texto": "Tutoria universitaria > Periodicidad\nDescripcion: El Comité Tutorial de la Escuela Profesional determina la frecuencia mínima de entrevistas. Se realizan al menos en tres momentos clave por semestre.. Momentos clave: Al comienzo del semestre académico, Después de la primera evaluación parcial, Una semana antes de la finalización del semestre. Nota: El tutor puede acordar reuniones adicionales. El estudiante puede solicitarlas en función de sus necesidades específicas.",
+      "seccion": [
+        "tutoria_universitaria",
+        "periodicidad"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#estructura-tutorial-comite-tutorial-de-escuela",
+      "titulo": "Estructura tutorial > Comite tutorial de escuela",
+      "texto": "Estructura tutorial > Comite tutorial de escuela\nIntegrantes: El Decano, El Director de Escuela Profesional, Un docente elegido por Consejo de Facultad (o nominado por el Decano a propuesta del Departamento Académico). Funciones: Organizar la actividad tutorial en la Escuela Profesional, Proponer tutores para los estudiantes mediante resolución de decanato, Administrar la información tutorial, Evaluar recomendaciones para casos individuales que requieran atención especial, Aprobar directivas de funcionamiento según la naturaleza de la Escuela Profesional, Evaluar el programa de tutorías al finalizar cada año académico",
+      "seccion": [
+        "estructura_tutorial",
+        "comite_tutorial_de_escuela"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#estructura-tutorial-tutores",
+      "titulo": "Estructura tutorial > Tutores",
+      "texto": "Estructura tutorial > Tutores\nDefinicion: Docentes universitarios con régimen de tiempo completo o dedicación exclusiva, acreditados para promover la formación integral de sus tutorados en los campos del conocimiento, habilidades y valores éticos.. Funciones: Realizar el diagnóstico inicial del estudiante en base a su desempeño académico, Implementar estrategias de atención tutorial, Verificar la mejora del rendimiento académico del estudiante, Sistematizar los resultados semestrales en un informe para el Director de Escuela, Solicitar información a los docentes sobre asistencia y desempeño de los tutorados, Comunicar al Comité Tutorial aspectos relevantes sobre la formación de los estudiantes, Orientar individualmente a los estudiantes en sus procesos de aprendizaje, Prestar especial atención a estudiantes con discapacidad y necesidades educativas especiales, Derivar al estudiante a la Unidad de Bienestar Universitario cuando sea necesario, Informar a padres o representantes legales en casos excepcionales y graves",
+      "seccion": [
+        "estructura_tutorial",
+        "tutores"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#estructura-tutorial-supervision",
+      "titulo": "Estructura tutorial > Supervision",
+      "texto": "Estructura tutorial > Supervision\nLa actividad tutorial es supervisada por el Vicerrectorado Académico, el que solicita informes y emite directivas e indicaciones.",
+      "seccion": [
+        "estructura_tutorial",
+        "supervision"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#sujetos-del-proceso",
+      "titulo": "Sujetos del proceso",
+      "texto": "Sujetos del proceso\nTutor: Docente universitario con régimen de tiempo completo o dedicación exclusiva, acreditado para promover la formación integral.. Tutorado: El estudiante universitario.",
+      "seccion": [
+        "sujetos_del_proceso"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#objetivos-de-la-tutoria-0",
+      "titulo": "Objetivos de la tutoria > 0",
+      "texto": "Objetivos de la tutoria > 0\nImplementar un sistema de tutoría que integre la actividad académica con calidad educativa.",
+      "seccion": [
+        "objetivos_de_la_tutoria",
+        "0"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#objetivos-de-la-tutoria-1",
+      "titulo": "Objetivos de la tutoria > 1",
+      "texto": "Objetivos de la tutoria > 1\nMejorar permanentemente la calidad educativa en la formación profesional.",
+      "seccion": [
+        "objetivos_de_la_tutoria",
+        "1"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#objetivos-de-la-tutoria-2",
+      "titulo": "Objetivos de la tutoria > 2",
+      "texto": "Objetivos de la tutoria > 2\nProporcionar a los estudiantes apoyo académico integral según sus necesidades, intereses y aptitudes.",
+      "seccion": [
+        "objetivos_de_la_tutoria",
+        "2"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#objetivos-de-la-tutoria-3",
+      "titulo": "Objetivos de la tutoria > 3",
+      "texto": "Objetivos de la tutoria > 3\nFavorecer la reflexión sobre el desarrollo personal y las exigencias sociales del tutorado.",
+      "seccion": [
+        "objetivos_de_la_tutoria",
+        "3"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#objetivos-de-la-tutoria-4",
+      "titulo": "Objetivos de la tutoria > 4",
+      "texto": "Objetivos de la tutoria > 4\nIntegrar la actividad tutorial como componente esencial en la formación académica.",
+      "seccion": [
+        "objetivos_de_la_tutoria",
+        "4"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#objetivos-de-la-tutoria-5",
+      "titulo": "Objetivos de la tutoria > 5",
+      "texto": "Objetivos de la tutoria > 5\nProporcionar apoyo oportuno en los ámbitos de estudios, social y cultural.",
+      "seccion": [
+        "objetivos_de_la_tutoria",
+        "5"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#objetivos-de-la-tutoria-6",
+      "titulo": "Objetivos de la tutoria > 6",
+      "texto": "Objetivos de la tutoria > 6\nContribuir a elevar el aprovechamiento académico, creando un ambiente que propicie valores y hábitos positivos.",
+      "seccion": [
+        "objetivos_de_la_tutoria",
+        "6"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#objetivos-de-la-tutoria-7",
+      "titulo": "Objetivos de la tutoria > 7",
+      "texto": "Objetivos de la tutoria > 7\nPromover el desarrollo de habilidades intelectuales mediante estrategias de lectura, memoria, atención y estudio.",
+      "seccion": [
+        "objetivos_de_la_tutoria",
+        "7"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#objetivos-de-la-tutoria-8",
+      "titulo": "Objetivos de la tutoria > 8",
+      "texto": "Objetivos de la tutoria > 8\nContribuir a abatir la deserción estudiantil e incrementar la eficiencia terminal.",
+      "seccion": [
+        "objetivos_de_la_tutoria",
+        "8"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#objetivos-de-la-tutoria-9",
+      "titulo": "Objetivos de la tutoria > 9",
+      "texto": "Objetivos de la tutoria > 9\nEstablecer un clima de confianza basado en el conocimiento del desempeño académico del tutorado.",
+      "seccion": [
+        "objetivos_de_la_tutoria",
+        "9"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#objetivos-de-la-tutoria-10",
+      "titulo": "Objetivos de la tutoria > 10",
+      "texto": "Objetivos de la tutoria > 10\nDesarrollar la capacidad del tutorado para asumir responsabilidades en su formación profesional.",
+      "seccion": [
+        "objetivos_de_la_tutoria",
+        "10"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#objetivos-de-la-tutoria-11",
+      "titulo": "Objetivos de la tutoria > 11",
+      "texto": "Objetivos de la tutoria > 11\nMejorar la actitud del estudiante hacia sus capacidades de aprendizaje.",
+      "seccion": [
+        "objetivos_de_la_tutoria",
+        "11"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#objetivos-de-la-tutoria-12",
+      "titulo": "Objetivos de la tutoria > 12",
+      "texto": "Objetivos de la tutoria > 12\nApoyar el desarrollo de una metodología de estudio apropiada, estimulando disciplina y rigor intelectual.",
+      "seccion": [
+        "objetivos_de_la_tutoria",
+        "12"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#objetivos-de-la-tutoria-13",
+      "titulo": "Objetivos de la tutoria > 13",
+      "texto": "Objetivos de la tutoria > 13\nFomentar el autoaprendizaje para mejorar el desempeño educativo.",
+      "seccion": [
+        "objetivos_de_la_tutoria",
+        "13"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#objetivos-de-la-tutoria-14",
+      "titulo": "Objetivos de la tutoria > 14",
+      "texto": "Objetivos de la tutoria > 14\nDerivar al tutorado a instancias especializadas cuando su rendimiento sea afectado por causas no académicas.",
+      "seccion": [
+        "objetivos_de_la_tutoria",
+        "14"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#confidencialidad",
+      "titulo": "Confidencialidad",
+      "texto": "Confidencialidad\nDeber: Los Tutores Académicos tienen deber de confidencialidad respecto de la información que reciban de los estudiantes, que no sea estrictamente necesaria para el desarrollo de sus funciones.. Proteccion de datos: El tratamiento de la información de los estudiantes debe respetar la normativa de Protección de Datos de Carácter Personal.",
+      "seccion": [
+        "confidencialidad"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#evaluacion-programa-tutorial",
+      "titulo": "Evaluacion programa tutorial",
+      "texto": "Evaluacion programa tutorial\nFrecuencia: Al finalizar el año académico.. Responsable: Comité Tutorial de la Escuela Profesional.. Indicadores: Cantidad y calidad de profesores participantes en el Programa de Tutorías, Cantidad de estudiantes participantes en el Programa, Cumplimiento de los objetivos, Impacto del Programa sobre los estudiantes: tasa de deserción y permanencia, Nivel de satisfacción de estudiantes y docentes participantes. Resultado: El resultado se eleva al Vicerrectorado Académico con sugerencias. El Vicerrectorado puede adoptar medidas correctivas mediante directivas de obligatorio cumplimiento.",
+      "seccion": [
+        "evaluacion_programa_tutorial"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#preguntas-frecuentes-que-es-la-tutoria-academica-en-la-unsaac",
+      "titulo": "Preguntas frecuentes > ¿Qué es la tutoría académica en la UNSAAC?",
+      "texto": "Preguntas frecuentes > ¿Qué es la tutoría académica en la UNSAAC?\nPregunta: ¿Qué es la tutoría académica en la UNSAAC?. Respuesta: La tutoría académica es un proceso permanente de acompañamiento durante tu formación. Un docente tutor te orienta y hace seguimiento de tu trayectoria académica, en los aspectos psicosociales, cognitivos y afectivos del aprendizaje, para fortalecer tu formación integral y asegurar tu permanencia y culminación de la carrera.",
+      "seccion": [
+        "preguntas_frecuentes",
+        "¿Qué es la tutoría académica en la UNSAAC?"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#preguntas-frecuentes-cuando-se-me-asigna-un-tutor",
+      "titulo": "Preguntas frecuentes > ¿Cuándo se me asigna un tutor?",
+      "texto": "Preguntas frecuentes > ¿Cuándo se me asigna un tutor?\nPregunta: ¿Cuándo se me asigna un tutor?. Respuesta: Se te asigna un Tutor Académico desde el inicio de tus estudios, en el primer semestre, y esta relación se mantiene hasta la culminación de tu plan curricular.",
+      "seccion": [
+        "preguntas_frecuentes",
+        "¿Cuándo se me asigna un tutor?"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#preguntas-frecuentes-puedo-cambiar-de-tutor",
+      "titulo": "Preguntas frecuentes > ¿Puedo cambiar de tutor?",
+      "texto": "Preguntas frecuentes > ¿Puedo cambiar de tutor?\nPregunta: ¿Puedo cambiar de tutor?. Respuesta: Sí. Puedes solicitar, de forma razonada, al Comité Tutorial de la Escuela el cambio de Tutor Académico. La solicitud se resuelve previa audiencia del tutor por el Comité y, en última instancia, por el Vicerrectorado Académico.",
+      "seccion": [
+        "preguntas_frecuentes",
+        "¿Puedo cambiar de tutor?"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#preguntas-frecuentes-con-que-frecuencia-debo-reunirme-con-mi-tutor",
+      "titulo": "Preguntas frecuentes > ¿Con qué frecuencia debo reunirme con mi tutor?",
+      "texto": "Preguntas frecuentes > ¿Con qué frecuencia debo reunirme con mi tutor?\nPregunta: ¿Con qué frecuencia debo reunirme con mi tutor?. Respuesta: El Comité Tutorial determina la frecuencia mínima. Como mínimo deben realizarse tres encuentros por semestre: al inicio del semestre, después de la primera evaluación parcial, y una semana antes de finalizar el semestre. Además, puedes solicitar reuniones adicionales según tus necesidades.",
+      "seccion": [
+        "preguntas_frecuentes",
+        "¿Con qué frecuencia debo reunirme con mi tutor?"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#preguntas-frecuentes-cuantos-estudiantes-puede-tener-un-tutor",
+      "titulo": "Preguntas frecuentes > ¿Cuántos estudiantes puede tener un tutor?",
+      "texto": "Preguntas frecuentes > ¿Cuántos estudiantes puede tener un tutor?\nPregunta: ¿Cuántos estudiantes puede tener un tutor?. Respuesta: En la medida de lo posible, el número de tutorados por docente no supera los 25 estudiantes.",
+      "seccion": [
+        "preguntas_frecuentes",
+        "¿Cuántos estudiantes puede tener un tutor?"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#preguntas-frecuentes-que-debo-hacer-si-tengo-matricula-condicionada",
+      "titulo": "Preguntas frecuentes > ¿Qué debo hacer si tengo matrícula condicionada?",
+      "texto": "Preguntas frecuentes > ¿Qué debo hacer si tengo matrícula condicionada?\nPregunta: ¿Qué debo hacer si tengo matrícula condicionada?. Respuesta: Si tienes matrícula condicionada, es obligatorio que se te asigne un tutor académico. Este es un caso de atención prioritaria dentro del sistema de tutoría.",
+      "seccion": [
+        "preguntas_frecuentes",
+        "¿Qué debo hacer si tengo matrícula condicionada?"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#preguntas-frecuentes-que-hace-mi-tutor-exactamente",
+      "titulo": "Preguntas frecuentes > ¿Qué hace mi tutor exactamente?",
+      "texto": "Preguntas frecuentes > ¿Qué hace mi tutor exactamente?\nPregunta: ¿Qué hace mi tutor exactamente?. Respuesta: Tu tutor realiza un diagnóstico inicial de tu desempeño, implementa estrategias de atención, verifica tu progreso académico, te orienta en organización del tiempo y metodología de estudio, y puede derivarte a servicios especializados si lo necesitas. También elabora un expediente con el seguimiento de tus estudios.",
+      "seccion": [
+        "preguntas_frecuentes",
+        "¿Qué hace mi tutor exactamente?"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#preguntas-frecuentes-mis-conversaciones-con-el-tutor-son-confidenciales",
+      "titulo": "Preguntas frecuentes > ¿Mis conversaciones con el tutor son confidenciales?",
+      "texto": "Preguntas frecuentes > ¿Mis conversaciones con el tutor son confidenciales?\nPregunta: ¿Mis conversaciones con el tutor son confidenciales?. Respuesta: Sí. Los tutores tienen deber de confidencialidad respecto a la información que reciban de los estudiantes, salvo lo estrictamente necesario para el desarrollo de sus funciones. El tratamiento de tus datos personales respeta la normativa de Protección de Datos.",
+      "seccion": [
+        "preguntas_frecuentes",
+        "¿Mis conversaciones con el tutor son confidenciales?"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#preguntas-frecuentes-la-tutoria-es-obligatoria",
+      "titulo": "Preguntas frecuentes > ¿La tutoría es obligatoria?",
+      "texto": "Preguntas frecuentes > ¿La tutoría es obligatoria?\nPregunta: ¿La tutoría es obligatoria?. Respuesta: La tutoría es un derecho de todos los estudiantes y una responsabilidad social de la UNSAAC. Es obligatoria la asignación de tutor para estudiantes con matrícula condicionada. La actividad se reconoce como carga académica no lectiva para los docentes.",
+      "seccion": [
+        "preguntas_frecuentes",
+        "¿La tutoría es obligatoria?"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#preguntas-frecuentes-quien-supervisa-que-los-tutores-cumplan-su-funcion",
+      "titulo": "Preguntas frecuentes > ¿Quién supervisa que los tutores cumplan su función?",
+      "texto": "Preguntas frecuentes > ¿Quién supervisa que los tutores cumplan su función?\nPregunta: ¿Quién supervisa que los tutores cumplan su función?. Respuesta: El Vicerrectorado Académico supervisa la actividad tutorial, solicitando informes y emitiendo directivas. A nivel de escuela, el Comité Tutorial evalúa el programa al finalizar cada año académico.",
+      "seccion": [
+        "preguntas_frecuentes",
+        "¿Quién supervisa que los tutores cumplan su función?"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#preguntas-frecuentes-que-pasa-si-tengo-problemas-personales-que-afectan-mis-estud",
+      "titulo": "Preguntas frecuentes > ¿Qué pasa si tengo problemas personales que afectan mis estudios?",
+      "texto": "Preguntas frecuentes > ¿Qué pasa si tengo problemas personales que afectan mis estudios?\nPregunta: ¿Qué pasa si tengo problemas personales que afectan mis estudios?. Respuesta: Tu tutor puede derivarte a la Unidad de Bienestar Universitario de la Dirección de Bienestar y Responsabilidad Social, donde recibirás atención especializada. El tutor también puede dirigirte a otros servicios de atención al estudiante de la Universidad.",
+      "seccion": [
+        "preguntas_frecuentes",
+        "¿Qué pasa si tengo problemas personales que afectan mis estudios?"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#preguntas-frecuentes-desde-que-semestre-esta-vigente-el-reglamento-de-tutoria",
+      "titulo": "Preguntas frecuentes > ¿Desde qué semestre está vigente el reglamento de tutoría?",
+      "texto": "Preguntas frecuentes > ¿Desde qué semestre está vigente el reglamento de tutoría?\nPregunta: ¿Desde qué semestre está vigente el reglamento de tutoría?. Respuesta: El reglamento se implementó a partir del Semestre Académico 2017-II, según la disposición transitoria del mismo.",
+      "seccion": [
+        "preguntas_frecuentes",
+        "¿Desde qué semestre está vigente el reglamento de tutoría?"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#preguntas-frecuentes-que-es-el-comite-tutorial-de-la-escuela",
+      "titulo": "Preguntas frecuentes > ¿Qué es el Comité Tutorial de la Escuela?",
+      "texto": "Preguntas frecuentes > ¿Qué es el Comité Tutorial de la Escuela?\nPregunta: ¿Qué es el Comité Tutorial de la Escuela?. Respuesta: Es el órgano encargado del funcionamiento de la actividad tutorial en cada Escuela Profesional. Está integrado por el Decano, el Director de Escuela Profesional y un docente elegido por el Consejo de Facultad. Organiza la actividad, propone tutores y evalúa el programa cada año.",
+      "seccion": [
+        "preguntas_frecuentes",
+        "¿Qué es el Comité Tutorial de la Escuela?"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#preguntas-frecuentes-que-informacion-maneja-el-tutor-sobre-mi",
+      "titulo": "Preguntas frecuentes > ¿Qué información maneja el tutor sobre mí?",
+      "texto": "Preguntas frecuentes > ¿Qué información maneja el tutor sobre mí?\nPregunta: ¿Qué información maneja el tutor sobre mí?. Respuesta: Tu tutor elabora un expediente que incluye: diagnóstico inicial de tu desempeño académico, estrategias de atención tutorial implementadas, verificación de tu rendimiento y resultados semestrales. La UNSAAC proporciona los formatos para ello y los expedientes quedan a cargo de la Dirección de Escuela Profesional.",
+      "seccion": [
+        "preguntas_frecuentes",
+        "¿Qué información maneja el tutor sobre mí?"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#preguntas-frecuentes-en-que-se-centra-la-tutoria-durante-el-primer-semestre",
+      "titulo": "Preguntas frecuentes > ¿En qué se centra la tutoría durante el primer semestre?",
+      "texto": "Preguntas frecuentes > ¿En qué se centra la tutoría durante el primer semestre?\nPregunta: ¿En qué se centra la tutoría durante el primer semestre?. Respuesta: En el primer semestre de Estudios Generales, el Tutor Académico dedica especial atención a facilitar tu transición y adaptación a la enseñanza universitaria.",
+      "seccion": [
+        "preguntas_frecuentes",
+        "¿En qué se centra la tutoría durante el primer semestre?"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#preguntas-frecuentes-y-en-los-ultimos-semestres-de-la-carrera",
+      "titulo": "Preguntas frecuentes > ¿Y en los últimos semestres de la carrera?",
+      "texto": "Preguntas frecuentes > ¿Y en los últimos semestres de la carrera?\nPregunta: ¿Y en los últimos semestres de la carrera?. Respuesta: En los últimos cursos del pregrado, la actividad tutorial se centra, además de lo habitual, en la preparación para la salida a la vida profesional, en colaboración con los órganos y servicios establecidos por la Universidad para ese efecto.",
+      "seccion": [
+        "preguntas_frecuentes",
+        "¿Y en los últimos semestres de la carrera?"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#servicios-universitarios-bienestar-universitario",
+      "titulo": "Servicios universitarios > Bienestar universitario",
+      "texto": "Servicios universitarios > Bienestar universitario\nDescripcion: La Unidad de Bienestar Universitario, dependiente de la Dirección de Bienestar y Responsabilidad Social, ofrece servicios de apoyo a los estudiantes matriculados.. Servicios: Comedor universitario, Asistencia médica primaria, Servicio odontológico, Atención psicológica. Derivacion: El tutor puede derivar al estudiante a esta unidad cuando considere que requiere atención especializada por causas no académicas, como dificultades de aprendizaje, problemas en relaciones personales o presencia de alguna discapacidad.",
+      "seccion": [
+        "servicios_universitarios",
+        "bienestar_universitario"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#servicios-universitarios-direccion-de-calidad-y-acreditacion",
+      "titulo": "Servicios universitarios > Direccion de calidad y acreditacion",
+      "texto": "Servicios universitarios > Direccion de calidad y acreditacion\nDescripcion: Junto con la Dirección de Registro y Servicios Académicos, impulsa actividades de capacitación en materia de tutoría universitaria dirigida a los docentes ordinarios de la UNSAAC.",
+      "seccion": [
+        "servicios_universitarios",
+        "direccion_de_calidad_y_acreditacion"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#servicios-universitarios-direccion-de-registro-y-servicios-academicos",
+      "titulo": "Servicios universitarios > Direccion de registro y servicios academicos",
+      "texto": "Servicios universitarios > Direccion de registro y servicios academicos\nDescripcion: Diseña los formatos de trabajo para los Comités Tutoriales y los tutores, dentro de los 30 días de la aprobación del reglamento.",
+      "seccion": [
+        "servicios_universitarios",
+        "direccion_de_registro_y_servicios_academicos"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#servicios-universitarios-plataforma-informatica",
+      "titulo": "Servicios universitarios > Plataforma informatica",
+      "texto": "Servicios universitarios > Plataforma informatica\nDescripcion: La UNSAAC cuenta con una plataforma informática de apoyo para las tutorías, la cual recoge el seguimiento de visitas, reuniones, problemas específicos y una valoración global al final de cada curso.",
+      "seccion": [
+        "servicios_universitarios",
+        "plataforma_informatica"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "reglamento_tutoria#glosario",
+      "titulo": "Glosario",
+      "texto": "Glosario\nTutorado: Estudiante universitario que recibe el acompañamiento del docente tutor.. Tutor: Docente universitario con régimen de tiempo completo o dedicación exclusiva, acreditado para ejercer la tutoría.. Comite tutorial: Órgano colegiado de cada Escuela Profesional encargado de organizar, gestionar y evaluar el programa de tutoría.. Matricula condicionada: Situación académica especial en la que el estudiante tiene restricciones para matricularse; implica asignación obligatoria de tutor.. Carga academica no lectiva: Actividad oficial reconocida dentro de la labor docente que no implica dictado de clases, como es el caso de la tutoría.. Expediente del tutorado: Carpeta elaborada por el tutor que contiene el diagnóstico, estrategias, seguimiento y resultados académicos del estudiante.. Vicerrectorado academico: Autoridad universitaria que supervisa la actividad tutorial a nivel institucional y puede emitir directivas de obligatorio cumplimiento.",
+      "seccion": [
+        "glosario"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    }
+  ]
+}

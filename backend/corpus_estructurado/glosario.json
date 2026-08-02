@@ -1,0 +1,508 @@
+{
+  "procedencia": {
+    "documento": "Glosario General Universitario",
+    "tipo": "glosario",
+    "universidad": "UNSAAC",
+    "resolucion": null,
+    "anio": null,
+    "url": null,
+    "base_legal": []
+  },
+  "fragmentos": [
+    {
+      "id": "glosario#glosario-universitario-acervo-documental",
+      "titulo": "Glosario universitario > Acervo documental",
+      "texto": "Glosario universitario > Acervo documental\nTermino: Acervo documental. Definicion: Conjunto de libros, revistas, tesis, mapas y recursos digitales disponibles en el sistema de bibliotecas para el uso de la comunidad universitaria.",
+      "seccion": [
+        "glosario_universitario",
+        "Acervo documental"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "glosario#glosario-universitario-bachillerato",
+      "titulo": "Glosario universitario > Bachillerato",
+      "texto": "Glosario universitario > Bachillerato\nTermino: Bachillerato. Definicion: Grado académico que se obtiene tras culminar el plan de estudios, aprobar un trabajo de investigación (según normativa vigente) y acreditar el dominio de un idioma extranjero o lengua nativa.",
+      "seccion": [
+        "glosario_universitario",
+        "Bachillerato"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "glosario#glosario-universitario-bienestar-universitario",
+      "titulo": "Glosario universitario > Bienestar Universitario",
+      "texto": "Glosario universitario > Bienestar Universitario\nTermino: Bienestar Universitario. Definicion: Dirección encargada de promover la salud integral, asistencia social, alimentación y fomento deportivo de los estudiantes.",
+      "seccion": [
+        "glosario_universitario",
+        "Bienestar Universitario"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "glosario#glosario-universitario-carga-academica-no-lectiva",
+      "titulo": "Glosario universitario > Carga académica no lectiva",
+      "texto": "Glosario universitario > Carga académica no lectiva\nTermino: Carga académica no lectiva. Definicion: Actividades oficiales de los docentes, como la tutoría académica o investigación, que no implican el dictado de clases en aula.",
+      "seccion": [
+        "glosario_universitario",
+        "Carga académica no lectiva"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "glosario#glosario-universitario-carne-de-biblioteca",
+      "titulo": "Glosario universitario > Carné de Biblioteca",
+      "texto": "Glosario universitario > Carné de Biblioteca\nTermino: Carné de Biblioteca. Definicion: Documento físico o electrónico expedido por el Área de Biblioteca Central que acredita al estudiante para realizar préstamos de material bibliográfico.",
+      "seccion": [
+        "glosario_universitario",
+        "Carné de Biblioteca"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "glosario#glosario-universitario-carne-universitario",
+      "titulo": "Glosario universitario > Carné Universitario",
+      "texto": "Glosario universitario > Carné Universitario\nTermino: Carné Universitario. Definicion: Documento oficial emitido por la SUNEDU que acredita la condición de estudiante regular y otorga beneficios como el pasaje universitario.",
+      "seccion": [
+        "glosario_universitario",
+        "Carné Universitario"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "glosario#glosario-universitario-comedor-universitario",
+      "titulo": "Glosario universitario > Comedor Universitario",
+      "texto": "Glosario universitario > Comedor Universitario\nTermino: Comedor Universitario. Definicion: Servicio de asistencia alimentaria de la universidad, priorizado para estudiantes en situación de vulnerabilidad socioeconómica y con condición de invictos.",
+      "seccion": [
+        "glosario_universitario",
+        "Comedor Universitario"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "glosario#glosario-universitario-comite-tutorial",
+      "titulo": "Glosario universitario > Comité Tutorial",
+      "texto": "Glosario universitario > Comité Tutorial\nTermino: Comité Tutorial. Definicion: Órgano de cada escuela profesional encargado de gestionar, organizar, asignar tutores y evaluar el programa de tutorías anualmente.",
+      "seccion": [
+        "glosario_universitario",
+        "Comité Tutorial"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "glosario#glosario-universitario-constancia-de-egresado",
+      "titulo": "Glosario universitario > Constancia de Egresado",
+      "texto": "Glosario universitario > Constancia de Egresado\nTermino: Constancia de Egresado. Definicion: Documento que certifica que el estudiante ha aprobado la totalidad de créditos de su plan de estudios y se encuentra expedito para tramitar su bachillerato.",
+      "seccion": [
+        "glosario_universitario",
+        "Constancia de Egresado"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "glosario#glosario-universitario-constancia-de-no-adeudo",
+      "titulo": "Glosario universitario > Constancia de No Adeudo",
+      "texto": "Glosario universitario > Constancia de No Adeudo\nTermino: Constancia de No Adeudo. Definicion: Certificación expedida por áreas como tesorería, biblioteca y laboratorios, que avala que el estudiante no tiene deudas pendientes ni materiales por devolver.",
+      "seccion": [
+        "glosario_universitario",
+        "Constancia de No Adeudo"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "glosario#glosario-universitario-convenio-de-movilidad",
+      "titulo": "Glosario universitario > Convenio de Movilidad",
+      "texto": "Glosario universitario > Convenio de Movilidad\nTermino: Convenio de Movilidad. Definicion: Acuerdo interinstitucional que permite a los estudiantes cursar un semestre en otra universidad (nacional o extranjera) exentos del pago de matrícula en la institución de destino.",
+      "seccion": [
+        "glosario_universitario",
+        "Convenio de Movilidad"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "glosario#glosario-universitario-credito-academico",
+      "titulo": "Glosario universitario > Crédito académico",
+      "texto": "Glosario universitario > Crédito académico\nTermino: Crédito académico. Definicion: Medida del tiempo formativo que exige una asignatura; engloba horas teóricas, prácticas y trabajo independiente del estudiante.",
+      "seccion": [
+        "glosario_universitario",
+        "Crédito académico"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "glosario#glosario-universitario-defensoria-universitaria",
+      "titulo": "Glosario universitario > Defensoría Universitaria",
+      "texto": "Glosario universitario > Defensoría Universitaria\nTermino: Defensoría Universitaria. Definicion: Instancia encargada de tutelar los derechos de los miembros de la comunidad universitaria y atender denuncias por faltas éticas o abusos de autoridad.",
+      "seccion": [
+        "glosario_universitario",
+        "Defensoría Universitaria"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "glosario#glosario-universitario-desercion-estudiantil",
+      "titulo": "Glosario universitario > Deserción estudiantil",
+      "texto": "Glosario universitario > Deserción estudiantil\nTermino: Deserción estudiantil. Definicion: Abandono temporal o definitivo de los estudios universitarios, fenómeno que programas como la Tutoría y Asistencia Social buscan prevenir.",
+      "seccion": [
+        "glosario_universitario",
+        "Deserción estudiantil"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "glosario#glosario-universitario-disti",
+      "titulo": "Glosario universitario > DISTI",
+      "texto": "Glosario universitario > DISTI\nTermino: DISTI. Definicion: Dirección de Sistemas y Tecnologías de la Información; responsable de la plataforma virtual, matrículas en línea y correos institucionales.",
+      "seccion": [
+        "glosario_universitario",
+        "DISTI"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "glosario#glosario-universitario-estanteria-abierta",
+      "titulo": "Glosario universitario > Estantería abierta",
+      "texto": "Glosario universitario > Estantería abierta\nTermino: Estantería abierta. Definicion: Modalidad de atención en biblioteca que permite a los usuarios acceder directamente a los libros ubicados en los estantes para su revisión in situ.",
+      "seccion": [
+        "glosario_universitario",
+        "Estantería abierta"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "glosario#glosario-universitario-estatuto-universitario",
+      "titulo": "Glosario universitario > Estatuto Universitario",
+      "texto": "Glosario universitario > Estatuto Universitario\nTermino: Estatuto Universitario. Definicion: Norma interna de máxima jerarquía normativa dentro de la universidad, adaptada a los lineamientos de la Ley Universitaria 30220.",
+      "seccion": [
+        "glosario_universitario",
+        "Estatuto Universitario"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "glosario#glosario-universitario-estudiante-invicto",
+      "titulo": "Glosario universitario > Estudiante invicto",
+      "texto": "Glosario universitario > Estudiante invicto\nTermino: Estudiante invicto. Definicion: Alumno que ha aprobado la totalidad de las asignaturas en las que se matriculó durante el semestre anterior.",
+      "seccion": [
+        "glosario_universitario",
+        "Estudiante invicto"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "glosario#glosario-universitario-evaluacion-socioeconomica",
+      "titulo": "Glosario universitario > Evaluación socioeconómica",
+      "texto": "Glosario universitario > Evaluación socioeconómica\nTermino: Evaluación socioeconómica. Definicion: Proceso mediante el cual las asistentas sociales determinan el nivel de vulnerabilidad económica de un estudiante para asignarle beneficios o exoneraciones.",
+      "seccion": [
+        "glosario_universitario",
+        "Evaluación socioeconómica"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "glosario#glosario-universitario-examen-medico-de-ingresante",
+      "titulo": "Glosario universitario > Examen médico de ingresante",
+      "texto": "Glosario universitario > Examen médico de ingresante\nTermino: Examen médico de ingresante. Definicion: Evaluación integral de salud (medicina, odontología, psicología) de carácter obligatorio para todo nuevo alumno al iniciar la universidad.",
+      "seccion": [
+        "glosario_universitario",
+        "Examen médico de ingresante"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "glosario#glosario-universitario-hemeroteca",
+      "titulo": "Glosario universitario > Hemeroteca",
+      "texto": "Glosario universitario > Hemeroteca\nTermino: Hemeroteca. Definicion: Sección específica de la biblioteca destinada al almacenamiento y consulta de revistas, diarios, boletines y otras publicaciones periódicas.",
+      "seccion": [
+        "glosario_universitario",
+        "Hemeroteca"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "glosario#glosario-universitario-incunable",
+      "titulo": "Glosario universitario > Incunable",
+      "texto": "Glosario universitario > Incunable\nTermino: Incunable. Definicion: Libro editado desde la invención de la imprenta hasta principios del siglo XVI. Son recursos históricos de la biblioteca sin acceso a préstamo a domicilio.",
+      "seccion": [
+        "glosario_universitario",
+        "Incunable"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "glosario#glosario-universitario-matricula-condicionada",
+      "titulo": "Glosario universitario > Matrícula condicionada",
+      "texto": "Glosario universitario > Matrícula condicionada\nTermino: Matrícula condicionada. Definicion: Estado del estudiante que ha desaprobado cursos repetidas veces; implica restricciones en la cantidad de créditos a llevar y la obligatoriedad de tener un tutor académico.",
+      "seccion": [
+        "glosario_universitario",
+        "Matrícula condicionada"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "glosario#glosario-universitario-matricula-extemporanea",
+      "titulo": "Glosario universitario > Matrícula extemporánea",
+      "texto": "Glosario universitario > Matrícula extemporánea\nTermino: Matrícula extemporánea. Definicion: Proceso de inscripción de cursos que se realiza fuera del plazo regular establecido en el cronograma, sujeto al pago de tasas adicionales.",
+      "seccion": [
+        "glosario_universitario",
+        "Matrícula extemporánea"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "glosario#glosario-universitario-mesa-de-partes",
+      "titulo": "Glosario universitario > Mesa de Partes",
+      "texto": "Glosario universitario > Mesa de Partes\nTermino: Mesa de Partes. Definicion: Ventanilla física o plataforma virtual oficial por donde los estudiantes ingresan solicitudes, oficios y trámites documentarios hacia cualquier área de la universidad.",
+      "seccion": [
+        "glosario_universitario",
+        "Mesa de Partes"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "glosario#glosario-universitario-movilidad-entrante",
+      "titulo": "Glosario universitario > Movilidad Entrante",
+      "texto": "Glosario universitario > Movilidad Entrante\nTermino: Movilidad Entrante. Definicion: Programa a través del cual la universidad recibe a estudiantes de otras instituciones de educación superior para cursar un periodo académico.",
+      "seccion": [
+        "glosario_universitario",
+        "Movilidad Entrante"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "glosario#glosario-universitario-movilidad-saliente",
+      "titulo": "Glosario universitario > Movilidad Saliente",
+      "texto": "Glosario universitario > Movilidad Saliente\nTermino: Movilidad Saliente. Definicion: Traslado temporal de un estudiante de la universidad hacia otra institución nacional o extranjera con la que se tenga convenio.",
+      "seccion": [
+        "glosario_universitario",
+        "Movilidad Saliente"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "glosario#glosario-universitario-ocri",
+      "titulo": "Glosario universitario > OCRI",
+      "texto": "Glosario universitario > OCRI\nTermino: OCRI. Definicion: Oficina de Cooperación y Relaciones Internacionales; entidad encargada de gestionar los intercambios estudiantiles, convenios y difundir becas de estudios.",
+      "seccion": [
+        "glosario_universitario",
+        "OCRI"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "glosario#glosario-universitario-practicas-preprofesionales",
+      "titulo": "Glosario universitario > Prácticas Preprofesionales",
+      "texto": "Glosario universitario > Prácticas Preprofesionales\nTermino: Prácticas Preprofesionales. Definicion: Actividades formativas realizadas por los estudiantes en entornos laborales reales (empresas o instituciones) para aplicar y consolidar los conocimientos de su carrera.",
+      "seccion": [
+        "glosario_universitario",
+        "Prácticas Preprofesionales"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "glosario#glosario-universitario-quinto-superior",
+      "titulo": "Glosario universitario > Quinto Superior",
+      "texto": "Glosario universitario > Quinto Superior\nTermino: Quinto Superior. Definicion: Ubicación de rendimiento académico equivalente al 20% de los estudiantes con las calificaciones más altas de su promoción o facultad.",
+      "seccion": [
+        "glosario_universitario",
+        "Quinto Superior"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "glosario#glosario-universitario-reserva-de-matricula",
+      "titulo": "Glosario universitario > Reserva de Matrícula",
+      "texto": "Glosario universitario > Reserva de Matrícula\nTermino: Reserva de Matrícula. Definicion: Derecho del estudiante a postergar sus estudios temporalmente (hasta por un máximo de tres años) sin perder su vacante en la universidad.",
+      "seccion": [
+        "glosario_universitario",
+        "Reserva de Matrícula"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "glosario#glosario-universitario-retiro-de-curso",
+      "titulo": "Glosario universitario > Retiro de curso",
+      "texto": "Glosario universitario > Retiro de curso\nTermino: Retiro de curso. Definicion: Trámite oficial que permite al estudiante anular su inscripción en una o más asignaturas iniciadas las clases, evitando así una calificación reprobatoria en su récord.",
+      "seccion": [
+        "glosario_universitario",
+        "Retiro de curso"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "glosario#glosario-universitario-rpu-red-peruana-de-universidades",
+      "titulo": "Glosario universitario > RPU (Red Peruana de Universidades)",
+      "texto": "Glosario universitario > RPU (Red Peruana de Universidades)\nTermino: RPU (Red Peruana de Universidades). Definicion: Consorcio de importantes universidades a nivel nacional que facilita a los alumnos el intercambio estudiantil sin costos adicionales de matrícula.",
+      "seccion": [
+        "glosario_universitario",
+        "RPU (Red Peruana de Universidades)"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "glosario#glosario-universitario-sala-tiflotecnica",
+      "titulo": "Glosario universitario > Sala Tiflotécnica",
+      "texto": "Glosario universitario > Sala Tiflotécnica\nTermino: Sala Tiflotécnica. Definicion: Ambiente especializado dentro de la biblioteca equipado con tecnología adaptada para estudiantes con discapacidad visual (baja visión e invidentes).",
+      "seccion": [
+        "glosario_universitario",
+        "Sala Tiflotécnica"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "glosario#glosario-universitario-semestre-academico",
+      "titulo": "Glosario universitario > Semestre Académico",
+      "texto": "Glosario universitario > Semestre Académico\nTermino: Semestre Académico. Definicion: Período regular de estudios establecido en el calendario académico, que generalmente consta de 17 semanas de actividades lectivas y de evaluación.",
+      "seccion": [
+        "glosario_universitario",
+        "Semestre Académico"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "glosario#glosario-universitario-subvencion-economica",
+      "titulo": "Glosario universitario > Subvención económica",
+      "texto": "Glosario universitario > Subvención económica\nTermino: Subvención económica. Definicion: Ayuda financiera que la universidad puede otorgar a sus estudiantes destacados en programas de movilidad para cubrir pasajes o seguros médicos.",
+      "seccion": [
+        "glosario_universitario",
+        "Subvención económica"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "glosario#glosario-universitario-sunedu",
+      "titulo": "Glosario universitario > SUNEDU",
+      "texto": "Glosario universitario > SUNEDU\nTermino: SUNEDU. Definicion: Superintendencia Nacional de Educación Superior Universitaria; ente rector encargado del licenciamiento y registro de grados y títulos en el Perú.",
+      "seccion": [
+        "glosario_universitario",
+        "SUNEDU"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "glosario#glosario-universitario-sustentacion-de-tesis",
+      "titulo": "Glosario universitario > Sustentación de Tesis",
+      "texto": "Glosario universitario > Sustentación de Tesis\nTermino: Sustentación de Tesis. Definicion: Defensa oral y pública de un trabajo de investigación original ante un jurado calificador para optar por el Título Profesional.",
+      "seccion": [
+        "glosario_universitario",
+        "Sustentación de Tesis"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "glosario#glosario-universitario-tercio-superior",
+      "titulo": "Glosario universitario > Tercio Superior",
+      "texto": "Glosario universitario > Tercio Superior\nTermino: Tercio Superior. Definicion: Ubicación de rendimiento que agrupa al 33.3% de los estudiantes con las mejores calificaciones de una promoción o facultad.",
+      "seccion": [
+        "glosario_universitario",
+        "Tercio Superior"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "glosario#glosario-universitario-tesoreria",
+      "titulo": "Glosario universitario > Tesorería",
+      "texto": "Glosario universitario > Tesorería\nTermino: Tesorería. Definicion: Oficina encargada de la recaudación y gestión de los pagos por concepto de tasas, derechos de matrícula, duplicados, constancias y otros servicios administrativos.",
+      "seccion": [
+        "glosario_universitario",
+        "Tesorería"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "glosario#glosario-universitario-tesisteca",
+      "titulo": "Glosario universitario > Tesisteca",
+      "texto": "Glosario universitario > Tesisteca\nTermino: Tesisteca. Definicion: Espacio especializado dentro de la biblioteca destinado a la preservación y consulta de los trabajos de investigación y tesis sustentadas.",
+      "seccion": [
+        "glosario_universitario",
+        "Tesisteca"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "glosario#glosario-universitario-trabajo-de-suficiencia-profesional",
+      "titulo": "Glosario universitario > Trabajo de Suficiencia Profesional",
+      "texto": "Glosario universitario > Trabajo de Suficiencia Profesional\nTermino: Trabajo de Suficiencia Profesional. Definicion: Modalidad de titulación en la que el egresado acredita y sustenta sus competencias a partir de su experiencia laboral comprobada en su campo de especialidad.",
+      "seccion": [
+        "glosario_universitario",
+        "Trabajo de Suficiencia Profesional"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "glosario#glosario-universitario-tupa",
+      "titulo": "Glosario universitario > TUPA",
+      "texto": "Glosario universitario > TUPA\nTermino: TUPA. Definicion: Texto Único de Procedimientos Administrativos; documento normativo que detalla los requisitos, costos y plazos de todos los trámites que se realizan en la universidad.",
+      "seccion": [
+        "glosario_universitario",
+        "TUPA"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "glosario#glosario-universitario-tutor-academico",
+      "titulo": "Glosario universitario > Tutor Académico",
+      "texto": "Glosario universitario > Tutor Académico\nTermino: Tutor Académico. Definicion: Docente encargado de realizar acompañamiento personalizado o grupal para orientar al estudiante en estrategias de aprendizaje, vida universitaria y desarrollo profesional.",
+      "seccion": [
+        "glosario_universitario",
+        "Tutor Académico"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "glosario#glosario-universitario-vicerrectorado-academico",
+      "titulo": "Glosario universitario > Vicerrectorado Académico",
+      "texto": "Glosario universitario > Vicerrectorado Académico\nTermino: Vicerrectorado Académico. Definicion: Órgano de gobierno encargado de planificar, organizar, dirigir y supervisar todas las actividades formativas, de biblioteca y tutoría de la universidad.",
+      "seccion": [
+        "glosario_universitario",
+        "Vicerrectorado Académico"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    }
+  ]
+}

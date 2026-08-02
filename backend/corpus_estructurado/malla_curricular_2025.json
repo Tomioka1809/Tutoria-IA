@@ -1,0 +1,773 @@
+{
+  "procedencia": {
+    "documento": "Plan de Estudios y Malla Curricular 2025",
+    "tipo": "malla",
+    "universidad": "UNSAAC",
+    "resolucion": null,
+    "anio": null,
+    "url": null,
+    "base_legal": []
+  },
+  "fragmentos": [
+    {
+      "id": "malla_curricular_2025#resumen",
+      "titulo": "Resumen",
+      "texto": "Resumen\nTotal cursos: 59. Total creditos: 220. Estudios generales: 10 cursos (37 créditos). Estudios especificos: 25 cursos (94 créditos). Estudios especialidad: 20 cursos (75 créditos). Actividades extracurriculares: 3 cursos (6 créditos). Practicas pre profesionales: 1 curso (8 créditos)",
+      "seccion": [
+        "resumen"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#preguntas-frecuentes-cuantos-creditos-y-cursos-en-total-tiene-la-carrera-de-ingen",
+      "titulo": "Preguntas frecuentes > ¿Cuántos créditos y cursos en total tiene la carrera de Ingeniería Informática y de Sistemas bajo la malla curricular 2025?",
+      "texto": "Preguntas frecuentes > ¿Cuántos créditos y cursos en total tiene la carrera de Ingeniería Informática y de Sistemas bajo la malla curricular 2025?\nPregunta: ¿Cuántos créditos y cursos en total tiene la carrera de Ingeniería Informática y de Sistemas bajo la malla curricular 2025?. Respuesta: Bajo la **malla curricular 2025**, la carrera de Ingeniería Informática y de Sistemas en la UNSAAC tiene un total de **59 cursos** y **220 créditos** académicos.",
+      "seccion": [
+        "preguntas_frecuentes",
+        "¿Cuántos créditos y cursos en total tiene la carrera de Ingeniería Informática y de Sistemas bajo la malla curricular 2025?"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#preguntas-frecuentes-que-cursos-se-llevan-en-el-primer-semestre-bajo-la-malla-cur",
+      "titulo": "Preguntas frecuentes > ¿Qué cursos se llevan en el primer semestre bajo la malla curricular 2025 y cuáles son sus créditos?",
+      "texto": "Preguntas frecuentes > ¿Qué cursos se llevan en el primer semestre bajo la malla curricular 2025 y cuáles son sus créditos?\nPregunta: ¿Qué cursos se llevan en el primer semestre bajo la malla curricular 2025 y cuáles son sus créditos?. Respuesta: En el **Primer Semestre** (Estudios Generales) de la malla curricular 2025 se llevan 6 cursos (total de 22 créditos):\n* **QUG01 Química General** (4 créditos, sin requisitos)\n* **MEG01 Álgebra y Geometría Analítica** (4 créditos, sin requisitos)\n* **HIG01 Historia Crítica del Perú e Identidad Nacional** (3 créditos, sin requisitos)\n* **FIG01 Física I** (4 créditos, sin requisitos)\n* **CBG01 Ecología y Medio Ambiente** (3 créditos, sin requisitos)\n* **MEG02 Cálculo I** (4 créditos, sin requisitos)",
+      "seccion": [
+        "preguntas_frecuentes",
+        "¿Qué cursos se llevan en el primer semestre bajo la malla curricular 2025 y cuáles son sus créditos?"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#preguntas-frecuentes-que-cursos-se-llevan-en-el-segundo-semestre-bajo-la-malla-cu",
+      "titulo": "Preguntas frecuentes > ¿Qué cursos se llevan en el segundo semestre bajo la malla curricular 2025 y cuáles son sus requisitos?",
+      "texto": "Preguntas frecuentes > ¿Qué cursos se llevan en el segundo semestre bajo la malla curricular 2025 y cuáles son sus requisitos?\nPregunta: ¿Qué cursos se llevan en el segundo semestre bajo la malla curricular 2025 y cuáles son sus requisitos?. Respuesta: En el **Segundo Semestre** de la malla curricular 2025 se llevan 6 cursos (total de 21 créditos):\n* **LCG01 Lingüística y Comunicación Humana** (4 créditos, sin requisitos)\n* **MEG03 Estadística General** (4 créditos, sin requisitos)\n* **IFG01 Pensamiento Computacional e Inteligencia Artificial** (3 créditos, sin requisitos)\n* **MEG04 Cálculo II** (4 créditos, prerrequisito: **MEG02 Cálculo I**)\n* **IFI01 Fundamentos de Programación** (3 créditos, sin requisitos)\n* **MEI04 Matemáticas Discretas I** (4 créditos, prerrequisito: **MEG01 Álgebra y Geometría Analítica**)",
+      "seccion": [
+        "preguntas_frecuentes",
+        "¿Qué cursos se llevan en el segundo semestre bajo la malla curricular 2025 y cuáles son sus requisitos?"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#preguntas-frecuentes-que-cursos-se-llevan-en-el-tercer-semestre-bajo-la-malla-cur",
+      "titulo": "Preguntas frecuentes > ¿Qué cursos se llevan en el tercer semestre bajo la malla curricular 2025 y cuáles son sus requisitos?",
+      "texto": "Preguntas frecuentes > ¿Qué cursos se llevan en el tercer semestre bajo la malla curricular 2025 y cuáles son sus requisitos?\nPregunta: ¿Qué cursos se llevan en el tercer semestre bajo la malla curricular 2025 y cuáles son sus requisitos?. Respuesta: En el **Tercer Semestre** de la malla curricular 2025 se llevan 6 cursos (total de 20 créditos):\n* **IFI02 Algoritmos y Estructuras de Datos I** (4 créditos, prerrequisitos: **IFI01 Fundamentos de Programación** e **IFG01 Pensamiento Computacional e Inteligencia Artificial**)\n* **IFI03 Programación I** (2 créditos, prerrequisito: **IFI01 Fundamentos de Programación**)\n* **MEI05 Álgebra Lineal Computacional** (4 créditos, prerrequisito: **MEG01 Álgebra y Geometría Analítica**)\n* **FII02 Física Aplicada a la Informática** (4 créditos, prerrequisito: **FIG01 Física I**)\n* **MEI06 Matemática Discreta II** (4 créditos, prerrequisito: **MEI04 Matemáticas Discretas I**)\n* **MEI09 Cálculo III** (4 créditos, prerrequisito: **MEG04 Cálculo II**)",
+      "seccion": [
+        "preguntas_frecuentes",
+        "¿Qué cursos se llevan en el tercer semestre bajo la malla curricular 2025 y cuáles son sus requisitos?"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#preguntas-frecuentes-que-cursos-se-llevan-en-el-cuarto-semestre-bajo-la-malla-cur",
+      "titulo": "Preguntas frecuentes > ¿Qué cursos se llevan en el cuarto semestre bajo la malla curricular 2025 y cuáles son sus requisitos?",
+      "texto": "Preguntas frecuentes > ¿Qué cursos se llevan en el cuarto semestre bajo la malla curricular 2025 y cuáles son sus requisitos?\nPregunta: ¿Qué cursos se llevan en el cuarto semestre bajo la malla curricular 2025 y cuáles son sus requisitos?. Respuesta: En el **Cuarto Semestre** de la malla curricular 2025 se llevan 6 cursos (total de 20 créditos):\n* **IFI04 Algoritmos y Estructuras de Datos II** (4 créditos, prerrequisitos: **IFI02** e **IFI03**)\n* **IFI05 Programación II** (2 créditos, prerrequisitos: **IFI02** e **IFI03**)\n* **ADI01 Organización y Dirección de Empresas** (4 créditos, prerrequisito: **60 Créditos aprobados**)\n* **ELI01 Electrónica y Diseño Digital** (4 créditos, prerrequisito: **FII02 Física Aplicada a la Informática**)\n* **IFI07 Modelos Probabilísticos** (4 créditos, prerrequisitos: **MEI06** y **MEG03**)\n* **MEI08 Ecuaciones Diferenciales** (4 créditos, prerrequisito: **MEI09 Cálculo III**)",
+      "seccion": [
+        "preguntas_frecuentes",
+        "¿Qué cursos se llevan en el cuarto semestre bajo la malla curricular 2025 y cuáles son sus requisitos?"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#preguntas-frecuentes-que-cursos-se-llevan-en-el-quinto-semestre-bajo-la-malla-cur",
+      "titulo": "Preguntas frecuentes > ¿Qué cursos se llevan en el quinto semestre bajo la malla curricular 2025 y cuáles son sus requisitos?",
+      "texto": "Preguntas frecuentes > ¿Qué cursos se llevan en el quinto semestre bajo la malla curricular 2025 y cuáles son sus requisitos?\nPregunta: ¿Qué cursos se llevan en el quinto semestre bajo la malla curricular 2025 y cuáles son sus requisitos?. Respuesta: En el **Quinto Semestre** de la malla curricular 2025 se llevan 6 cursos (total de 20 créditos):\n* **IFI08 Análisis y Diseño de Algoritmos** (4 créditos, prerrequisito: **IFI04 Algoritmos y Estructuras de Datos II**)\n* **IFI09 Programación III** (2 créditos, prerrequisito: **IFI05 Programación II**)\n* **IFI10 Análisis y Diseño de Sistemas de Información** (4 créditos, prerrequisitos: **IFI04** y **ADI01**)\n* **IFI11 Organización y Arquitectura del Computador** (4 créditos, prerrequisito: **ELI01 Electrónica y Diseño Digital**)\n* **IFI12 Métodos Numéricos** (4 créditos, prerrequisito: **MEI08 Ecuaciones Diferenciales**)\n* **IFI13 Teoría de la Computación** (4 créditos, prerrequisito: **IFI04 Algoritmos y Estructuras de Datos II**)",
+      "seccion": [
+        "preguntas_frecuentes",
+        "¿Qué cursos se llevan en el quinto semestre bajo la malla curricular 2025 y cuáles son sus requisitos?"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#preguntas-frecuentes-que-cursos-se-llevan-en-el-sexto-semestre-bajo-la-malla-curr",
+      "titulo": "Preguntas frecuentes > ¿Qué cursos se llevan en el sexto semestre bajo la malla curricular 2025 y cuáles son sus requisitos?",
+      "texto": "Preguntas frecuentes > ¿Qué cursos se llevan en el sexto semestre bajo la malla curricular 2025 y cuáles son sus requisitos?\nPregunta: ¿Qué cursos se llevan en el sexto semestre bajo la malla curricular 2025 y cuáles son sus requisitos?. Respuesta: En el **Sexto Semestre** de la malla curricular 2025 se llevan 6 cursos (total de 22 créditos):\n* **IFI14 Inteligencia Artificial** (4 créditos, prerrequisito: **MEI05 Álgebra Lineal Computacional**)\n* **IFI15 Fundamentos y Diseño de Base de Datos** (4 créditos, prerrequisito: **IFI10 Análisis y Diseño de Sistemas de Información**)\n* **IFI16 Sistemas Operativos** (4 créditos, prerrequisito: **IFI11 Organización y Arquitectura del Computador**)\n* **IFI17 Modelado y Simulación** (4 créditos, prerrequisitos: **IFI07 Modelos Probabilísticos** e **IFI12 Métodos Numéricos**)\n* **EUI01 Deporte** (Actividad Extracurricular, 2 créditos, prerrequisito: **100 Créditos aprobados**)\n* **Electivo de Especialidad I** (4 créditos)",
+      "seccion": [
+        "preguntas_frecuentes",
+        "¿Qué cursos se llevan en el sexto semestre bajo la malla curricular 2025 y cuáles son sus requisitos?"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#preguntas-frecuentes-que-cursos-se-llevan-en-el-septimo-semestre-bajo-la-malla-cu",
+      "titulo": "Preguntas frecuentes > ¿Qué cursos se llevan en el séptimo semestre bajo la malla curricular 2025 y cuáles son sus requisitos?",
+      "texto": "Preguntas frecuentes > ¿Qué cursos se llevan en el séptimo semestre bajo la malla curricular 2025 y cuáles son sus requisitos?\nPregunta: ¿Qué cursos se llevan en el séptimo semestre bajo la malla curricular 2025 y cuáles son sus requisitos?. Respuesta: En el **Séptimo Semestre** de la malla curricular 2025 se llevan 6 cursos (total de 22 créditos):\n* **IFI19 Aprendizaje Automático** (4 créditos, prerrequisito: **IFI14 Inteligencia Artificial**)\n* **IFI20 Metodología y Desarrollo de Software** (5 créditos, prerrequisito: **IFI15 Fundamentos y Diseño de Base de Datos**)\n* **IFI21 Redes de Computadoras I** (4 créditos, prerrequisito: **IFI16 Sistemas Operativos**)\n* **IFI22 Ciencia de Datos** (3 créditos, prerrequisito: **IFI14 Inteligencia Artificial**)\n* **IFI23 Proyección Social** (Actividad Extracurricular, 2 créditos, prerrequisito: **120 Créditos aprobados**)\n* **Electivo de Especialidad II** (4 créditos)",
+      "seccion": [
+        "preguntas_frecuentes",
+        "¿Qué cursos se llevan en el séptimo semestre bajo la malla curricular 2025 y cuáles son sus requisitos?"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#preguntas-frecuentes-que-cursos-se-llevan-en-el-octavo-semestre-bajo-la-malla-cur",
+      "titulo": "Preguntas frecuentes > ¿Qué cursos se llevan en el octavo semestre bajo la malla curricular 2025 y cuáles son sus requisitos?",
+      "texto": "Preguntas frecuentes > ¿Qué cursos se llevan en el octavo semestre bajo la malla curricular 2025 y cuáles son sus requisitos?\nPregunta: ¿Qué cursos se llevan en el octavo semestre bajo la malla curricular 2025 y cuáles son sus requisitos?. Respuesta: En el **Octavo Semestre** de la malla curricular 2025 se llevan 5 cursos (total de 18 créditos):\n* **IFI24 Programación Paralela y Distribuida** (4 créditos, prerrequisitos: **IFI21 Redes I** e **IFI08 Análisis de Algoritmos**)\n* **IFI25 Aprendizaje Profundo** (4 créditos, prerrequisito: **IFI19 Aprendizaje Automático**)\n* **IFI26 Ingeniería de Software I** (4 créditos, prerrequisito: **IFI20 Metodología de Software**)\n* **IFI27 Redes de Computadoras II** (4 créditos, prerrequisito: **IFI21 Redes de Computadoras I**)\n* **IFI28 Formulación de Proyectos de Tecnologías de la Información** (3 créditos, prerrequisito: **IFI20 Metodología de Software**)\n* **Electivo de Especialidad III** (3 créditos)",
+      "seccion": [
+        "preguntas_frecuentes",
+        "¿Qué cursos se llevan en el octavo semestre bajo la malla curricular 2025 y cuáles son sus requisitos?"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#preguntas-frecuentes-que-cursos-se-llevan-en-el-noveno-semestre-bajo-la-malla-cur",
+      "titulo": "Preguntas frecuentes > ¿Qué cursos se llevan en el noveno semestre bajo la malla curricular 2025 y cuáles son sus requisitos?",
+      "texto": "Preguntas frecuentes > ¿Qué cursos se llevan en el noveno semestre bajo la malla curricular 2025 y cuáles son sus requisitos?\nPregunta: ¿Qué cursos se llevan en el noveno semestre bajo la malla curricular 2025 y cuáles son sus requisitos?. Respuesta: En el **Noveno Semestre** de la malla curricular 2025 se llevan 4 cursos (total de 18 créditos):\n* **IFI29 Seminario de Investigación** (3 créditos, prerrequisito: **170 Créditos aprobados**)\n* **IFI30 Ingeniería de Software II** (4 créditos, prerrequisito: **IFI26 Ingeniería de Software I**)\n* **IFI31 Sistemas Internet de las Cosas** (4 créditos, prerrequisitos: **IFI27 Redes II** e **IFI19 Aprendizaje Automático**)\n* **IFI32 Ciberseguridad** (4 créditos, prerrequisito: **IFI27 Redes de Computadoras II**)\n* **Electivo de Especialidad IV** (4 créditos)\n* **Electivo de Especialidad V** (3 créditos)",
+      "seccion": [
+        "preguntas_frecuentes",
+        "¿Qué cursos se llevan en el noveno semestre bajo la malla curricular 2025 y cuáles son sus requisitos?"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#preguntas-frecuentes-que-cursos-se-llevan-en-el-decimo-semestre-bajo-la-malla-cur",
+      "titulo": "Preguntas frecuentes > ¿Qué cursos se llevan en el décimo semestre bajo la malla curricular 2025 y cuáles son sus requisitos?",
+      "texto": "Preguntas frecuentes > ¿Qué cursos se llevan en el décimo semestre bajo la malla curricular 2025 y cuáles son sus requisitos?\nPregunta: ¿Qué cursos se llevan en el décimo semestre bajo la malla curricular 2025 y cuáles son sus requisitos?. Respuesta: En el **Décimo Semestre** de la malla curricular 2025 se llevan 5 cursos (total de 22 créditos):\n* **IFI33 Trabajo de Investigación** (4 créditos, prerrequisito: **IFI29 Seminario de Investigación**)\n* **IFI34 Desarrollo de Proyectos de Ingeniería de Software** (4 créditos, prerrequisitos: **IFI28** e **IFI30**)\n* **IFI35 Administración de Tecnologías de la Información** (4 créditos, prerrequisito: **IFI32 Ciberseguridad**)\n* **IFI18 Debate** (Actividad Extracurricular, 2 créditos, prerrequisito: **180 Créditos aprobados**)\n* **IFI66 Prácticas Pre Profesionales** (8 créditos, prerrequisito: **180 Créditos aprobados**)",
+      "seccion": [
+        "preguntas_frecuentes",
+        "¿Qué cursos se llevan en el décimo semestre bajo la malla curricular 2025 y cuáles son sus requisitos?"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#preguntas-frecuentes-cuales-son-los-requisitos-de-las-practicas-pre-profesionales",
+      "titulo": "Preguntas frecuentes > ¿Cuáles son los requisitos de las Prácticas Pre Profesionales bajo la malla curricular 2025?",
+      "texto": "Preguntas frecuentes > ¿Cuáles son los requisitos de las Prácticas Pre Profesionales bajo la malla curricular 2025?\nPregunta: ¿Cuáles son los requisitos de las Prácticas Pre Profesionales bajo la malla curricular 2025?. Respuesta: Bajo la **malla curricular 2025**, las **Prácticas Pre Profesionales** (código **IFI66**) otorgan **8 créditos**, corresponden al décimo semestre y requieren obligatoriamente haber aprobado un mínimo de **180 créditos** académicos en la carrera de Ingeniería Informática y de Sistemas.",
+      "seccion": [
+        "preguntas_frecuentes",
+        "¿Cuáles son los requisitos de las Prácticas Pre Profesionales bajo la malla curricular 2025?"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#preguntas-frecuentes-que-cursos-electivos-de-especialidad-estan-disponibles-en-la-pregunta",
+      "titulo": "Preguntas frecuentes > ¿Qué cursos electivos de especialidad están disponibles en la carrera bajo la malla curricular 2025? > Pregunta",
+      "texto": "Preguntas frecuentes > ¿Qué cursos electivos de especialidad están disponibles en la carrera bajo la malla curricular 2025? > Pregunta\n¿Qué cursos electivos de especialidad están disponibles en la carrera bajo la malla curricular 2025?",
+      "seccion": [
+        "preguntas_frecuentes",
+        "¿Qué cursos electivos de especialidad están disponibles en la carrera bajo la malla curricular 2025?",
+        "pregunta"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#preguntas-frecuentes-que-cursos-electivos-de-especialidad-estan-disponibles-en-la-respuesta",
+      "titulo": "Preguntas frecuentes > ¿Qué cursos electivos de especialidad están disponibles en la carrera bajo la malla curricular 2025? > Respuesta",
+      "texto": "Preguntas frecuentes > ¿Qué cursos electivos de especialidad están disponibles en la carrera bajo la malla curricular 2025? > Respuesta\nBajo la malla curricular 2025, la carrera ofrece diversos **cursos electivos** de especialidad:\n* **Desarrollo de Aplicaciones Web** (IFI40, 3 créditos, requisito: IFI26)\n* **Desarrollo de Aplicaciones Móviles** (IFI41, 4 créditos, requisito: IFI26)\n* **Compiladores** (IFI45, 4 créditos, requisito: IFI13)\n* **Redes Complejas** (IFI42, 4 créditos, requisito: IFI08)\n* **Procesamiento de Lenguaje Natural** (IFI43, 3 créditos, requisito: IFI25)\n* **Computación Gráfica I** (IFI44, 3 créditos, requisitos: IFI04, IFI05)\n* **Visión Computacional** (IFI48, 4 créditos, requisito: IFI25)\n* **Inteligencia Artificial Robótica** (IFI49, 4 créditos, requisito: IFI14)\n* **Bioinformática** (IFI50, 4 créditos, requisito: IFI19)\n* **Innovación y Emprendimiento** (IFI51, 3 créditos, requisito: ADI01)\n* **Blockchain** (IFI55, 3 créditos, requisitos: IFI26, IFI27)\n* **Algoritmos Avanzados** (IFI57, 4 créditos, requisito: IFI13)\n* **Computación Cuántica** (IFI58, 4 créditos, requisito: IFI57)\n* **Investigación Operativa** (MEI65, 4 créditos, requisito: MEI05)\n* **Ingeniería de Software III** (IFI65, 4 créditos, requisito: IFI30)",
+      "seccion": [
+        "preguntas_frecuentes",
+        "¿Qué cursos electivos de especialidad están disponibles en la carrera bajo la malla curricular 2025?",
+        "respuesta"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-quimica-general",
+      "titulo": "Detalle cursos > Química General",
+      "texto": "Detalle cursos > Química General\nCodigo: QUG01. Nombre: Química General. Creditos: 4. Semestre: 1. Horas teoria: 3. Horas practica: 2. Requisitos: ",
+      "seccion": [
+        "detalle_cursos",
+        "Química General"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-algebra-y-geometria-analitica",
+      "titulo": "Detalle cursos > Álgebra y Geometría Analítica",
+      "texto": "Detalle cursos > Álgebra y Geometría Analítica\nCodigo: MEG01. Nombre: Álgebra y Geometría Analítica. Creditos: 4. Semestre: 1. Horas teoria: 3. Horas practica: 2. Requisitos: ",
+      "seccion": [
+        "detalle_cursos",
+        "Álgebra y Geometría Analítica"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-historia-critica-del-peru-e-identidad-nacional",
+      "titulo": "Detalle cursos > Historia Crítica del Perú e Identidad Nacional",
+      "texto": "Detalle cursos > Historia Crítica del Perú e Identidad Nacional\nCodigo: HIG01. Nombre: Historia Crítica del Perú e Identidad Nacional. Creditos: 3. Semestre: 1. Horas teoria: 2. Horas practica: 2. Requisitos: ",
+      "seccion": [
+        "detalle_cursos",
+        "Historia Crítica del Perú e Identidad Nacional"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-fisica-i",
+      "titulo": "Detalle cursos > Física I",
+      "texto": "Detalle cursos > Física I\nCodigo: FIG01. Nombre: Física I. Creditos: 4. Semestre: 1. Horas teoria: 3. Horas practica: 2. Requisitos: ",
+      "seccion": [
+        "detalle_cursos",
+        "Física I"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-ecologia-y-medio-ambiente",
+      "titulo": "Detalle cursos > Ecología y Medio Ambiente",
+      "texto": "Detalle cursos > Ecología y Medio Ambiente\nCodigo: CBG01. Nombre: Ecología y Medio Ambiente. Creditos: 3. Semestre: 1. Horas teoria: 2. Horas practica: 2. Requisitos: ",
+      "seccion": [
+        "detalle_cursos",
+        "Ecología y Medio Ambiente"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-calculo-i",
+      "titulo": "Detalle cursos > Cálculo I",
+      "texto": "Detalle cursos > Cálculo I\nCodigo: MEG02. Nombre: Cálculo I. Creditos: 4. Semestre: 1. Horas teoria: 3. Horas practica: 2. Requisitos: ",
+      "seccion": [
+        "detalle_cursos",
+        "Cálculo I"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-linguistica-y-comunicacion-humana",
+      "titulo": "Detalle cursos > Lingüística y Comunicación Humana",
+      "texto": "Detalle cursos > Lingüística y Comunicación Humana\nCodigo: LCG01. Nombre: Lingüística y Comunicación Humana. Creditos: 4. Semestre: 2. Horas teoria: 3. Horas practica: 2. Requisitos: ",
+      "seccion": [
+        "detalle_cursos",
+        "Lingüística y Comunicación Humana"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-estadistica-general",
+      "titulo": "Detalle cursos > Estadística General",
+      "texto": "Detalle cursos > Estadística General\nCodigo: MEG03. Nombre: Estadística General. Creditos: 4. Semestre: 2. Horas teoria: 3. Horas practica: 2. Requisitos: ",
+      "seccion": [
+        "detalle_cursos",
+        "Estadística General"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-pensamiento-computacional-e-inteligencia-artificial",
+      "titulo": "Detalle cursos > Pensamiento Computacional e Inteligencia Artificial",
+      "texto": "Detalle cursos > Pensamiento Computacional e Inteligencia Artificial\nCodigo: IFG01. Nombre: Pensamiento Computacional e Inteligencia Artificial. Creditos: 3. Semestre: 2. Horas teoria: 2. Horas practica: 2. Requisitos: ",
+      "seccion": [
+        "detalle_cursos",
+        "Pensamiento Computacional e Inteligencia Artificial"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-calculo-ii",
+      "titulo": "Detalle cursos > Cálculo II",
+      "texto": "Detalle cursos > Cálculo II\nCodigo: MEG04. Nombre: Cálculo II. Creditos: 4. Semestre: 2. Horas teoria: 3. Horas practica: 2. Requisitos: MEG02",
+      "seccion": [
+        "detalle_cursos",
+        "Cálculo II"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-fundamentos-de-programacion",
+      "titulo": "Detalle cursos > Fundamentos de Programación",
+      "texto": "Detalle cursos > Fundamentos de Programación\nCodigo: IFI01. Nombre: Fundamentos de Programación. Creditos: 3. Semestre: 2. Horas teoria: 2. Horas practica: 2. Requisitos: ",
+      "seccion": [
+        "detalle_cursos",
+        "Fundamentos de Programación"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-matematicas-discretas-i",
+      "titulo": "Detalle cursos > Matemáticas Discretas I",
+      "texto": "Detalle cursos > Matemáticas Discretas I\nCodigo: MEI04. Nombre: Matemáticas Discretas I. Creditos: 4. Semestre: 2. Horas teoria: 3. Horas practica: 2. Requisitos: MEG01",
+      "seccion": [
+        "detalle_cursos",
+        "Matemáticas Discretas I"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-algoritmos-y-estructuras-de-datos-i",
+      "titulo": "Detalle cursos > Algoritmos y Estructuras de Datos I",
+      "texto": "Detalle cursos > Algoritmos y Estructuras de Datos I\nCodigo: IFI02. Nombre: Algoritmos y Estructuras de Datos I. Creditos: 4. Semestre: 3. Horas teoria: 3. Horas practica: 2. Requisitos: IFI01, IFG01",
+      "seccion": [
+        "detalle_cursos",
+        "Algoritmos y Estructuras de Datos I"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-programacion-i",
+      "titulo": "Detalle cursos > Programación I",
+      "texto": "Detalle cursos > Programación I\nCodigo: IFI03. Nombre: Programación I. Creditos: 2. Semestre: 3. Horas teoria: 0. Horas practica: 4. Requisitos: IFI01",
+      "seccion": [
+        "detalle_cursos",
+        "Programación I"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-algebra-lineal-computacional",
+      "titulo": "Detalle cursos > Álgebra Lineal Computacional",
+      "texto": "Detalle cursos > Álgebra Lineal Computacional\nCodigo: MEI05. Nombre: Álgebra Lineal Computacional. Creditos: 4. Semestre: 3. Horas teoria: 3. Horas practica: 2. Requisitos: MEG01",
+      "seccion": [
+        "detalle_cursos",
+        "Álgebra Lineal Computacional"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-fisica-aplicada-a-la-informatica",
+      "titulo": "Detalle cursos > Física Aplicada a la Informática",
+      "texto": "Detalle cursos > Física Aplicada a la Informática\nCodigo: FII02. Nombre: Física Aplicada a la Informática. Creditos: 4. Semestre: 3. Horas teoria: 3. Horas practica: 2. Requisitos: FIG01",
+      "seccion": [
+        "detalle_cursos",
+        "Física Aplicada a la Informática"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-matematica-discreta-ii",
+      "titulo": "Detalle cursos > Matemática Discreta II",
+      "texto": "Detalle cursos > Matemática Discreta II\nCodigo: MEI06. Nombre: Matemática Discreta II. Creditos: 4. Semestre: 3. Horas teoria: 3. Horas practica: 2. Requisitos: MEI04",
+      "seccion": [
+        "detalle_cursos",
+        "Matemática Discreta II"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-calculo-iii",
+      "titulo": "Detalle cursos > Cálculo III",
+      "texto": "Detalle cursos > Cálculo III\nCodigo: MEI09. Nombre: Cálculo III. Creditos: 4. Semestre: 3. Horas teoria: 3. Horas practica: 2. Requisitos: MEG04",
+      "seccion": [
+        "detalle_cursos",
+        "Cálculo III"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-algoritmos-y-estructuras-de-datos-ii",
+      "titulo": "Detalle cursos > Algoritmos y Estructuras de Datos II",
+      "texto": "Detalle cursos > Algoritmos y Estructuras de Datos II\nCodigo: IFI04. Nombre: Algoritmos y Estructuras de Datos II. Creditos: 4. Semestre: 4. Horas teoria: 3. Horas practica: 2. Requisitos: IFI02, IFI03",
+      "seccion": [
+        "detalle_cursos",
+        "Algoritmos y Estructuras de Datos II"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-programacion-ii",
+      "titulo": "Detalle cursos > Programación II",
+      "texto": "Detalle cursos > Programación II\nCodigo: IFI05. Nombre: Programación II. Creditos: 2. Semestre: 4. Horas teoria: 0. Horas practica: 4. Requisitos: IFI02, IFI03",
+      "seccion": [
+        "detalle_cursos",
+        "Programación II"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-organizacion-y-direccion-de-empresas",
+      "titulo": "Detalle cursos > Organización y Dirección de Empresas",
+      "texto": "Detalle cursos > Organización y Dirección de Empresas\nCodigo: ADI01. Nombre: Organización y Dirección de Empresas. Creditos: 4. Semestre: 4. Horas teoria: 3. Horas practica: 2. Requisitos: 60 Créditos",
+      "seccion": [
+        "detalle_cursos",
+        "Organización y Dirección de Empresas"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-electronica-y-diseno-digital",
+      "titulo": "Detalle cursos > Electrónica y Diseño Digital",
+      "texto": "Detalle cursos > Electrónica y Diseño Digital\nCodigo: ELI01. Nombre: Electrónica y Diseño Digital. Creditos: 4. Semestre: 4. Horas teoria: 3. Horas practica: 2. Requisitos: FII02",
+      "seccion": [
+        "detalle_cursos",
+        "Electrónica y Diseño Digital"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-modelos-probabilisticos",
+      "titulo": "Detalle cursos > Modelos Probabilísticos",
+      "texto": "Detalle cursos > Modelos Probabilísticos\nCodigo: IFI07. Nombre: Modelos Probabilísticos. Creditos: 4. Semestre: 4. Horas teoria: 3. Horas practica: 2. Requisitos: MEI06, MEG03",
+      "seccion": [
+        "detalle_cursos",
+        "Modelos Probabilísticos"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-ecuaciones-diferenciales",
+      "titulo": "Detalle cursos > Ecuaciones Diferenciales",
+      "texto": "Detalle cursos > Ecuaciones Diferenciales\nCodigo: MEI08. Nombre: Ecuaciones Diferenciales. Creditos: 4. Semestre: 4. Horas teoria: 3. Horas practica: 2. Requisitos: MEI09",
+      "seccion": [
+        "detalle_cursos",
+        "Ecuaciones Diferenciales"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-analisis-y-diseno-de-algoritmos",
+      "titulo": "Detalle cursos > Análisis y Diseño de Algoritmos",
+      "texto": "Detalle cursos > Análisis y Diseño de Algoritmos\nCodigo: IFI08. Nombre: Análisis y Diseño de Algoritmos. Creditos: 4. Semestre: 5. Horas teoria: 3. Horas practica: 2. Requisitos: IFI04",
+      "seccion": [
+        "detalle_cursos",
+        "Análisis y Diseño de Algoritmos"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-programacion-iii",
+      "titulo": "Detalle cursos > Programación III",
+      "texto": "Detalle cursos > Programación III\nCodigo: IFI09. Nombre: Programación III. Creditos: 2. Semestre: 5. Horas teoria: 0. Horas practica: 4. Requisitos: IFI05",
+      "seccion": [
+        "detalle_cursos",
+        "Programación III"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-analisis-y-diseno-de-sistemas-de-informacion",
+      "titulo": "Detalle cursos > Análisis y Diseño de Sistemas de Información",
+      "texto": "Detalle cursos > Análisis y Diseño de Sistemas de Información\nCodigo: IFI10. Nombre: Análisis y Diseño de Sistemas de Información. Creditos: 4. Semestre: 5. Horas teoria: 3. Horas practica: 2. Requisitos: IFI04, ADI01",
+      "seccion": [
+        "detalle_cursos",
+        "Análisis y Diseño de Sistemas de Información"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-organizacion-y-arquitectura-del-computador",
+      "titulo": "Detalle cursos > Organización y Arquitectura del Computador",
+      "texto": "Detalle cursos > Organización y Arquitectura del Computador\nCodigo: IFI11. Nombre: Organización y Arquitectura del Computador. Creditos: 4. Semestre: 5. Horas teoria: 3. Horas practica: 2. Requisitos: ELI01",
+      "seccion": [
+        "detalle_cursos",
+        "Organización y Arquitectura del Computador"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-metodos-numericos",
+      "titulo": "Detalle cursos > Métodos Numéricos",
+      "texto": "Detalle cursos > Métodos Numéricos\nCodigo: IFI12. Nombre: Métodos Numéricos. Creditos: 4. Semestre: 5. Horas teoria: 3. Horas practica: 2. Requisitos: MEI08",
+      "seccion": [
+        "detalle_cursos",
+        "Métodos Numéricos"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-teoria-de-la-computacion",
+      "titulo": "Detalle cursos > Teoría de la Computación",
+      "texto": "Detalle cursos > Teoría de la Computación\nCodigo: IFI13. Nombre: Teoría de la Computación. Creditos: 4. Semestre: 5. Horas teoria: 3. Horas practica: 2. Requisitos: IFI04",
+      "seccion": [
+        "detalle_cursos",
+        "Teoría de la Computación"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-inteligencia-artificial",
+      "titulo": "Detalle cursos > Inteligencia Artificial",
+      "texto": "Detalle cursos > Inteligencia Artificial\nCodigo: IFI14. Nombre: Inteligencia Artificial. Creditos: 4. Semestre: 6. Horas teoria: 3. Horas practica: 2. Requisitos: MEI05",
+      "seccion": [
+        "detalle_cursos",
+        "Inteligencia Artificial"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-fundamentos-y-diseno-de-base-de-datos",
+      "titulo": "Detalle cursos > Fundamentos y Diseño de Base de Datos",
+      "texto": "Detalle cursos > Fundamentos y Diseño de Base de Datos\nCodigo: IFI15. Nombre: Fundamentos y Diseño de Base de Datos. Creditos: 4. Semestre: 6. Horas teoria: 3. Horas practica: 2. Requisitos: IFI10",
+      "seccion": [
+        "detalle_cursos",
+        "Fundamentos y Diseño de Base de Datos"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-sistemas-operativos",
+      "titulo": "Detalle cursos > Sistemas Operativos",
+      "texto": "Detalle cursos > Sistemas Operativos\nCodigo: IFI16. Nombre: Sistemas Operativos. Creditos: 4. Semestre: 6. Horas teoria: 3. Horas practica: 2. Requisitos: IFI11",
+      "seccion": [
+        "detalle_cursos",
+        "Sistemas Operativos"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-modelado-y-simulacion",
+      "titulo": "Detalle cursos > Modelado y Simulación",
+      "texto": "Detalle cursos > Modelado y Simulación\nCodigo: IFI17. Nombre: Modelado y Simulación. Creditos: 4. Semestre: 6. Horas teoria: 3. Horas practica: 2. Requisitos: IFI07, IFI12",
+      "seccion": [
+        "detalle_cursos",
+        "Modelado y Simulación"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-deporte",
+      "titulo": "Detalle cursos > Deporte",
+      "texto": "Detalle cursos > Deporte\nCodigo: EUI01. Nombre: Deporte. Creditos: 2. Semestre: 6. Horas teoria: 0. Horas practica: 4. Requisitos: 100 Créditos",
+      "seccion": [
+        "detalle_cursos",
+        "Deporte"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-aprendizaje-automatico",
+      "titulo": "Detalle cursos > Aprendizaje Automático",
+      "texto": "Detalle cursos > Aprendizaje Automático\nCodigo: IFI19. Nombre: Aprendizaje Automático. Creditos: 4. Semestre: 7. Horas teoria: 3. Horas practica: 2. Requisitos: IFI14",
+      "seccion": [
+        "detalle_cursos",
+        "Aprendizaje Automático"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-metodologia-y-desarrollo-de-software",
+      "titulo": "Detalle cursos > Metodología y Desarrollo de Software",
+      "texto": "Detalle cursos > Metodología y Desarrollo de Software\nCodigo: IFI20. Nombre: Metodología y Desarrollo de Software. Creditos: 5. Semestre: 7. Horas teoria: 3. Horas practica: 4. Requisitos: IFI15",
+      "seccion": [
+        "detalle_cursos",
+        "Metodología y Desarrollo de Software"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-redes-de-computadoras-i",
+      "titulo": "Detalle cursos > Redes de Computadoras I",
+      "texto": "Detalle cursos > Redes de Computadoras I\nCodigo: IFI21. Nombre: Redes de Computadoras I. Creditos: 4. Semestre: 7. Horas teoria: 3. Horas practica: 2. Requisitos: IFI16",
+      "seccion": [
+        "detalle_cursos",
+        "Redes de Computadoras I"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-ciencia-de-datos",
+      "titulo": "Detalle cursos > Ciencia de Datos",
+      "texto": "Detalle cursos > Ciencia de Datos\nCodigo: IFI22. Nombre: Ciencia de Datos. Creditos: 3. Semestre: 7. Horas teoria: 2. Horas practica: 2. Requisitos: IFI14",
+      "seccion": [
+        "detalle_cursos",
+        "Ciencia de Datos"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-proyeccion-social",
+      "titulo": "Detalle cursos > Proyección Social",
+      "texto": "Detalle cursos > Proyección Social\nCodigo: IFI23. Nombre: Proyección Social. Creditos: 2. Semestre: 7. Horas teoria: 0. Horas practica: 4. Requisitos: 120 Créditos",
+      "seccion": [
+        "detalle_cursos",
+        "Proyección Social"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-programacion-paralela-y-distribuida",
+      "titulo": "Detalle cursos > Programación Paralela y Distribuida",
+      "texto": "Detalle cursos > Programación Paralela y Distribuida\nCodigo: IFI24. Nombre: Programación Paralela y Distribuida. Creditos: 4. Semestre: 8. Horas teoria: 3. Horas practica: 2. Requisitos: IFI21, IFI08",
+      "seccion": [
+        "detalle_cursos",
+        "Programación Paralela y Distribuida"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-aprendizaje-profundo",
+      "titulo": "Detalle cursos > Aprendizaje Profundo",
+      "texto": "Detalle cursos > Aprendizaje Profundo\nCodigo: IFI25. Nombre: Aprendizaje Profundo. Creditos: 4. Semestre: 8. Horas teoria: 3. Horas practica: 2. Requisitos: IFI19",
+      "seccion": [
+        "detalle_cursos",
+        "Aprendizaje Profundo"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-ingenieria-de-software-i",
+      "titulo": "Detalle cursos > Ingeniería de Software I",
+      "texto": "Detalle cursos > Ingeniería de Software I\nCodigo: IFI26. Nombre: Ingeniería de Software I. Creditos: 4. Semestre: 8. Horas teoria: 3. Horas practica: 2. Requisitos: IFI20",
+      "seccion": [
+        "detalle_cursos",
+        "Ingeniería de Software I"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-redes-de-computadoras-ii",
+      "titulo": "Detalle cursos > Redes de Computadoras II",
+      "texto": "Detalle cursos > Redes de Computadoras II\nCodigo: IFI27. Nombre: Redes de Computadoras II. Creditos: 4. Semestre: 8. Horas teoria: 3. Horas practica: 2. Requisitos: IFI21",
+      "seccion": [
+        "detalle_cursos",
+        "Redes de Computadoras II"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-formulacion-de-proyectos-de-tecnologias-de-la-informacion",
+      "titulo": "Detalle cursos > Formulación de Proyectos de Tecnologías de la Información",
+      "texto": "Detalle cursos > Formulación de Proyectos de Tecnologías de la Información\nCodigo: IFI28. Nombre: Formulación de Proyectos de Tecnologías de la Información. Creditos: 3. Semestre: 8. Horas teoria: 2. Horas practica: 2. Requisitos: IFI20",
+      "seccion": [
+        "detalle_cursos",
+        "Formulación de Proyectos de Tecnologías de la Información"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-seminario-de-investigacion",
+      "titulo": "Detalle cursos > Seminario de Investigación",
+      "texto": "Detalle cursos > Seminario de Investigación\nCodigo: IFI29. Nombre: Seminario de Investigación. Creditos: 3. Semestre: 9. Horas teoria: 2. Horas practica: 2. Requisitos: 170 Créditos",
+      "seccion": [
+        "detalle_cursos",
+        "Seminario de Investigación"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-ingenieria-de-software-ii",
+      "titulo": "Detalle cursos > Ingeniería de Software II",
+      "texto": "Detalle cursos > Ingeniería de Software II\nCodigo: IFI30. Nombre: Ingeniería de Software II. Creditos: 4. Semestre: 9. Horas teoria: 3. Horas practica: 2. Requisitos: IFI26",
+      "seccion": [
+        "detalle_cursos",
+        "Ingeniería de Software II"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-sistemas-internet-de-las-cosas",
+      "titulo": "Detalle cursos > Sistemas Internet de las Cosas",
+      "texto": "Detalle cursos > Sistemas Internet de las Cosas\nCodigo: IFI31. Nombre: Sistemas Internet de las Cosas. Creditos: 4. Semestre: 9. Horas teoria: 3. Horas practica: 2. Requisitos: IFI27, IFI19",
+      "seccion": [
+        "detalle_cursos",
+        "Sistemas Internet de las Cosas"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-ciberseguridad",
+      "titulo": "Detalle cursos > Ciberseguridad",
+      "texto": "Detalle cursos > Ciberseguridad\nCodigo: IFI32. Nombre: Ciberseguridad. Creditos: 4. Semestre: 9. Horas teoria: 3. Horas practica: 2. Requisitos: IFI27",
+      "seccion": [
+        "detalle_cursos",
+        "Ciberseguridad"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-trabajo-de-investigacion",
+      "titulo": "Detalle cursos > Trabajo de Investigación",
+      "texto": "Detalle cursos > Trabajo de Investigación\nCodigo: IFI33. Nombre: Trabajo de Investigación. Creditos: 4. Semestre: 10. Horas teoria: 3. Horas practica: 2. Requisitos: IFI29",
+      "seccion": [
+        "detalle_cursos",
+        "Trabajo de Investigación"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-desarrollo-de-proyectos-de-ingenieria-de-software",
+      "titulo": "Detalle cursos > Desarrollo de Proyectos de Ingeniería de Software",
+      "texto": "Detalle cursos > Desarrollo de Proyectos de Ingeniería de Software\nCodigo: IFI34. Nombre: Desarrollo de Proyectos de Ingeniería de Software. Creditos: 4. Semestre: 10. Horas teoria: 3. Horas practica: 2. Requisitos: IFI28, IFI30",
+      "seccion": [
+        "detalle_cursos",
+        "Desarrollo de Proyectos de Ingeniería de Software"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-administracion-de-tecnologias-de-la-informacion",
+      "titulo": "Detalle cursos > Administración de Tecnologías de la Información",
+      "texto": "Detalle cursos > Administración de Tecnologías de la Información\nCodigo: IFI35. Nombre: Administración de Tecnologías de la Información. Creditos: 4. Semestre: 10. Horas teoria: 3. Horas practica: 2. Requisitos: IFI32",
+      "seccion": [
+        "detalle_cursos",
+        "Administración de Tecnologías de la Información"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-debate",
+      "titulo": "Detalle cursos > Debate",
+      "texto": "Detalle cursos > Debate\nCodigo: IFI18. Nombre: Debate. Creditos: 2. Semestre: 10. Horas teoria: 0. Horas practica: 4. Requisitos: 180 Créditos",
+      "seccion": [
+        "detalle_cursos",
+        "Debate"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_curricular_2025#detalle-cursos-practicas-pre-profesionales",
+      "titulo": "Detalle cursos > Prácticas Pre Profesionales",
+      "texto": "Detalle cursos > Prácticas Pre Profesionales\nCodigo: IFI66. Nombre: Prácticas Pre Profesionales. Creditos: 8. Semestre: 10. Horas teoria: 0. Horas practica: 16. Requisitos: 180 Créditos",
+      "seccion": [
+        "detalle_cursos",
+        "Prácticas Pre Profesionales"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    }
+  ]
+}
