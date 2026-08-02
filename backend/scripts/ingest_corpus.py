@@ -47,12 +47,34 @@ def hash_contenido(texto: str) -> str:
     return hashlib.sha256(texto.encode("utf-8")).hexdigest()
 
 
+def intercalar(por_documento: dict[str, list[dict]]) -> list[dict]:
+    """Alterna entre documentos en vez de recorrerlos uno tras otro.
+
+    En orden alfabetico, una interrupcion por cuota deja documentos enteros sin
+    indexar. Ocurrio: la ingesta se corto dentro de reglamento_academico y dejo
+    en cero el reglamento de tutoria, que es la fuente de la mitad del golden
+    set, de modo que la evaluacion parecia un fallo de recuperacion cuando en
+    realidad el documento no estaba en el indice.
+
+    Intercalando, una ingesta parcial cubre todos los documentos de forma pareja
+    y las metricas siguen siendo interpretables.
+    """
+    orden: list[dict] = []
+    restantes = {k: list(v) for k, v in por_documento.items()}
+    while restantes:
+        for clave in sorted(restantes):
+            orden.append(restantes[clave].pop(0))
+            if not restantes[clave]:
+                del restantes[clave]
+    return orden
+
+
 def cargar_fragmentos() -> list[dict]:
     """Aplana el corpus estructurado en fragmentos listos para indexar."""
     if not os.path.isdir(CORPUS_DIR):
         raise SystemExit(f"No existe {CORPUS_DIR}. Corre antes los scripts de extraccion.")
 
-    fragmentos: list[dict] = []
+    por_documento: dict[str, list[dict]] = {}
     for nombre in sorted(os.listdir(CORPUS_DIR)):
         if not nombre.endswith(".json"):
             continue
@@ -61,21 +83,22 @@ def cargar_fragmentos() -> list[dict]:
 
         procedencia = datos.get("procedencia") or {}
         documento = procedencia.get("documento") or nombre
+        clave = nombre.removesuffix(".json")
 
         for frag in datos.get("fragmentos", []):
             texto = (frag.get("texto") or "").strip()
             if not texto:
                 continue
-            fragmentos.append({
+            por_documento.setdefault(clave, []).append({
                 "fragment_id": frag["id"],
                 "texto": texto,
                 "hash": hash_contenido(texto),
                 "documento": documento,
                 "articulo": frag.get("articulo"),
-                "source": nombre.removesuffix(".json"),
+                "source": clave,
             })
 
-    return fragmentos
+    return intercalar(por_documento)
 
 
 def clasificar(

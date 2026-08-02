@@ -113,5 +113,45 @@ class TestModoEstricto(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(len(vector), 768)
 
 
+
+class TestOrdenDeIngesta(unittest.TestCase):
+    def test_intercala_documentos_en_vez_de_recorrerlos_en_serie(self):
+        """Regresion de un fallo observado en una ingesta real.
+
+        En orden alfabetico la cuota se agoto dentro de reglamento_academico y
+        dejo reglamento_tutoria con cero fragmentos indexados. Como ese
+        reglamento es la fuente de la mitad del golden set, la evaluacion
+        parecia un fallo de recuperacion cuando en realidad el documento nunca
+        habia llegado al indice.
+        """
+        from scripts.ingest_corpus import intercalar
+
+        orden = intercalar({
+            "a": [_frag("a#1", "1"), _frag("a#2", "2"), _frag("a#3", "3")],
+            "z": [_frag("z#1", "1"), _frag("z#2", "2")],
+        })
+
+        fuentes = [f["fragment_id"].split("#")[0] for f in orden]
+        self.assertEqual(fuentes, ["a", "z", "a", "z", "a"])
+
+    def test_una_ingesta_parcial_cubre_todos_los_documentos(self):
+        from scripts.ingest_corpus import intercalar
+
+        por_doc = {f"doc{i}": [_frag(f"doc{i}#{j}", str(j)) for j in range(10)] for i in range(5)}
+        orden = intercalar(por_doc)
+
+        # Cortando en el primer 10% ya hay un fragmento de cada documento.
+        primeros = {f["fragment_id"].split("#")[0] for f in orden[:5]}
+        self.assertEqual(len(primeros), 5)
+
+    def test_no_pierde_ni_duplica_fragmentos(self):
+        from scripts.ingest_corpus import intercalar
+
+        por_doc = {"a": [_frag("a#1", "1")], "b": [_frag(f"b#{j}", str(j)) for j in range(4)]}
+        orden = intercalar(por_doc)
+
+        self.assertEqual(len(orden), 5)
+        self.assertEqual(len({f["fragment_id"] for f in orden}), 5)
+
 if __name__ == "__main__":
     unittest.main()

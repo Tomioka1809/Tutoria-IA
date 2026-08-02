@@ -1,0 +1,331 @@
+{
+  "generado_utc": "2026-08-02T21:48:57.116195+00:00",
+  "golden_set": "v2",
+  "politica": {
+    "limit": 6,
+    "max_cosine_distance": 0.34,
+    "keyword_fallback_limit": 2,
+    "candidatos_por_rama": 20,
+    "rrf_k": 60,
+    "min_ts_rank": 0.05
+  },
+  "casos_evaluados": 17,
+  "casos_totales": 23,
+  "resumen": {
+    "casos_en_alcance": 17,
+    "acierto_articulo": 0.4286,
+    "acierto_documento": 0.6471,
+    "cobertura_palabras_media": 0.6765,
+    "abstencion_fuera_de_alcance": null
+  },
+  "detalle": [
+    {
+      "id": 101,
+      "dominio": "tutoria",
+      "categoria": "facil",
+      "pregunta": "¿Cuántos estudiantes como máximo se le pueden asignar a un tutor?",
+      "fuera_de_alcance": false,
+      "chunks_recuperados": 6,
+      "citas_recuperadas": [
+        "Glosario General Universitario",
+        "Preguntas Frecuentes Generales UNSAAC"
+      ],
+      "acierto_articulo": false,
+      "acierto_documento": false,
+      "cobertura_palabras": 0.0,
+      "palabras_faltantes": [
+        "veinticinco",
+        "25",
+        "tutorados",
+        "profesor"
+      ]
+    },
+    {
+      "id": 102,
+      "dominio": "tutoria",
+      "categoria": "facil",
+      "pregunta": "¿Cuál es la naturaleza y alcance del Reglamento de Tutoría?",
+      "fuera_de_alcance": false,
+      "chunks_recuperados": 6,
+      "citas_recuperadas": [
+        "Glosario General Universitario",
+        "Preguntas Frecuentes Generales UNSAAC"
+      ],
+      "acierto_articulo": false,
+      "acierto_documento": false,
+      "cobertura_palabras": 0.3333,
+      "palabras_faltantes": [
+        "regula",
+        "actividad tutorial"
+      ]
+    },
+    {
+      "id": 103,
+      "dominio": "tutoria",
+      "categoria": "facil",
+      "pregunta": "¿Mi tutor puede compartir lo que le cuento en una sesión de tutoría?",
+      "fuera_de_alcance": false,
+      "chunks_recuperados": 6,
+      "citas_recuperadas": [
+        "Glosario General Universitario",
+        "Preguntas Frecuentes Generales UNSAAC"
+      ],
+      "acierto_articulo": false,
+      "acierto_documento": false,
+      "cobertura_palabras": 0.6667,
+      "palabras_faltantes": [
+        "estudiantes"
+      ]
+    },
+    {
+      "id": 104,
+      "dominio": "tutoria",
+      "categoria": "ambiguo",
+      "pregunta": "¿Hasta cuándo me acompaña el mismo tutor?",
+      "fuera_de_alcance": false,
+      "chunks_recuperados": 5,
+      "citas_recuperadas": [
+        "Preguntas Frecuentes Generales UNSAAC"
+      ],
+      "acierto_articulo": false,
+      "acierto_documento": false,
+      "cobertura_palabras": 0.0,
+      "palabras_faltantes": [
+        "primer semestre",
+        "culminación",
+        "plan curricular"
+      ]
+    },
+    {
+      "id": 105,
+      "dominio": "tutoria",
+      "categoria": "ambiguo",
+      "pregunta": "¿Quién evalúa si el programa de tutoría está funcionando?",
+      "fuera_de_alcance": false,
+      "chunks_recuperados": 3,
+      "citas_recuperadas": [
+        "Glosario General Universitario",
+        "Preguntas Frecuentes Generales UNSAAC"
+      ],
+      "acierto_articulo": false,
+      "acierto_documento": false,
+      "cobertura_palabras": 0.3333,
+      "palabras_faltantes": [
+        "año académico",
+        "objetivos"
+      ]
+    },
+    {
+      "id": 106,
+      "dominio": "trayectoria_academica",
+      "categoria": "facil",
+      "pregunta": "¿Cuántos créditos necesito para ser considerado estudiante regular?",
+      "fuera_de_alcance": false,
+      "chunks_recuperados": 6,
+      "citas_recuperadas": [
+        "Art. 215 - Estatuto Universitario UNSAAC",
+        "Art. 3 - Reglamento Académico UNSAAC",
+        "Art. 84 - Estatuto Universitario UNSAAC",
+        "Art. 85 - Estatuto Universitario UNSAAC",
+        "Art. 9 - Reglamento Académico UNSAAC",
+        "Preguntas Frecuentes Generales UNSAAC"
+      ],
+      "acierto_articulo": true,
+      "acierto_documento": true,
+      "cobertura_palabras": 1.0,
+      "palabras_faltantes": []
+    },
+    {
+      "id": 107,
+      "dominio": "trayectoria_academica",
+      "categoria": "facil",
+      "pregunta": "Si tengo buen promedio, ¿puedo llevar más créditos de lo normal?",
+      "fuera_de_alcance": false,
+      "chunks_recuperados": 6,
+      "citas_recuperadas": [
+        "Art. 9 - Reglamento Académico UNSAAC",
+        "Preguntas Frecuentes Generales UNSAAC"
+      ],
+      "acierto_articulo": true,
+      "acierto_documento": true,
+      "cobertura_palabras": 1.0,
+      "palabras_faltantes": []
+    },
+    {
+      "id": 108,
+      "dominio": "trayectoria_academica",
+      "categoria": "ambiguo",
+      "pregunta": "¿Cuánto tiempo puedo seguir siendo estudiante no regular?",
+      "fuera_de_alcance": false,
+      "chunks_recuperados": 1,
+      "citas_recuperadas": [
+        "Art. 3 - Reglamento Académico UNSAAC"
+      ],
+      "acierto_articulo": true,
+      "acierto_documento": true,
+      "cobertura_palabras": 1.0,
+      "palabras_faltantes": []
+    },
+    {
+      "id": 127,
+      "dominio": "trayectoria_academica",
+      "categoria": "facil",
+      "pregunta": "¿Cuántos créditos como máximo puedo matricular por semestre?",
+      "fuera_de_alcance": false,
+      "chunks_recuperados": 6,
+      "citas_recuperadas": [
+        "Art. 8 - Reglamento Académico UNSAAC",
+        "Art. 84 - Estatuto Universitario UNSAAC",
+        "Art. 9 - Reglamento Académico UNSAAC",
+        "Plan de Estudios 2025 - Ingeniería Informática y de Sistemas UNSAAC",
+        "Plan de Estudios y Malla Curricular 2025"
+      ],
+      "acierto_articulo": true,
+      "acierto_documento": true,
+      "cobertura_palabras": 1.0,
+      "palabras_faltantes": []
+    },
+    {
+      "id": 109,
+      "dominio": "trayectoria_academica",
+      "categoria": "facil",
+      "pregunta": "¿Qué cursos llevo en el primer semestre del plan 2025 de Ingeniería Informática?",
+      "fuera_de_alcance": false,
+      "chunks_recuperados": 6,
+      "citas_recuperadas": [
+        "Plan de Estudios 2025 - Ingeniería Informática y de Sistemas UNSAAC",
+        "Plan de Estudios y Malla Curricular 2025"
+      ],
+      "acierto_articulo": null,
+      "acierto_documento": true,
+      "cobertura_palabras": 1.0,
+      "palabras_faltantes": []
+    },
+    {
+      "id": 110,
+      "dominio": "apoyos",
+      "categoria": "facil",
+      "pregunta": "¿Qué servicios de apoyo al estudiante ofrece la universidad?",
+      "fuera_de_alcance": false,
+      "chunks_recuperados": 6,
+      "citas_recuperadas": [
+        "Art. 247 - Estatuto Universitario UNSAAC",
+        "Preguntas Frecuentes Generales UNSAAC"
+      ],
+      "acierto_articulo": false,
+      "acierto_documento": true,
+      "cobertura_palabras": 0.5,
+      "palabras_faltantes": [
+        "alimentación",
+        "deporte"
+      ]
+    },
+    {
+      "id": 111,
+      "dominio": "apoyos",
+      "categoria": "facil",
+      "pregunta": "¿Qué oficina se encarga del bienestar de los estudiantes?",
+      "fuera_de_alcance": false,
+      "chunks_recuperados": 6,
+      "citas_recuperadas": [
+        "Art. 236 - Estatuto Universitario UNSAAC",
+        "Art. 246 - Estatuto Universitario UNSAAC",
+        "Art. 253 - Estatuto Universitario UNSAAC",
+        "Glosario General Universitario",
+        "Preguntas Frecuentes Generales UNSAAC"
+      ],
+      "acierto_articulo": false,
+      "acierto_documento": true,
+      "cobertura_palabras": 1.0,
+      "palabras_faltantes": []
+    },
+    {
+      "id": 112,
+      "dominio": "apoyos",
+      "categoria": "ambiguo",
+      "pregunta": "¿La universidad apoya a estudiantes con discapacidad?",
+      "fuera_de_alcance": false,
+      "chunks_recuperados": 1,
+      "citas_recuperadas": [
+        "Art. 246 - Estatuto Universitario UNSAAC"
+      ],
+      "acierto_articulo": true,
+      "acierto_documento": true,
+      "cobertura_palabras": 0.6667,
+      "palabras_faltantes": [
+        "materiales"
+      ]
+    },
+    {
+      "id": 115,
+      "dominio": "movilidad",
+      "categoria": "facil",
+      "pregunta": "Si vengo por movilidad estudiantil, ¿cuántos créditos puedo matricular?",
+      "fuera_de_alcance": false,
+      "chunks_recuperados": 6,
+      "citas_recuperadas": [
+        "Glosario General Universitario",
+        "Preguntas Frecuentes Generales UNSAAC"
+      ],
+      "acierto_articulo": false,
+      "acierto_documento": false,
+      "cobertura_palabras": 0.0,
+      "palabras_faltantes": [
+        "movilidad estudiantil",
+        "veintidós",
+        "22",
+        "certificado de estudios"
+      ]
+    },
+    {
+      "id": 116,
+      "dominio": "movilidad",
+      "categoria": "facil",
+      "pregunta": "¿Qué es un estudiante especial por convenio de movilidad?",
+      "fuera_de_alcance": false,
+      "chunks_recuperados": 6,
+      "citas_recuperadas": [
+        "Art. 207 - Estatuto Universitario UNSAAC",
+        "Art. 3 - Reglamento Académico UNSAAC",
+        "Glosario General Universitario",
+        "Preguntas Frecuentes Generales UNSAAC"
+      ],
+      "acierto_articulo": true,
+      "acierto_documento": true,
+      "cobertura_palabras": 1.0,
+      "palabras_faltantes": []
+    },
+    {
+      "id": 119,
+      "dominio": "tramites",
+      "categoria": "facil",
+      "pregunta": "¿Dónde consulto los requisitos y el costo de un trámite en la universidad?",
+      "fuera_de_alcance": false,
+      "chunks_recuperados": 6,
+      "citas_recuperadas": [
+        "Glosario General Universitario",
+        "Preguntas Frecuentes Generales UNSAAC"
+      ],
+      "acierto_articulo": null,
+      "acierto_documento": true,
+      "cobertura_palabras": 1.0,
+      "palabras_faltantes": []
+    },
+    {
+      "id": 120,
+      "dominio": "calendario",
+      "categoria": "facil",
+      "pregunta": "¿Cuándo es la matrícula de estudiantes regulares para el semestre 2026-I?",
+      "fuera_de_alcance": false,
+      "chunks_recuperados": 6,
+      "citas_recuperadas": [
+        "Calendario Académico 2026 UNSAAC",
+        "Calendarización de Actividades Académicas Año 2026"
+      ],
+      "acierto_articulo": null,
+      "acierto_documento": true,
+      "cobertura_palabras": 1.0,
+      "palabras_faltantes": []
+    }
+  ]
+}
