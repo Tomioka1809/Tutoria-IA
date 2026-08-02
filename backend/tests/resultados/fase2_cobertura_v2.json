@@ -1,15 +1,11 @@
 {
   "casos_en_alcance": 20,
-  "cubierto": 16,
-  "parcial": 4,
+  "cubierto": 19,
+  "parcial": 1,
   "ausente": 0,
-  "techo_alcanzable": 0.8,
+  "techo_alcanzable": 0.95,
   "casos_que_citan_articulado": 16,
-  "documentos_citados_ausentes": {
-    "Plan de Estudios Semestralizado 2025 - Ingeniería Informática y de Sistemas": [
-      109
-    ]
-  },
+  "documentos_citados_ausentes": {},
   "detalle": [
     {
       "id": 101,
@@ -225,24 +221,21 @@
       "id": 109,
       "categoria": "facil",
       "pregunta": "¿Qué cursos llevo en el primer semestre del plan 2025 de Ingeniería Informática?",
-      "veredicto": "PARCIAL",
-      "ratio": 0.6667,
+      "veredicto": "CUBIERTO",
+      "ratio": 1.0,
       "dominio": "trayectoria_academica",
       "ratio_corpus": 1.0,
-      "mejor_unidad": "cronograma_academico#preguntas-frecuentes-cuando-son-los-examenes-del-primer-parcial-en-el-semestre-20",
+      "mejor_unidad": "plan_estudios_2025#semestre-1",
       "palabras_halladas": [
+        "primer semestre",
         "créditos",
         "asignatura"
       ],
-      "palabras_faltantes": [
-        "primer semestre"
-      ],
+      "palabras_faltantes": [],
       "documentos_citados": [
         "Plan de Estudios Semestralizado 2025 - Ingeniería Informática y de Sistemas"
       ],
-      "documentos_ausentes": [
-        "Plan de Estudios Semestralizado 2025 - Ingeniería Informática y de Sistemas"
-      ],
+      "documentos_ausentes": [],
       "articulos_citados": []
     },
     {
@@ -458,18 +451,17 @@
       "id": 120,
       "categoria": "facil",
       "pregunta": "¿Cuándo es la matrícula de estudiantes regulares para el semestre 2026-I?",
-      "veredicto": "PARCIAL",
-      "ratio": 0.6667,
+      "veredicto": "CUBIERTO",
+      "ratio": 1.0,
       "dominio": "calendario",
       "ratio_corpus": 1.0,
-      "mejor_unidad": "cronograma_academico#semestre-2026-i",
+      "mejor_unidad": "calendario_2026#bloque-1",
       "palabras_halladas": [
+        "matrícula",
         "marzo",
         "2026"
       ],
-      "palabras_faltantes": [
-        "matrícula"
-      ],
+      "palabras_faltantes": [],
       "documentos_citados": [
         "Calendario Académico 2026 - CU-014-2026-UNSAAC"
       ],
@@ -480,18 +472,17 @@
       "id": 121,
       "categoria": "ambiguo",
       "pregunta": "Reinicié mis estudios, ¿cuándo me matriculo?",
-      "veredicto": "PARCIAL",
-      "ratio": 0.6667,
+      "veredicto": "CUBIERTO",
+      "ratio": 1.0,
       "dominio": "calendario",
       "ratio_corpus": 1.0,
-      "mejor_unidad": "reglamento_academico#art-21",
+      "mejor_unidad": "calendario_2026#bloque-1",
       "palabras_halladas": [
         "reinicio",
+        "febrero",
         "resolución"
       ],
-      "palabras_faltantes": [
-        "febrero"
-      ],
+      "palabras_faltantes": [],
       "documentos_citados": [
         "Calendario Académico 2026 - CU-014-2026-UNSAAC"
       ],
