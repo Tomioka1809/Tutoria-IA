@@ -35,6 +35,9 @@ class RAGRetrievalPolicy(BaseModel):
     # "derivada de una funcion" engancharia el curso "Calculo I" de la malla y
     # rompería la abstencion.
     min_ts_rank: float = Field(default=0.05, ge=0.0)
+    # Cuanto pesa la jerarquia de la fuente al reordenar. En 0 se desactiva y
+    # la fusion queda como antes, lo que permite medir su aporte por separado.
+    peso_autoridad: float = Field(default=0.5, ge=0.0)
 
     @model_validator(mode="after")
     def validate_limits(self) -> "RAGRetrievalPolicy":

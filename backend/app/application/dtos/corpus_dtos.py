@@ -100,3 +100,23 @@ class DocumentoCorpus(BaseModel):
         if self.procedencia.tipo != TipoDocumento.REGLAMENTO:
             return []
         return [f for f in self.fragmentos if not f.articulo and not f.es_conversacional]
+
+
+# Jerarquia de fuentes usada al recuperar. Ver migracion c3a9f1e42b08.
+AUTORIDAD_NORMATIVA_CITABLE = 3
+AUTORIDAD_DOCUMENTO_OFICIAL = 2
+AUTORIDAD_REFERENCIAL = 1
+
+
+def autoridad_de(procedencia: Procedencia, fragmento: Fragmento) -> int:
+    """Nivel de autoridad de un fragmento segun su procedencia.
+
+    Un fragmento con numero de articulo proviene de un documento oficial del que
+    se extrajo el articulado, asi que puede citarse con precision. Uno sin
+    resolucion declarada ni articulo es, en el mejor de los casos, un resumen.
+    """
+    if fragmento.articulo:
+        return AUTORIDAD_NORMATIVA_CITABLE
+    if procedencia.resolucion:
+        return AUTORIDAD_DOCUMENTO_OFICIAL
+    return AUTORIDAD_REFERENCIAL

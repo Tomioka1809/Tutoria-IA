@@ -34,6 +34,11 @@ import app.infrastructure.database.base  # noqa: F401,E402  registra los modelos
 from app.infrastructure.adapters.gemini_adapter import GeminiAdapter  # noqa: E402
 from app.infrastructure.config.config import settings  # noqa: E402
 from app.infrastructure.database.models.corpus_chunk import CorpusChunk  # noqa: E402
+from app.application.dtos.corpus_dtos import (  # noqa: E402
+    AUTORIDAD_DOCUMENTO_OFICIAL,
+    AUTORIDAD_NORMATIVA_CITABLE,
+    AUTORIDAD_REFERENCIAL,
+)
 from app.infrastructure.database.session import SessionLocal  # noqa: E402
 
 CORPUS_DIR = os.path.join(BACKEND_DIR, "corpus_estructurado")
@@ -83,6 +88,7 @@ def cargar_fragmentos() -> list[dict]:
 
         procedencia = datos.get("procedencia") or {}
         documento = procedencia.get("documento") or nombre
+        resolucion = procedencia.get("resolucion")
         clave = nombre.removesuffix(".json")
 
         for frag in datos.get("fragmentos", []):
@@ -95,6 +101,11 @@ def cargar_fragmentos() -> list[dict]:
                 "hash": hash_contenido(texto),
                 "documento": documento,
                 "articulo": frag.get("articulo"),
+                "autoridad": (
+                    AUTORIDAD_NORMATIVA_CITABLE if frag.get("articulo")
+                    else AUTORIDAD_DOCUMENTO_OFICIAL if resolucion
+                    else AUTORIDAD_REFERENCIAL
+                ),
                 "source": clave,
             })
 
@@ -123,6 +134,36 @@ def clasificar(
     ]
     obsoletos = sorted(set(existentes) - ids)
     return nuevos, modificados, obsoletos
+
+
+async def sincronizar_metadatos(db, fragmentos: list[dict], ya_indexados: set[str]) -> int:
+    """Pone al dia documento, articulo, autoridad y source sin tocar el embedding.
+
+    Devuelve cuantas filas cambiaron. Solo se emiten UPDATE donde algo difiere,
+    para no reescribir el corpus completo en cada corrida.
+    """
+    presentes = [f for f in fragmentos if f["fragment_id"] in ya_indexados]
+    if not presentes:
+        return 0
+
+    por_id = {f["fragment_id"]: f for f in presentes}
+    res = await db.execute(
+        select(CorpusChunk).where(CorpusChunk.fragment_id.in_(list(por_id)))
+    )
+
+    cambiados = 0
+    for chunk in res.scalars().all():
+        frag = por_id[chunk.fragment_id]
+        campos = ("documento", "articulo", "autoridad", "source")
+        if all(getattr(chunk, c) == frag[c] for c in campos):
+            continue
+        for c in campos:
+            setattr(chunk, c, frag[c])
+        cambiados += 1
+
+    if cambiados:
+        await db.commit()
+    return cambiados
 
 
 async def ingestar(dry_run: bool = False, forzar: bool = False, limite: int | None = None) -> int:
@@ -176,6 +217,14 @@ async def ingestar(dry_run: bool = False, forzar: bool = False, limite: int | No
             await db.commit()
             print(f"\n  Eliminados {len(obsoletos)} fragmentos que ya no estan en el corpus.")
 
+        # Los metadatos se sincronizan siempre, tambien en los fragmentos cuyo
+        # texto no cambio: son un UPDATE y no requieren embedding, asi que
+        # incorporar un campo nuevo -como la autoridad- no obliga a reembeber el
+        # corpus entero ni a gastar cuota.
+        actualizados = await sincronizar_metadatos(db, fragmentos, set(existentes))
+        if actualizados:
+            print(f"  Metadatos actualizados en {actualizados} fragmentos ya indexados.")
+
         for i, frag in enumerate(a_embeber, 1):
             embedding = await llm.compute_embedding(frag["texto"], task_type=TASK_TYPE_INDEXACION)
 
@@ -191,6 +240,7 @@ async def ingestar(dry_run: bool = False, forzar: bool = False, limite: int | No
             chunk.content_hash = frag["hash"]
             chunk.documento = frag["documento"]
             chunk.articulo = frag["articulo"]
+            chunk.autoridad = frag["autoridad"]
             chunk.source = frag["source"]
             chunk.embedding = embedding
 

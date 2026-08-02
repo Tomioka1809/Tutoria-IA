@@ -81,6 +81,7 @@ class TestRAGQuality(unittest.IsolatedAsyncioTestCase):
             source="reglamento",
             documento="Reglamento Académico UNSAAC",
             articulo="Art. 9",
+            autoridad=3,
         )
         lex_res = MagicMock()
         lex_res.all.return_value = [(chunk, 0.9)]
@@ -117,13 +118,13 @@ class TestRAGQuality(unittest.IsolatedAsyncioTestCase):
         repo = CorpusRepository(db=mock_db)
 
         c1 = MagicMock(id=1, text_content="Chunk 1", source="reglamento",
-                       documento="Doc", articulo=None)
+                       documento="Doc", articulo=None, autoridad=1)
         # Mismo texto con otro id: no debe ocupar dos de los pocos lugares que
         # se le entregan al LLM.
         c1_dup = MagicMock(id=2, text_content="Chunk 1", source="reglamento",
-                           documento="Doc", articulo=None)
+                           documento="Doc", articulo=None, autoridad=1)
         c2 = MagicMock(id=3, text_content="Chunk 2 matricula", source="malla",
-                       documento="Doc", articulo=None)
+                       documento="Doc", articulo=None, autoridad=1)
 
         vector_res = MagicMock()
         vector_res.all.return_value = [(c1, 0.2)]
@@ -148,8 +149,8 @@ class TestRAGQuality(unittest.IsolatedAsyncioTestCase):
         mock_db = AsyncMock()
         repo = CorpusRepository(db=mock_db)
 
-        solo_vector = MagicMock(id=1, text_content="A", source="s", documento="D", articulo=None)
-        ambos = MagicMock(id=2, text_content="B", source="s", documento="D", articulo=None)
+        solo_vector = MagicMock(id=1, text_content="A", source="s", documento="D", articulo=None, autoridad=1)
+        ambos = MagicMock(id=2, text_content="B", source="s", documento="D", articulo=None, autoridad=1)
 
         vector_res = MagicMock()
         vector_res.all.return_value = [(solo_vector, 0.1), (ambos, 0.3)]
@@ -338,7 +339,7 @@ class TestRAGQuality(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(len(heads), 1, f"Expected 1 alembic head, got: {heads}")
         # Actualizar al agregar una migracion: la garantia que importa es que la
         # cadena siga siendo lineal y con una sola cabeza.
-        self.assertIn("b2f8d3c15e47", heads[0])
+        self.assertIn("c3a9f1e42b08", heads[0])
 
     # Verification of no tracked API keys with pattern AIza
     @unittest.skipUnless(shutil.which("git"), "git executable not found in environment")
@@ -383,3 +384,61 @@ class TestRAGQuality(unittest.IsolatedAsyncioTestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestPonderacionPorAutoridad(unittest.TestCase):
+    """Regresion del fallo que motivo la Fase 4.
+
+    Ante "que oficina se encarga del bienestar", el Art. 245 del Estatuto -la
+    respuesta correcta- quedaba en la posicion 15 de 20, detras de cinco
+    fragmentos de documentos heredados sin procedencia verificable. Con limit=6
+    nunca llegaba al LLM. La similitud semantica sola no distingue una norma
+    citable de un resumen que dice algo parecido.
+    """
+
+    def _chunk(self, autoridad):
+        c = MagicMock()
+        c.autoridad = autoridad
+        return c
+
+    def test_una_fuente_citable_supera_a_una_parafrasis_peor_rankeada(self):
+        from app.infrastructure.database.repositories.corpus_repository import (
+            ponderar_por_autoridad,
+        )
+
+        # La parafrasis va primera por similitud; la norma, decima.
+        puntajes = {1: 1 / 61, 2: 1 / 70}
+        chunks = {1: self._chunk(1), 2: self._chunk(3)}
+
+        ponderados = ponderar_por_autoridad(puntajes, chunks, peso=0.5)
+        self.assertGreater(ponderados[2], ponderados[1])
+
+    def test_no_rescata_a_un_candidato_claramente_peor(self):
+        """El factor reordena entre comparables, no invierte cualquier orden."""
+        from app.infrastructure.database.repositories.corpus_repository import (
+            ponderar_por_autoridad,
+        )
+
+        puntajes = {1: 1 / 61, 2: 1 / 500}
+        chunks = {1: self._chunk(1), 2: self._chunk(3)}
+
+        ponderados = ponderar_por_autoridad(puntajes, chunks, peso=0.5)
+        self.assertGreater(ponderados[1], ponderados[2])
+
+    def test_peso_cero_deja_la_fusion_intacta(self):
+        """Permite medir el aporte del reordenamiento por separado."""
+        from app.infrastructure.database.repositories.corpus_repository import (
+            ponderar_por_autoridad,
+        )
+
+        puntajes = {1: 0.5, 2: 0.25}
+        chunks = {1: self._chunk(1), 2: self._chunk(3)}
+        self.assertEqual(ponderar_por_autoridad(puntajes, chunks, peso=0.0), puntajes)
+
+    def test_un_chunk_sin_autoridad_no_rompe_el_calculo(self):
+        from app.infrastructure.database.repositories.corpus_repository import (
+            ponderar_por_autoridad,
+        )
+
+        ponderados = ponderar_por_autoridad({1: 0.5}, {}, peso=0.5)
+        self.assertEqual(ponderados[1], 0.5)

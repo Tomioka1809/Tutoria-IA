@@ -491,6 +491,7 @@ class ChatUseCase:
                         candidatos_por_rama=self.rag_policy.candidatos_por_rama,
                         rrf_k=self.rag_policy.rrf_k,
                         min_ts_rank=self.rag_policy.min_ts_rank,
+                        peso_autoridad=self.rag_policy.peso_autoridad,
                     )
                     for c in st_chunks:
                         if c.text not in seen_texts:
@@ -511,6 +512,7 @@ class ChatUseCase:
                     candidatos_por_rama=self.rag_policy.candidatos_por_rama,
                     rrf_k=self.rag_policy.rrf_k,
                     min_ts_rank=self.rag_policy.min_ts_rank,
+                    peso_autoridad=self.rag_policy.peso_autoridad,
                 )
 
             # Check plan ambiguity for malla curricular queries

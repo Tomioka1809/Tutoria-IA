@@ -45,6 +45,32 @@ def fusionar_rrf(
     return puntajes
 
 
+def ponderar_por_autoridad(
+    puntajes: dict[int, float],
+    chunks: dict[int, "CorpusChunk"],
+    peso: float,
+) -> dict[int, float]:
+    """Favorece las fuentes citables sobre las parafrasis no verificadas.
+
+    La similitud semantica no distingue una norma de un resumen que dice algo
+    parecido. Medido: ante "que oficina se encarga del bienestar", el Art. 245
+    del Estatuto quedaba en la posicion 15 de 20, detras de cinco fragmentos de
+    documentos heredados sin procedencia, y con limit=6 nunca llegaba al LLM.
+
+    El factor es multiplicativo sobre el puntaje RRF, de modo que reordena entre
+    candidatos comparables pero no rescata a uno claramente peor.
+    """
+    if peso <= 0:
+        return puntajes
+
+    ponderados: dict[int, float] = {}
+    for chunk_id, puntaje in puntajes.items():
+        chunk = chunks.get(chunk_id)
+        autoridad = getattr(chunk, "autoridad", 1) or 1
+        ponderados[chunk_id] = puntaje * (1.0 + peso * (autoridad - 1))
+    return ponderados
+
+
 class CorpusRepository(CorpusRepositoryPort):
     def __init__(self, db: AsyncSession):
         self.db = db
@@ -102,6 +128,7 @@ class CorpusRepository(CorpusRepositoryPort):
         candidatos_por_rama: int = 20,
         rrf_k: int = 60,
         min_ts_rank: float = 0.05,
+        peso_autoridad: float = 0.5,
     ) -> List[RetrievedChunkDTO]:
         candidatos = max(candidatos_por_rama, limit)
 
@@ -127,6 +154,7 @@ class CorpusRepository(CorpusRepositoryPort):
         ids_vector = [chunk.id for chunk, _ in vectoriales]
         ids_lexico = [chunk.id for chunk, _ in lexicos]
         puntajes = fusionar_rrf([ids_vector, ids_lexico], k=rrf_k)
+        puntajes = ponderar_por_autoridad(puntajes, por_id, peso_autoridad)
 
         en_vector, en_lexico = set(ids_vector), set(ids_lexico)
 

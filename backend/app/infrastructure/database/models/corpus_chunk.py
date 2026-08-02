@@ -1,4 +1,4 @@
-from sqlalchemy import Computed, Integer, String, Text
+from sqlalchemy import Computed, Integer, SmallInteger, String, Text
 from sqlalchemy.dialects.postgresql import TSVECTOR
 from sqlalchemy.orm import Mapped, mapped_column
 from pgvector.sqlalchemy import Vector
@@ -32,6 +32,12 @@ class CorpusChunk(Base):
     # Procedencia citable, para que la respuesta pueda referenciar la norma.
     documento: Mapped[str] = mapped_column(String(255), nullable=True)
     articulo: Mapped[str] = mapped_column(String(32), nullable=True)
+    # Jerarquia de la fuente. La similitud semantica no distingue una norma
+    # citable de una parafrasis no verificada que dice algo parecido, asi que
+    # la distincion se guarda como dato del fragmento.
+    autoridad: Mapped[int] = mapped_column(
+        SmallInteger, nullable=False, server_default="1", index=True
+    )
 
     # Indice de texto completo en espanol, con el titulo del fragmento pesado por
     # encima del cuerpo. La calcula Postgres, de modo que no puede quedar

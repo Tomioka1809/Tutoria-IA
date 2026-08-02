@@ -62,6 +62,7 @@ class CorpusRepositoryPort(ABC):
         candidatos_por_rama: int = 20,
         rrf_k: int = 60,
         min_ts_rank: float = 0.05,
+        peso_autoridad: float = 0.5,
     ) -> List[RetrievedChunkDTO]:
         """Recupera fragmentos combinando busqueda vectorial y de texto completo.
 
