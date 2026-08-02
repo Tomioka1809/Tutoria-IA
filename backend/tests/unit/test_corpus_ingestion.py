@@ -175,6 +175,22 @@ class TestAuditoriaCobertura(unittest.TestCase):
         resultado = auditar_caso(caso, "una base de datos", self.UNIDADES, {})
         self.assertEqual(resultado.veredicto, "FUERA_DE_ALCANCE")
 
+    def test_separa_los_pendientes_por_falta_de_documento(self):
+        """Una brecha de adquisicion documental no es un fallo de recuperacion.
+
+        Mezclarlas oculta cual de los dos problemas hay que resolver: conseguir el
+        documento o mejorar la busqueda.
+        """
+        caso = self._caso(estado="pendiente_documento", palabras_clave_esperadas=["maximo"])
+        resultado = auditar_caso(caso, "el maximo es 25", self.UNIDADES, {})
+        self.assertEqual(resultado.veredicto, "PENDIENTE_DOCUMENTO")
+
+    def test_propaga_el_dominio(self):
+        caso = self._caso(dominio="movilidad", palabras_clave_esperadas=["maximo"])
+        self.assertEqual(auditar_caso(caso, "", self.UNIDADES, {}).dominio, "movilidad")
+        # Los sets v1 no declaran dominio y deben seguir funcionando.
+        self.assertEqual(auditar_caso(self._caso(), "", self.UNIDADES, {}).dominio, "general")
+
     def test_reporta_los_documentos_citados_ausentes(self):
         caso = self._caso(articulos_referencia=["Art. 5 - Reglamento Academico UNSAAC"])
         resultado = auditar_caso(caso, "", self.UNIDADES, {"glosario.json": "Glosario General"})

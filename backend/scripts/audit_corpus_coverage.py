@@ -30,6 +30,7 @@ DATASET_DIR = os.path.join(BACKEND_DIR, "tests", "dataset")
 GOLDEN_SETS = {
     "oficial": "golden_set.json",
     "historico": "golden_set_32_historico.json",
+    "v2": "golden_set_v2.json",
 }
 
 # Umbrales de clasificacion sobre la proporcion de palabras clave halladas.
@@ -61,6 +62,7 @@ class ResultadoCaso:
     pregunta: str
     veredicto: str
     ratio: float
+    dominio: str = "general"
     ratio_corpus: float = 0.0
     mejor_unidad: str = ""
     palabras_halladas: list[str] = field(default_factory=list)
@@ -155,6 +157,7 @@ def auditar_caso(
         pregunta=caso.get("pregunta", ""),
         veredicto="",
         ratio=0.0,
+        dominio=caso.get("dominio", "general"),
     )
 
     # Los casos fuera de alcance no se miden por cobertura: sus palabras clave
@@ -162,6 +165,14 @@ def auditar_caso(
     # contenido del corpus, asi que compararlas contra el corpus no dice nada.
     if any(FUERA_DE_ALCANCE in c.upper() for c in citas):
         base.veredicto = "FUERA_DE_ALCANCE"
+        return base
+
+    # El documento fuente todavia no se consiguio. Es una brecha de adquisicion
+    # documental, no un fallo de recuperacion, y mezclarlas oculta cual de los dos
+    # problemas hay que resolver.
+    if caso.get("estado") == "pendiente_documento":
+        base.veredicto = "PENDIENTE_DOCUMENTO"
+        base.documentos_citados = citas
         return base
 
     # Cobertura global: la palabra aparece en algun lugar del corpus. Es una cota
@@ -205,15 +216,23 @@ def cargar_casos(nombre_set: str) -> list[dict[str, Any]]:
         datos = json.load(fh)
     if isinstance(datos, list):
         return datos
+    # Se exige una lista de objetos con 'pregunta': el v2 incluye otras listas de
+    # nivel superior (notas de cambios) que no son casos.
+    for clave in ("casos", "cases"):
+        if isinstance(datos.get(clave), list):
+            return datos[clave]
     for valor in datos.values():
-        if isinstance(valor, list):
+        if isinstance(valor, list) and valor and isinstance(valor[0], dict) and "pregunta" in valor[0]:
             return valor
     raise SystemExit(f"No se encontro una lista de casos en {ruta}")
 
 
 def imprimir_informe(resultados: list[ResultadoCaso], titulos: dict[str, str]) -> dict[str, Any]:
-    en_alcance = [r for r in resultados if r.veredicto != "FUERA_DE_ALCANCE"]
     fuera = [r for r in resultados if r.veredicto == "FUERA_DE_ALCANCE"]
+    pendientes_doc = [r for r in resultados if r.veredicto == "PENDIENTE_DOCUMENTO"]
+    en_alcance = [
+        r for r in resultados if r.veredicto not in ("FUERA_DE_ALCANCE", "PENDIENTE_DOCUMENTO")
+    ]
 
     cubiertos = [r for r in en_alcance if r.veredicto == "CUBIERTO"]
     parciales = [r for r in en_alcance if r.veredicto == "PARCIAL"]
@@ -273,6 +292,27 @@ def imprimir_informe(resultados: list[ResultadoCaso], titulos: dict[str, str]) -
             print(f"\n  {doc}")
             for f in faltas:
                 print(f"      - {f}")
+
+    dominios = sorted({r.dominio for r in resultados})
+    if dominios != ["general"]:
+        print(f"\n{'-' * 78}\nCOBERTURA POR DOMINIO\n{'-' * 78}")
+        print(f"{'dominio':22s} {'casos':>6s} {'cubierto':>9s} {'parcial':>8s} {'ausente':>8s} {'pend.doc':>9s}")
+        for d in dominios:
+            dr = [r for r in resultados if r.dominio == d]
+            print(
+                f"{d:22s} {len(dr):>6d} "
+                f"{sum(1 for r in dr if r.veredicto == 'CUBIERTO'):>9d} "
+                f"{sum(1 for r in dr if r.veredicto == 'PARCIAL'):>8d} "
+                f"{sum(1 for r in dr if r.veredicto == 'AUSENTE'):>8d} "
+                f"{sum(1 for r in dr if r.veredicto == 'PENDIENTE_DOCUMENTO'):>9d}"
+            )
+
+    if pendientes_doc:
+        print(f"\n{'-' * 78}\nPENDIENTES POR FALTA DE DOCUMENTO FUENTE\n{'-' * 78}")
+        print("  No son fallos de recuperacion: el documento aun no se consiguio.")
+        for r in sorted(pendientes_doc, key=lambda x: x.id):
+            cita = r.documentos_citados[0] if r.documentos_citados else "?"
+            print(f"  id={r.id:<5} [{r.dominio}] {cita}")
 
     con_articulo = [r for r in en_alcance if r.articulos_citados]
     total = len(en_alcance)
