@@ -27,6 +27,68 @@ ABSTENTION_MESSAGE = (
 HISTORY_WINDOW_MESSAGES = 20
 
 
+# Instituciones ajenas cuya mencion suele indicar que la consulta no es sobre la
+# UNSAAC. La calibracion del umbral mostro que este caso no lo resuelve la
+# distancia coseno: "cuanto cuesta la matricula en la UNSA" queda mas cerca del
+# corpus (0.291) que varias preguntas legitimas, porque semanticamente SI es una
+# consulta sobre matricula universitaria peruana. Lo que difiere es la
+# institucion, no el tema.
+#
+# Solo se incluyen siglas y nombres inequivocos. Quedan fuera a proposito "uni"
+# (en habla coloquial significa universidad, como en "cuando empieza la uni") y
+# los nombres de ciudad sueltos.
+INSTITUCIONES_EXTERNAS = {
+    "unsa": "Universidad Nacional de San Agustín de Arequipa",
+    "san agustin": "Universidad Nacional de San Agustín de Arequipa",
+    "unmsm": "Universidad Nacional Mayor de San Marcos",
+    "san marcos": "Universidad Nacional Mayor de San Marcos",
+    "pucp": "Pontificia Universidad Católica del Perú",
+    "catolica del peru": "Pontificia Universidad Católica del Perú",
+    "unfv": "Universidad Nacional Federico Villarreal",
+    "villarreal": "Universidad Nacional Federico Villarreal",
+    "unalm": "Universidad Nacional Agraria La Molina",
+    "agraria la molina": "Universidad Nacional Agraria La Molina",
+    "cayetano heredia": "Universidad Peruana Cayetano Heredia",
+    "utec": "Universidad de Ingeniería y Tecnología",
+    "esan": "Universidad ESAN",
+}
+
+# Marcas de que la consulta trata de la relacion de la UNSAAC con otra casa de
+# estudios, que si esta dentro del alcance: convenios, intercambio y movilidad
+# son uno de los dominios que la aplicacion debe cubrir.
+TERMINOS_DE_VINCULO = (
+    "convenio", "intercambio", "movilidad", "postular", "postulacion",
+    "red peruana", "rpu", "traslado", "beca", "internacionaliz",
+)
+
+# Referencias a la propia institucion: si aparecen, la consulta se entiende
+# dirigida a la UNSAAC aunque nombre a otra universidad.
+REFERENCIAS_PROPIAS = ("unsaac", "san antonio abad", "cusco", "mi universidad")
+
+
+def detectar_institucion_externa(user_content: str) -> str | None:
+    """Devuelve la institucion ajena por la que pregunta la consulta, si la hay.
+
+    Solo se activa cuando la pregunta parece dirigida a esa otra institucion: si
+    menciona a la UNSAAC o habla de vinculos entre universidades, se considera
+    dentro del alcance.
+    """
+    norm = _normalize_text_pure(user_content)
+    if not norm:
+        return None
+
+    if any(ref in norm for ref in REFERENCIAS_PROPIAS):
+        return None
+    if any(term in norm for term in TERMINOS_DE_VINCULO):
+        return None
+
+    for clave, nombre in INSTITUCIONES_EXTERNAS.items():
+        # Limite de palabra: evita que "unsa" coincida dentro de "unsaac".
+        if re.search(rf"\b{re.escape(clave)}\b", norm):
+            return nombre
+    return None
+
+
 def _normalize_text_pure(text: str) -> str:
     if not text:
         return ""
@@ -309,6 +371,24 @@ class ChatUseCase:
         if is_ambiguous_tutoria_general_followup(user_content, history_msgs):
             clarification = "¿Te refieres a la definición de tutoría general, al reglamento, al cronograma o a una tutoría programada en tu calendario?"
             assistant_msg = await self.chat_repo.save_message(conversation.id, "assistant", clarification)
+            return assistant_msg
+
+        # 3b. Consulta dirigida a otra casa de estudios.
+        # No se resuelve con el umbral de distancia: preguntar por la matricula de
+        # otra universidad peruana es semanticamente cercano al corpus, y el corte
+        # por distancia la deja pasar. Se responde con una aclaracion y no con una
+        # negativa, para que un falso positivo cueste un turno y no una consulta
+        # legitima perdida.
+        institucion_externa = detectar_institucion_externa(user_content)
+        if institucion_externa:
+            logger.info("Consulta dirigida a institucion externa: %s", institucion_externa)
+            aclaracion = (
+                f"Solo cuento con información oficial de la UNSAAC, no de {institucion_externa}. "
+                "Si tu consulta es sobre la UNSAAC, volvé a preguntarla indicándolo. 🦖"
+            )
+            assistant_msg = await self.chat_repo.save_message(
+                conversation.id, "assistant", aclaracion
+            )
             return assistant_msg
 
         # 4. Context Query Reconstruction
