@@ -43,6 +43,7 @@ from app.application.dtos.rag_dtos import RAGRetrievalPolicy  # noqa: E402
 from app.infrastructure.adapters.gemini_adapter import GeminiAdapter  # noqa: E402
 from app.infrastructure.config.config import settings  # noqa: E402
 from app.infrastructure.database.repositories.corpus_repository import CorpusRepository  # noqa: E402
+from app.application.use_cases.chat_use_cases import detectar_institucion_externa  # noqa: E402
 from app.infrastructure.database.session import SessionLocal  # noqa: E402
 from scripts.audit_corpus_coverage import cargar_casos  # noqa: E402
 
@@ -104,6 +105,23 @@ async def documentos_sin_indexar() -> list[str]:
 async def evaluar_caso(caso: dict, llm, repo, policy: RAGRetrievalPolicy, generar: bool) -> dict:
     citas = [str(a) for a in caso.get("articulos_referencia", [])]
     es_fuera = any(FUERA_DE_ALCANCE in c.upper() for c in citas)
+
+    # El pipeline real corta antes de recuperar cuando la consulta apunta a otra
+    # casa de estudios. Sin reproducirlo aca, la evaluacion mide el repositorio y
+    # no el sistema, y marca como fallo un caso que en produccion se resuelve.
+    institucion = detectar_institucion_externa(caso["pregunta"])
+    if institucion:
+        return {
+            "id": caso["id"],
+            "dominio": caso.get("dominio", "general"),
+            "categoria": caso.get("categoria"),
+            "pregunta": caso["pregunta"],
+            "fuera_de_alcance": es_fuera,
+            "chunks_recuperados": 0,
+            "citas_recuperadas": [],
+            "cortado_por_institucion": institucion,
+            "abstencion_correcta": es_fuera,
+        }
 
     embedding = await llm.compute_embedding(caso["pregunta"])
     chunks = await repo.search_similar(

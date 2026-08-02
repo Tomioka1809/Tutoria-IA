@@ -1,5 +1,5 @@
 {
-  "generado_utc": "2026-08-02T21:48:57.116195+00:00",
+  "generado_utc": "2026-08-02T21:54:51.826675+00:00",
   "golden_set": "v2",
   "politica": {
     "limit": 6,
@@ -9,14 +9,14 @@
     "rrf_k": 60,
     "min_ts_rank": 0.05
   },
-  "casos_evaluados": 17,
+  "casos_evaluados": 23,
   "casos_totales": 23,
   "resumen": {
-    "casos_en_alcance": 17,
-    "acierto_articulo": 0.4286,
-    "acierto_documento": 0.6471,
-    "cobertura_palabras_media": 0.6765,
-    "abstencion_fuera_de_alcance": null
+    "casos_en_alcance": 20,
+    "acierto_articulo": 0.75,
+    "acierto_documento": 1.0,
+    "cobertura_palabras_media": 0.8208,
+    "abstencion_fuera_de_alcance": 1.0
   },
   "detalle": [
     {
@@ -27,18 +27,14 @@
       "fuera_de_alcance": false,
       "chunks_recuperados": 6,
       "citas_recuperadas": [
-        "Glosario General Universitario",
+        "Art. 10 - Reglamento de Tutoría Académica UNSAAC",
+        "Art. 14 - Reglamento de Tutoría Académica UNSAAC",
         "Preguntas Frecuentes Generales UNSAAC"
       ],
-      "acierto_articulo": false,
-      "acierto_documento": false,
-      "cobertura_palabras": 0.0,
-      "palabras_faltantes": [
-        "veinticinco",
-        "25",
-        "tutorados",
-        "profesor"
-      ]
+      "acierto_articulo": true,
+      "acierto_documento": true,
+      "cobertura_palabras": 1.0,
+      "palabras_faltantes": []
     },
     {
       "id": 102,
@@ -48,16 +44,17 @@
       "fuera_de_alcance": false,
       "chunks_recuperados": 6,
       "citas_recuperadas": [
-        "Glosario General Universitario",
+        "Art. 1 - Reglamento de Tutoría Académica UNSAAC",
+        "Art. 3 - Reglamento de Tutoría Académica UNSAAC",
+        "Art. 4 - Reglamento de Tutoría Académica UNSAAC",
+        "Art. 6 - Reglamento de Tutoría Académica UNSAAC",
+        "Art. 7 - Reglamento de Tutoría Académica UNSAAC",
         "Preguntas Frecuentes Generales UNSAAC"
       ],
-      "acierto_articulo": false,
-      "acierto_documento": false,
-      "cobertura_palabras": 0.3333,
-      "palabras_faltantes": [
-        "regula",
-        "actividad tutorial"
-      ]
+      "acierto_articulo": true,
+      "acierto_documento": true,
+      "cobertura_palabras": 1.0,
+      "palabras_faltantes": []
     },
     {
       "id": 103,
@@ -67,15 +64,15 @@
       "fuera_de_alcance": false,
       "chunks_recuperados": 6,
       "citas_recuperadas": [
-        "Glosario General Universitario",
+        "Art. 10 - Reglamento de Tutoría Académica UNSAAC",
+        "Art. 13 - Reglamento de Tutoría Académica UNSAAC",
+        "Art. 15 - Reglamento de Tutoría Académica UNSAAC",
         "Preguntas Frecuentes Generales UNSAAC"
       ],
-      "acierto_articulo": false,
-      "acierto_documento": false,
-      "cobertura_palabras": 0.6667,
-      "palabras_faltantes": [
-        "estudiantes"
-      ]
+      "acierto_articulo": true,
+      "acierto_documento": true,
+      "cobertura_palabras": 1.0,
+      "palabras_faltantes": []
     },
     {
       "id": 104,
@@ -83,12 +80,13 @@
       "categoria": "ambiguo",
       "pregunta": "¿Hasta cuándo me acompaña el mismo tutor?",
       "fuera_de_alcance": false,
-      "chunks_recuperados": 5,
+      "chunks_recuperados": 6,
       "citas_recuperadas": [
+        "Art. 14 - Reglamento de Tutoría Académica UNSAAC",
         "Preguntas Frecuentes Generales UNSAAC"
       ],
-      "acierto_articulo": false,
-      "acierto_documento": false,
+      "acierto_articulo": true,
+      "acierto_documento": true,
       "cobertura_palabras": 0.0,
       "palabras_faltantes": [
         "primer semestre",
@@ -102,18 +100,17 @@
       "categoria": "ambiguo",
       "pregunta": "¿Quién evalúa si el programa de tutoría está funcionando?",
       "fuera_de_alcance": false,
-      "chunks_recuperados": 3,
+      "chunks_recuperados": 6,
       "citas_recuperadas": [
+        "Art. 10 - Reglamento de Tutoría Académica UNSAAC",
+        "Art. 16 - Reglamento de Tutoría Académica UNSAAC",
         "Glosario General Universitario",
         "Preguntas Frecuentes Generales UNSAAC"
       ],
-      "acierto_articulo": false,
-      "acierto_documento": false,
-      "cobertura_palabras": 0.3333,
-      "palabras_faltantes": [
-        "año académico",
-        "objetivos"
-      ]
+      "acierto_articulo": true,
+      "acierto_documento": true,
+      "cobertura_palabras": 1.0,
+      "palabras_faltantes": []
     },
     {
       "id": 106,
@@ -144,7 +141,8 @@
       "chunks_recuperados": 6,
       "citas_recuperadas": [
         "Art. 9 - Reglamento Académico UNSAAC",
-        "Preguntas Frecuentes Generales UNSAAC"
+        "Preguntas Frecuentes Generales UNSAAC",
+        "Reglamento de Intercambio Estudiantil y Movilidad Academica OCRI UNSAAC"
       ],
       "acierto_articulo": true,
       "acierto_documento": true,
@@ -210,7 +208,8 @@
       "chunks_recuperados": 6,
       "citas_recuperadas": [
         "Art. 247 - Estatuto Universitario UNSAAC",
-        "Preguntas Frecuentes Generales UNSAAC"
+        "Preguntas Frecuentes Generales UNSAAC",
+        "Servicios de Bienestar Universitario y Comedor UNSAAC"
       ],
       "acierto_articulo": false,
       "acierto_documento": true,
@@ -228,11 +227,9 @@
       "fuera_de_alcance": false,
       "chunks_recuperados": 6,
       "citas_recuperadas": [
-        "Art. 236 - Estatuto Universitario UNSAAC",
         "Art. 246 - Estatuto Universitario UNSAAC",
-        "Art. 253 - Estatuto Universitario UNSAAC",
         "Glosario General Universitario",
-        "Preguntas Frecuentes Generales UNSAAC"
+        "Servicios de Bienestar Universitario y Comedor UNSAAC"
       ],
       "acierto_articulo": false,
       "acierto_documento": true,
@@ -245,9 +242,11 @@
       "categoria": "ambiguo",
       "pregunta": "¿La universidad apoya a estudiantes con discapacidad?",
       "fuera_de_alcance": false,
-      "chunks_recuperados": 1,
+      "chunks_recuperados": 3,
       "citas_recuperadas": [
-        "Art. 246 - Estatuto Universitario UNSAAC"
+        "Art. 13 - Reglamento de Tutoría Académica UNSAAC",
+        "Art. 246 - Estatuto Universitario UNSAAC",
+        "Servicios de Bienestar Universitario y Comedor UNSAAC"
       ],
       "acierto_articulo": true,
       "acierto_documento": true,
@@ -264,14 +263,13 @@
       "fuera_de_alcance": false,
       "chunks_recuperados": 6,
       "citas_recuperadas": [
-        "Glosario General Universitario",
-        "Preguntas Frecuentes Generales UNSAAC"
+        "Preguntas Frecuentes Generales UNSAAC",
+        "Reglamento de Intercambio Estudiantil y Movilidad Academica OCRI UNSAAC"
       ],
       "acierto_articulo": false,
-      "acierto_documento": false,
-      "cobertura_palabras": 0.0,
+      "acierto_documento": true,
+      "cobertura_palabras": 0.25,
       "palabras_faltantes": [
-        "movilidad estudiantil",
         "veintidós",
         "22",
         "certificado de estudios"
@@ -288,7 +286,7 @@
         "Art. 207 - Estatuto Universitario UNSAAC",
         "Art. 3 - Reglamento Académico UNSAAC",
         "Glosario General Universitario",
-        "Preguntas Frecuentes Generales UNSAAC"
+        "Reglamento de Intercambio Estudiantil y Movilidad Academica OCRI UNSAAC"
       ],
       "acierto_articulo": true,
       "acierto_documento": true,
@@ -303,13 +301,16 @@
       "fuera_de_alcance": false,
       "chunks_recuperados": 6,
       "citas_recuperadas": [
-        "Glosario General Universitario",
-        "Preguntas Frecuentes Generales UNSAAC"
+        "Preguntas Frecuentes Generales UNSAAC",
+        "Servicios de Bienestar Universitario y Comedor UNSAAC"
       ],
       "acierto_articulo": null,
       "acierto_documento": true,
-      "cobertura_palabras": 1.0,
-      "palabras_faltantes": []
+      "cobertura_palabras": 0.3333,
+      "palabras_faltantes": [
+        "procedimientos",
+        "requisitos"
+      ]
     },
     {
       "id": 120,
@@ -326,6 +327,94 @@
       "acierto_documento": true,
       "cobertura_palabras": 1.0,
       "palabras_faltantes": []
+    },
+    {
+      "id": 121,
+      "dominio": "calendario",
+      "categoria": "ambiguo",
+      "pregunta": "Reinicié mis estudios, ¿cuándo me matriculo?",
+      "fuera_de_alcance": false,
+      "chunks_recuperados": 6,
+      "citas_recuperadas": [
+        "Art. 19 - Reglamento Académico UNSAAC",
+        "Art. 20 - Reglamento Académico UNSAAC",
+        "Art. 21 - Reglamento Académico UNSAAC",
+        "Art. 4 - Reglamento Académico UNSAAC",
+        "Preguntas Frecuentes Generales UNSAAC"
+      ],
+      "acierto_articulo": null,
+      "acierto_documento": true,
+      "cobertura_palabras": 0.6667,
+      "palabras_faltantes": [
+        "febrero"
+      ]
+    },
+    {
+      "id": 122,
+      "dominio": "enrutamiento",
+      "categoria": "ambiguo",
+      "pregunta": "¿A qué oficina debo ir si tengo un problema económico o social?",
+      "fuera_de_alcance": false,
+      "chunks_recuperados": 3,
+      "citas_recuperadas": [
+        "Preguntas Frecuentes Generales UNSAAC",
+        "Servicios de Bienestar Universitario y Comedor UNSAAC"
+      ],
+      "acierto_articulo": false,
+      "acierto_documento": true,
+      "cobertura_palabras": 1.0,
+      "palabras_faltantes": []
+    },
+    {
+      "id": 123,
+      "dominio": "enrutamiento",
+      "categoria": "ambiguo",
+      "pregunta": "¿Quién supervisa la actividad de tutoría en la universidad?",
+      "fuera_de_alcance": false,
+      "chunks_recuperados": 6,
+      "citas_recuperadas": [
+        "Art. 10 - Reglamento de Tutoría Académica UNSAAC",
+        "Art. 11 - Reglamento de Tutoría Académica UNSAAC",
+        "Art. 16 - Reglamento de Tutoría Académica UNSAAC",
+        "Art. 3 - Reglamento de Tutoría Académica UNSAAC",
+        "Art. 8 - Reglamento de Tutoría Académica UNSAAC",
+        "Preguntas Frecuentes Generales UNSAAC"
+      ],
+      "acierto_articulo": true,
+      "acierto_documento": true,
+      "cobertura_palabras": 1.0,
+      "palabras_faltantes": []
+    },
+    {
+      "id": 124,
+      "dominio": "fuera_de_alcance",
+      "categoria": "fuera_de_alcance",
+      "pregunta": "¿Cuál es la receta tradicional del cuy chactado cusqueño?",
+      "fuera_de_alcance": true,
+      "chunks_recuperados": 0,
+      "citas_recuperadas": [],
+      "abstencion_correcta": true
+    },
+    {
+      "id": 125,
+      "dominio": "fuera_de_alcance",
+      "categoria": "fuera_de_alcance",
+      "pregunta": "¿Cómo tramito mi pasaporte en Migraciones del Perú?",
+      "fuera_de_alcance": true,
+      "chunks_recuperados": 0,
+      "citas_recuperadas": [],
+      "abstencion_correcta": true
+    },
+    {
+      "id": 126,
+      "dominio": "fuera_de_alcance",
+      "categoria": "fuera_de_alcance",
+      "pregunta": "¿Cuánto cuesta la matrícula en la Universidad Nacional de San Agustín de Arequipa?",
+      "fuera_de_alcance": true,
+      "chunks_recuperados": 0,
+      "citas_recuperadas": [],
+      "cortado_por_institucion": "Universidad Nacional de San Agustín de Arequipa",
+      "abstencion_correcta": true
     }
   ]
 }
