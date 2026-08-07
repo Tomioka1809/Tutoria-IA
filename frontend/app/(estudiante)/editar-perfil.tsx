@@ -267,6 +267,11 @@ export default function EditarPerfilScreen() {
           {/* ── Botones de acción ─────────────────────────────── */}
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 8 }}>
             <Pressable
+              // NativeWind aplana el `style` inline para fusionarlo con las
+              // clases, y en ese paso una funcion se convierte en {}: sin esto
+              // el boton se queda sin fondo ni borde. Este Pressable no usa
+              // className, asi que sacarlo de la interop no cuesta nada.
+              cssInterop={false}
               onPress={() => router.replace('/(estudiante)/configuracion' as any)}
               disabled={saving}
               style={({ pressed }) => ({
@@ -295,6 +300,9 @@ export default function EditarPerfilScreen() {
             </Pressable>
 
             <Pressable
+              // Idem: el fondo depende de `pressed`, asi que el `style` tiene
+              // que llegar como funcion al Pressable de React Native.
+              cssInterop={false}
               onPress={handleSave}
               disabled={saving}
               style={({ pressed }) => ({

@@ -103,15 +103,20 @@ export function MessagesList({
                   isUser
                     ? 'rounded-tr-none'
                     : 'rounded-tl-none'
-                }`}
-                style={({ pressed }) => [
+                }${isEditable ? ' active:opacity-75' : ''}`}
+                // El prop `style` tiene que ser un objeto o un array de objetos.
+                // NativeWind aplana el style inline para fusionarlo con las
+                // clases, y en ese paso una funcion se convierte en {}: la
+                // forma `({ pressed }) => [...]` se pierde entera y la burbuja
+                // se queda sin fondo ni borde. El feedback de pulsacion va por
+                // el modificador `active:`, que es la via soportada.
+                style={[
                   isUser
                     ? { backgroundColor: isDark ? '#7C3AED' : colors.primary }
                     : { backgroundColor: isDark ? '#2D2D3D' : colors.surface, borderColor: colors.border, borderWidth: 1 },
                   // El mensaje en edicion queda atenuado para que se vea cual
                   // de todos es el que esta cargado en la barra de abajo.
                   isBeingEdited ? { opacity: 0.55 } : null,
-                  pressed && isEditable ? { opacity: 0.75 } : null,
                 ]}
               >
                 <View>
