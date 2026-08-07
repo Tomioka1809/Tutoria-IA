@@ -1360,13 +1360,28 @@ class Verifier:
         for phase in phases:
             methods[phase]()
 
+    def relative_root(self) -> str:
+        """Raiz auditada, relativa al directorio desde el que se invoco.
+
+        El reporte se versiona. Guardar la ruta absoluta lo ataba a la maquina
+        que lo genero: cambiaba en cada checkout, ensuciaba el diff sin que
+        hubiera cambiado nada del proyecto y publicaba el home del usuario.
+        Ejecutado desde la raiz, que es lo normal, queda ".".
+        """
+        try:
+            return os.path.relpath(self.root, Path.cwd())
+        except ValueError:
+            # En Windows relpath falla si root y cwd estan en unidades
+            # distintas (C: y D:). Ahi no hay ruta relativa posible.
+            return self.root.name
+
     def summary(self) -> dict[str, object]:
         counts = {
             status: sum(result.status == status for result in self.results)
             for status in (PASS, WARN, FAIL, SKIP)
         }
         return {
-            "project_root": str(self.root),
+            "project_root": self.relative_root(),
             "integration_mode": self.integration,
             "counts": counts,
             "ok": counts[FAIL] == 0,

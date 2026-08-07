@@ -1,5 +1,5 @@
 {
-  "project_root": "/home/tsuki/Downloads/React-Native",
+  "project_root": ".",
   "integration_mode": false,
   "counts": {
     "PASS": 34,
@@ -47,7 +47,7 @@
       "description": "Sintaxis de Docker Compose",
       "status": "PASS",
       "detail": "docker-compose.yml es sintácticamente válido.",
-      "duration_ms": 64
+      "duration_ms": 62
     },
     {
       "phase": 1,
@@ -87,7 +87,7 @@
       "description": "Sintaxis Python",
       "status": "PASS",
       "detail": "Compilación sintáctica correcta con /home/tsuki/Downloads/React-Native/backend/venv/bin/python.",
-      "duration_ms": 43
+      "duration_ms": 46
     },
     {
       "phase": 2,
@@ -95,7 +95,7 @@
       "description": "Pureza de domain",
       "status": "PASS",
       "detail": "domain no importa FastAPI, SQLAlchemy ni infrastructure.",
-      "duration_ms": 1
+      "duration_ms": 0
     },
     {
       "phase": 2,
@@ -135,7 +135,7 @@
       "description": "Integridad del corpus",
       "status": "PASS",
       "detail": "20 archivos JSON válidos.",
-      "duration_ms": 5
+      "duration_ms": 8
     },
     {
       "phase": 3,
@@ -151,7 +151,7 @@
       "description": "Consistencia del modelo de embeddings",
       "status": "PASS",
       "detail": "Modelo detectado: gemini-embedding-2",
-      "duration_ms": 10
+      "duration_ms": 11
     },
     {
       "phase": 3,
@@ -159,7 +159,7 @@
       "description": "Dimensionalidad vectorial",
       "status": "PASS",
       "detail": "Dimensionalidad 768 detectada:\nbackend/app/infrastructure/database/models/corpus_chunk.py:22: # Embeddings configured with output_dimensionality=768.\nbackend/app/infrastructure/database/models/corpus_chunk.py:23: embedding: Mapped[list[float]] = mapped_column(Vector(768), nullable=True)",
-      "duration_ms": 8
+      "duration_ms": 9
     },
     {
       "phase": 3,
@@ -183,7 +183,7 @@
       "description": "Grounding y abstención",
       "status": "PASS",
       "detail": "Política de abstención detectada:\nbackend/app/application/use_cases/chat_use_cases.py:20: \"No cuento con información suficiente en la base oficial de la UNSAAC \"\nbackend/app/application/use_cases/chat_use_cases.py:615: \"1. No inventes normas, fechas, procedimientos, autoridades o requisitos institucionales de la UNSAAC.\\n\"\nbackend/app/application/use_cases/chat_use_cases.py:619: \"   'No cuento con información suficiente en la base oficial de la UNSAAC para responder con certeza.'\\n\\n\"",
-      "duration_ms": 10
+      "duration_ms": 9
     },
     {
       "phase": 4,
@@ -207,7 +207,7 @@
       "description": "Cliente API autenticado",
       "status": "PASS",
       "detail": "Autorización JWT e interceptores detectados.",
-      "duration_ms": 8
+      "duration_ms": 7
     },
     {
       "phase": 4,
@@ -215,7 +215,7 @@
       "description": "Llamadas HTTP fuera de Axios",
       "status": "PASS",
       "detail": "No se detectaron llamadas fetch directas.",
-      "duration_ms": 10
+      "duration_ms": 9
     },
     {
       "phase": 4,
@@ -231,7 +231,7 @@
       "description": "Comprobación TypeScript",
       "status": "PASS",
       "detail": "TypeScript no reportó errores.",
-      "duration_ms": 3909
+      "duration_ms": 4021
     },
     {
       "phase": 4,
@@ -239,7 +239,7 @@
       "description": "Lint del frontend",
       "status": "PASS",
       "detail": "> my-app@1.0.0 lint\n> expo lint",
-      "duration_ms": 1142
+      "duration_ms": 1159
     },
     {
       "phase": 5,
@@ -286,8 +286,8 @@
       "code": "F6-001",
       "description": "Servicios Docker",
       "status": "PASS",
-      "detail": "NAME              IMAGE                    COMMAND                  SERVICE   CREATED      STATUS                    PORTS\ntutoria_backend   react-native-backend     \"/bin/sh /app/docker…\"   backend   4 days ago   Up 53 minutes             0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp\ntutoria_db        pgvector/pgvector:pg16   \"docker-entrypoint.s…\"   db        4 days ago   Up 53 minutes (healthy)   0.0.0.0:5433->5432/tcp, [::]:5433->5432/tcp",
-      "duration_ms": 57
+      "detail": "NAME              IMAGE                    COMMAND                  SERVICE   CREATED      STATUS                    PORTS\ntutoria_backend   react-native-backend     \"/bin/sh /app/docker…\"   backend   4 days ago   Up 59 minutes             0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp\ntutoria_db        pgvector/pgvector:pg16   \"docker-entrypoint.s…\"   db        4 days ago   Up 59 minutes (healthy)   0.0.0.0:5433->5432/tcp, [::]:5433->5432/tcp",
+      "duration_ms": 51
     },
     {
       "phase": 6,
@@ -303,7 +303,7 @@
       "description": "Configuración Expo",
       "status": "PASS",
       "detail": "Expo pudo resolver la configuración pública.",
-      "duration_ms": 345
+      "duration_ms": 349
     },
     {
       "phase": 6,
