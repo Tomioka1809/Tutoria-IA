@@ -222,6 +222,7 @@
     "voicePending": "Entrada de voz (micrófono) en desarrollo para la siguiente versión.",
     "editingMessage": "Editando mensaje",
     "editHint": "Mantén presionado un mensaje tuyo para editarlo",
+    "restartConversation": "Reiniciar la conversación",
     "cancelEdit": "Cancelar edición",
     "saveEdit": "Guardar",
     "editWarningTitle": "Se descartarán los mensajes siguientes",

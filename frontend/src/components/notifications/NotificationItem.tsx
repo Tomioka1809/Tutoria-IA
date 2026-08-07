@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTheme } from '@/src/theme/ThemeContext';
 import { View, Text, Pressable } from 'react-native';
+import Feather from '@expo/vector-icons/Feather';
 import { Notification } from '@/src/types';
 import { useTranslation } from 'react-i18next';
 
@@ -12,22 +13,24 @@ interface NotificationItemProps {
 export function NotificationItem({ notification, onPress }: NotificationItemProps) {
   const { colors, isDark } = useTheme();
   const { t } = useTranslation();
-  let iconStr = '🔔';
+  let iconName: React.ComponentProps<typeof Feather>['name'] = 'bell';
   let iconBg = 'bg-[#F3E8FF]';
+  let iconColor = colors.primary;
   let titleColor = isDark ? '#FFFFFF' : colors.text;
 
   const isLocalReminder = String(notification.id).startsWith('reminder_local_');
 
   const titleLower = notification.title.toLowerCase();
   if (titleLower.includes('cancelada') || titleLower.includes('cancelled')) {
-    iconStr = '❌';
+    iconName = 'x-circle';
     iconBg = 'bg-[#FFEAEA]';
+    iconColor = colors.danger;
     titleColor = colors.danger;
   } else if (notification.type === 'reminder' || titleLower.includes('recordatorio') || titleLower.includes('reminder')) {
-    iconStr = '📅';
+    iconName = 'calendar';
     iconBg = 'bg-[#F3E8FF]';
   } else if (titleLower.includes('asignada') || titleLower.includes('assigned') || titleLower.includes('nueva tutoría')) {
-    iconStr = '🔔';
+    iconName = 'bell';
     iconBg = 'bg-[#F3E8FF]';
   }
 
@@ -67,7 +70,7 @@ export function NotificationItem({ notification, onPress }: NotificationItemProp
       style={{ backgroundColor: colors.surface }} className=" border border-border rounded-3xl p-4 mb-3 shadow-sm flex-row items-center"
     >
       <View className={`w-12 h-12 rounded-[20px] items-center justify-center mr-4 ${iconBg}`}>
-        <Text className="text-xl">{iconStr}</Text>
+        <Feather name={iconName} size={20} color={iconColor} />
       </View>
 
       <View className="flex-1">

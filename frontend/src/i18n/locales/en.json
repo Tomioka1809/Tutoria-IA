@@ -222,6 +222,7 @@
     "voicePending": "Voice input (microphone) is under development for the next version.",
     "editingMessage": "Editing message",
     "editHint": "Long-press one of your messages to edit it",
+    "restartConversation": "Restart the conversation",
     "cancelEdit": "Cancel edit",
     "saveEdit": "Save",
     "editWarningTitle": "Later messages will be discarded",

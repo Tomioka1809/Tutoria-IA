@@ -3,6 +3,7 @@ import React from 'react';
 import { useTheme } from '@/src/theme/ThemeContext';
 import { useTranslation } from 'react-i18next';
 import { View, Text, Pressable } from 'react-native';
+import Feather from '@expo/vector-icons/Feather';
 import { TutorIAAvatar } from '@/src/components/tutoria/TutorIAAvatar';
 
 interface TutoriaHeaderProps {
@@ -29,8 +30,14 @@ export function TutoriaHeader({ onRefresh }: TutoriaHeaderProps) {
         </View>
       </View>
 
-      <Pressable onPress={onRefresh} className="p-2">
-        <Text className="text-lg" style={{ color: colors.text }}>↻</Text>
+      <Pressable
+        onPress={onRefresh}
+        hitSlop={8}
+        accessibilityRole="button"
+        accessibilityLabel={t('tutoring.restartConversation')}
+        className="p-2 active:opacity-60"
+      >
+        <Feather name="refresh-cw" size={18} color={colors.text} />
       </Pressable>
     </View>
   );
