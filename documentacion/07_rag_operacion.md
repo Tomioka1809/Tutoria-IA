@@ -259,9 +259,12 @@ consultas fuera de alcance y rompía la abstención.
 
 | Umbral | Recall en alcance | Falsos positivos |
 |---|---|---|
-| 0.29 | 70% | 0 |
+| 0.29 | 84% | 0 |
 | **0.34** | **100%** | 1 |
 | 0.45 (anterior) | 100% | 3 |
+
+> Barrido rehecho sobre el golden set actual (32 casos en alcance, 3 fuera). La
+> versión anterior de esta tabla se midió con 20 casos y daba 70% en 0.29.
 
 El único falso positivo a 0.34 es la consulta sobre otra universidad, que
 resuelve la guarda institucional y no el umbral.
@@ -271,12 +274,21 @@ los vectores para los 11 pesos, así que cuesta lo mismo que una evaluación.
 
 | Peso | Acierto de artículo | Acierto de documento |
 |---|---|---|
-| 0.0 | 12/16 | 20/20 |
-| **0.2** | **15/16** | 20/20 |
-| 0.5 → 2.0 | 15/16 | 20/20 |
+| 0.0 | 14/19 | 31/32 |
+| **0.1** | **16/19** | 32/32 |
+| 0.2 (en uso) → 2.0 | 16/19 | 32/32 |
 
-Se toma 0.2 por ser el menor valor que alcanza el resultado: la menor
-intervención sobre el orden que produce la fusión.
+El valor en uso es **0.2**, elegido cuando el barrido se hacía sobre 20 casos y
+0.2 era el menor que alcanzaba el óptimo. Con el golden set ampliado a 32 casos
+en alcance, el óptimo se alcanza ya desde **0.1**.
+
+**No se cambió el parámetro.** Por la regla del proyecto —el menor valor que
+alcanza el resultado— correspondería 0.1, pero dos muestras distintas dando dos
+mínimos distintos indica que la frontera es inestable, no que 0.1 sea mejor. En
+todo el rango 0.1 → 2.0 el resultado es idéntico (16/19 y 32/32), así que la
+elección dentro de esa meseta no cambia ninguna métrica. Lo que sí muestra el
+barrido es que **el reordenamiento hace falta**: sin él (peso 0.0) se pierden
+dos aciertos de artículo y uno de documento.
 
 ---
 
