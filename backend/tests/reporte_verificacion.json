@@ -31,7 +31,7 @@
       "description": "Protección de secretos",
       "status": "PASS",
       "detail": "Los archivos .env están protegidos frente a Git.",
-      "duration_ms": 1
+      "duration_ms": 0
     },
     {
       "phase": 0,
@@ -47,7 +47,7 @@
       "description": "Sintaxis de Docker Compose",
       "status": "PASS",
       "detail": "docker-compose.yml es sintácticamente válido.",
-      "duration_ms": 45
+      "duration_ms": 0
     },
     {
       "phase": 1,
@@ -87,7 +87,7 @@
       "description": "Sintaxis Python",
       "status": "PASS",
       "detail": "Compilación sintáctica correcta con /home/tsuki/Downloads/React-Native/backend/venv/bin/python.",
-      "duration_ms": 47
+      "duration_ms": 0
     },
     {
       "phase": 2,
@@ -103,7 +103,7 @@
       "description": "Aislamiento de application",
       "status": "PASS",
       "detail": "application no importa frameworks ni infrastructure.",
-      "duration_ms": 1
+      "duration_ms": 0
     },
     {
       "phase": 2,
@@ -135,7 +135,7 @@
       "description": "Integridad del corpus",
       "status": "PASS",
       "detail": "20 archivos JSON válidos.",
-      "duration_ms": 6
+      "duration_ms": 0
     },
     {
       "phase": 3,
@@ -143,7 +143,7 @@
       "description": "Métrica vectorial",
       "status": "PASS",
       "detail": "Recuperación por coseno detectada:\nbackend/app/infrastructure/database/repositories/corpus_repository.py:82: max_cosine_distance: float,\nbackend/app/infrastructure/database/repositories/corpus_repository.py:84: distancia = CorpusChunk.embedding.cosine_distance(query_embedding).label(\"distancia\")\nbackend/app/infrastructure/database/repositories/corpus_repository.py:88: .where(distancia <= max_cosine_distance)\nbackend/app/infrastructure/database/repositories/corpus_repository.py:126: max_cosine_distance: float,\nbackend/app/infrastructure/database/repositories/corpus_repository.py:135: vectoriales = await self._rama_vectorial(query_embedding, candidatos, max_cosine_distance)\nbackend/app/infrastructure/database/repositories/corpus_repository.py:185: cosine_distance=distancias.get(chunk_id),\nbackend/app/application/ports/repository_ports.py:77: max_cosine_distance: float,",
-      "duration_ms": 7
+      "duration_ms": 0
     },
     {
       "phase": 3,
@@ -151,7 +151,7 @@
       "description": "Consistencia del modelo de embeddings",
       "status": "PASS",
       "detail": "Modelo detectado: gemini-embedding-2",
-      "duration_ms": 10
+      "duration_ms": 0
     },
     {
       "phase": 3,
@@ -159,7 +159,7 @@
       "description": "Dimensionalidad vectorial",
       "status": "PASS",
       "detail": "Dimensionalidad 768 detectada:\nbackend/app/infrastructure/database/models/corpus_chunk.py:22: # Embeddings configured with output_dimensionality=768.\nbackend/app/infrastructure/database/models/corpus_chunk.py:23: embedding: Mapped[list[float]] = mapped_column(Vector(768), nullable=True)",
-      "duration_ms": 9
+      "duration_ms": 0
     },
     {
       "phase": 3,
@@ -167,7 +167,7 @@
       "description": "Umbral de recuperación",
       "status": "WARN",
       "detail": "No se detectó un umbral explícito de similitud.",
-      "duration_ms": 9
+      "duration_ms": 0
     },
     {
       "phase": 3,
@@ -175,7 +175,7 @@
       "description": "Índice vectorial HNSW",
       "status": "PASS",
       "detail": "Índice detectado:\nbackend/alembic/versions/6f892a019e42_add_hnsw_index_to_corpus_chunks.py:24: USING hnsw (embedding vector_cosine_ops)",
-      "duration_ms": 1
+      "duration_ms": 0
     },
     {
       "phase": 3,
@@ -183,7 +183,7 @@
       "description": "Grounding y abstención",
       "status": "PASS",
       "detail": "Política de abstención detectada:\nbackend/app/application/use_cases/chat_use_cases.py:20: \"No cuento con información suficiente en la base oficial de la UNSAAC \"\nbackend/app/application/use_cases/chat_use_cases.py:615: \"1. No inventes normas, fechas, procedimientos, autoridades o requisitos institucionales de la UNSAAC.\\n\"\nbackend/app/application/use_cases/chat_use_cases.py:619: \"   'No cuento con información suficiente en la base oficial de la UNSAAC para responder con certeza.'\\n\\n\"",
-      "duration_ms": 12
+      "duration_ms": 0
     },
     {
       "phase": 4,
@@ -199,7 +199,7 @@
       "description": "URL dinámica del backend",
       "status": "PASS",
       "detail": "No se detectaron IP privadas hardcodeadas.",
-      "duration_ms": 11
+      "duration_ms": 0
     },
     {
       "phase": 4,
@@ -207,7 +207,7 @@
       "description": "Cliente API autenticado",
       "status": "PASS",
       "detail": "Autorización JWT e interceptores detectados.",
-      "duration_ms": 8
+      "duration_ms": 0
     },
     {
       "phase": 4,
@@ -215,7 +215,7 @@
       "description": "Llamadas HTTP fuera de Axios",
       "status": "PASS",
       "detail": "No se detectaron llamadas fetch directas.",
-      "duration_ms": 9
+      "duration_ms": 0
     },
     {
       "phase": 4,
@@ -231,7 +231,7 @@
       "description": "Comprobación TypeScript",
       "status": "PASS",
       "detail": "TypeScript no reportó errores.",
-      "duration_ms": 3953
+      "duration_ms": 1000
     },
     {
       "phase": 4,
@@ -239,7 +239,7 @@
       "description": "Lint del frontend",
       "status": "PASS",
       "detail": "> my-app@1.0.0 lint\n> expo lint",
-      "duration_ms": 1151
+      "duration_ms": 1000
     },
     {
       "phase": 5,
@@ -287,7 +287,7 @@
       "description": "Servicios Docker",
       "status": "PASS",
       "detail": "backend: running, db: running (healthy)",
-      "duration_ms": 49
+      "duration_ms": 0
     },
     {
       "phase": 6,
@@ -303,7 +303,7 @@
       "description": "Configuración Expo",
       "status": "PASS",
       "detail": "Expo pudo resolver la configuración pública.",
-      "duration_ms": 344
+      "duration_ms": 100
     },
     {
       "phase": 6,

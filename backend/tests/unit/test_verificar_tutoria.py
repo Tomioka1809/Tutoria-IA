@@ -8,7 +8,12 @@ estado y sea estable.
 """
 import json
 
-from tests.verificar_tutoria import Verifier
+from tests.verificar_tutoria import (
+    DURACION_RESOLUCION_MS,
+    Result,
+    Verifier,
+    redondear_duracion,
+)
 
 
 UNA_LINEA_BACKEND = {
@@ -125,3 +130,75 @@ def test_estado_ausente_no_rompe():
 
 def test_lista_de_valores_no_dict_devuelve_none():
     assert Verifier.parse_compose_ps(json.dumps(["backend", "db"])) is None
+
+
+# ----------------------------------------------------------------------
+# Redondeo del tiempo de cada comprobacion
+# ----------------------------------------------------------------------
+
+
+def test_las_comprobaciones_rapidas_colapsan_a_cero():
+    """Son casi todas, y eran la mayor parte del ruido del reporte."""
+    for medido in (0, 1, 7, 11, 60, 99):
+        assert redondear_duracion(medido) == 0
+
+
+def test_trunca_al_orden_de_magnitud():
+    assert redondear_duracion(100) == 100
+    assert redondear_duracion(136) == 100
+    assert redondear_duracion(999) == 100
+    assert redondear_duracion(1000) == 1000
+    assert redondear_duracion(4278) == 1000
+    assert redondear_duracion(9999) == 1000
+    assert redondear_duracion(10000) == 10000
+
+
+def test_absorbe_la_variacion_medida_en_las_comprobaciones_lentas():
+    """El caso que motivo el cambio.
+
+    Estos son tiempos reales de tres corridas seguidas de --fase todas:
+    TypeScript entre 4.1 y 5.3 s, lint entre 1.1 y 1.3 s, Expo entre 0.3 y
+    0.4 s. Con una escala fija de 100 ms los tres seguian moviendo el archivo.
+    """
+    assert redondear_duracion(4100) == redondear_duracion(5300)
+    assert redondear_duracion(1100) == redondear_duracion(1300)
+    assert redondear_duracion(324) == redondear_duracion(370)
+
+
+def test_nunca_devuelve_mas_que_lo_medido():
+    """Se trunca, no se redondea al mas cercano: no infla el tiempo real."""
+    for medido in (0, 1, 99, 100, 101, 999, 1000, 4278, 123456):
+        assert redondear_duracion(medido) <= medido
+
+
+def test_devuelve_multiplos_de_la_resolucion():
+    for medido in (0, 1, 99, 100, 4278, 123456):
+        assert redondear_duracion(medido) % DURACION_RESOLUCION_MS == 0
+
+
+def test_el_reporte_lleva_el_tiempo_redondeado():
+    resultado = Result(
+        phase=6,
+        code="F6-001",
+        description="Servicios Docker",
+        status="PASS",
+        detail="backend: running",
+        duration_ms=4278,
+    )
+
+    assert Verifier.result_para_reporte(resultado)["duration_ms"] == 1000
+
+
+def test_el_redondeo_no_toca_el_resultado_en_memoria():
+    """La consola imprime desde el Result, y ahi el milisegundo sigue exacto."""
+    resultado = Result(
+        phase=6,
+        code="F6-001",
+        description="Servicios Docker",
+        status="PASS",
+        duration_ms=4278,
+    )
+
+    Verifier.result_para_reporte(resultado)
+
+    assert resultado.duration_ms == 4278
