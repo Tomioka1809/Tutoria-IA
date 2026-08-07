@@ -216,7 +216,15 @@
     "curriculumPrompt": "Dame información de mi malla curricular",
     "sessionsPrompt": "¿Cuándo es mi próxima tutoría?",
     "regulationsPrompt": "¿Cuáles son los reglamentos de tutoría y de intercambio estudiantil?",
-    "voicePending": "Entrada de voz (micrófono) en desarrollo para la siguiente versión."
+    "voicePending": "Entrada de voz (micrófono) en desarrollo para la siguiente versión.",
+    "editingMessage": "Editando mensaje",
+    "editHint": "Mantén presionado un mensaje tuyo para editarlo",
+    "cancelEdit": "Cancelar edición",
+    "saveEdit": "Guardar",
+    "editWarningTitle": "Se descartarán los mensajes siguientes",
+    "editWarningBody": "Al guardar, TutorIA volverá a responder y se borrará lo que venga después de este mensaje.",
+    "editConfirm": "Editar",
+    "editCancel": "Cancelar"
   },
   "settings": {
     "title": "Configuración",
@@ -463,6 +471,7 @@
     "updateSession": "No se pudo actualizar la tutoría.",
     "loadConversation": "No se pudo cargar la conversación.",
     "sendMessage": "No se pudo enviar el mensaje.",
+    "editMessage": "No se pudo editar el mensaje.",
     "resetConversation": "No se pudo reiniciar la conversación.",
     "loadNotifications": "No se pudieron cargar las notificaciones.",
     "markNotification": "No se pudo marcar la notificación como leída.",

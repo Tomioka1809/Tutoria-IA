@@ -362,6 +362,54 @@ class ChatUseCase:
         # 1. Save user message first
         await self.chat_repo.save_message(conversation.id, "user", user_content)
 
+        return await self._responder(conversation, user_id, user_role, user_content)
+
+    async def edit_chat_message(
+        self,
+        user_id: int,
+        user_role: Literal["estudiante", "tutor"],
+        message_id: int,
+        new_content: str,
+    ):
+        """Reescribe un mensaje del usuario y vuelve a responderlo.
+
+        Editar la pregunta invalida la respuesta que le siguio, asi que se
+        descarta junto con todo lo posterior y se genera de nuevo. Se responde
+        exactamente por el mismo camino que un mensaje nuevo -misma guarda
+        institucional, misma abstencion, misma recuperacion-, porque una
+        edicion que esquivara esos cortes seria una via para obtener respuestas
+        que el envio normal no da.
+        """
+        new_content = (new_content or "").strip()
+        if not new_content:
+            raise ValueError("El mensaje editado no puede quedar vacio.")
+
+        conversation = await self.chat_repo.get_or_create_conversation(user_id)
+        mensaje = await self.chat_repo.get_message(message_id)
+
+        # Se comprueba la pertenencia antes que nada: sin esto, el id de un
+        # mensaje ajeno bastaria para reescribir la conversacion de otro.
+        if mensaje is None or mensaje.conversation_id != conversation.id:
+            raise LookupError(f"El mensaje {message_id} no existe en esta conversacion.")
+        if mensaje.role != "user":
+            raise PermissionError("Solo se pueden editar los mensajes propios.")
+
+        await self.chat_repo.edit_message_and_truncate(message_id, new_content)
+
+        return await self._responder(conversation, user_id, user_role, new_content)
+
+    async def _responder(
+        self,
+        conversation,
+        user_id: int,
+        user_role: Literal["estudiante", "tutor"],
+        user_content: str,
+    ):
+        """Genera la respuesta al ultimo mensaje del usuario, ya guardado.
+
+        Sale de send_chat_message para que editar reutilice el mismo camino en
+        vez de una copia que se desincronice.
+        """
         # 2. Get conversation history
         history_msgs = await self.chat_repo.get_history(
             conversation.id, limit=HISTORY_WINDOW_MESSAGES

@@ -47,6 +47,23 @@ class ChatRepositoryPort(ABC):
         """Historial en orden cronologico. Con limit devuelve solo los ultimos N mensajes."""
         pass
 
+    @abstractmethod
+    async def get_message(self, message_id: int) -> Any | None:
+        """Un mensaje por id, o None si no existe."""
+        pass
+
+    @abstractmethod
+    async def edit_message_and_truncate(self, message_id: int, content: str) -> Any:
+        """Reescribe un mensaje y borra todo lo que vino despues en su conversacion.
+
+        Editar una pregunta invalida la respuesta que le siguio y lo que se
+        construyo sobre ella, asi que el corte es parte de la edicion y no un
+        paso aparte: dejar la respuesta vieja colgando produciria un historial
+        que se contradice a si mismo, y ese historial alimenta la reescritura de
+        consulta del RAG.
+        """
+        pass
+
 from app.application.dtos.rag_dtos import RetrievedChunkDTO
 
 class CorpusRepositoryPort(ABC):

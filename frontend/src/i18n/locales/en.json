@@ -216,7 +216,15 @@
     "curriculumPrompt": "Give me information about my curriculum",
     "sessionsPrompt": "When is my next tutoring session?",
     "regulationsPrompt": "What are the tutoring and student exchange regulations?",
-    "voicePending": "Voice input (microphone) is under development for the next version."
+    "voicePending": "Voice input (microphone) is under development for the next version.",
+    "editingMessage": "Editing message",
+    "editHint": "Long-press one of your messages to edit it",
+    "cancelEdit": "Cancel edit",
+    "saveEdit": "Save",
+    "editWarningTitle": "Later messages will be discarded",
+    "editWarningBody": "On save, TutorIA will answer again and everything after this message will be deleted.",
+    "editConfirm": "Edit",
+    "editCancel": "Cancel"
   },
   "settings": {
     "title": "Settings",
@@ -463,6 +471,7 @@
     "updateSession": "Could not update the tutoring session.",
     "loadConversation": "Could not load the chat conversation.",
     "sendMessage": "Could not send the message.",
+    "editMessage": "Could not edit the message.",
     "resetConversation": "Could not reset the chat conversation.",
     "loadNotifications": "Could not load notifications.",
     "markNotification": "Could not mark notification as read.",

@@ -27,6 +27,9 @@ export default function TutoriaScreen() {
     handleSend,
     handleQuickAction,
     resetConversation,
+    editingMessageId,
+    startEditing,
+    cancelEditing,
   } = useTutoria();
 
   const inputRef = useRef<TextInput>(null);
@@ -98,6 +101,8 @@ export default function TutoriaScreen() {
         conversation={conversation}
         isLoading={isLoading}
         isSending={isSending}
+        onEditMessage={startEditing}
+        editingMessageId={editingMessageId}
       />
 
       <QuickActionsPanel onActionPress={handleQuickAction} userRole={user?.role} />
@@ -108,6 +113,8 @@ export default function TutoriaScreen() {
         onSend={handleSend}
         isSending={isSending}
         inputRef={inputRef}
+        isEditing={editingMessageId !== null}
+        onCancelEdit={cancelEditing}
       />
     </KeyboardAvoidingView>
   );

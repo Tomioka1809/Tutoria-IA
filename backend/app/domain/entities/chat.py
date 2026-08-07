@@ -8,6 +8,10 @@ class MessageBase(BaseModel):
 class MessageCreate(MessageBase):
     pass
 
+class MessageUpdate(MessageBase):
+    """Nuevo texto de un mensaje propio que se reescribe."""
+    pass
+
 class MessageOut(BaseModel):
     id: int
     conversation_id: int

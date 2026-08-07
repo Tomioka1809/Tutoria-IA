@@ -39,16 +39,18 @@ class FakeConversation:
 
 
 class FakeMessage:
-    def __init__(self, id: int, role: str, content: str):
+    def __init__(self, id: int, role: str, content: str, conversation_id: int = 1):
         self.id = id
         self.role = role
         self.content = content
+        self.conversation_id = conversation_id
 
 
 class FakeChatRepository(ChatRepositoryPort):
     def __init__(self, conv_id: int = 1):
         self.messages = []
         self.conv = FakeConversation(id=conv_id)
+        self._siguiente_id = 1
 
     async def get_or_create_conversation(self, user_id: int):
         return self.conv
@@ -57,12 +59,29 @@ class FakeChatRepository(ChatRepositoryPort):
         self.messages.clear()
 
     async def save_message(self, conversation_id: int, role: str, content: str):
-        msg = FakeMessage(id=len(self.messages) + 1, role=role, content=content)
+        msg = FakeMessage(
+            id=self._siguiente_id, role=role, content=content, conversation_id=conversation_id
+        )
+        self._siguiente_id += 1
         self.messages.append(msg)
         return msg
 
     async def get_history(self, conversation_id: int, limit: int | None = None):
         return self.messages[-limit:] if limit else self.messages
+
+    async def get_message(self, message_id: int):
+        return next((m for m in self.messages if m.id == message_id), None)
+
+    async def edit_message_and_truncate(self, message_id: int, content: str):
+        msg = await self.get_message(message_id)
+        if msg is None:
+            raise ValueError(f"No existe el mensaje {message_id}")
+        # El id no se reutiliza tras truncar: replica el comportamiento de una
+        # secuencia de base de datos, para que la prueba no dependa de que los
+        # ids se reciclen.
+        self.messages = [m for m in self.messages if m.id <= message_id]
+        msg.content = content
+        return msg
 
 
 class TrackingLLM(LLMPort):

@@ -9,6 +9,7 @@ interface ChatState {
   isSending: boolean;
   fetchConversation: () => Promise<void>;
   sendMessage: (content: string) => Promise<void>;
+  editMessage: (messageId: number, content: string) => Promise<void>;
   resetConversation: () => Promise<void>;
 }
 
@@ -81,6 +82,51 @@ export const useChatStore = create<ChatState>((set, get) => ({
                 (m) => m.id !== tempUserMsg.id
               ),
             }
+          : null,
+      }));
+    } finally {
+      set({ isSending: false });
+    }
+  },
+  editMessage: async (messageId: number, content: string) => {
+    const activeConv = get().conversation;
+    if (!activeConv) return;
+
+    const trimmed = content.trim();
+    if (!trimmed) return;
+
+    // Se muestra el texto nuevo y se recortan los mensajes posteriores antes de
+    // que responda el servidor: es lo que va a pasar igual, y sin el recorte la
+    // pregunta editada convive unos segundos con la respuesta que la contradice.
+    const previous = activeConv.messages;
+    const index = previous.findIndex((m) => m.id === messageId);
+    if (index === -1) return;
+
+    set((state) => ({
+      conversation: state.conversation
+        ? {
+            ...state.conversation,
+            messages: [
+              ...previous.slice(0, index),
+              { ...previous[index], content: trimmed },
+            ],
+          }
+        : null,
+      isSending: true,
+    }));
+
+    try {
+      // El servidor devuelve la conversacion entera: el cliente no puede saber
+      // cuantos mensajes se descartaron a partir de una sola respuesta.
+      const response = await client.patch<Conversation>(`/chat/message/${messageId}`, {
+        content: trimmed,
+      });
+      set({ conversation: response.data });
+    } catch (error) {
+      reportApiError(error, 'errors.editMessage');
+      set((state) => ({
+        conversation: state.conversation
+          ? { ...state.conversation, messages: previous }
           : null,
       }));
     } finally {

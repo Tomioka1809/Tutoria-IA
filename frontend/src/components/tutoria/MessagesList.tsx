@@ -1,7 +1,8 @@
 // src/components/tutoria/MessagesList.tsx
 import React from 'react';
-import { ScrollView, View, Text, ActivityIndicator } from 'react-native';
-import { Conversation } from '@/src/types';
+import { ScrollView, View, Text, ActivityIndicator, Pressable } from 'react-native';
+import * as Haptics from 'expo-haptics';
+import { Conversation, Message } from '@/src/types';
 import { useTheme } from '@/src/theme/ThemeContext';
 import { useTranslation } from 'react-i18next';
 import { TutorIAAvatar } from '@/src/components/tutoria/TutorIAAvatar';
@@ -41,6 +42,8 @@ interface MessagesListProps {
   conversation: Conversation | null;
   isLoading: boolean;
   isSending: boolean;
+  onEditMessage?: (message: Message) => void;
+  editingMessageId?: number | null;
 }
 
 export function MessagesList({
@@ -48,6 +51,8 @@ export function MessagesList({
   conversation,
   isLoading,
   isSending,
+  onEditMessage,
+  editingMessageId,
 }: MessagesListProps) {
   const { colors, isDark } = useTheme();
   const { t } = useTranslation();
@@ -63,6 +68,20 @@ export function MessagesList({
       ) : (
         conversation?.messages.map((msg) => {
           const isUser = msg.role === 'user';
+          // Solo los mensajes propios se editan. Se comprueba aqui y no solo en
+          // el servidor para que el long-press ni siquiera responda sobre una
+          // respuesta de TutorIA.
+          const isEditable = isUser && !!onEditMessage;
+          const isBeingEdited = editingMessageId === msg.id;
+
+          const handleLongPress = () => {
+            if (!isEditable) return;
+            // El aviso tactil confirma que el gesto se registro: sin el, el
+            // usuario no sabe si mantuvo presionado lo suficiente.
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(() => {});
+            onEditMessage(msg);
+          };
+
           return (
             <View
               key={msg.id}
@@ -74,17 +93,26 @@ export function MessagesList({
                 </View>
               ) : null}
 
-              <View
+              <Pressable
+                onLongPress={handleLongPress}
+                delayLongPress={350}
+                disabled={!isEditable}
+                accessibilityRole={isEditable ? 'button' : undefined}
+                accessibilityLabel={isEditable ? t('tutoring.editHint') : undefined}
                 className={`max-w-[75%] rounded-3xl px-4 py-3 shadow-sm ${
                   isUser
                     ? 'rounded-tr-none'
                     : 'rounded-tl-none'
                 }`}
-                style={
+                style={({ pressed }) => [
                   isUser
                     ? { backgroundColor: isDark ? '#7C3AED' : colors.primary }
-                    : { backgroundColor: isDark ? '#2D2D3D' : colors.surface, borderColor: colors.border, borderWidth: 1 }
-                }
+                    : { backgroundColor: isDark ? '#2D2D3D' : colors.surface, borderColor: colors.border, borderWidth: 1 },
+                  // El mensaje en edicion queda atenuado para que se vea cual
+                  // de todos es el que esta cargado en la barra de abajo.
+                  isBeingEdited ? { opacity: 0.55 } : null,
+                  pressed && isEditable ? { opacity: 0.75 } : null,
+                ]}
               >
                 <View>
                   {renderFormattedText(msg.content, isUser, colors, isDark)}
@@ -98,7 +126,7 @@ export function MessagesList({
                     minute: '2-digit',
                   })}
                 </Text>
-              </View>
+              </Pressable>
             </View>
           );
         })

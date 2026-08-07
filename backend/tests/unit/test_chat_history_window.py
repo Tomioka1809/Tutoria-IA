@@ -56,6 +56,17 @@ class RecordingChatRepository(ChatRepositoryPort):
         self.limits_received.append(limit)
         return self.messages[-limit:] if limit else self.messages
 
+    async def get_message(self, message_id: int):
+        return next((m for m in self.messages if m.id == message_id), None)
+
+    async def edit_message_and_truncate(self, message_id: int, content: str):
+        msg = await self.get_message(message_id)
+        if msg is None:
+            raise ValueError(f"No existe el mensaje {message_id}")
+        self.messages = [m for m in self.messages if m.id <= message_id]
+        msg.content = content
+        return msg
+
 
 class CapturingLLM(LLMPort):
     def __init__(self):
