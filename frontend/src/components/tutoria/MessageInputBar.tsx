@@ -1,6 +1,7 @@
 // src/components/tutoria/MessageInputBar.tsx
 import React from 'react';
 import { View, TextInput, Pressable, Text } from 'react-native';
+import Feather from '@expo/vector-icons/Feather';
 import { useTheme } from '@/src/theme/ThemeContext';
 import { useTranslation } from 'react-i18next';
 
@@ -56,9 +57,7 @@ export function MessageInputBar({
             className="w-7 h-7 rounded-full items-center justify-center ml-2"
             style={{ backgroundColor: colors.surface }}
           >
-            <Text className="text-sm font-bold" style={{ color: colors.textSecondary }}>
-              ✕
-            </Text>
+            <Feather name="x" size={16} color={colors.textSecondary} />
           </Pressable>
         </View>
       ) : null}
@@ -89,7 +88,7 @@ export function MessageInputBar({
             isTextEmpty || isSending ? 'bg-[#D1D1E0]' : 'bg-primary shadow-[#9A3BEE]/35'
           }`}
         >
-          <Text className="text-white font-bold text-base">{isEditing ? '✓' : '➔'}</Text>
+          <Feather name={isEditing ? 'check' : 'arrow-right'} size={20} color="#FFFFFF" />
         </Pressable>
       </View>
     </View>
