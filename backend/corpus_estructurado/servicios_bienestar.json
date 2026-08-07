@@ -13,87 +13,12 @@
   },
   "fragmentos": [
     {
-      "id": "servicios_bienestar#finalidad-y-objetivos",
-      "titulo": "Finalidad y objetivos",
-      "texto": "Finalidad y objetivos\nDefinicion: La Dirección de Bienestar Universitario es el órgano encargado de planificar, organizar y ejecutar programas, servicios de salud, psicopedagógicos, bienestar, comedor, recreación, deportes en beneficio del estudiantado universitario de la sede central y filial.. Objetivos estrategicos: Contribuir a la formación integral de los estudiantes mediante programas de apoyo y acompañamiento., Atender necesidades de salud física y mental de la comunidad universitaria para un rendimiento académico óptimo., Brindar asistencia alimentaria y apoyo social a estudiantes en situación de vulnerabilidad socioeconómica., Fomentar la práctica del deporte, la cultura y la recreación como parte indispensable del desarrollo humano.",
-      "seccion": [
-        "finalidad_y_objetivos"
-      ],
-      "articulo": null,
-      "palabras_clave": []
-    },
-    {
-      "id": "servicios_bienestar#estructura-de-servicios-unidad-de-salud-y-psicopedagogia",
-      "titulo": "Estructura de servicios > Unidad de salud y psicopedagogia",
-      "texto": "Estructura de servicios > Unidad de salud y psicopedagogia\nDependencia: Depende orgánicamente de la Dirección de Bienestar Universitario.. Descripcion: Es la unidad responsable de cuidar y mantener la buena salud física y mental del estudiante universitario.. Departamentos y especialidades: Servicio de Medicina General, Servicio de Odontología, Servicio de Psicología y Psicopedagogía, Servicio de Obstetricia, Servicio de Enfermería y Primeros Auxilios. Funciones principales: Brindar al estudiantado atención médica, odontológica y psicológica., Realizar exámenes médico, odontológico y psicológico a todos los ingresantes., Organizar, programar y ejecutar campañas de educación sanitaria y prevención de enfermedades., Realizar talleres psicopedagógicos para mejorar las técnicas de estudio y manejo del estrés académico., Derivar casos clínicos complejos a centros hospitalarios o redes de salud correspondientes.",
-      "seccion": [
-        "estructura_de_servicios",
-        "unidad_de_salud_y_psicopedagogia"
-      ],
-      "articulo": null,
-      "palabras_clave": []
-    },
-    {
-      "id": "servicios_bienestar#estructura-de-servicios-unidad-de-comedor-universitario",
-      "titulo": "Estructura de servicios > Unidad de comedor universitario",
-      "texto": "Estructura de servicios > Unidad de comedor universitario\nDescripcion: Servicio de asistencia alimentaria destinado a cubrir las necesidades nutricionales de los estudiantes, garantizando alimentación balanceada e higiene.. Criterios de acceso: Efectuar seguimiento de la situación socio-económica, preferentemente a estudiantes que demuestren dicha necesidad., Priorizar la asistencia alimentaria para estudiantes que se encuentren en condición de invictos en sus estudios., Evaluación y empadronamiento periódico a cargo de las asistentas sociales.. Servicios brindados: Desayuno, almuerzo y cena en días laborables y académicos., Elaboración de minutas bajo supervisión de profesionales en nutrición., Supervisión estricta de las normas de salubridad y manipulación de alimentos.",
-      "seccion": [
-        "estructura_de_servicios",
-        "unidad_de_comedor_universitario"
-      ],
-      "articulo": null,
-      "palabras_clave": []
-    },
-    {
-      "id": "servicios_bienestar#estructura-de-servicios-unidad-de-asistencia-social",
-      "titulo": "Estructura de servicios > Unidad de asistencia social",
-      "texto": "Estructura de servicios > Unidad de asistencia social\nDescripcion: Área dedicada a evaluar, orientar y acompañar al estudiante en dificultades sociales, familiares o económicas que pongan en riesgo su continuidad universitaria.. Servicios y funciones: Promover el otorgamiento de becas de estudios o capacitación de los estudiantes., Realizar la clasificación socioeconómica para acceder al comedor, albergues u otras exoneraciones., Atender situaciones de emergencia social, brindando orientación e intervención familiar., Coordinar el seguro contra accidentes personales para los estudiantes.",
-      "seccion": [
-        "estructura_de_servicios",
-        "unidad_de_asistencia_social"
-      ],
-      "articulo": null,
-      "palabras_clave": []
-    },
-    {
-      "id": "servicios_bienestar#estructura-de-servicios-unidad-de-deportes-y-recreacion",
-      "titulo": "Estructura de servicios > Unidad de deportes y recreacion",
-      "texto": "Estructura de servicios > Unidad de deportes y recreacion\nDescripcion: Fomenta la integración, la actividad física y el desarrollo de talentos deportivos en la comunidad.. Instalaciones vinculadas: Estadio Universitario de la UNSAAC., Lozas y plataformas deportivas en la Ciudad Universitaria de Perayoc.. Actividades: Organización de los Juegos Deportivos Interfacultades e Interescuelas., Formación y entrenamiento de las selecciones universitarias (fútbol, vóley, básquet, ajedrez, etc.)., Talleres libres de artes marciales, danzas y acondicionamiento físico.",
-      "seccion": [
-        "estructura_de_servicios",
-        "unidad_de_deportes_y_recreacion"
-      ],
-      "articulo": null,
-      "palabras_clave": []
-    },
-    {
-      "id": "servicios_bienestar#beneficiarios",
-      "titulo": "Beneficiarios",
-      "texto": "Beneficiarios\nEstudiantes de pregrado: Son los principales usuarios de los servicios gratuitos de salud, asistencia y deporte, siempre y cuando presenten matrícula vigente.. Ingresantes: Deben someterse obligatoriamente al examen médico, psicológico y odontológico preventivo.. Estudiantes vulnerables: Tienen prioridad en la asignación de vacantes para el comedor y becas, previo estudio socioeconómico.",
-      "seccion": [
-        "beneficiarios"
-      ],
-      "articulo": null,
-      "palabras_clave": []
-    },
-    {
       "id": "servicios_bienestar#preguntas-frecuentes-que-servicios-medicos-puedo-encontrar-en-la-universidad",
       "titulo": "Preguntas frecuentes > ¿Qué servicios médicos puedo encontrar en la universidad?",
       "texto": "Preguntas frecuentes > ¿Qué servicios médicos puedo encontrar en la universidad?\nPregunta: ¿Qué servicios médicos puedo encontrar en la universidad?. Respuesta: La Unidad de Salud y Psicopedagogía te ofrece atención gratuita en Medicina General, Odontología, Psicología, Obstetricia y Tópico/Enfermería.",
       "seccion": [
         "preguntas_frecuentes",
         "¿Qué servicios médicos puedo encontrar en la universidad?"
-      ],
-      "articulo": null,
-      "palabras_clave": []
-    },
-    {
-      "id": "servicios_bienestar#preguntas-frecuentes-como-puedo-acceder-al-comedor-universitario",
-      "titulo": "Preguntas frecuentes > ¿Cómo puedo acceder al Comedor Universitario?",
-      "texto": "Preguntas frecuentes > ¿Cómo puedo acceder al Comedor Universitario?\nPregunta: ¿Cómo puedo acceder al Comedor Universitario?. Respuesta: Debes pasar por una evaluación y seguimiento socioeconómico realizado por la Unidad de Asistencia Social. Tienen prioridad los estudiantes con mayor necesidad económica y aquellos que se encuentran invictos en sus cursos.",
-      "seccion": [
-        "preguntas_frecuentes",
-        "¿Cómo puedo acceder al Comedor Universitario?"
       ],
       "articulo": null,
       "palabras_clave": []
@@ -116,17 +41,6 @@
       "seccion": [
         "preguntas_frecuentes",
         "¿A dónde acudo si me siento muy estresado o ansioso por mis cursos?"
-      ],
-      "articulo": null,
-      "palabras_clave": []
-    },
-    {
-      "id": "servicios_bienestar#preguntas-frecuentes-la-universidad-otorga-algun-tipo-de-beca",
-      "titulo": "Preguntas frecuentes > ¿La universidad otorga algún tipo de beca?",
-      "texto": "Preguntas frecuentes > ¿La universidad otorga algún tipo de beca?\nPregunta: ¿La universidad otorga algún tipo de beca?. Respuesta: Sí, la Unidad de Asistencia Social se encarga de promover y tramitar becas de estudio y ayudas económicas para estudiantes de bajos recursos que mantengan un buen rendimiento.",
-      "seccion": [
-        "preguntas_frecuentes",
-        "¿La universidad otorga algún tipo de beca?"
       ],
       "articulo": null,
       "palabras_clave": []

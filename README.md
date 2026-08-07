@@ -15,7 +15,7 @@ Esta guía contiene todas las instrucciones necesarias para clonar, configurar y
 - **Cierre Técnico del Proyecto:** **COMPLETADO**
 - **Suite de Pruebas Automatizadas:** **164 pruebas unitarias aprobadas, 0 fallidas** (144 iniciales, 162 al cerrar Fase 6B, y 164 al cerrar Fase 6C).
 - **Fase 6D:** Corresponde únicamente a integración Git, pull request y entrega operativa.
-- **Reconstrucción del RAG (Fases 0 a 4):** **COMPLETADA** — 387 pruebas aprobadas. Ver detalle abajo y operación en [`documentacion/07_rag_operacion.md`](documentacion/07_rag_operacion.md).
+- **Reconstrucción del RAG (Fases 0 a 4):** **COMPLETADA** — 445 pruebas aprobadas. Ver detalle abajo y operación en [`documentacion/07_rag_operacion.md`](documentacion/07_rag_operacion.md).
 
 ---
 
@@ -43,12 +43,66 @@ La causa de fondo no estaba en la búsqueda sino en los datos: el corpus era una
 
 | Métrica | Antes | Después |
 |---|---|---|
-| Cobertura documental (techo) | 8.3% | **100%** |
-| Acierto de artículo | imposible de medir | **15/16 (94%)** |
-| Acierto de documento | — | **20/20 (100%)** |
+| Cobertura documental (techo) | 8.3% | **96.9%** (31/32 casos en alcance) |
+| Acierto de artículo | imposible de medir | **16/19 (84%)** |
+| Acierto de documento | — | **32/32 (100%)** |
 | Abstención fuera de alcance | rota (0/3) | **3/3** |
-| Fragmentos citables | 0 | **1009** |
-| Pruebas automatizadas | 277 | **387** |
+| Fragmentos citables | 0 | **1369** |
+| Artículos indexados | 0 | **732** |
+| Pruebas automatizadas | 277 | **445** |
+
+### Cierre del corpus (2026-08-06)
+
+Se incorporaron los reglamentos que faltaban y que el propio proyecto tenía
+anotados como brecha documental:
+
+| Documento | Norma | Qué cierra |
+|---|---|---|
+| Reglamento del Programa de Movilidad Académica | CU-349-2026 | Reemplaza al `reglamento_intercambio_estudiantil`, que era una paráfrasis sin resolución ni articulado |
+| Reglamento de Subvenciones Económicas | CU-667-2025 | El apoyo económico a intercambios y congresos pasa a ser citable |
+| Reglamento para Uso de Vivienda Estudiantil | CU-372-2020 | Única de las cinco unidades de bienestar con reglamento propio publicado |
+| ROF 2024 | AU-008-2024 | Reemplaza al ROF 2019. Las cinco unidades de bienestar quedan citables (Art. 104-115) |
+
+Los dos primeros son escaneos sin capa de texto: se procesan con OCR en español
+y el extractor lee el Markdown resultante.
+
+### Consultas sobre la carrera y los apoyos (2026-08-06)
+
+Siete preguntas frecuentes no tenían respuesta o la tenían mal. Todas se
+verificaron contra la fuente oficial antes de incorporarlas.
+
+| Pregunta | Qué pasaba | Qué se incorporó |
+|---|---|---|
+| Malla 2017 | Quince casilleros decían solo `ASIGNATURA DE ESPECIALIDAD`, sin nombre ni código | `plan_estudios_2017`, desde el catálogo del Centro de Cómputo: 37 asignaturas de especialidad, las extracurriculares (IF060-IF066) y la práctica preprofesional (IF020) |
+| Qué becas existen | Una FAQ sin fuente decía que Bienestar "promueve y tramita becas", sin nombrar ninguna | `becas_y_comedor` (índice con la norma citada en cada entrada) y `reglamento_idiomas` (CU-281-2020), única norma publicada que articula becas de estudio |
+| Misión y visión de la carrera | El corpus solo tenía la misión de la universidad | `escuela_informatica`, texto literal del portal de la escuela |
+| Autoridades de Informática | No estaban | Decano, Director del Departamento Académico y Directora de la Escuela, con correo |
+| Círculos de estudio y eventos | No estaban | ACM-UNSAAC Student Chapter (Res. D-2161-2025-FIEEIM) y los eventos habituales: CUSCONTEST, NEUROKUP, seminarios y charlas |
+| Aniversario de la carrera | No estaba | Se celebra en diciembre; creación 13.12.1971 (CG-110-71) y reapertura 22.01.1993 (CU-009-93) |
+| Cómo obtener el comedor | La respuesta se quedaba en "hay una evaluación socioeconómica" | El procedimiento de reserva de cupo, desde el manual oficial de Bienestar |
+
+Tres hallazgos que valen más que el contenido agregado:
+
+- **La imagen de la malla 2017 y el catálogo de matrícula discrepan en cinco
+  códigos** (`ME351/IF351`, `FI370/IF370`, `EL371/LI371`, `ME356/ME359`,
+  `DE901/DR901`). Responder con el de la imagen le daba al estudiante una clave
+  con la que no puede matricularse. Ahora el fragmento entrega los dos y dice
+  cuál vale.
+- **La paráfrasis sin fuente le ganaba al articulado.** Medido: ante *"¿qué
+  servicios de apoyo ofrece la universidad?"*, cuatro de los seis fragmentos
+  entregados salían de `servicios_bienestar`, que no tiene fuente verificable, y
+  el artículo del Estatuto que responde quedaba fuera. Se retiraron los ocho
+  fragmentos de ese archivo que ya son citables desde el ROF o el Estatuto; se
+  conservó lo que no está en la norma.
+- **El chat reescribe la consulta de malla** anteponiéndole `malla curricular
+  Plan <año>`. Solo las FAQ del plan 2025 estaban redactadas con esa forma, así
+  que *"qué cursos llevo en el sexto ciclo de la malla 2017"* devolvía seis
+  fragmentos del 2025 y ninguno del 2017, y el sistema se abstenía. Los
+  fragmentos del 2017 abren ahora con esa misma forma.
+
+Se corrigió también que `malla_2017.json` no se podía regenerar: su
+transcripción vivía fuera del repositorio. Ahora está en `corpus_fuentes/` y
+`validate_malla` la comprueba contra los totales que declara la propia imagen.
 
 ### Decisiones que vale la pena conocer
 

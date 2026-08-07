@@ -65,6 +65,53 @@ class TestExtraccionArticulos(unittest.TestCase):
         arts = extraer_articulos(texto)
         self.assertNotIn("12", arts[0]["cuerpo"].split())
 
+    def test_descarta_el_encabezado_y_el_pie_que_se_repiten_por_pagina(self):
+        """Regresion: el pie del ROF 2024 quedaba dentro del cuerpo del articulo.
+
+        El Art. 104 terminaba con "OFICINA DE PLANEAMIENTO... Pagina 54", que
+        entraba al embedding como si fuera texto normativo.
+        """
+        paginas = []
+        for n in range(1, 7):
+            paginas.append(
+                "REGLAMENTO DE ORGANIZACION Y FUNCIONES DE LA UNSAAC\n"
+                f"Art. {n}° Titulo del articulo {n}\n"
+                f"   Cuerpo del articulo {n} con longitud mas que suficiente para indexar.\n"
+                f"OFICINA DE PLANEAMIENTO Y PRESUPUESTO/UNIDAD DE MODERNIZACION    Página {n}"
+            )
+        arts = extraer_articulos("\f".join(paginas))
+
+        self.assertEqual([a["numero"] for a in arts], [1, 2, 3, 4, 5, 6])
+        for art in arts:
+            self.assertNotIn("OFICINA DE PLANEAMIENTO", art["cuerpo"])
+            self.assertNotIn("Página", art["cuerpo"])
+            self.assertNotIn("REGLAMENTO DE ORGANIZACION", art["cuerpo"])
+            self.assertIn("Cuerpo del articulo", art["cuerpo"])
+
+    def test_no_borra_una_linea_repetida_que_es_contenido(self):
+        """El filtro mira la posicion, no solo la frecuencia.
+
+        En texto justificado una linea corta como "Universidad." se repite
+        muchas veces y es contenido: filtrar por frecuencia la borraria.
+        """
+        paginas = []
+        for n in range(1, 7):
+            paginas.append(
+                "ENCABEZADO QUE SE REPITE\n"
+                f"Art. {n}° Titulo del articulo {n}\n"
+                f"   Apertura del articulo {n} con longitud mas que suficiente.\n"
+                "   Universidad.\n"
+                f"   Cierre del articulo {n} con texto adicional para no quedar corto.\n"
+                f"Página {n}"
+            )
+        arts = extraer_articulos("\f".join(paginas))
+
+        self.assertEqual(len(arts), 6)
+        for art in arts:
+            self.assertIn("Universidad.", art["cuerpo"])
+            self.assertNotIn("ENCABEZADO QUE SE REPITE", art["cuerpo"])
+            self.assertNotIn("Página", art["cuerpo"])
+
     def test_parte_un_parrafo_unico_mas_largo_que_el_limite(self):
         """Regresion: un parrafo sin saltos generaba un fragmento de 2703 chars."""
         parrafo = " ".join(f"Oracion numero {i} del parrafo largo." for i in range(120))
@@ -72,6 +119,27 @@ class TestExtraccionArticulos(unittest.TestCase):
         self.assertGreater(len(piezas), 1)
         for p in piezas:
             self.assertLessEqual(len(p), 500)
+
+    def test_parte_una_fila_de_tabla_sin_un_solo_punto(self):
+        """Regresion: el Art. 27 de subvenciones daba un fragmento de 3033 chars.
+
+        Las tablas del OCR llegan como una fila unica sin puntos finales, asi
+        que el corte por oraciones no tenia donde cortar y devolvia el bloque
+        entero, diluyendo el embedding entre todos los conceptos de la tabla.
+        """
+        fila = " | ".join(f"CONCEPTO {i} de la tabla con su descripcion" for i in range(40))
+        piezas = partir_articulo(fila, 500)
+        self.assertGreater(len(piezas), 1)
+        for p in piezas:
+            self.assertLessEqual(len(p), 500)
+
+    def test_parte_una_celda_unica_mas_larga_que_el_presupuesto(self):
+        """Sin corte por palabra, una sola celda enorme seguia excediendo."""
+        celda = " ".join(f"palabra{i}" for i in range(400))
+        piezas = partir_articulo(celda, 300)
+        self.assertGreater(len(piezas), 1)
+        for p in piezas:
+            self.assertLessEqual(len(p), 300)
 
 
 class TestConstruccionDeFragmentos(unittest.TestCase):

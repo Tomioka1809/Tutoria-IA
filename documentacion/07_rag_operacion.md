@@ -37,11 +37,21 @@ Variables de entorno:
 ### Construcción manual
 
 ```bash
+# 0. Solo para los PDF escaneados: OCR en espanol antes de extraer
+uvx --from docling docling convert <pdf> --to md --output <pdf-dir>/es_ocr \
+    --ocr-lang es --ocr-mode full_page --device cpu
+
 # 1. Extraer el articulado desde los PDF oficiales
 python -m scripts.extract_pdf_corpus --pdf-dir /ruta/a/los/pdf
 python -m scripts.extract_plan_estudios --md .../plan-estudios-2025.md
 python -m scripts.extract_calendario  --md .../es_ocr/CRONOGRAMA-2026.md
-python -m scripts.extract_malla       --json malla_2017_transcrita.json
+
+# 1b. Fuentes que ya viven versionadas en backend/corpus_fuentes/ (no piden ruta)
+python -m scripts.extract_malla --json corpus_fuentes/malla_2017_transcrita.json --plan 2017
+python -m scripts.extract_catalogo_2017    # plan_estudios_2017 (catálogo del Centro de Cómputo)
+python -m scripts.extract_escuela          # escuela_informatica (portal de la escuela)
+python -m scripts.extract_becas_comedor    # becas_y_comedor (índice de apoyos)
+python -m scripts.convert_corpus           # corpus heredado (respeta lo ya extraído de PDF)
 
 # 2. Validar antes de indexar
 python -m scripts.validate_corpus --estricto
@@ -94,7 +104,58 @@ la unidad de recuperación. El esquema está en
 Cada fragmento antepone su ruta jerárquica al texto para ser **autocontenido**:
 aislado, `"veinticinco (25) estudiantes"` no se puede recuperar ni citar.
 
-Estado actual: **1009 fragmentos, 14 documentos**.
+Estado actual: **1369 fragmentos, 20 documentos, 732 artículos**.
+
+#### Fuentes versionadas (`backend/corpus_fuentes/`)
+
+Los PDF no viven en el repositorio, pero sí las transcripciones de las fuentes
+que no son PDF: la imagen de la malla 2017, el catálogo de asignaturas del
+Centro de Cómputo y las páginas del portal de la escuela. Están en un formato
+crudo y auditable, y su extractor las redacta en prosa.
+
+Esto cierra un agujero real: `malla_2017.json` **no se podía regenerar** porque
+su transcripción vivía fuera del repositorio, así que cualquier corrección
+obligaba a editar a mano el archivo indexado.
+
+| Fuente | Extractor | Documento que produce |
+|---|---|---|
+| `malla_2017_transcrita.json` | `extract_malla` | `malla_2017` |
+| `catalogo_2017.json` | `extract_catalogo_2017` | `plan_estudios_2017` |
+| `escuela_informatica.json` | `extract_escuela` | `escuela_informatica` |
+| `becas_y_comedor.json` | `extract_becas_comedor` | `becas_y_comedor` |
+
+Cada extractor **verifica antes de escribir**: `extract_malla` y
+`extract_catalogo_2017` comprueban la transcripción contra los totales que la
+propia fuente declara (219 créditos, 62 asignaturas, créditos por categoría) y
+se niegan a emitir si no cuadra. Un crédito mal leído es peor que no tener el
+dato: el sistema lo afirmaría con confianza.
+
+#### Redacción y forma de la consulta
+
+Un fragmento no solo tiene que **contener** la respuesta: tiene que parecerse a
+la pregunta. Dos casos medidos, ambos resueltos en el texto y no aflojando el
+umbral calibrado:
+
+- El portal dice *"Escuela Profesional"* y el estudiante dice *"la carrera"*.
+  *"¿Cuál es la visión de la carrera?"* quedaba a distancia **0.364** —fuera del
+  corte de 0.34— y sin coincidencia léxica, porque la palabra "carrera" no
+  aparecía en el texto.
+- El chat reescribe las consultas de malla anteponiéndoles `malla curricular
+  Plan <año>` (ver `reconstruct_query`). Solo las FAQ del plan 2025 estaban
+  redactadas con esa forma, así que *"qué cursos llevo en el sexto ciclo de la
+  malla 2017"* devolvía **seis fragmentos del 2025 y ninguno del 2017**. El año
+  por sí solo no inclina el embedding.
+
+### 2.1.1 Fuentes escaneadas
+
+Tres documentos no tienen capa de texto y se extraen desde el Markdown de un OCR
+en español (`docling`, ver §1). El parser de articulado es el mismo: lo que cambia
+es de dónde sale el texto, no cómo se parte.
+
+El Markdown del OCR trae tres estorbos que el extractor normaliza: las imágenes
+van embebidas en base64 (2.44 MB de los 2.5 MB del reglamento de movilidad), el
+encabezado de cada página sale como fila de tabla repetida, y los títulos llevan
+`#`, que impedía reconocer `## Artículo 1°`.
 
 ### 2.2 Indexación
 
@@ -223,7 +284,7 @@ intervención sobre el orden que produce la fusión.
 
 ### 4.1 Suite automatizada
 
-**387 pruebas.** Ejecutar desde la raíz del repositorio:
+**445 pruebas.** Ejecutar desde la raíz del repositorio:
 
 ```bash
 backend/venv/bin/python -m pytest -q
@@ -238,6 +299,9 @@ Archivos que cubren el RAG:
 | `test_ingest_corpus.py` | Hash, clasificación incremental, orden intercalado, `task_type`, modo estricto, guarda de modelo |
 | `test_pdf_extraction.py` | Parseo de articulado, jerarquía, corte de artículos largos |
 | `test_plan_estudios.py`, `test_extract_malla.py`, `test_calendario.py` | Extractores tabulares y de OCR |
+| `test_catalogo_2017.py` | Catálogo del plan 2017: verificación de totales, asignaturas de especialidad nombradas, discrepancias de código |
+| `test_escuela_informatica.py` | Identidad de la carrera: misión, visión, autoridades, aniversario, círculos y eventos |
+| `test_becas_comedor.py` | Que toda beca declare su fundamento y que las del Estado no se atribuyan a la UNSAAC |
 | `test_validate_malla.py` | Verificación de transcripciones contra invariantes |
 | `test_golden_set_v2.py` | Integridad del golden set; artículos inexistentes |
 | `test_rag_quality.py` | RRF, índice de texto completo, ponderación por autoridad |
@@ -257,21 +321,26 @@ el articulado.
 python -m tests.run_eval_v2 --json tests/resultados/fase4_eval_v2.json
 ```
 
-Contra `golden_set_v2.json` (26 casos, 8 dominios), corpus completo:
+Contra `golden_set_v2.json` (36 casos, 9 dominios), corpus completo:
 
 ```
-Acierto de artículo   : 15/16  ( 94%)
-Acierto de documento  : 20/20  (100%)
-Cobertura de palabras :          93%
+Acierto de artículo   : 16/19  ( 84%)
+Acierto de documento  : 32/32  (100%)
+Cobertura de palabras :          94%
 Abstención correcta   :  3/3   (100%)
 ```
+
+> Medido sobre el corpus completo (20 documentos). El golden set creció de 26 a
+> 36 casos: se agregó el dominio `escuela` y los casos de becas y plan 2017. El
+> detalle de los tres que fallan está en §5.
 
 | Dominio | artículo | documento |
 |---|---|---|
 | tutoria | 5/5 | 5/5 |
-| apoyos | 3/3 | 3/3 |
-| movilidad | 2/2 | 2/2 |
-| trayectoria_academica | 4/4 | 5/5 |
+| apoyos | 4/4 | 6/6 |
+| escuela | — | 6/6 |
+| movilidad | 2/4 | 4/4 |
+| trayectoria_academica | 4/4 | 6/6 |
 | calendario, tramites | — | 3/3 |
 | enrutamiento | 1/2 | 2/2 |
 
@@ -324,26 +393,80 @@ Y fuera de alcance:
 
 ## 5. Limitaciones conocidas
 
-1. **Cuatro casos del golden set esperan documentos** que no están publicados:
-   requisitos de beca de comedor, procedimiento de reserva de cupo, bases de
-   movilidad OCRI y directiva de subvenciones. Están marcados
-   `pendiente_documento` y se excluyen de las métricas, porque contarlos como
-   fallo confundiría una brecha documental con un problema de búsqueda.
+1. **Un caso del golden set espera un documento** que no está publicado: los
+   requisitos para postular a la beca de comedor, que estarían en el Reglamento
+   de Subsidios y Becas. Está marcado `pendiente_documento` y se excluye de las
+   métricas, porque contarlo como fallo confundiría una brecha documental con un
+   problema de búsqueda. No figura en el portal de transparencia ni en el índice
+   de normas de gob.pe; el camino es pedirlo por acceso a la información pública.
 
-2. **`servicios_bienestar` y `reglamento_intercambio_estudiantil` no tienen
-   fuente verificable.** Su contenido no se pudo contrastar contra ningún
-   documento oficial. El reordenamiento por autoridad hace que dejen de
-   desplazar al articulado, pero no los vuelve confiables.
+   Los criterios de **prioridad** sí son citables (Estatuto Art. 252: situación
+   socioeconómica baja o condición de invicto); lo que falta es el procedimiento
+   formal de postulación.
+
+   Los otros tres que estaban en esta lista se cerraron: las bases de movilidad
+   OCRI las reemplaza el **Reglamento del Programa de Movilidad Académica**
+   (CU-349-2026, Art. 1-25), la directiva de subvenciones el **Reglamento para
+   el Otorgamiento de Subvenciones Económicas** (CU-667-2025, Art. 1-27), y el
+   procedimiento de reserva de cupo del comedor, el **Manual de Usuario de
+   Bienestar Universitario** (30.09.2024), incorporado en `becas_y_comedor`.
+
+2. **`servicios_bienestar` no tiene fuente verificable, y se redujo a 5
+   fragmentos.** El reordenamiento por autoridad no bastó para contenerlo: ante
+   *"¿qué servicios de apoyo ofrece la universidad?"* ocupaba **cuatro de los
+   seis** slots y dejaba fuera el artículo del Estatuto que responde. Se
+   retiraron los ocho fragmentos que ya son citables en otro documento —las
+   cinco unidades de bienestar (ROF Art. 106-115), la finalidad (Estatuto
+   Art. 245-246), los beneficiarios (Art. 247) y las FAQ de beca y comedor—. Se
+   conserva lo que no está en la norma: examen médico del ingresante, uso del
+   estadio y orientación ante el estrés.
+
+   La lista vive en `FRAGMENTOS_SUPERADOS` (`scripts/convert_corpus.py`), con la
+   norma que reemplaza a cada uno.
+
+   `reglamento_intercambio_estudiantil` y `malla_curricular_2017` se retiraron y
+   ahora figuran en `DOCUMENTOS_RETIRADOS`. Antes, volver a correr
+   `convert_corpus` los resucitaba y deshacía la decisión en silencio.
 
 3. **`servicios_biblioteca` no tiene articulado.** El PDF está escaneado y el
    OCR corrompe la numeración (`Art 19` por `Art. 1°`, el `°` leído como `9`).
    Citar mal un artículo es peor que no citarlo. Además el documento cita la Ley
    23733, derogada por la Ley 30220 en 2014.
 
-4. **El caso 122** (*"¿a qué oficina voy si tengo un problema económico?"*)
-   responde correctamente, pero desde `preguntas_frecuentes` en lugar del ROF o
-   el Estatuto: acierta el contenido y falla la cita.
+4. **Tres casos aciertan el documento y fallan el artículo.** El acierto de
+   documento es 32/32, así que en los tres el sistema entrega la fuente correcta.
+
+   | Caso | Qué pasa |
+   |---|---|
+   | 122 | *"¿a qué oficina voy si tengo un problema económico?"* responde desde `preguntas_frecuentes` en lugar del ROF o el Estatuto |
+   | 115 | *"¿cuántos créditos puedo matricular por movilidad?"* — **regresión del cierre del corpus**. La respuesta está en el Art. 8 del Reglamento Académico, pero los reglamentos de movilidad y subvenciones, recién incorporados, quedan más cerca de la pregunta y lo desplazan |
+   | 118 | *"¿hay apoyo económico para viajar a un congreso?"* recupera el reglamento de subvenciones correcto, pero los Art. 11 y 27 en vez del Art. 6, que es el que enumera las actividades subvencionables |
+
+   El barrido de `calibrar_peso_autoridad` descarta que el peso sea la palanca:
+   da 14/18 en los once valores probados, de 0.1 a 2.0. Los tres se resuelven
+   con recuperación, no con jerarquía de fuente.
 
 5. **El calendario caduca.** El esquema no tiene ventana de vigencia, así que un
    calendario vencido seguiría respondiéndose como actual. Aplica igual a las
    convocatorias, si se incorporan.
+
+   Lo mismo vale para lo que se incorporó de la escuela: las **autoridades**
+   cambian de gestión, los **eventos** cambian de fecha en cada edición y la
+   **acreditación ICACIT** figura vigente hasta el 31.12.2025 con la escuela en
+   proceso de acreditación continua. Los fragmentos afectados dicen en su propio
+   texto que el dato corresponde a la última edición publicada, pero eso avisa,
+   no caduca.
+
+6. **El aniversario de la carrera no consta en resolución.** La celebración es en
+   diciembre y las ediciones documentadas (XXV en 2018, XXVII el 11.12.2020)
+   cuentan desde la reapertura de 1993, mientras que la fecha de creación que
+   declara el portal es el 13.12.1971. El fragmento entrega las dos fechas y
+   declara la contradicción en vez de resolverla a ojo.
+
+7. **La imagen de la malla 2017 contradice al catálogo de matrícula** en cinco
+   códigos (`ME351/IF351`, `FI370/IF370`, `EL371/LI371`, `ME356/ME359`,
+   `DE901/DR901`). Vale el del catálogo, que es el registro contra el que se
+   matricula. Los fragmentos de `malla_2017` entregan ambos y dicen cuál sirve
+   para matricularse; `plan_estudios_2017` tiene además un fragmento dedicado a
+   la discrepancia. No se ubicó una resolución que apruebe el plan 2017, así que
+   `procedencia.resolucion` queda nula en los dos documentos.

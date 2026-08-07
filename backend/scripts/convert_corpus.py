@@ -63,6 +63,37 @@ TIPOS_POR_ARCHIVO = {
     "servicios_bienestar.json": TipoDocumento.SERVICIO,
 }
 
+# Documentos heredados que quedaron reemplazados por una fuente con articulado.
+# Sin esta lista, volver a correr la conversion los resucita y deshace en
+# silencio dos decisiones ya tomadas: el reglamento de intercambio no declaraba
+# resolucion y tenia 12/12 fragmentos sin articulo, y la malla 2017 heredada se
+# rehizo desde la imagen oficial en malla_2017.json.
+DOCUMENTOS_RETIRADOS = {
+    "reglamento_intercambio_estudiantil.json": "reemplazado por reglamento_movilidad_academica (CU-349-2026)",
+    "malla_curricular_2017.json": "reemplazado por malla_2017.json, transcrito de la imagen oficial",
+}
+
+# Fragmentos que quedaron superados por articulado real. Al ser parafrasis sin
+# fuente competian con el y le ganaban: medido, "que servicios de apoyo ofrece
+# la universidad" devolvia cuatro fragmentos de servicios_bienestar y dejaba
+# fuera el articulo del Estatuto que responde la pregunta.
+#
+# Se retira solo lo que ya es citable en otro documento. Lo que no esta en la
+# norma -el examen medico del ingresante, el uso del estadio, la orientacion
+# ante el estres- se conserva, que es la razon por la que el documento sigue.
+FRAGMENTOS_SUPERADOS = {
+    "servicios_bienestar.json": {
+        "finalidad-y-objetivos": "Estatuto Art. 245-246",
+        "estructura-de-servicios-unidad-de-salud-y-psicopedagogia": "ROF Art. 108-109",
+        "estructura-de-servicios-unidad-de-comedor-universitario": "ROF Art. 110-111 y Estatuto Art. 252",
+        "estructura-de-servicios-unidad-de-asistencia-social": "ROF Art. 106-107",
+        "estructura-de-servicios-unidad-de-deportes-y-recreacion": "ROF Art. 114-115",
+        "beneficiarios": "Estatuto Art. 247",
+        "preguntas-frecuentes-como-puedo-acceder-al-comedor-universitario": "becas_y_comedor y Estatuto Art. 252",
+        "preguntas-frecuentes-la-universidad-otorga-algun-tipo-de-beca": "becas_y_comedor y Reglamento del Instituto de Idiomas Art. 108-109",
+    },
+}
+
 # Titulos oficiales para los archivos cuyo metadato heredado no identifica el
 # documento (declaran solo el nombre de la universidad).
 TITULOS_EXPLICITOS = {
@@ -190,13 +221,17 @@ def convertir(nombre: str, datos: Any) -> DocumentoCorpus:
             pares.extend(descomponer(etiqueta_de_item(item, i), item, []))
 
     base_id = nombre.removesuffix(".json")
+    superados = FRAGMENTOS_SUPERADOS.get(nombre, {})
     fragmentos: list[Fragmento] = []
     usados: set[str] = set()
 
     for ruta, texto in pares:
         if not texto.strip():
             continue
-        fid = f"{base_id}#{'-'.join(slug(p) for p in ruta)}"
+        sufijo = "-".join(slug(p) for p in ruta)
+        if sufijo in superados:
+            continue
+        fid = f"{base_id}#{sufijo}"
         if fid in usados:
             n = 2
             while f"{fid}-{n}" in usados:
@@ -254,6 +289,9 @@ def main() -> int:
 
     for nombre in sorted(os.listdir(CORPUS_ORIGEN)):
         if not nombre.endswith(".json"):
+            continue
+        if nombre in DOCUMENTOS_RETIRADOS:
+            print(f"{nombre:44s} {'retirado':11s} {DOCUMENTOS_RETIRADOS[nombre]}")
             continue
         with open(os.path.join(CORPUS_ORIGEN, nombre), encoding="utf-8") as fh:
             datos = json.load(fh)

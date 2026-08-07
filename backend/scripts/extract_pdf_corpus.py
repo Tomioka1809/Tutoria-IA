@@ -60,13 +60,55 @@ DOCUMENTOS = {
         "anio": 2015,
         "base_legal": ["Ley Universitaria 30220"],
     },
+    # El ROF 2019 quedo superado. Se indexa el vigente: citar la version derogada
+    # es peor que no citar, porque la respuesta se ve fundamentada y no lo esta.
     "rof": {
-        "archivo": "ROF2019_UNSAAC.pdf",
+        "archivo": "ROF2024_UNSAAC.pdf",
         "documento": "Reglamento de Organización y Funciones UNSAAC",
         "tipo": TipoDocumento.REGLAMENTO,
-        "resolucion": "Resolución Nro. CU-210-2019-UNSAAC",
-        "anio": 2019,
-        "base_legal": [],
+        "resolucion": "Resolución Nro. AU-008-2024-UNSAAC, que modifica la CU-393-2023-UNSAAC",
+        "anio": 2024,
+        "base_legal": [
+            "Resolución de Secretaría de Gestión Pública N° 003-2018-PCM/SGP",
+            "Resolución Ministerial N° 588-2019-MINEDU",
+        ],
+    },
+    "reglamento_vivienda_estudiantil": {
+        "archivo": "CU-372-2020-reglamento-vivienda-estudiantil.pdf",
+        "documento": "Reglamento para Uso de Vivienda Estudiantil UNSAAC",
+        "tipo": TipoDocumento.REGLAMENTO,
+        "resolucion": "Resolución Nro. CU-372-2020-UNSAAC de 05.11.2020",
+        "anio": 2020,
+        "base_legal": ["Ley Universitaria 30220", "Estatuto de la UNSAAC"],
+    },
+    # Unica norma publicada de la UNSAAC que articula becas de estudio para
+    # estudiantes de pregrado (Cap. XII, Art. 108-118). Sin ella, "que becas
+    # existen" solo se podia responder desde parafrasis sin fuente.
+    "reglamento_idiomas": {
+        "archivo": "CU-281-2020-reglamento-instituto-idiomas.pdf",
+        "documento": "Reglamento del Instituto de Idiomas UNSAAC",
+        "tipo": TipoDocumento.REGLAMENTO,
+        "resolucion": "Resolución Nro. CU-281-2020-UNSAAC de 13.08.2020",
+        "anio": 2020,
+        "base_legal": ["Ley Universitaria 30220", "Estatuto de la UNSAAC"],
+    },
+    # Los dos siguientes son escaneos sin capa de texto. Se parten desde el
+    # Markdown que produce el OCR en espanol (docling), no desde el PDF.
+    "reglamento_movilidad_academica": {
+        "archivo": "es_ocr/CU-349-2026-reglamento-movilidad-academica.md",
+        "documento": "Reglamento del Programa de Movilidad Académica Estudiantil y Docente UNSAAC",
+        "tipo": TipoDocumento.REGLAMENTO,
+        "resolucion": "Resolución Nro. CU-349-2026-UNSAAC de 07.07.2026 (REGL 01-2026-OCRI-UNSAAC)",
+        "anio": 2026,
+        "base_legal": ["Ley Universitaria 30220", "Estatuto de la UNSAAC"],
+    },
+    "reglamento_subvenciones": {
+        "archivo": "es_ocr/CU-667-2025-reglamento-subvenciones-economicas.md",
+        "documento": "Reglamento para el Otorgamiento de Subvenciones Económicas UNSAAC",
+        "tipo": TipoDocumento.REGLAMENTO,
+        "resolucion": "Resolución Nro. CU-667-2025-UNSAAC",
+        "anio": 2025,
+        "base_legal": ["Ley Universitaria 30220", "Estatuto de la UNSAAC"],
     },
 }
 
@@ -94,6 +136,111 @@ def texto_de_pdf(ruta: str) -> str:
         capture_output=True, text=True, check=True,
     )
     return salida.stdout
+
+
+# El OCR no deja saltos de pagina, asi que el mueble de pagina se detecta por
+# repeticion. El umbral separa la mueble (16-20 apariciones, una por pagina) del
+# contenido que legitimamente se repite (4 como maximo en los documentos vistos).
+MIN_REPETICIONES_MUEBLE_OCR = 8
+RE_IMAGEN_EMBEBIDA = re.compile(r"!\[[^\]]*\]\([^)]*\)")
+RE_SEPARADOR_TABLA = re.compile(r"^\s*\|[\s|:-]*\|\s*$")
+
+
+def texto_de_markdown(contenido: str) -> str:
+    """Normaliza el Markdown de un OCR al texto plano que espera el parser.
+
+    Tres estorbos propios de esta fuente: las imagenes van embebidas en base64
+    (2.44 MB de los 2.5 MB del reglamento de movilidad), el encabezado de cada
+    pagina sale como fila de tabla repetida, y los titulos llevan '#', que
+    impide que RE_ARTICULO reconozca "## Artículo 1°".
+    """
+    contenido = RE_IMAGEN_EMBEBIDA.sub("", contenido)
+
+    lineas = contenido.splitlines()
+    conteo: dict[str, int] = {}
+    for linea in lineas:
+        norm = _normalizar(linea)
+        if norm:
+            conteo[norm] = conteo.get(norm, 0) + 1
+    mueble = {k for k, v in conteo.items() if v >= MIN_REPETICIONES_MUEBLE_OCR}
+
+    limpias: list[str] = []
+    for linea in lineas:
+        norm = _normalizar(linea)
+        if norm in mueble or RE_SEPARADOR_TABLA.match(linea):
+            continue
+        # "## Artículo 1°. - Objeto" -> "Artículo 1°. - Objeto"
+        limpias.append(re.sub(r"^\s*#{1,6}\s*", "", linea))
+    return "\n".join(limpias)
+
+
+def texto_de_fuente(ruta: str) -> str:
+    """Texto plano del documento, venga de un PDF con capa de texto o de un OCR.
+
+    Un PDF escaneado no tiene nada que extraer con pdftotext, asi que su fuente
+    es el Markdown del OCR. El articulado se parsea igual en ambos casos: lo que
+    cambia es de donde sale el texto, no como se parte.
+    """
+    if ruta.lower().endswith(".md"):
+        with open(ruta, encoding="utf-8") as fh:
+            return texto_de_markdown(fh.read())
+    return texto_de_pdf(ruta)
+
+
+# Encabezado/pie que se repite en cada pagina. Filtrar solo por frecuencia no
+# sirve: en texto justificado una linea corta como "Universidad." tambien se
+# repite y es contenido. Lo que distingue a la mueble de pagina es su posicion,
+# asi que se busca unicamente en los bordes de cada pagina.
+LINEAS_BORDE_INSPECCIONADAS = 3
+FRACCION_PAGINAS_BOILERPLATE = 0.3
+RE_PIE_PAGINA = re.compile(r"^\s*(.*\bP[áa]gina\s*\d+\s*|\s*\d{1,3}\s*)$", re.IGNORECASE)
+
+
+def _normalizar(linea: str) -> str:
+    return re.sub(r"\s+", " ", linea).strip()
+
+
+def quitar_encabezados_y_pies(texto: str) -> str:
+    """Quita el encabezado y el pie que se repiten pagina a pagina.
+
+    Sin esto el pie queda dentro del cuerpo del articulo y entra al embedding:
+    el Art. 104 del ROF terminaba con "OFICINA DE PLANEAMIENTO... Pagina 54".
+    """
+    paginas = texto.split("\f")
+    if len(paginas) < 3:
+        return texto
+
+    # Candidata: linea que aparece en el borde de una fraccion alta de paginas.
+    conteo: dict[str, int] = {}
+    for pagina in paginas:
+        lineas = [l for l in pagina.splitlines() if l.strip()]
+        borde = lineas[:LINEAS_BORDE_INSPECCIONADAS] + lineas[-LINEAS_BORDE_INSPECCIONADAS:]
+        for norm in {_normalizar(l) for l in borde}:
+            conteo[norm] = conteo.get(norm, 0) + 1
+
+    minimo = max(2, int(len(paginas) * FRACCION_PAGINAS_BOILERPLATE))
+    boilerplate = {k for k, v in conteo.items() if v >= minimo and k}
+
+    def es_mueble(linea: str) -> bool:
+        norm = _normalizar(linea)
+        if not norm:
+            return False
+        return norm in boilerplate or bool(RE_PIE_PAGINA.fullmatch(norm))
+
+    limpias: list[str] = []
+    for pagina in paginas:
+        lineas = pagina.splitlines()
+        # Se pela el bloque contiguo del borde y se corta en la primera linea que
+        # no es mueble. Marcar por ventana fija recortaba contenido en paginas
+        # cortas, donde "los ultimos tres renglones" ya son cuerpo del articulo.
+        ini = 0
+        while ini < len(lineas) and (not lineas[ini].strip() or es_mueble(lineas[ini])):
+            ini += 1
+        fin = len(lineas)
+        while fin > ini and (not lineas[fin - 1].strip() or es_mueble(lineas[fin - 1])):
+            fin -= 1
+        limpias.extend(lineas[ini:fin])
+    return "\n".join(limpias)
 
 
 def limpiar(lineas: list[str]) -> list[str]:
@@ -128,6 +275,33 @@ def unir_parrafo(lineas: list[str]) -> str:
     return "\n".join(p for p in partes if p)
 
 
+def trocear_sin_puntos(unidad: str, presupuesto: int) -> list[str]:
+    """Parte una unidad que excede el limite y no tiene puntos donde cortar.
+
+    Las tablas del OCR llegan como una fila unica sin un solo punto final: el
+    Art. 27 del reglamento de subvenciones daba un fragmento de 3033 caracteres,
+    que diluye su embedding entre todos los conceptos de la tabla. Se corta
+    primero por celda y, si aun no alcanza, por palabra.
+    """
+    if len(unidad) <= presupuesto:
+        return [unidad]
+
+    piezas: list[str] = []
+    actual = ""
+    for celda in re.split(r"\s*\|\s*", unidad):
+        if not celda.strip():
+            continue
+        for palabra in celda.split(" ") if len(celda) > presupuesto else [celda]:
+            if actual and len(actual) + len(palabra) + 1 > presupuesto:
+                piezas.append(actual)
+                actual = palabra
+            else:
+                actual = f"{actual} {palabra}".strip()
+    if actual:
+        piezas.append(actual)
+    return piezas
+
+
 def partir_por_oraciones(parrafo: str, presupuesto: int) -> list[str]:
     """Ultimo recurso para un parrafo unico mas largo que el limite.
 
@@ -139,11 +313,14 @@ def partir_por_oraciones(parrafo: str, presupuesto: int) -> list[str]:
 
     piezas, actual = [], ""
     for oracion in re.split(r"(?<=\.)\s+", parrafo):
-        if actual and len(actual) + len(oracion) + 1 > presupuesto:
-            piezas.append(actual)
-            actual = oracion
-        else:
-            actual = f"{actual} {oracion}".strip()
+        # Una "oracion" mas larga que el presupuesto no se puede acomodar: hay
+        # que trocearla o el fragmento sale del limite igual.
+        for unidad in trocear_sin_puntos(oracion, presupuesto):
+            if actual and len(actual) + len(unidad) + 1 > presupuesto:
+                piezas.append(actual)
+                actual = unidad
+            else:
+                actual = f"{actual} {unidad}".strip()
     if actual:
         piezas.append(actual)
     return piezas
@@ -172,7 +349,7 @@ def partir_articulo(cuerpo: str, presupuesto: int) -> list[str]:
 
 def extraer_articulos(texto: str) -> list[dict]:
     """Devuelve [{numero, titulo, cuerpo, jerarquia}] en orden de aparicion."""
-    lineas = limpiar(texto.splitlines())
+    lineas = limpiar(quitar_encabezados_y_pies(texto).splitlines())
 
     articulos: list[dict] = []
     # Titulo y capitulo se siguen por separado: anidarlos en una sola lista hacia
@@ -315,7 +492,7 @@ def main() -> int:
             print(f"{clave:30s} FALTA el PDF: {cfg['archivo']}")
             continue
 
-        articulos = extraer_articulos(texto_de_pdf(ruta))
+        articulos = extraer_articulos(texto_de_fuente(ruta))
         doc = construir_documento(clave, cfg, articulos)
 
         largos = sorted(len(f.texto) for f in doc.fragmentos) or [0]

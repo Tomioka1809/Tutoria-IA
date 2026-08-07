@@ -1,0 +1,203 @@
+{
+  "_comentario": "Transcripcion del catalogo oficial de asignaturas del Plan Curricular 2017 publicado por el Centro de Computo de la UNSAAC. Es el registro que usa la universidad para matricula, asi que sus codigos priman sobre los de la imagen de la malla cuando ambos difieren. La discrepancia esta documentada en 'discrepancias_con_la_malla'.",
+  "fuente": {
+    "documento": "Catálogo de asignaturas — Plan Curricular 2017, Escuela Profesional de Ingeniería Informática y de Sistemas",
+    "organismo": "Centro de Cómputo UNSAAC",
+    "url": "http://ccomputo.unsaac.edu.pe/index.php?op=planes&escprof=IN&curric=2",
+    "consultado": "2026-08-06"
+  },
+  "categorias": {
+    "EG": "estudios generales",
+    "EGT": "estudios generales del área técnica",
+    "OEES": "estudios específicos",
+    "EEEP": "estudios de especialidad",
+    "AEX": "actividades extracurriculares",
+    "PPP": "prácticas pre profesionales"
+  },
+  "totales_por_categoria": {
+    "OEES": 124,
+    "EEEP": 45,
+    "EG": 27,
+    "EGT": 8,
+    "PPP": 9,
+    "AEX": 6
+  },
+  "total_creditos": 219,
+  "condicion_egresante": {
+    "creditos_minimos_articulo_8": 180,
+    "nota_articulo_8": "Créditos mínimos exigidos para hacer uso del Artículo 8 (inciso 8.2.4) del Reglamento Académico de la UNSAAC",
+    "creditos_para_egresar": 219
+  },
+  "discrepancias_con_la_malla": [
+    {
+      "asignatura": "ÁLGEBRA LINEAL COMPUTACIONAL",
+      "codigo_catalogo": "ME351",
+      "codigo_en_la_imagen": "IF351"
+    },
+    {
+      "asignatura": "FÍSICA APLICADA A LA INFORMÁTICA",
+      "codigo_catalogo": "FI370",
+      "codigo_en_la_imagen": "IF370"
+    },
+    {
+      "asignatura": "ELECTRÓNICA Y DISEÑO DIGITAL",
+      "codigo_catalogo": "EL371",
+      "codigo_en_la_imagen": "LI371"
+    },
+    {
+      "asignatura": "ECUACIONES DIFERENCIALES",
+      "codigo_catalogo": "ME356",
+      "codigo_en_la_imagen": "ME359",
+      "nota": "En el catálogo ME359 corresponde a ESTADÍSTICA APLICADA, que es una asignatura electiva de especialidad."
+    },
+    {
+      "asignatura": "CONSTITUCIÓN POLÍTICA Y DERECHOS HUMANOS",
+      "codigo_catalogo": "DE901",
+      "codigo_en_la_imagen": "DR901"
+    }
+  ],
+  "semestres": [
+    {
+      "numero": 1,
+      "cursos": [
+        {"codigo": "ME901", "nombre": "MATEMÁTICA I", "creditos": 4, "categoria": "EG", "requisito": null},
+        {"codigo": "LC901", "nombre": "REDACCIÓN DE TEXTOS", "creditos": 4, "categoria": "EG", "requisito": null},
+        {"codigo": "AS901", "nombre": "SOCIEDAD Y CULTURA", "creditos": 3, "categoria": "EG", "requisito": null},
+        {"codigo": "DE901", "nombre": "CONSTITUCIÓN POLÍTICA Y DERECHOS HUMANOS", "creditos": 3, "categoria": "EG", "requisito": null},
+        {"codigo": "ED901", "nombre": "ESTRATEGIAS DE APRENDIZAJE AUTÓNOMO", "creditos": 4, "categoria": "EG", "requisito": null},
+        {"codigo": "FP901", "nombre": "FILOSOFÍA Y ÉTICA", "creditos": 3, "categoria": "EG", "requisito": null}
+      ]
+    },
+    {
+      "numero": 2,
+      "cursos": [
+        {"codigo": "FP902", "nombre": "LIDERAZGO Y HABILIDADES SOCIALES", "creditos": 3, "categoria": "EG", "requisito": "15 créditos"},
+        {"codigo": "FI902", "nombre": "FÍSICA I", "creditos": 4, "categoria": "EGT", "requisito": "15 créditos"},
+        {"codigo": "IF468", "nombre": "FUNDAMENTOS DE PROGRAMACIÓN", "creditos": 4, "categoria": "OEES", "requisito": null},
+        {"codigo": "ME307", "nombre": "MATEMÁTICAS DISCRETAS I", "creditos": 4, "categoria": "OEES", "requisito": null},
+        {"codigo": "ME903", "nombre": "CÁLCULO I", "creditos": 4, "categoria": "EGT", "requisito": "ME901"},
+        {"codigo": "IF902", "nombre": "TECNOLOGÍAS DE LA INFORMACIÓN Y LA COMUNICACIÓN", "creditos": 3, "categoria": "EG", "requisito": "15 créditos"}
+      ]
+    },
+    {
+      "numero": 3,
+      "cursos": [
+        {"codigo": "ME350", "nombre": "CÁLCULO II", "creditos": 4, "categoria": "OEES", "requisito": "ME903"},
+        {"codigo": "ME351", "nombre": "ÁLGEBRA LINEAL", "creditos": 4, "categoria": "OEES", "requisito": "ME307"},
+        {"codigo": "ME352", "nombre": "PROBABILIDADES Y ESTADÍSTICA", "creditos": 4, "categoria": "OEES", "requisito": "ME903"},
+        {"codigo": "FI370", "nombre": "FÍSICA APLICADA", "creditos": 4, "categoria": "OEES", "requisito": "FI902"},
+        {"codigo": "IF450", "nombre": "ABSTRACCIÓN DE DATOS Y OBJETOS", "creditos": 4, "categoria": "OEES", "requisito": "IF468"},
+        {"codigo": "IF451", "nombre": "PROGRAMACIÓN I", "creditos": 2, "categoria": "OEES", "requisito": "IF468"}
+      ]
+    },
+    {
+      "numero": 4,
+      "cursos": [
+        {"codigo": "IF452", "nombre": "ALGORITMOS Y ESTRUCTURAS DE DATOS", "creditos": 4, "categoria": "OEES", "requisito": "IF450"},
+        {"codigo": "IF453", "nombre": "PROGRAMACIÓN II", "creditos": 2, "categoria": "OEES", "requisito": "IF451"},
+        {"codigo": "EL371", "nombre": "ELECTRÓNICA Y DISEÑO DIGITAL", "creditos": 3, "categoria": "OEES", "requisito": "FI370"},
+        {"codigo": "IF480", "nombre": "ADMINISTRACIÓN DE TECNOLOGÍAS DE INFORMACIÓN", "creditos": 3, "categoria": "OEES", "requisito": "ME352"},
+        {"codigo": "IF060", "nombre": "MÚSICA", "creditos": 2, "categoria": "AEX", "requisito": "60 créditos"},
+        {"codigo": "ME354", "nombre": "INVESTIGACIÓN OPERATIVA", "creditos": 4, "categoria": "OEES", "requisito": "ME351"},
+        {"codigo": "ME355", "nombre": "MATEMÁTICAS DISCRETAS II", "creditos": 4, "categoria": "OEES", "requisito": "ME307"}
+      ]
+    },
+    {
+      "numero": 5,
+      "cursos": [
+        {"codigo": "ME356", "nombre": "ECUACIONES DIFERENCIALES", "creditos": 4, "categoria": "OEES", "requisito": "ME350"},
+        {"codigo": "IF650", "nombre": "MODELOS PROBABILÍSTICOS", "creditos": 4, "categoria": "OEES", "requisito": "ME352"},
+        {"codigo": "IF610", "nombre": "ANÁLISIS Y DISEÑO DE SISTEMAS DE INFORMACIÓN", "creditos": 4, "categoria": "OEES", "requisito": "IF450*IF480"},
+        {"codigo": "IF481", "nombre": "INGENIERÍA ECONÓMICA", "creditos": 3, "categoria": "OEES", "requisito": "IF480"},
+        {"codigo": "IF550", "nombre": "ORGANIZACIÓN Y ARQUITECTURA DEL COMPUTADOR", "creditos": 4, "categoria": "OEES", "requisito": "EL371"},
+        {"codigo": "IF454", "nombre": "TEORÍA DE LA COMPUTACIÓN", "creditos": 3, "categoria": "OEES", "requisito": "IF452*ME355"}
+      ]
+    },
+    {
+      "numero": 6,
+      "cursos": [
+        {"codigo": "IF455", "nombre": "ALGORITMOS PARALELOS Y DISTRIBUIDOS", "creditos": 4, "categoria": "OEES", "requisito": "IF452"},
+        {"codigo": "IF551", "nombre": "SISTEMAS OPERATIVOS", "creditos": 4, "categoria": "OEES", "requisito": "IF550"},
+        {"codigo": "IF611", "nombre": "METODOLOGÍA DE DESARROLLO DE SOFTWARE", "creditos": 3, "categoria": "OEES", "requisito": "IF610"},
+        {"codigo": "IF612", "nombre": "FUNDAMENTOS Y DISEÑO DE BASES DE DATOS", "creditos": 4, "categoria": "OEES", "requisito": "IF610"},
+        {"codigo": "IF457", "nombre": "MÉTODOS NUMÉRICOS", "creditos": 3, "categoria": "OEES", "requisito": "ME356"},
+        {"codigo": "IF458", "nombre": "COMPUTACIÓN GRÁFICA I", "creditos": 4, "categoria": "EEEP", "requisito": "IF452*ME351"}
+      ]
+    },
+    {
+      "numero": 7,
+      "cursos": [
+        {"codigo": "IF651", "nombre": "INTELIGENCIA ARTIFICIAL", "creditos": 4, "categoria": "OEES", "requisito": "IF650*IF612"},
+        {"codigo": "IF613", "nombre": "DESARROLLO DE SOFTWARE I", "creditos": 2, "categoria": "OEES", "requisito": "IF612"},
+        {"codigo": "IF552", "nombre": "REDES DE COMPUTADORAS I", "creditos": 4, "categoria": "OEES", "requisito": "IF551"},
+        {"codigo": "IF466", "nombre": "COMPILADORES", "creditos": 3, "categoria": "EEEP", "requisito": "IF454"},
+        {"codigo": "IF467", "nombre": "ANÁLISIS Y DISEÑO DE ALGORITMOS", "creditos": 3, "categoria": "EEEP", "requisito": "IF452*IF453"},
+        {"codigo": "IF456", "nombre": "ALGORITMOS AVANZADOS", "creditos": 4, "categoria": "OEES", "requisito": "IF454"},
+        {"codigo": "IF063", "nombre": "QUECHUA", "creditos": 2, "categoria": "AEX", "requisito": "100 créditos"}
+      ]
+    },
+    {
+      "numero": 8,
+      "cursos": [
+        {"codigo": "IF669", "nombre": "MODELADO Y SIMULACIÓN", "creditos": 4, "categoria": "EEEP", "requisito": "IF650"},
+        {"codigo": "IF710", "nombre": "SEMINARIO DE INVESTIGACIÓN I", "creditos": 3, "categoria": "OEES", "requisito": "150 créditos"},
+        {"codigo": "IF482", "nombre": "PLANEAMIENTO Y DIRECCIÓN ESTRATÉGICA DE TECNOLOGÍA DE INFORMACIÓN", "creditos": 3, "categoria": "OEES", "requisito": "140 créditos"},
+        {"codigo": "IF614", "nombre": "INGENIERÍA DE SOFTWARE I", "creditos": 4, "categoria": "OEES", "requisito": "IF611*IF613"},
+        {"codigo": "IF652", "nombre": "APRENDIZAJE AUTOMÁTICO", "creditos": 4, "categoria": "OEES", "requisito": "IF651"},
+        {"codigo": "IF664", "nombre": "BIOINFORMÁTICA", "creditos": 4, "categoria": "EEEP", "requisito": "IF650"}
+      ]
+    },
+    {
+      "numero": 9,
+      "cursos": [
+        {"codigo": "IF656", "nombre": "PROCESAMIENTO DEL LENGUAJE NATURAL", "creditos": 4, "categoria": "EEEP", "requisito": "IF651"},
+        {"codigo": "IF657", "nombre": "VISIÓN COMPUTACIONAL", "creditos": 4, "categoria": "EEEP", "requisito": "IF651"},
+        {"codigo": "IF654", "nombre": "ROBÓTICA", "creditos": 4, "categoria": "EEEP", "requisito": "IF651"},
+        {"codigo": "IF459", "nombre": "COMPUTACIÓN GRÁFICA II", "creditos": 4, "categoria": "EEEP", "requisito": "IF458"},
+        {"codigo": "IF617", "nombre": "INGENIERÍA DE SOFTWARE II", "creditos": 4, "categoria": "EEEP", "requisito": "IF614"},
+        {"codigo": "IF557", "nombre": "ARQUITECTURAS DE ALTO RENDIMIENTO", "creditos": 4, "categoria": "EEEP", "requisito": "IF554"},
+        {"codigo": "IF483", "nombre": "FORMULACIÓN DE PROYECTOS DE TECNOLOGÍA DE INFORMACIÓN", "creditos": 3, "categoria": "OEES", "requisito": "IF482"},
+        {"codigo": "IF062", "nombre": "DANZA MODERNA", "creditos": 2, "categoria": "AEX", "requisito": "100 créditos"}
+      ]
+    },
+    {
+      "numero": 10,
+      "cursos": [
+        {"codigo": "IF711", "nombre": "SEMINARIO DE INVESTIGACIÓN II", "creditos": 3, "categoria": "OEES", "requisito": "IF710*190 créditos"}
+      ]
+    }
+  ],
+  "electivos_y_complementarios": [
+    {"codigo": "IF460", "nombre": "COMPUTACIÓN CUÁNTICA", "creditos": 4, "categoria": "EEEP", "requisito": "IF456"},
+    {"codigo": "IF464", "nombre": "COMPUTACIÓN SIMBÓLICA", "creditos": 4, "categoria": "EEEP", "requisito": "IF466"},
+    {"codigo": "IF465", "nombre": "GEOMETRÍA COMPUTACIONAL", "creditos": 4, "categoria": "EEEP", "requisito": "IF458"},
+    {"codigo": "IF484", "nombre": "EMPRENDIMIENTO E INNOVACIÓN", "creditos": 3, "categoria": "EEEP", "requisito": "IF482"},
+    {"codigo": "IF485", "nombre": "CONTROL Y AUDITORÍA DE SISTEMAS", "creditos": 3, "categoria": "EEEP", "requisito": "IF483"},
+    {"codigo": "IF553", "nombre": "LENGUAJE ENSAMBLADOR", "creditos": 3, "categoria": "EEEP", "requisito": "IF550"},
+    {"codigo": "IF554", "nombre": "REDES DE COMPUTADORAS II", "creditos": 4, "categoria": "EEEP", "requisito": "IF552"},
+    {"codigo": "IF555", "nombre": "TÓPICOS AVANZADOS EN REDES", "creditos": 4, "categoria": "EEEP", "requisito": "IF554"},
+    {"codigo": "IF556", "nombre": "SISTEMAS EMBEBIDOS", "creditos": 4, "categoria": "EEEP", "requisito": "IF551"},
+    {"codigo": "IF616", "nombre": "DESARROLLO DE SOFTWARE II", "creditos": 2, "categoria": "EEEP", "requisito": "IF614"},
+    {"codigo": "IF618", "nombre": "TÓPICOS AVANZADOS EN INGENIERÍA DE SOFTWARE", "creditos": 4, "categoria": "EEEP", "requisito": "IF614"},
+    {"codigo": "IF619", "nombre": "ANÁLISIS DE DATOS EMPRESARIALES", "creditos": 3, "categoria": "EEEP", "requisito": "ME352*IF612"},
+    {"codigo": "IF653", "nombre": "MINERÍA DE DATOS", "creditos": 4, "categoria": "EEEP", "requisito": "IF652"},
+    {"codigo": "IF655", "nombre": "PROCESAMIENTO DIGITAL DE SEÑALES", "creditos": 4, "categoria": "EEEP", "requisito": "IF651"},
+    {"codigo": "IF658", "nombre": "REDES NEURONALES ARTIFICIALES", "creditos": 4, "categoria": "EEEP", "requisito": "IF652"},
+    {"codigo": "IF659", "nombre": "REDES BAYESIANAS", "creditos": 4, "categoria": "EEEP", "requisito": "IF652"},
+    {"codigo": "IF661", "nombre": "BÚSQUEDA HEURÍSTICA Y METAHEURÍSTICA", "creditos": 4, "categoria": "EEEP", "requisito": "IF651"},
+    {"codigo": "IF662", "nombre": "DEEP LEARNING", "creditos": 4, "categoria": "EEEP", "requisito": "IF652"},
+    {"codigo": "IF663", "nombre": "INTERACCIÓN PERSONA COMPUTADORA", "creditos": 4, "categoria": "EEEP", "requisito": "IF651"},
+    {"codigo": "IF665", "nombre": "MODELOS Y SIMULACIÓN DE ESTRUCTURAS BIOMOLECULARES", "creditos": 4, "categoria": "EEEP", "requisito": "IF664"},
+    {"codigo": "IF666", "nombre": "ESTADÍSTICA PARA BIOINFORMÁTICA Y DISEÑO EXPERIMENTAL", "creditos": 4, "categoria": "EEEP", "requisito": "IF664"},
+    {"codigo": "IF667", "nombre": "ANÁLISIS DE IMÁGENES BIOMÉDICAS EN 2D Y 3D", "creditos": 4, "categoria": "EEEP", "requisito": "IF664"},
+    {"codigo": "IF668", "nombre": "ANÁLISIS DE DATOS DE EXPRESIÓN GENÉTICA", "creditos": 4, "categoria": "EEEP", "requisito": "IF664"},
+    {"codigo": "ME357", "nombre": "MATEMÁTICAS AVANZADAS PARA INGENIERÍA", "creditos": 4, "categoria": "EEEP", "requisito": "ME350"},
+    {"codigo": "ME358", "nombre": "ESTADÍSTICA INFERENCIAL", "creditos": 4, "categoria": "EEEP", "requisito": "ME352"},
+    {"codigo": "ME359", "nombre": "ESTADÍSTICA APLICADA", "creditos": 4, "categoria": "EEEP", "requisito": "ME352"},
+    {"codigo": "IF061", "nombre": "CORO", "creditos": 2, "categoria": "AEX", "requisito": "60 créditos"},
+    {"codigo": "IF064", "nombre": "TALLER DE DEBATE", "creditos": 2, "categoria": "AEX", "requisito": "170 créditos"},
+    {"codigo": "IF065", "nombre": "TALLER DE CREATIVIDAD MUSICAL", "creditos": 2, "categoria": "AEX", "requisito": "170 créditos"},
+    {"codigo": "IF066", "nombre": "TEATRO", "creditos": 2, "categoria": "AEX", "requisito": "170 créditos"},
+    {"codigo": "IF020", "nombre": "PRÁCTICAS PRE-PROFESIONALES", "creditos": 9, "categoria": "PPP", "requisito": "200 créditos"}
+  ]
+}

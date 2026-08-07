@@ -51,7 +51,15 @@ def redactar_ciclo(ciclo: dict, plan: str, nombres: dict[str, str]) -> str:
     ordinal = ORDINALES.get(n, f"{n}º")
     cursos = ciclo["cursos"]
 
+    # El chat reescribe la consulta del estudiante anteponiendole "malla
+    # curricular Plan <anio>" (ver reconstruct_query). Medido, esa consulta
+    # devolvia seis fragmentos del plan 2025 y ninguno del 2017, porque las FAQ
+    # del 2025 estan redactadas literalmente como "¿Que cursos se llevan en el N
+    # semestre bajo la malla curricular 2025?" y el ciclo de 2017 no se parecia
+    # a esa forma. El ano solo no basta para inclinar el embedding.
     lineas = [
+        f"¿Qué cursos se llevan en el {ordinal} semestre bajo la malla curricular {plan}? "
+        f"¿Qué cursos llevo en el {ordinal} ciclo del plan {plan}?",
         f"{ordinal.capitalize()} ciclo (semestre {n}) de la malla curricular {plan} de "
         f"Ingeniería Informática y de Sistemas UNSAAC: {len(cursos)} asignaturas, "
         f"{ciclo['creditos_totales']} créditos.",
@@ -71,16 +79,46 @@ def redactar_ciclo(ciclo: dict, plan: str, nombres: dict[str, str]) -> str:
 
         categoria = ETIQUETA_CATEGORIA.get(c["categoria"], c["categoria"])
         codigo = "" if c["codigo"].startswith(("ELECTIVO", "EXTRA")) else f"{c['codigo']} "
-        lineas.append(f"- {codigo}{c['nombre']}: {c['creditos']} créditos ({categoria}){req_txt}.")
+
+        # Cinco asignaturas llevan en la imagen un codigo que el catalogo del
+        # Centro de Computo no reconoce. Responder solo con el de la imagen le
+        # da al estudiante una clave con la que no puede matricularse, asi que
+        # el fragmento entrega las dos y dice cual vale.
+        catalogo = c.get("codigo_catalogo")
+        aclaracion = (
+            f" Ojo: el catálogo del Centro de Cómputo la registra como {catalogo}, "
+            "que es el código con el que se matricula."
+            if catalogo
+            else ""
+        )
+        lineas.append(
+            f"- {codigo}{c['nombre']}: {c['creditos']} créditos ({categoria}){req_txt}.{aclaracion}"
+        )
+
+    # La imagen rotula quince casilleros "ASIGNATURA DE ESPECIALIDAD" y tres
+    # "ACTIVIDADES EXTRACURRICULARES" sin nombrarlos. Recuperado aisladamente,
+    # ese ciclo no responde "que curso llevo": remite al catalogo, que si los
+    # nombra, en vez de dejar al lector con el casillero en blanco.
+    sin_nombrar = [c for c in cursos if c["codigo"].startswith(("ELECTIVO", "EXTRA"))]
+    if sin_nombrar:
+        lineas += [
+            "",
+            "La imagen de la malla no nombra estas asignaturas de especialidad ni las "
+            "actividades extracurriculares: solo indica cuántos créditos ocupan. Sus nombres y "
+            f"códigos están en el catálogo de asignaturas del Plan Curricular {plan}.",
+        ]
 
     return "\n".join(lineas)
 
 
 def construir(datos: dict, plan: str) -> DocumentoCorpus:
+    # La transcripcion declara de que imagen sale. Sin la URL, una respuesta
+    # sobre la malla no se puede contrastar contra la fuente que la origina.
     procedencia = Procedencia(
         documento=f"Malla Curricular {plan} - Ingeniería Informática y de Sistemas UNSAAC",
         tipo=TipoDocumento.MALLA,
         anio=int(plan) if plan.isdigit() else None,
+        url=datos.get("url_fuente"),
     )
 
     nombres = {

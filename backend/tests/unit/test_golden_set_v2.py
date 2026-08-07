@@ -77,6 +77,10 @@ class TestGoldenSetV2(unittest.TestCase):
             "calendario",
             "enrutamiento",
             "fuera_de_alcance",
+            # Identidad de la carrera: mision, vision, autoridades, aniversario,
+            # circulos de estudio y eventos. El corpus solo cubria la norma
+            # universitaria, no la escuela concreta a la que pertenece quien pregunta.
+            "escuela",
         }
         self.assertEqual(esperados, {c["dominio"] for c in self.casos})
 

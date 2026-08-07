@@ -1,0 +1,294 @@
+{
+  "_comentario": "Transcripcion del portal oficial de la Escuela Profesional de Ingenieria Informatica y de Sistemas (in.unsaac.edu.pe) y del portal del Vicerrectorado de Investigacion (vrin.unsaac.edu.pe). Los textos de mision, vision y resena historica son literales. Consultado el 2026-08-06.",
+  "fuente": {
+    "documento": "Portal institucional de la Escuela Profesional de Ingeniería Informática y de Sistemas UNSAAC",
+    "url": "https://in.unsaac.edu.pe/",
+    "consultado": "2026-08-06"
+  },
+  "mision": "Formar profesionales líderes con sólida preparación científica, tecnológica y humanística, con valores y principios éticos y con responsabilidad social; capaces de generar soluciones tecnológicas innovadoras, promoviendo la interculturalidad, valorando la diversidad cultural y natural, y fortaleciendo la identidad andino-amazónica para el desarrollo sostenible de la sociedad.",
+  "vision": "Ser reconocido como un programa líder en formación de ciudadanos-profesionales que impulsan la transformación digital con innovación, responsabilidad social, y un fuerte compromiso con el desarrollo sostenible y que destacan por su competitividad global, su respeto por la diversidad cultural y su aporte al progreso tecnológico inclusivo, en armonía con los valores andino-amazónicos.",
+  "resena_historica": {
+    "url": "https://in.unsaac.edu.pe/identidad-academica/",
+    "hitos": [
+      {
+        "fecha": "13 de diciembre de 1971",
+        "hecho": "Creación, dentro de la aprobación del Plan de Estructuración del Programa Académico de Ciencias Físico-Matemáticas",
+        "resolucion": "Resolución Nº CG-110-71"
+      },
+      {
+        "fecha": "1991",
+        "hecho": "Se aprueba el Proyecto para la Creación del Departamento Académico de Informática, para ser elevado a Asamblea Universitaria",
+        "resolucion": "Resolución Nº CU-056-91"
+      },
+      {
+        "fecha": "22 de enero de 1993",
+        "hecho": "Reapertura por el Consejo Universitario",
+        "resolucion": "Resolución Nº CU-009-93"
+      },
+      {
+        "fecha": "28 de noviembre de 2013",
+        "hecho": "Se aprueba el Proyecto de Acreditación de la Carrera Profesional de Ingeniería Informática y de Sistemas",
+        "resolucion": "Resolución Nº R-2193-2013-UNSAAC"
+      },
+      {
+        "fecha": "10 de septiembre de 2014",
+        "hecho": "Se aprueba el nuevo Currículo de Estudios",
+        "resolucion": "Resolución Nº CU-232-2014-UNSAAC"
+      },
+      {
+        "fecha": "20 de agosto de 2015",
+        "hecho": "Con la Ley Universitaria Nº 30220 y el nuevo Estatuto, la Carrera Profesional pasa a integrar la Facultad de Ingeniería Eléctrica, Electrónica, Informática y Mecánica con el nombre de Escuela Profesional de Ingeniería Informática y de Sistemas",
+        "resolucion": "Resolución Nº 002-2015-AU-UNSAAC"
+      }
+    ]
+  },
+  "aniversario": {
+    "mes_de_celebracion": "diciembre",
+    "celebraciones_documentadas": [
+      {
+        "edicion": "XXV aniversario",
+        "fecha": "diciembre de 2018",
+        "fuente": "Canal oficial de la Escuela Profesional en YouTube"
+      },
+      {
+        "edicion": "XXVII aniversario",
+        "fecha": "11 de diciembre de 2020",
+        "fuente": "Transmisión de la Página Oficial de la UNSAAC en Facebook"
+      }
+    ],
+    "advertencia": "No se ubicó una resolución que fije el día exacto del aniversario. El conteo de las ediciones celebradas parte de la reapertura de 1993, mientras que la fecha de creación que declara el portal de la escuela es el 13 de diciembre de 1971."
+  },
+  "acreditacion": {
+    "acreditadora": "ICACIT",
+    "vigencia": "desde el 1 de julio de 2018 hasta el 31 de diciembre de 2025",
+    "estado": "en proceso de acreditación continua",
+    "url": "https://in.unsaac.edu.pe/acreditacion/"
+  },
+  "autoridades": {
+    "url": "https://in.unsaac.edu.pe/autoridades-y-equipo-docente/",
+    "cargos": [
+      {
+        "ambito": "Facultad de Ingeniería Eléctrica, Electrónica, Informática y Mecánica",
+        "cargo": "Decano",
+        "nombre": "Dr. Lauro Enciso Rodas",
+        "correo": "lauro.enciso@unsaac.edu.pe",
+        "telefono": null
+      },
+      {
+        "ambito": "Departamento Académico de Ingeniería Informática",
+        "cargo": "Director del Departamento Académico",
+        "nombre": "Mgt. Lino Prisciliano Flores Pachecho",
+        "correo": "lino.flores@unsaac.edu.pe",
+        "telefono": "940232563 / 084-232398 anexo 1402"
+      },
+      {
+        "ambito": "Escuela Profesional de Ingeniería Informática y de Sistemas",
+        "cargo": "Directora de la Escuela Profesional",
+        "nombre": "Dra. Yeshica Isela Ormeño Ayala",
+        "correo": "yeshica.ormeno@unsaac.edu.pe",
+        "telefono": null
+      }
+    ]
+  },
+  "equipo_docente": [
+    {
+      "categoria": "Docentes principales de dedicación exclusiva",
+      "docentes": [
+        {"nombre": "Dr. Lauro Enciso Rodas", "correo": "lauro.enciso@unsaac.edu.pe"},
+        {"nombre": "Mgt. Julio César Carbajal Luna", "correo": "julio.carbajal@unsaac.edu.pe"},
+        {"nombre": "Dr. Javier Arturo Rozas Huacho", "correo": "javier.rozas@unsaac.edu.pe"},
+        {"nombre": "Dra. Nila Zonia Acurio Usca", "correo": "nila.acurio@unsaac.edu.pe"},
+        {"nombre": "Dr. Robert Wilbert Alzamora Paredes", "correo": "robert.alzamora@unsaac.edu.pe"},
+        {"nombre": "Dra. Yeshica Isela Ormeño Ayala", "correo": "yeshica.ormeno@unsaac.edu.pe"}
+      ]
+    },
+    {
+      "categoria": "Docentes principales de tiempo completo",
+      "docentes": [
+        {"nombre": "Mgt. Lino Prisciliano Flores Pachecho", "correo": "lino.flores@unsaac.edu.pe"},
+        {"nombre": "Dr. Edwin Carrasco Poblete", "correo": "edwin.carrasco@unsaac.edu.pe"},
+        {"nombre": "Dr. Emilio Palomino Olivera", "correo": "emilio.palomino@unsaac.edu.pe"},
+        {"nombre": "Dr. Rony Villafuerte Serna", "correo": "rony.villafuerte@unsaac.edu.pe"},
+        {"nombre": "Dr. Luis Beltrán Palma Ttito", "correo": "luis.palma@unsaac.edu.pe"},
+        {"nombre": "Dr. Dennis Iván Candia Oviedo", "correo": "dennis.candia@unsaac.edu.pe"}
+      ]
+    },
+    {
+      "categoria": "Docentes asociados",
+      "docentes": [
+        {"nombre": "Mgt. Javier David Chávez Centeno", "correo": "javier.chavez@unsaac.edu.pe"},
+        {"nombre": "Mgt. Guzmán Ticona Pari", "correo": "guzman.ticona@unsaac.edu.pe"},
+        {"nombre": "Mgt. Waldo Elio Ibarra Zambrano", "correo": "waldo.ibarra@unsaac.edu.pe"},
+        {"nombre": "Mgt. Vanessa Maribel Choque Soto", "correo": "vanessa.choque@unsaac.edu.pe"},
+        {"nombre": "Mgt. Karelia Medina Miranda", "correo": "karelia.medina@unsaac.edu.pe"}
+      ]
+    },
+    {
+      "categoria": "Docentes auxiliares",
+      "docentes": [
+        {"nombre": "Mgt. Iván César Medrano Valencia", "correo": "ivan.medrano@unsaac.edu.pe"},
+        {"nombre": "Ing. Lino Aquiles Baca Cárdenas", "correo": "lino.baca@unsaac.edu.pe"},
+        {"nombre": "Lic. Esther Pacheco Vásquez", "correo": "esther.pacheco@unsaac.edu.pe"},
+        {"nombre": "Mgt. José Mauro Pillco Quispe", "correo": "jose.pillco@unsaac.edu.pe"},
+        {"nombre": "Mgt. Efraina Gladys Cutipa Arapa", "correo": "efraina.cutipa@unsaac.edu.pe"},
+        {"nombre": "Mgt. Maritza Katherine Irpanocca Cusimayta", "correo": "maritza.irpanocca@unsaac.edu.pe"},
+        {"nombre": "Mgt. Harley Vera Olivera", "correo": "harley.vera@unsaac.edu.pe"},
+        {"nombre": "Mgt. Willian Zamalloa Paro", "correo": "willian.zamalloa@unsaac.edu.pe"},
+        {"nombre": "Mgt. Doris Sabina Aguirre Carbajal", "correo": "doris.aguirre@unsaac.edu.pe"},
+        {"nombre": "Dr. Dario Francisco Dueñas Bustinza", "correo": "dario.duenas@unsaac.edu.pe"},
+        {"nombre": "Mgt. Tany Villalba Villalba", "correo": "tany.villalba@unsaac.edu.pe"},
+        {"nombre": "Mgt. Jisbaj Gamarra Salas", "correo": "jisbaj.gamarra@unsaac.edu.pe"},
+        {"nombre": "Mgt. Henry Samuel Dueñas De La Cruz", "correo": "henry.duenas@unsaac.edu.pe"},
+        {"nombre": "Ing. Manuel Aurelio Peñaloza Figueroa", "correo": "manuel.penaloza@unsaac.edu.pe"}
+      ]
+    },
+    {
+      "categoria": "Docentes contratados A-1",
+      "docentes": [
+        {"nombre": "Dr. Carlos Fenando Montoya Cubas", "correo": "carlos.montoya@unsaac.edu.pe"},
+        {"nombre": "Dr. Hans Harley Ccacyahuillca Bejar", "correo": "hans.ccacyahuillca@unsaac.edu.pe"}
+      ]
+    },
+    {
+      "categoria": "Docentes contratados B-1",
+      "docentes": [
+        {"nombre": "Mgt. Carlos Ramón Quispe Onofre", "correo": "carlos.quispe@unsaac.edu.pe"},
+        {"nombre": "Mgt. Héctor Ugarte Rojas", "correo": "hector.ugarte@unsaac.edu.pe"},
+        {"nombre": "Mgt. Luis Alvaro Monzon Condori", "correo": "luis.monzon@unsaac.edu.pe"},
+        {"nombre": "Dr. Edgar Quispe Ccapacca", "correo": "edgar.quispe@unsaac.edu.pe"},
+        {"nombre": "Mgt. Elida Falcon Huallpa", "correo": "elida.falcon@unsaac.edu.pe"},
+        {"nombre": "Ing. Stephan Jhoel Cosio Loaiza", "correo": "stephan.cosio@unsaac.edu.pe"},
+        {"nombre": "Ing. Lisha Sabah Diaz Cáceres", "correo": "lisha.diaz@unsaac.edu.pe"},
+        {"nombre": "Ing. Gabriela Zuñiga Rojas", "correo": "gabriela.zuniga@unsaac.edu.pe"}
+      ]
+    },
+    {
+      "categoria": "Docentes contratados B-2",
+      "docentes": [
+        {"nombre": "Mgt. Victor Dario Sosa Jauregui", "correo": "victor.sosa@unsaac.edu.pe"},
+        {"nombre": "Mgt. Ray Dueñas Jimenez", "correo": "ray.duenas@unsaac.edu.pe"},
+        {"nombre": "Mgt. María del Pilar Venegas Vergara", "correo": "maria.venegas@unsaac.edu.pe"},
+        {"nombre": "Mgt. Claudia Francesca Suarez Mariscal", "correo": "claudia.suarez@unsaac.edu.pe"},
+        {"nombre": "Ing. Luz Indira Ticona Felix", "correo": "luz.ticona@unsaac.edu.pe"},
+        {"nombre": "Mgt. Edwin Alvarez Mamani", "correo": "edwin.alvarez@unsaac.edu.pe"}
+      ]
+    },
+    {
+      "categoria": "Docentes contratados B-3",
+      "docentes": [
+        {"nombre": "Mgt. Raúl Huillca Huallparimachi", "correo": "raul.huillca@unsaac.edu.pe"},
+        {"nombre": "Mgt. Gerar Francis Quispe Torres", "correo": "gerar.quispe@unsaac.edu.pe"},
+        {"nombre": "Ing. Aguedo Huamani Huayhua", "correo": "aguedo.huamani@unsaac.edu.pe"},
+        {"nombre": "Mgt. Olmer Claudio Villena León", "correo": "olmer.villena@unsaac.edu.pe"},
+        {"nombre": "Ing. Alex Fernando Huillca Huaman", "correo": "alex.huillca@unsaac.edu.pe"},
+        {"nombre": "Ing. Nohely Lisseth Ochoa Huayhua", "correo": "nohely.ochoa@unsaac.edu.pe"},
+        {"nombre": "Ing. Anthony Carlos Aguirre Berrio", "correo": "anthony.aguirre@unsaac.edu.pe"},
+        {"nombre": "Ing. Jonel Ccente Zuzunaga", "correo": "jonel.ccente@unsaac.edu.pe"}
+      ]
+    },
+    {
+      "categoria": "Jefes de prácticas",
+      "docentes": [
+        {"nombre": "Ing. Marcio Fenando Merma Quispe", "correo": "marcio.merma@unsaac.edu.pe"},
+        {"nombre": "Ing. Elmer Cama Cáceres", "correo": "elmer.cama@unsaac.edu.pe"},
+        {"nombre": "Ing. Vanesa Lavilla Alvarez", "correo": "vanesa.lavilla@unsaac.edu.pe"},
+        {"nombre": "Ing. Alfredo Collantes Mendoza", "correo": "alfredo.collantes@unsaac.edu.pe"},
+        {"nombre": "Ing. Vittali Quispe Surco", "correo": "vittali.quispe@unsaac.edu.pe"}
+      ]
+    }
+  ],
+  "circulos_de_estudio": [
+    {
+      "nombre": "ACM-UNSAAC Student Chapter",
+      "url": "http://vrin.unsaac.edu.pe/actualidad/251/creacion-del-circulo-de-estudios-acmunsaac-student-chapter.html",
+      "resolucion": "Resolución N° D-2161-2025-FIEEIM-UNSAAC de fecha 20 de mayo de 2025",
+      "fundacion": "Fundado en 2010 como capítulo estudiantil de la Association for Computing Machinery (ACM), la sociedad educativa internacional en Ciencias de la Computación más grande del mundo.",
+      "mision": "Fomentar las ciencias de la computación tanto dentro como fuera de la universidad, así como afianzar los conocimientos y destrezas de sus miembros, haciendo uso de las herramientas brindadas por ACM y con el contacto con profesionales de diferentes países.",
+      "vision": "Ser reconocidos internacionalmente por sus actividades como capítulo internacional de ACM, así como por las participaciones de sus miembros en concursos internacionales de programación.",
+      "objetivos": [
+        "Promover y fortalecer las habilidades de programación de los miembros.",
+        "Fomentar el compañerismo y la unidad entre los miembros y la colaboración con docentes.",
+        "Organizar eventos académicos y competitivos que enriquezcan la formación profesional de los miembros y estudiantes de la carrera.",
+        "Aportar al desarrollo académico de la escuela profesional y la universidad mediante las experiencias adquiridas en el desarrollo de proyectos.",
+        "Fomentar la participación de los miembros en concursos de programación a nivel nacional e internacional.",
+        "Difundir las actividades que realiza la ACM."
+      ],
+      "ambito": "carrera",
+      "subgrupos": ["ACM.AI, que organiza los concursos de inteligencia artificial del capítulo."]
+    },
+    {
+      "nombre": "Círculo de Estudios de Innovación Tecnológica (CEIT)",
+      "url": "http://vrin.unsaac.edu.pe/actualidad/252/creacion-de-circulo-de-estudios-de-innovacion-tecnologicaceit.html",
+      "resolucion": "Resolución N° 477-FIEEIM-UNSAAC-2020, con fecha de creación del 14 de abril de 2025, al amparo del artículo 304 inciso 1 del Estatuto de la UNSAAC",
+      "ambito": "facultad",
+      "fundacion": "Se constituye en la Facultad de Ingeniería Eléctrica, Electrónica, Informática y Mecánica, y está abierto a los estudiantes de las distintas escuelas profesionales de la facultad, entre ellas Ingeniería Informática y de Sistemas.",
+      "mision": "Fomentar y fortalecer la cultura de investigación y desarrollo, innovación y emprendimiento en los estudiantes de las distintas escuelas profesionales de la facultad.",
+      "vision": "Impulsar la generación y difusión de conocimiento y propuestas tecnológicas, y establecer alianzas estratégicas a nivel local, nacional e internacional con organizaciones estudiantiles, instituciones académicas y entidades del ecosistema emprendedor.",
+      "objetivos": [
+        "Desarrollar proyectos de investigación, innovación y emprendimientos tecnológicos orientados a solucionar problemáticas sociales, productivas e industriales de la región y el país.",
+        "Promover la actualización y perfeccionamiento de las habilidades investigativas, técnicas, de gestión de proyectos y de desarrollo de emprendimientos tecnológicos en los miembros del círculo.",
+        "Impulsar la difusión de conocimiento mediante publicaciones académicas, talleres, congresos, encuentros estudiantiles y actividades de proyección tecnológica, científica y emprendedora."
+      ],
+      "subgrupos": []
+    }
+  ],
+  "organizaciones_estudiantiles": [
+    {
+      "nombre": "Centro Federado de Ingeniería Informática y de Sistemas",
+      "descripcion": "Órgano de representación gremial de los estudiantes de la escuela profesional.",
+      "base_legal": "Estatuto UNSAAC, Art. 217 inciso m, que reconoce el derecho de los estudiantes a formar parte de la Federación Universitaria Cusco (FUC), Centros Federados y Círculos de Estudios."
+    }
+  ],
+  "eventos": [
+    {
+      "nombre": "CUSCONTEST",
+      "tipo": "Concurso de programación",
+      "descripcion": "La competencia de programación de la escuela profesional, donde los participantes ponen a prueba su lógica, creatividad y habilidades de programación.",
+      "periodicidad": "Anual; en 2025 se realizó la edición XXIII.",
+      "edicion_documentada": "CUSCONTEST XXIII, viernes 18 de julio de 2025, Pabellón de Informática.",
+      "url": "https://in.unsaac.edu.pe/eventos/demuestra-tu-nivel-en-el-cuscontest-xxiii-ultimos-dias-para-inscribirte/"
+    },
+    {
+      "nombre": "NEUROKUP",
+      "tipo": "Concurso de inteligencia artificial",
+      "descripcion": "Concurso de inteligencia artificial en el que los participantes aplican lo que saben y ponen a prueba herramientas como ChatGPT.",
+      "periodicidad": "Convocado por ACM.AI del ACM-UNSAAC Student Chapter; edición anunciada en junio de 2025.",
+      "edicion_documentada": "Anuncio del 9 de junio de 2025.",
+      "url": "https://in.unsaac.edu.pe/desafia-tu-mente-en-el-neurokup-conquista-la-ia/"
+    },
+    {
+      "nombre": "Seminario en Infraestructura Tecnológica",
+      "tipo": "Seminario académico",
+      "descripcion": "Seminario sobre centros de datos, monitoreo, seguridad, climatización de precisión e infraestructura tecnológica, dirigido a estudiantes, egresados y profesionales. Organizado por la UNSAAC con el respaldo de RITTAL.",
+      "periodicidad": "Primera edición.",
+      "edicion_documentada": "I Seminario en Infraestructura Tecnológica, 8, 9 y 10 de julio de 2026, de 2:00 p. m. a 4:00 p. m., Auditorio de Ingeniería Informática y de Sistemas.",
+      "url": "https://in.unsaac.edu.pe/i-seminario-en-infraestructura-tecnologica/"
+    },
+    {
+      "nombre": "Charla Informática sobre Movilidad Estudiantil",
+      "tipo": "Charla informativa",
+      "descripcion": "Charla sobre las oportunidades de movilidad e intercambio estudiantil dirigida a los estudiantes de la escuela.",
+      "periodicidad": "Convocatoria puntual.",
+      "edicion_documentada": "17 de julio de 2025, 11:00 a. m., Auditorio de la Escuela Profesional de Ingeniería Informática y de Sistemas.",
+      "url": "https://in.unsaac.edu.pe/eventos/charla-informatica-sobre-movilidad-estudiantil/"
+    },
+    {
+      "nombre": "Aniversario de la Escuela Profesional",
+      "tipo": "Celebración institucional",
+      "descripcion": "Ceremonia y actividades por el aniversario de la escuela, que incluyen el reconocimiento a docentes cesantes.",
+      "periodicidad": "Anual, en diciembre.",
+      "edicion_documentada": "XXVII aniversario, 11 de diciembre de 2020.",
+      "url": null
+    }
+  ],
+  "contacto": {
+    "correo": "iinformatica.web@unsaac.edu.pe",
+    "direccion": "Av. de la Cultura Nro. 733, Pabellón de Ingeniería Informática y de Sistemas, Cusco - Perú",
+    "telefono_facultad": "084-232398 / 084-222271"
+  },
+  "mallas_publicadas": [
+    {"plan": "2025", "formato": "PDF", "url": "https://in.unsaac.edu.pe/wp-content/uploads/2025/03/malla-curricular-ing-informatica-2025.pdf", "resolucion": "Resolución CU-031-2025-UNSAAC"},
+    {"plan": "2017", "formato": "JPG", "url": "https://in.unsaac.edu.pe/wp-content/uploads/2025/03/malla-curricular-ing-informatica-2017.jpg", "resolucion": null},
+    {"plan": "1997", "formato": "JPG", "url": "https://in.unsaac.edu.pe/wp-content/uploads/2025/05/5.-MallaCurricular-1997.jpg", "resolucion": null}
+  ]
+}

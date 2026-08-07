@@ -1,0 +1,119 @@
+{
+  "_comentario": "Indice de apoyos economicos y del servicio de comedor. Ningun dato se afirma sin citar la norma o el documento oficial del que sale: el campo 'fundamento' de cada entrada se redacta dentro del texto del fragmento. Lo normativo ya esta indexado por articulo en estatuto.json, rof.json, reglamento_idiomas.json, reglamento_vivienda_estudiantil.json y reglamento_subvenciones.json; este documento existe para que la pregunta generica ('que becas hay') encuentre por donde entrar.",
+  "fuente": {
+    "documento": "Guía de becas, apoyos económicos y comedor universitario UNSAAC",
+    "consultado": "2026-08-06"
+  },
+  "becas": [
+    {
+      "nombre": "Comedor universitario (asistencia alimentaria)",
+      "ambito": "UNSAAC",
+      "que_cubre": "Desayuno, almuerzo y cena. El servicio es libre y gratuito.",
+      "dirigido_a": "Preferentemente a estudiantes que demuestren situación socioeconómica baja o que tengan la condición de invicto.",
+      "como_se_obtiene": "Evaluación socioeconómica de la Unidad de Asistencia Social y reserva de cupo en el sistema de Bienestar Universitario al inicio de cada semestre.",
+      "fundamento": ["Estatuto UNSAAC, Art. 247 inciso c y Art. 252", "ROF UNSAAC 2024, Art. 105 inciso b, Art. 110 y Art. 111"]
+    },
+    {
+      "nombre": "Vivienda estudiantil (residencia universitaria)",
+      "ambito": "UNSAAC",
+      "que_cubre": "Alojamiento en la residencia universitaria.",
+      "dirigido_a": "Estudiantes que demuestren situación socioeconómica baja y estén en condición de invicto. El número de beneficiarios depende de la capacidad instalada.",
+      "como_se_obtiene": "Evaluación semestral de la Dirección de Bienestar Universitario, en presencia de un representante de la FUC.",
+      "fundamento": ["Estatuto UNSAAC, Art. 255", "Reglamento para Uso de Vivienda Estudiantil, Resolución CU-372-2020-UNSAAC, Art. 10 y Art. 33"]
+    },
+    {
+      "nombre": "Asistencia socioeconómica y apoyo en materiales de estudio",
+      "ambito": "UNSAAC",
+      "que_cubre": "Apoyo socioeconómico, incluido el apoyo en materiales de estudio.",
+      "dirigido_a": "Estudiantes que demuestren la necesidad y se encuentren en el tercio superior de sus estudios.",
+      "como_se_obtiene": "Solicitud ante la Unidad de Asistencia Social, que estudia la situación socioeconómica y emite pronunciamiento sobre las peticiones de subsidios y becas.",
+      "fundamento": ["Estatuto UNSAAC, Art. 247 inciso b", "ROF UNSAAC 2024, Art. 106 y Art. 107 incisos b y c"]
+    },
+    {
+      "nombre": "Beca integral del Instituto de Idiomas",
+      "ambito": "UNSAAC",
+      "que_cubre": "Beca integral de estudios del nivel básico regular en un solo idioma.",
+      "dirigido_a": "Los dos mejores estudiantes de cada carrera profesional mientras mantengan el privilegio; estudiantes calificados como caso social por la Oficina de Bienestar Universitario; deportistas calificados de la UNSAAC con Resolución Rectoral; y, excepcionalmente, extrauniversitarios previa Resolución Rectoral.",
+      "como_se_obtiene": "Solicitud en formato institucional dirigida al Rector, con constancia de matrícula vigente, copia del DNI y el sustento que corresponda al caso (ranking del Centro de Cómputo, informe de Bienestar Universitario o Resolución Rectoral). La Dirección del Instituto de Idiomas evalúa los expedientes.",
+      "fundamento": ["Reglamento del Instituto de Idiomas, Resolución CU-281-2020-UNSAAC, Art. 108, Art. 110, Art. 112 y Art. 117"]
+    },
+    {
+      "nombre": "Media beca del Instituto de Idiomas",
+      "ambito": "UNSAAC",
+      "que_cubre": "Media beca de estudios del nivel regular o intensivo de idiomas.",
+      "dirigido_a": "Docentes y personal administrativo nombrado; hijos y cónyuge del personal docente y administrativo; beneficiarios de convenios entre instituciones externas y la Universidad.",
+      "como_se_obtiene": "Solicitud con la resolución de la Unidad de Talento Humano o la resolución rectoral que corresponda, evaluada por la Dirección del Instituto de Idiomas.",
+      "fundamento": ["Reglamento del Instituto de Idiomas, Resolución CU-281-2020-UNSAAC, Art. 109 y Art. 110"]
+    },
+    {
+      "nombre": "Subvenciones económicas",
+      "ambito": "UNSAAC",
+      "que_cubre": "Apoyo económico para actividades subvencionables, entre ellas la movilidad estudiantil y la participación en eventos académicos.",
+      "dirigido_a": "Estudiantes y docentes de la UNSAAC según las actividades que enumera el reglamento.",
+      "como_se_obtiene": "Según el procedimiento del Reglamento para el Otorgamiento de Subvenciones Económicas.",
+      "fundamento": ["Reglamento para el Otorgamiento de Subvenciones Económicas, Resolución CU-667-2025-UNSAAC"]
+    },
+    {
+      "nombre": "Movilidad académica estudiantil",
+      "ambito": "UNSAAC",
+      "que_cubre": "Participación en programas de intercambio y movilidad con universidades nacionales y extranjeras.",
+      "dirigido_a": "Estudiantes que cumplan los requisitos del reglamento de movilidad.",
+      "como_se_obtiene": "Postulación ante la Oficina de Cooperación y Relaciones Internacionales (OCRI) según el Reglamento del Programa de Movilidad Académica.",
+      "fundamento": ["Reglamento del Programa de Movilidad Académica Estudiantil y Docente, Resolución CU-349-2026-UNSAAC", "ROF UNSAAC 2024, Art. 38"]
+    },
+    {
+      "nombre": "Becas de estudios o capacitación en los centros de estudios de la UNSAAC",
+      "ambito": "UNSAAC",
+      "que_cubre": "Estudios o capacitación en los centros de estudios con que cuenta la Universidad.",
+      "dirigido_a": "Estudiantes de la UNSAAC.",
+      "como_se_obtiene": "La Dirección de Bienestar Universitario promueve su otorgamiento; la Unidad de Asistencia Social emite pronunciamiento sobre las peticiones.",
+      "fundamento": ["ROF UNSAAC 2024, Art. 105 inciso c y Art. 107 inciso c"]
+    },
+    {
+      "nombre": "Beca Permanencia (PRONABEC)",
+      "ambito": "externa",
+      "que_cubre": "Subvención mensual para alimentación, transporte local y materiales de estudio, además de acompañamiento socioemocional.",
+      "dirigido_a": "Estudiantes de universidades públicas elegibles, matriculados entre el segundo y el último ciclo, que acrediten pobreza o pobreza extrema según el Sistema de Focalización de Hogares (SISFOH) y pertenezcan al menos a la mitad superior de rendimiento académico.",
+      "como_se_obtiene": "Concurso público del Programa Nacional de Becas y Crédito Educativo (PRONABEC) del MINEDU, no de la UNSAAC. La Oficina de Cooperación y Relaciones Internacionales (OCRI) de la UNSAAC brinda asesoría gratuita para postular.",
+      "fundamento": ["PRONABEC - MINEDU, www.pronabec.gob.pe/beca-permanencia", "ROF UNSAAC 2024, Art. 38"]
+    },
+    {
+      "nombre": "Beca 18 y Beca Presidente de la República (PRONABEC)",
+      "ambito": "externa",
+      "que_cubre": "Financiamiento de estudios superiores con cargo al presupuesto del MINEDU.",
+      "dirigido_a": "Postulantes y estudiantes que cumplan las bases de cada concurso de PRONABEC.",
+      "como_se_obtiene": "Concurso público de PRONABEC. La OCRI de la UNSAAC brinda asesoría gratuita, charlas informativas y apoyo en la preparación de documentos.",
+      "fundamento": ["PRONABEC - MINEDU", "ROF UNSAAC 2024, Art. 38"]
+    }
+  ],
+  "comedor": {
+    "naturaleza": "El Comedor Universitario brinda servicios de alimentación a los estudiantes cumpliendo estándares de calidad, nutrición y salubridad. El servicio es libre y gratuito y debe implementarse cada inicio de semestre.",
+    "prioridad": "Tienen preferencia los estudiantes que demuestren situación socioeconómica baja o que tengan la condición de invicto. El comedor implementa además atención adecuada y preferencial para estudiantes con discapacidad.",
+    "quien_evalua": "La Unidad de Asistencia Social, dependiente de la Dirección de Bienestar Universitario, estudia la situación socioeconómica de los estudiantes que solicitan asistencia y brinda los servicios de comedor y vivienda a quienes lo soliciten por caso social. La Dirección de Bienestar Universitario efectúa el seguimiento socioeconómico.",
+    "fundamento": [
+      "Estatuto UNSAAC, Art. 247 inciso c y Art. 252",
+      "ROF UNSAAC 2024, Art. 105 inciso b, Art. 106, Art. 107 incisos b y f, Art. 110 y Art. 111"
+    ],
+    "reserva_de_cupo": {
+      "sistema": "Sistema informático de reserva de cupos de la Dirección de Bienestar Universitario",
+      "url": "http://bienestar.unsaac.edu.pe/",
+      "manual": "Manual de Usuario: Reservar cupo para atención en comedor UNSAAC, 30 de septiembre de 2024",
+      "manual_url": "http://bienestar.unsaac.edu.pe/ManualComedor_.pdf",
+      "pasos": [
+        "Ingresar a http://bienestar.unsaac.edu.pe/ desde un navegador (Chrome, Firefox, Edge, Safari, Opera o Brave), en computadora, tableta o smartphone con conexión a internet.",
+        "La página muestra la fecha de calendarización para registrar el cupo.",
+        "Ingresar el código de estudiante de 6 dígitos.",
+        "Ingresar la clave del semestre en curso, que figura en el voucher de pago de matrícula.",
+        "Resolver el captcha y presionar el botón Reservar."
+      ],
+      "condiciones": "La reserva solo prospera si hay calendario activo y cupos disponibles, y si los datos son correctos. Si algo falla, el sistema devuelve un mensaje indicando el motivo.",
+      "soporte": "Teléfono 989414680, correo raul.huillca@unsaac.edu.pe."
+    },
+    "cobertura_2026_i": {
+      "beneficiarios": "Alrededor de 2200 estudiantes beneficiarios en la etapa inicial, con una ampliación prevista de 600 cupos adicionales para estudiantes becarios y beneficiarios del programa de vivienda universitaria.",
+      "sedes": "Cusco, Sicuani, Espinar, Santo Tomás, Canas, Puerto Maldonado y Andahuaylas.",
+      "url": "https://www.unsaac.edu.pe/unsaac-inicia-atencion-del-comedor-universitario-para-el-semestre-academico-2026-i/",
+      "advertencia": "Estas cifras corresponden al semestre 2026-I y cambian cada semestre."
+    }
+  }
+}

@@ -131,6 +131,27 @@ def cargar_corpus(directorio: str) -> tuple[str, list[tuple[str, str]], dict[str
     return normalizar(" ".join(partes)), unidades, titulos
 
 
+def contar_articulos(directorio: str) -> int:
+    """Articulos distintos con numeracion en el corpus.
+
+    Este dato se imprimia fijo en 0 desde la Fase 0, cuando el corpus era una
+    parafrasis sin articulado. Ya no es cierto, y un informe que reporta 0
+    articulos sobre un corpus que si los tiene induce a error.
+    """
+    articulos: set[tuple[str, str]] = set()
+    for nombre in sorted(os.listdir(directorio)):
+        if not nombre.endswith(".json"):
+            continue
+        with open(os.path.join(directorio, nombre), encoding="utf-8") as fh:
+            datos = json.load(fh)
+        if not isinstance(datos, dict):
+            continue
+        for fragmento in datos.get("fragmentos") or []:
+            if isinstance(fragmento, dict) and fragmento.get("articulo"):
+                articulos.add((nombre, str(fragmento["articulo"])))
+    return len(articulos)
+
+
 def documento_presente(cita: str, titulos: dict[str, str]) -> bool:
     """Heuristica de correspondencia entre un documento citado y los del corpus.
 
@@ -235,7 +256,11 @@ def cargar_casos(nombre_set: str) -> list[dict[str, Any]]:
     raise SystemExit(f"No se encontro una lista de casos en {ruta}")
 
 
-def imprimir_informe(resultados: list[ResultadoCaso], titulos: dict[str, str]) -> dict[str, Any]:
+def imprimir_informe(
+    resultados: list[ResultadoCaso],
+    titulos: dict[str, str],
+    articulos_corpus: int = 0,
+) -> dict[str, Any]:
     fuera = [r for r in resultados if r.veredicto == "FUERA_DE_ALCANCE"]
     pendientes_doc = [r for r in resultados if r.veredicto == "PENDIENTE_DOCUMENTO"]
     en_alcance = [
@@ -334,7 +359,10 @@ def imprimir_informe(resultados: list[ResultadoCaso], titulos: dict[str, str]) -
     print(f"\n  TECHO ALCANZABLE DEL RAG  : {techo:.1%}")
     print("  (ningun cambio en chunking, embeddings o recuperacion puede superarlo)")
     print(f"\n  Casos que citan articulado : {len(con_articulo)}/{total}")
-    print(f"  Articulos en el corpus     : 0 (el corpus no tiene numeracion de articulos)")
+    if articulos_corpus:
+        print(f"  Articulos en el corpus     : {articulos_corpus}")
+    else:
+        print("  Articulos en el corpus     : 0 (el corpus no tiene numeracion de articulos)")
 
     return {
         "casos_en_alcance": total,
@@ -343,6 +371,7 @@ def imprimir_informe(resultados: list[ResultadoCaso], titulos: dict[str, str]) -
         "ausente": len(ausentes),
         "techo_alcanzable": round(techo, 4),
         "casos_que_citan_articulado": len(con_articulo),
+        "articulos_en_corpus": articulos_corpus,
         "documentos_citados_ausentes": docs_faltantes,
         "detalle": [asdict(r) for r in resultados],
     }
@@ -358,10 +387,11 @@ def main() -> int:
     )
     args = parser.parse_args()
 
-    corpus_norm, unidades, titulos = cargar_corpus(os.path.join(BACKEND_DIR, args.corpus))
+    directorio_corpus = os.path.join(BACKEND_DIR, args.corpus)
+    corpus_norm, unidades, titulos = cargar_corpus(directorio_corpus)
     casos = cargar_casos(args.conjunto)
     resultados = [auditar_caso(c, corpus_norm, unidades, titulos) for c in casos]
-    resumen = imprimir_informe(resultados, titulos)
+    resumen = imprimir_informe(resultados, titulos, contar_articulos(directorio_corpus))
     resumen["golden_set"] = args.conjunto
 
     if args.salida_json:
