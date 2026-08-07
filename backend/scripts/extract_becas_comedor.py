@@ -176,8 +176,8 @@ def construir(datos: dict) -> DocumentoCorpus:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Convierte la guía de becas y comedor")
-    parser.add_argument("--json", default="corpus_fuentes/becas_y_comedor.json")
-    parser.add_argument("--salida", default="corpus_estructurado")
+    parser.add_argument("--json", default="corpus/fuentes/becas_y_comedor.json")
+    parser.add_argument("--salida", default="corpus/estructurado")
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
 

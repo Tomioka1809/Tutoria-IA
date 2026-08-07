@@ -15,7 +15,7 @@ Dos cambios de fondo respecto del formato heredado:
 
 Uso:
     python -m scripts.convert_corpus
-    python -m scripts.convert_corpus --salida corpus_estructurado --dry-run
+    python -m scripts.convert_corpus --salida corpus/estructurado --dry-run
 """
 import argparse
 import json
@@ -37,7 +37,7 @@ from app.application.dtos.corpus_dtos import (  # noqa: E402
     TipoDocumento,
 )
 
-CORPUS_ORIGEN = os.path.join(BACKEND_DIR, "corpus")
+CORPUS_ORIGEN = os.path.join(BACKEND_DIR, "corpus", "heredado")
 
 # Claves de nivel superior que describen el documento, no su contenido.
 CLAVES_METADATO = {
@@ -271,7 +271,7 @@ def tiene_articulado(ruta: str) -> bool:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Convierte el corpus heredado al esquema unico")
-    parser.add_argument("--salida", default="corpus_estructurado")
+    parser.add_argument("--salida", default="corpus/estructurado")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument(
         "--forzar", action="store_true",

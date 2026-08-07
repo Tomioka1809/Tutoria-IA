@@ -339,8 +339,8 @@ def construir(datos: dict) -> DocumentoCorpus:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Convierte el portal de la escuela a fragmentos")
-    parser.add_argument("--json", default="corpus_fuentes/escuela_informatica.json")
-    parser.add_argument("--salida", default="corpus_estructurado")
+    parser.add_argument("--json", default="corpus/fuentes/escuela_informatica.json")
+    parser.add_argument("--salida", default="corpus/estructurado")
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
 

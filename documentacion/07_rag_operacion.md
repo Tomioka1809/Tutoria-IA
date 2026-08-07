@@ -8,7 +8,7 @@
 ## 1. Cómo se inicia
 
 El índice vive en la tabla `corpus_chunks` de PostgreSQL con la extensión
-`pgvector`. Se construye desde `backend/corpus_estructurado/`, no desde los PDF
+`pgvector`. Se construye desde `backend/corpus/estructurado/`, no desde los PDF
 directamente.
 
 ### Arranque automático (Docker)
@@ -46,8 +46,8 @@ python -m scripts.extract_pdf_corpus --pdf-dir /ruta/a/los/pdf
 python -m scripts.extract_plan_estudios --md .../plan-estudios-2025.md
 python -m scripts.extract_calendario  --md .../es_ocr/CRONOGRAMA-2026.md
 
-# 1b. Fuentes que ya viven versionadas en backend/corpus_fuentes/ (no piden ruta)
-python -m scripts.extract_malla --json corpus_fuentes/malla_2017_transcrita.json --plan 2017
+# 1b. Fuentes que ya viven versionadas en backend/corpus/fuentes/ (no piden ruta)
+python -m scripts.extract_malla --json corpus/fuentes/malla_2017_transcrita.json --plan 2017
 python -m scripts.extract_catalogo_2017    # plan_estudios_2017 (catálogo del Centro de Cómputo)
 python -m scripts.extract_escuela          # escuela_informatica (portal de la escuela)
 python -m scripts.extract_becas_comedor    # becas_y_comedor (índice de apoyos)
@@ -106,7 +106,7 @@ aislado, `"veinticinco (25) estudiantes"` no se puede recuperar ni citar.
 
 Estado actual: **1369 fragmentos, 20 documentos, 732 artículos**.
 
-#### Fuentes versionadas (`backend/corpus_fuentes/`)
+#### Fuentes versionadas (`backend/corpus/fuentes/`)
 
 Los PDF no viven en el repositorio, pero sí las transcripciones de las fuentes
 que no son PDF: la imagen de la malla 2017, el catálogo de asignaturas del
@@ -379,7 +379,7 @@ Responde si el texto necesario **existe** en el corpus, sin llamar a Gemini.
 Define el techo alcanzable: ninguna mejora de recuperación puede superarlo.
 
 ```bash
-python -m scripts.audit_corpus_coverage --set v2 --corpus corpus_estructurado
+python -m scripts.audit_corpus_coverage --set v2 --corpus corpus/estructurado
 ```
 
 Mide co-ocurrencia dentro de una misma unidad, no presencia suelta: las

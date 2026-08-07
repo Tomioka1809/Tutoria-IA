@@ -44,7 +44,7 @@ from app.application.dtos.corpus_dtos import (  # noqa: E402
 )
 from app.infrastructure.database.session import SessionLocal  # noqa: E402
 
-CORPUS_DIR = os.path.join(BACKEND_DIR, "corpus_estructurado")
+CORPUS_DIR = os.path.join(BACKEND_DIR, "corpus", "estructurado")
 
 # Los fragmentos se indexan como documento; la consulta del usuario se embebe
 # como consulta. Ver LLMPort.compute_embedding.

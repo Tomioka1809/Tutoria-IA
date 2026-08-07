@@ -24,7 +24,7 @@ from typing import Any
 BACKEND_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, BACKEND_DIR)
 
-CORPUS_DIR = os.path.join(BACKEND_DIR, "corpus")
+CORPUS_DIR = os.path.join(BACKEND_DIR, "corpus", "heredado")
 DATASET_DIR = os.path.join(BACKEND_DIR, "tests", "dataset")
 
 GOLDEN_SETS = {
@@ -382,8 +382,8 @@ def main() -> int:
     parser.add_argument("--set", dest="conjunto", choices=sorted(GOLDEN_SETS), default="oficial")
     parser.add_argument("--json", dest="salida_json", help="Ruta donde guardar el informe en JSON")
     parser.add_argument(
-        "--corpus", default="corpus_estructurado",
-        help="Directorio de corpus a auditar (corpus | corpus_estructurado)",
+        "--corpus", default="corpus/estructurado",
+        help="Directorio de corpus a auditar (corpus/heredado | corpus/estructurado)",
     )
     args = parser.parse_args()
 

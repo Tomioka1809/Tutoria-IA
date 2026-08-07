@@ -6,16 +6,16 @@ Este script NO modifica el proyecto. Audita estructura, configuración, código,
 pipeline RAG, frontend, banco de pruebas e integración.
 
 Ejemplos:
-    python verificar_tutoria.py --fase 0
-    python verificar_tutoria.py --fase 2,3
-    python verificar_tutoria.py --fase todas
-    python verificar_tutoria.py --fase todas --salida reporte_verificacion.json
+    python backend/tests/verificar_tutoria.py --fase 0
+    python backend/tests/verificar_tutoria.py --fase 2,3
+    python backend/tests/verificar_tutoria.py --fase todas
 
 Pruebas que requieren servicios locales:
-    python verificar_tutoria.py --fase 2,5,6 --integracion
+    python backend/tests/verificar_tutoria.py --fase 2,5,6 --integracion
 
-Debe ejecutarse desde la raíz del repositorio TutorIA o indicando:
-    python verificar_tutoria.py --root /ruta/al/proyecto --fase todas
+--root sale de os.getcwd(), asi que debe ejecutarse desde la raiz del
+repositorio, no desde la carpeta del script. Si no, indicarla:
+    python backend/tests/verificar_tutoria.py --root /ruta/al/proyecto --fase todas
 """
 
 from __future__ import annotations
@@ -608,13 +608,16 @@ class Verifier:
         app_files = self.source_files(backend / "app", [".py"])
 
         def corpus_integrity() -> tuple[str, str]:
-            corpus = backend / "corpus"
+            # Se audita el corpus estructurado y no las otras dos carpetas de
+            # backend/corpus/: heredado/ y fuentes/ son material de origen, y
+            # estructurado/ es lo unico que ingest_corpus.py indexa.
+            corpus = backend / "corpus" / "estructurado"
             if not corpus.exists():
-                return FAIL, "No existe backend/corpus."
+                return FAIL, "No existe backend/corpus/estructurado."
 
             json_files = sorted(corpus.glob("*.json"))
             if not json_files:
-                return FAIL, "No hay archivos JSON en backend/corpus."
+                return FAIL, "No hay archivos JSON en backend/corpus/estructurado."
 
             invalid: list[str] = []
             empty: list[str] = []
@@ -1472,7 +1475,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--salida",
         type=Path,
-        default=Path("reporte_verificacion.json"),
+        default=Path("backend/tests/reporte_verificacion.json"),
         help="Archivo JSON donde se guardará el reporte.",
     )
     parser.add_argument(

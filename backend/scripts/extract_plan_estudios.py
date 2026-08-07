@@ -171,7 +171,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Extrae el plan de estudios desde Markdown")
     parser.add_argument("--md", required=True, help="Markdown producido por docling")
     parser.add_argument("--plan", default="2025")
-    parser.add_argument("--salida", default="corpus_estructurado")
+    parser.add_argument("--salida", default="corpus/estructurado")
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
 

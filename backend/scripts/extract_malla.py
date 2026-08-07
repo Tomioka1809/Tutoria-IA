@@ -173,7 +173,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Convierte una malla transcrita a fragmentos")
     parser.add_argument("--json", required=True)
     parser.add_argument("--plan", default="2017")
-    parser.add_argument("--salida", default="corpus_estructurado")
+    parser.add_argument("--salida", default="corpus/estructurado")
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
 

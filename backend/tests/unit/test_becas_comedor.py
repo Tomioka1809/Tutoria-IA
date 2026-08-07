@@ -13,7 +13,7 @@ from app.application.dtos.corpus_dtos import MAX_CARACTERES_TEXTO, TipoDocumento
 from scripts.extract_becas_comedor import construir
 
 BACKEND_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-FUENTE = os.path.join(BACKEND_DIR, "corpus_fuentes", "becas_y_comedor.json")
+FUENTE = os.path.join(BACKEND_DIR, "corpus", "fuentes", "becas_y_comedor.json")
 
 
 class TestBecasYComedor(unittest.TestCase):

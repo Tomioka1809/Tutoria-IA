@@ -135,7 +135,7 @@ class TestTranscripcionVersionada(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         backend = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-        with open(os.path.join(backend, "corpus_fuentes", "malla_2017_transcrita.json"),
+        with open(os.path.join(backend, "corpus", "fuentes", "malla_2017_transcrita.json"),
                   encoding="utf-8") as fh:
             cls.transcrita = json.load(fh)
 

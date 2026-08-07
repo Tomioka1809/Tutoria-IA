@@ -1,7 +1,7 @@
 {
   "plan": "2017",
   "url_fuente": "https://in.unsaac.edu.pe/wp-content/uploads/2025/03/malla-curricular-ing-informatica-2017.jpg",
-  "nota": "Transcripcion de la imagen oficial de la malla curricular 2017 publicada por la Escuela Profesional. Los casilleros sin nombre en la imagen se transcriben con un codigo sintetico (ELECTIVO-n, EXTRA-n) porque la imagen no los identifica; el catalogo del Centro de Computo si los nombra y esta en corpus_fuentes/catalogo_2017.json. Cinco codigos de la imagen no coinciden con el catalogo: ver discrepancias_con_la_malla.",
+  "nota": "Transcripcion de la imagen oficial de la malla curricular 2017 publicada por la Escuela Profesional. Los casilleros sin nombre en la imagen se transcriben con un codigo sintetico (ELECTIVO-n, EXTRA-n) porque la imagen no los identifica; el catalogo del Centro de Computo si los nombra y esta en corpus/fuentes/catalogo_2017.json. Cinco codigos de la imagen no coinciden con el catalogo: ver discrepancias_con_la_malla.",
   "total_asignaturas": 62,
   "total_creditos": 219,
   "ciclos": [

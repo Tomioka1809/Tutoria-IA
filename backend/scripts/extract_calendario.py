@@ -128,7 +128,7 @@ def main() -> int:
     parser.add_argument("--md", required=True)
     parser.add_argument("--anio", type=int, default=2026)
     parser.add_argument("--resolucion", default="Resolución Nro. CU-014-2026-UNSAAC")
-    parser.add_argument("--salida", default="corpus_estructurado")
+    parser.add_argument("--salida", default="corpus/estructurado")
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
 

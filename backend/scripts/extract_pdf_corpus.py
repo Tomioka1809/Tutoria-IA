@@ -468,7 +468,7 @@ def construir_documento(clave: str, cfg: dict, articulos: list[dict]) -> Documen
 def main() -> int:
     parser = argparse.ArgumentParser(description="Extrae articulado desde los PDF oficiales")
     parser.add_argument("--pdf-dir", required=True, help="Carpeta con los PDF oficiales")
-    parser.add_argument("--salida", default="corpus_estructurado")
+    parser.add_argument("--salida", default="corpus/estructurado")
     parser.add_argument("--solo", help="Procesar un solo documento por clave")
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()

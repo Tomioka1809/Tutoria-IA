@@ -11,7 +11,7 @@ from app.application.dtos.corpus_dtos import MAX_CARACTERES_TEXTO, TipoDocumento
 from scripts.extract_escuela import construir, slug
 
 BACKEND_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-FUENTE = os.path.join(BACKEND_DIR, "corpus_fuentes", "escuela_informatica.json")
+FUENTE = os.path.join(BACKEND_DIR, "corpus", "fuentes", "escuela_informatica.json")
 
 
 class TestEscuelaInformatica(unittest.TestCase):

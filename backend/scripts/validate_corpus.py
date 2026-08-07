@@ -81,7 +81,7 @@ def validar_directorio(directorio: str) -> tuple[list[str], list[str], dict]:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Valida el corpus estructurado")
-    parser.add_argument("--directorio", default="corpus_estructurado")
+    parser.add_argument("--directorio", default="corpus/estructurado")
     parser.add_argument("--estricto", action="store_true", help="Sale con codigo 1 si hay errores")
     parser.add_argument("--max-avisos", type=int, default=10)
     args = parser.parse_args()

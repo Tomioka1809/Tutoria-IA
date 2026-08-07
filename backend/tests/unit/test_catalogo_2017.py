@@ -18,7 +18,7 @@ from scripts.extract_catalogo_2017 import (
 )
 
 BACKEND_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-FUENTE = os.path.join(BACKEND_DIR, "corpus_fuentes", "catalogo_2017.json")
+FUENTE = os.path.join(BACKEND_DIR, "corpus", "fuentes", "catalogo_2017.json")
 
 CATALOGO_MINIMO = {
     "fuente": {"url": "http://ejemplo/catalogo"},

@@ -334,8 +334,8 @@ def verificar(datos: dict) -> list[str]:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Convierte el catálogo 2017 a fragmentos")
-    parser.add_argument("--json", default="corpus_fuentes/catalogo_2017.json")
-    parser.add_argument("--salida", default="corpus_estructurado")
+    parser.add_argument("--json", default="corpus/fuentes/catalogo_2017.json")
+    parser.add_argument("--salida", default="corpus/estructurado")
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
 

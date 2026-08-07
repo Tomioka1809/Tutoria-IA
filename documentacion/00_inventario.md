@@ -17,16 +17,10 @@ React-Native/
 │   ├── alembic.ini                      # Configuración de Alembic
 │   ├── Dockerfile                       # Dockerfile del servicio FastAPI
 │   ├── requirements.txt                 # Dependencias Python
-│   ├── corpus/                          # Archivos de la normativa y servicios (JSON)
-│   │   ├── cronograma_academico.json
-│   │   ├── glosario.json
-│   │   ├── malla_curricular_2017.json
-│   │   ├── malla_curricular_2025.json
-│   │   ├── preguntas_frecuentes.json
-│   │   ├── reglamento_intercambio_estudiantil.json
-│   │   ├── reglamento_tutoria.json
-│   │   ├── servicios_biblioteca.json
-│   │   └── servicios_bienestar.json
+│   ├── corpus/                          # Material documental del RAG (entradas y salida)
+│   │   ├── heredado/                    # 9 JSON en el formato original, entrada de convert_corpus
+│   │   ├── fuentes/                     # 4 JSON transcritos de fuentes que no son PDF
+│   │   └── estructurado/                # 20 JSON: la salida, y lo unico que ingest_corpus indexa
 │   ├── app/                             # Código fuente del Backend FastAPI (Arquitectura Hexagonal)
 │   │   ├── main.py                      # Punto de entrada de la aplicación FastAPI
 │   │   ├── create_superuser.py          # Script CLI para crear usuario administrador
@@ -115,7 +109,7 @@ Identificadas en `.env.example` y `.env`:
 | Componente | Estado Actual (Qué Existe) | Brecha Detectada (Qué Falta) |
 |---|---|---|
 | **Backend (Arquitectura)** | Estructura en 3 capas (`domain`, `application`, `infrastructure`). Modelos de dominio (`entities`), casos de uso (`use_cases`), endpoints FastAPI (`v1/endpoints/`) y repositorios con SQLAlchemy async. | La carpeta `domain/schemas/` está vacía. Los esquemas Pydantic/DTOs están declarados dentro de la infraestructura/entidades o importados de manera no estrictamente segregada. |
-| **Pipeline RAG** | Ingesta de 9 documentos JSON en `backend/corpus/`. Adaptador `GeminiAdapter` implementando `gemini-embedding-2` (768 dim) y `gemini-3.5-flash-lite` (modelo anterior: `gemini-2.5-flash`). Búsqueda por coseno con umbral `max_cosine_distance=0.45`, fallback léxico controlado (`AND` con normalización Unicode), política de abstención y script de regeneración estricto (`allow_embedding_fallback=False`). | Migración HNSW preparada (`6f892a019e42`); pendiente de aplicación en el entorno desplegado. Script de regeneración listo en código, pendiente de ejecución operativa. Pendiente calibración fina con Golden Dataset (Fase 5). |
+| **Pipeline RAG** | Ingesta de 9 documentos JSON en `backend/corpus/heredado/`. Adaptador `GeminiAdapter` implementando `gemini-embedding-2` (768 dim) y `gemini-3.5-flash-lite` (modelo anterior: `gemini-2.5-flash`). Búsqueda por coseno con umbral `max_cosine_distance=0.45`, fallback léxico controlado (`AND` con normalización Unicode), política de abstención y script de regeneración estricto (`allow_embedding_fallback=False`). | Migración HNSW preparada (`6f892a019e42`); pendiente de aplicación en el entorno desplegado. Script de regeneración listo en código, pendiente de ejecución operativa. Pendiente calibración fina con Golden Dataset (Fase 5). |
 | **Frontend Móvil** | Estructura por roles (`(estudiante)`, `(tutor)`, `(admin)`). Autenticación JWT integrada, cliente Axios dinámico, tiendas Zustand (Auth, Chat, Session, Notifications, etc.), interfaz limpia y multilingüe. | Algunas vistas consumen mocks o carecen de manejo centralizado de errores ante fallas de red backend. |
 | **Banco de Pruebas (Tests)** | Suite automatizado de pruebas unitarias en `backend/tests/unit/` (`test_rag_quality.py`, `test_chat_use_cases.py`, `test_quiz_gemini_client.py`, `test_auth_application.py`, `test_session_application.py`, `test_streak_application.py`, `test_notification_application.py`). | **Crítico para el paper IEEE:** No existía la carpeta `backend/tests/` ni el golden set de evaluación (preguntas de referencia, ground truth), scripts `test_retrieval.py`, `test_generation.py` ni `run_eval.py` para calcular métricas (Precisión, Cobertura, Pertinencia). |
 | **Documentación** | `README.md` de instalación general y `frontend/README.md`. | No existía la carpeta `/documentacion/` con la especificación formal del proyecto, diagramas Mermaid RAG, análisis hexagonal, auditoría de RAG, evaluación de frontend ni reporte consolidado IEEE. |

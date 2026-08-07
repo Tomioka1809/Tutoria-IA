@@ -34,7 +34,10 @@ React-Native/
 │   ├── alembic.ini                      # Configuración de Alembic
 │   ├── Dockerfile                       # Definición de contenedor backend
 │   ├── requirements.txt                 # Lista de dependencias Python
-│   ├── corpus/                          # 9 Archivos de normativa universitaria en formato JSON
+│   ├── corpus/                          # Material documental del RAG
+│   │   ├── heredado/                    # 9 JSON de normativa en el formato original
+│   │   ├── fuentes/                     # 4 JSON transcritos de fuentes que no son PDF
+│   │   └── estructurado/                # 20 JSON: la salida que se indexa
 │   ├── app/                             # Código fuente estructurado en capas
 │   │   ├── main.py                      # Punto de entrada ASGI
 │   │   ├── domain/                      # Entidades, excepciones y esquemas de dominio
@@ -213,8 +216,9 @@ npx expo start
 
 - **Verificador automatizado por fases del proyecto:**
   ```bash
-  python3 verificar_tutoria.py --fase 0 --verbose
-  python3 verificar_tutoria.py --fase 5 --verbose --salida /tmp/reporte_tutoria_fase5c_gate_definitivo.json
+  # Se ejecuta desde la raiz del repositorio: --root sale del directorio actual.
+  python3 backend/tests/verificar_tutoria.py --fase 0 --verbose
+  python3 backend/tests/verificar_tutoria.py --fase 5 --verbose --salida /tmp/reporte_tutoria_fase5c_gate_definitivo.json
   ```
 - **Ejecución del suite de evaluación del Chatbot RAG (Paper IEEE):**
   ```bash
