@@ -1,0 +1,10 @@
+# Dependencias de desarrollo y evaluacion. No hacen falta para servir la API:
+# el contenedor instala solo requirements.txt.
+#
+#   pip install -r requirements-dev.txt
+#
+# pytest        : suite de pruebas (la que reporta el README)
+# matplotlib    : graficos de scripts.graficar_evaluacion, que lee los informes
+#                 JSON ya generados y por eso corre fuera del contenedor
+pytest
+matplotlib

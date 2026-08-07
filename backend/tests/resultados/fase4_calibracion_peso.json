@@ -1,142 +1,161 @@
 {
   "golden_set": "v2",
-  "peso_recomendado": 0.2,
-  "peso_actual": 0.5,
+  "peso_recomendado": 0.1,
+  "peso_actual": 0.2,
   "mediciones": [
     {
       "peso": 0.0,
-      "acierto_articulo": 0.75,
-      "aciertos_articulo": 12,
-      "evaluables_articulo": 16,
-      "acierto_documento": 1.0,
-      "aciertos_documento": 20,
-      "casos": 20,
+      "acierto_articulo": 0.7368,
+      "aciertos_articulo": 14,
+      "evaluables_articulo": 19,
+      "acierto_documento": 0.9688,
+      "aciertos_documento": 31,
+      "casos": 32,
       "fallos_articulo": [
         110,
         111,
         115,
+        118,
         122
       ]
     },
     {
       "peso": 0.1,
-      "acierto_articulo": 0.8125,
-      "aciertos_articulo": 13,
-      "evaluables_articulo": 16,
+      "acierto_articulo": 0.8421,
+      "aciertos_articulo": 16,
+      "evaluables_articulo": 19,
       "acierto_documento": 1.0,
-      "aciertos_documento": 20,
-      "casos": 20,
+      "aciertos_documento": 32,
+      "casos": 32,
       "fallos_articulo": [
-        111,
         115,
+        118,
         122
       ]
     },
     {
       "peso": 0.2,
-      "acierto_articulo": 0.9375,
-      "aciertos_articulo": 15,
-      "evaluables_articulo": 16,
+      "acierto_articulo": 0.8421,
+      "aciertos_articulo": 16,
+      "evaluables_articulo": 19,
       "acierto_documento": 1.0,
-      "aciertos_documento": 20,
-      "casos": 20,
+      "aciertos_documento": 32,
+      "casos": 32,
       "fallos_articulo": [
+        115,
+        118,
         122
       ]
     },
     {
       "peso": 0.3,
-      "acierto_articulo": 0.9375,
-      "aciertos_articulo": 15,
-      "evaluables_articulo": 16,
+      "acierto_articulo": 0.8421,
+      "aciertos_articulo": 16,
+      "evaluables_articulo": 19,
       "acierto_documento": 1.0,
-      "aciertos_documento": 20,
-      "casos": 20,
+      "aciertos_documento": 32,
+      "casos": 32,
       "fallos_articulo": [
+        115,
+        118,
         122
       ]
     },
     {
       "peso": 0.4,
-      "acierto_articulo": 0.9375,
-      "aciertos_articulo": 15,
-      "evaluables_articulo": 16,
+      "acierto_articulo": 0.8421,
+      "aciertos_articulo": 16,
+      "evaluables_articulo": 19,
       "acierto_documento": 1.0,
-      "aciertos_documento": 20,
-      "casos": 20,
+      "aciertos_documento": 32,
+      "casos": 32,
       "fallos_articulo": [
+        115,
+        118,
         122
       ]
     },
     {
       "peso": 0.5,
-      "acierto_articulo": 0.9375,
-      "aciertos_articulo": 15,
-      "evaluables_articulo": 16,
+      "acierto_articulo": 0.8421,
+      "aciertos_articulo": 16,
+      "evaluables_articulo": 19,
       "acierto_documento": 1.0,
-      "aciertos_documento": 20,
-      "casos": 20,
+      "aciertos_documento": 32,
+      "casos": 32,
       "fallos_articulo": [
+        115,
+        118,
         122
       ]
     },
     {
       "peso": 0.6,
-      "acierto_articulo": 0.9375,
-      "aciertos_articulo": 15,
-      "evaluables_articulo": 16,
+      "acierto_articulo": 0.8421,
+      "aciertos_articulo": 16,
+      "evaluables_articulo": 19,
       "acierto_documento": 1.0,
-      "aciertos_documento": 20,
-      "casos": 20,
+      "aciertos_documento": 32,
+      "casos": 32,
       "fallos_articulo": [
+        115,
+        118,
         122
       ]
     },
     {
       "peso": 0.8,
-      "acierto_articulo": 0.9375,
-      "aciertos_articulo": 15,
-      "evaluables_articulo": 16,
+      "acierto_articulo": 0.8421,
+      "aciertos_articulo": 16,
+      "evaluables_articulo": 19,
       "acierto_documento": 1.0,
-      "aciertos_documento": 20,
-      "casos": 20,
+      "aciertos_documento": 32,
+      "casos": 32,
       "fallos_articulo": [
+        115,
+        118,
         122
       ]
     },
     {
       "peso": 1.0,
-      "acierto_articulo": 0.9375,
-      "aciertos_articulo": 15,
-      "evaluables_articulo": 16,
+      "acierto_articulo": 0.8421,
+      "aciertos_articulo": 16,
+      "evaluables_articulo": 19,
       "acierto_documento": 1.0,
-      "aciertos_documento": 20,
-      "casos": 20,
+      "aciertos_documento": 32,
+      "casos": 32,
       "fallos_articulo": [
+        115,
+        118,
         122
       ]
     },
     {
       "peso": 1.5,
-      "acierto_articulo": 0.9375,
-      "aciertos_articulo": 15,
-      "evaluables_articulo": 16,
+      "acierto_articulo": 0.8421,
+      "aciertos_articulo": 16,
+      "evaluables_articulo": 19,
       "acierto_documento": 1.0,
-      "aciertos_documento": 20,
-      "casos": 20,
+      "aciertos_documento": 32,
+      "casos": 32,
       "fallos_articulo": [
+        115,
+        118,
         122
       ]
     },
     {
       "peso": 2.0,
-      "acierto_articulo": 0.9375,
-      "aciertos_articulo": 15,
-      "evaluables_articulo": 16,
+      "acierto_articulo": 0.8421,
+      "aciertos_articulo": 16,
+      "evaluables_articulo": 19,
       "acierto_documento": 1.0,
-      "aciertos_documento": 20,
-      "casos": 20,
+      "aciertos_documento": 32,
+      "casos": 32,
       "fallos_articulo": [
+        115,
+        118,
         122
       ]
     }

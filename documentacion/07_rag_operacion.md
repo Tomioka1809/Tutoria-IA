@@ -317,18 +317,27 @@ el articulado.
 
 ### 4.2 Evaluación del RAG
 
+> El detalle de **qué mide cada métrica, por qué se eligió y cómo leer los
+> gráficos** está en [`08_metricas_evaluacion.md`](08_metricas_evaluacion.md).
+> Aquí solo van los números de titular.
+
 ```bash
-python -m tests.run_eval_v2 --json tests/resultados/fase4_eval_v2.json
+python -m tests.run_eval_v2 --json tests/resultados/fase5_eval_v2_corpus_completo.json
 ```
 
 Contra `golden_set_v2.json` (36 casos, 9 dominios), corpus completo:
 
 ```
-Acierto de artículo   : 16/19  ( 84%)
-Acierto de documento  : 32/32  (100%)
-Cobertura de palabras :          94%
-Abstención correcta   :  3/3   (100%)
+Acierto de artículo   : 16/19  ( 84%)     MRR          : 0.815
+Acierto de documento  : 32/32  (100%)     nDCG@6       : 0.775
+Cobertura de palabras :          94%      Recall@6     : 0.875
+Abstención correcta   :  3/3   (100%)     Precision@6  : 0.417 (techo 0.526)
 ```
+
+El runner recupera hasta k=20 para calcular las curvas @k de una sola pasada, y
+recorta a `limit` para las métricas de titular: el top-6 de una consulta con
+limit=20 es idéntico al de una con limit=6, porque la búsqueda arma la lista
+completa ordenada y recorta al final.
 
 > Medido sobre el corpus completo (20 documentos). El golden set creció de 26 a
 > 36 casos: se agregó el dominio `escuela` y los casos de becas y plan 2017. El

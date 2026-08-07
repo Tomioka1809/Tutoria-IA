@@ -15,7 +15,7 @@ Esta guía contiene todas las instrucciones necesarias para clonar, configurar y
 - **Cierre Técnico del Proyecto:** **COMPLETADO**
 - **Suite de Pruebas Automatizadas:** **164 pruebas unitarias aprobadas, 0 fallidas** (144 iniciales, 162 al cerrar Fase 6B, y 164 al cerrar Fase 6C).
 - **Fase 6D:** Corresponde únicamente a integración Git, pull request y entrega operativa.
-- **Reconstrucción del RAG (Fases 0 a 4):** **COMPLETADA** — 445 pruebas aprobadas. Ver detalle abajo y operación en [`documentacion/07_rag_operacion.md`](documentacion/07_rag_operacion.md).
+- **Reconstrucción del RAG (Fases 0 a 4):** **COMPLETADA** — 505 pruebas aprobadas. Ver detalle abajo y operación en [`documentacion/07_rag_operacion.md`](documentacion/07_rag_operacion.md).
 
 ---
 
@@ -49,7 +49,11 @@ La causa de fondo no estaba en la búsqueda sino en los datos: el corpus era una
 | Abstención fuera de alcance | rota (0/3) | **3/3** |
 | Fragmentos citables | 0 | **1369** |
 | Artículos indexados | 0 | **732** |
-| Pruebas automatizadas | 277 | **445** |
+| Pruebas automatizadas | 277 | **505** |
+
+Las métricas de recuperación (MRR 0.815, nDCG@6 0.775, Recall@6 0.875) y los
+ocho gráficos de la evaluación se explican en
+[`documentacion/08_metricas_evaluacion.md`](documentacion/08_metricas_evaluacion.md).
 
 ### Cierre del corpus (2026-08-06)
 
