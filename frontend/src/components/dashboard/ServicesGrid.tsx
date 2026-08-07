@@ -8,15 +8,34 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useTranslation } from 'react-i18next';
 
-const services = [
-  { nameKey: 'dashboard.academicTutoring', icon: 'book-open', iconType: 'Feather', bgColor: '#9C3FE4', url: 'https://www.unsaac.edu.pe/' },
-  { nameKey: 'dashboard.personalTutoring', icon: 'heart', iconType: 'Feather', bgColor: '#3B82F6', url: 'https://www.unsaac.edu.pe/' },
-  { nameKey: 'dashboard.professionalTutoring', icon: 'briefcase', iconType: 'Feather', bgColor: '#8B5CF6', url: 'https://www.unsaac.edu.pe/' },
-  { nameKey: 'dashboard.psychologicalSupport', icon: 'brain', iconType: 'MaterialCommunityIcons', bgColor: '#EC4899', url: 'https://www.unsaac.edu.pe/' },
-  { nameKey: 'dashboard.studentWelfare', icon: 'star', iconType: 'Feather', bgColor: '#06B6D4', url: 'https://www.unsaac.edu.pe/' },
-  { nameKey: 'dashboard.internships', icon: 'rocket-outline', iconType: 'Ionicons', bgColor: '#F97316', url: 'https://www.unsaac.edu.pe/' },
-  { nameKey: 'dashboard.studentMobility', icon: 'globe', iconType: 'Feather', bgColor: '#3B82F6', url: 'https://www.unsaac.edu.pe/' },
-  { nameKey: 'dashboard.feedback', icon: 'message-square', iconType: 'Feather', bgColor: '#9333EA', url: null },
+// A donde lleva cada tarjeta. Antes todas las externas apuntaban a la portada
+// de unsaac.edu.pe, asi que siete de los ocho accesos terminaban en la misma
+// pagina y ninguno resolvia la duda que prometia.
+type Destino =
+  | { tipo: 'web'; url: string }
+  // Los tres tipos de tutoria no tienen pagina propia en el sitio de la
+  // UNSAAC: son categorias del Reglamento de Tutoria Academica, que TutorIA ya
+  // tiene indexado. Abren el chat con la pregunta correspondiente.
+  | { tipo: 'chat'; promptKey: string }
+  | { tipo: 'ruta'; pathname: string };
+
+interface Servicio {
+  nameKey: string;
+  icon: string;
+  iconType: 'Feather' | 'MaterialCommunityIcons' | 'Ionicons';
+  bgColor: string;
+  destino: Destino;
+}
+
+const services: Servicio[] = [
+  { nameKey: 'dashboard.academicTutoring', icon: 'book-open', iconType: 'Feather', bgColor: '#9C3FE4', destino: { tipo: 'chat', promptKey: 'dashboard.academicTutoringPrompt' } },
+  { nameKey: 'dashboard.personalTutoring', icon: 'heart', iconType: 'Feather', bgColor: '#3B82F6', destino: { tipo: 'chat', promptKey: 'dashboard.personalTutoringPrompt' } },
+  { nameKey: 'dashboard.professionalTutoring', icon: 'briefcase', iconType: 'Feather', bgColor: '#8B5CF6', destino: { tipo: 'chat', promptKey: 'dashboard.professionalTutoringPrompt' } },
+  { nameKey: 'dashboard.psychologicalSupport', icon: 'brain', iconType: 'MaterialCommunityIcons', bgColor: '#EC4899', destino: { tipo: 'web', url: 'https://www.unsaac.edu.pe/centro-universitario-de-salud/' } },
+  { nameKey: 'dashboard.studentWelfare', icon: 'star', iconType: 'Feather', bgColor: '#06B6D4', destino: { tipo: 'web', url: 'https://www.unsaac.edu.pe/bienestar-universitario/' } },
+  { nameKey: 'dashboard.internships', icon: 'rocket-outline', iconType: 'Ionicons', bgColor: '#F97316', destino: { tipo: 'web', url: 'https://www.unsaac.edu.pe/convocatorias/' } },
+  { nameKey: 'dashboard.studentMobility', icon: 'globe', iconType: 'Feather', bgColor: '#3B82F6', destino: { tipo: 'web', url: 'https://octi.unsaac.edu.pe/movilidad-saliente-outgoing/' } },
+  { nameKey: 'dashboard.feedback', icon: 'message-square', iconType: 'Feather', bgColor: '#9333EA', destino: { tipo: 'ruta', pathname: '/(estudiante)/retroalimentacion-quiz' } },
 ];
 
 export function ServicesGrid() {
@@ -39,13 +58,23 @@ export function ServicesGrid() {
     return null;
   };
 
-  const handlePress = (serv: any) => {
-    if (serv.nameKey === 'dashboard.feedback') {
-      router.push('/(estudiante)/retroalimentacion-quiz' as any);
-    } else if (serv.url) {
-      Linking.openURL(serv.url).catch((err) => {
-        console.error("Failed to open URL:", err);
-      });
+  const handlePress = (serv: Servicio) => {
+    const destino = serv.destino;
+    switch (destino.tipo) {
+      case 'web':
+        Linking.openURL(destino.url).catch((err) => {
+          console.error("Failed to open URL:", err);
+        });
+        break;
+      case 'chat':
+        router.push({
+          pathname: '/(estudiante)/tutoria',
+          params: { pregunta: t(destino.promptKey) },
+        } as any);
+        break;
+      case 'ruta':
+        router.push(destino.pathname as any);
+        break;
     }
   };
 

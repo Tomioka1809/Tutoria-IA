@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useTheme } from '@/src/theme/ThemeContext';
 import { View, Text, KeyboardAvoidingView, Platform, TextInput, Keyboard, ActivityIndicator } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useTutoria } from '@/src/components/tutoria/useTutoria';
 import { TutoriaHeader } from '@/src/components/tutoria/TutoriaHeader';
 import { MessagesList } from '@/src/components/tutoria/MessagesList';
@@ -35,6 +35,30 @@ export default function TutoriaScreen() {
   const inputRef = useRef<TextInput>(null);
   const isFocused = useIsFocused();
   const [keyboardVisible, setKeyboardVisible] = useState(false);
+
+  // Las tarjetas de tutoria del inicio abren esta pantalla con la pregunta ya
+  // puesta, porque esos tres tipos de tutoria no tienen pagina propia en el
+  // sitio de la UNSAAC y quien los responde es TutorIA.
+  const { pregunta } = useLocalSearchParams<{ pregunta?: string }>();
+  const preguntaEnviada = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (!pregunta) {
+      preguntaEnviada.current = null;
+      return;
+    }
+    // sendMessage descarta el mensaje si todavia no hay conversacion, y lo
+    // hace en silencio: hay que esperar a que fetchConversation termine o la
+    // pregunta se pierde sin que nada lo indique.
+    if (user?.role !== 'estudiante' || !conversation) return;
+    if (preguntaEnviada.current === pregunta) return;
+
+    preguntaEnviada.current = pregunta;
+    // Se descarta el parametro apenas se consume, para que volver a esta
+    // pantalla no reenvie la misma pregunta.
+    router.setParams({ pregunta: undefined });
+    handleQuickAction(pregunta);
+  }, [pregunta, conversation, user?.role, handleQuickAction, router]);
 
   useEffect(() => {
     if (isFocused && user?.role === 'estudiante') {
