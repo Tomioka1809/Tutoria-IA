@@ -228,6 +228,52 @@ class Verifier:
                 return str(candidate)
         return sys.executable
 
+    @staticmethod
+    def parse_compose_ps(output: str) -> list[str] | None:
+        """Resume `docker compose ps --format json` como "servicio: estado".
+
+        Se descarta a proposito todo lo demas -uptime, ids, puertos, hashes-:
+        el reporte se versiona y esos campos cambian en cada corrida aunque el
+        estado sea identico, asi que ensuciaban el diff sin aportar nada.
+
+        Devuelve None si la salida no se puede interpretar, para que quien
+        llama caiga a la tabla de texto en vez de dar por caidos unos servicios
+        que quizas esten arriba.
+        """
+        texto = output.strip()
+        if not texto:
+            return []
+
+        registros: list[object] = []
+        try:
+            data = json.loads(texto)
+            registros = data if isinstance(data, list) else [data]
+        except json.JSONDecodeError:
+            # Compose emite un objeto por linea en vez de un array segun la
+            # version, y ambas formas son validas.
+            for linea in texto.splitlines():
+                linea = linea.strip()
+                if not linea:
+                    continue
+                try:
+                    registros.append(json.loads(linea))
+                except json.JSONDecodeError:
+                    return None
+
+        resumen: list[str] = []
+        for registro in registros:
+            if not isinstance(registro, dict):
+                return None
+            nombre = registro.get("Service") or registro.get("Name")
+            if not nombre:
+                return None
+            estado = registro.get("State") or "desconocido"
+            salud = registro.get("Health")
+            resumen.append(f"{nombre}: {estado} ({salud})" if salud else f"{nombre}: {estado}")
+
+        # Ordenado: compose no garantiza el orden y el reporte se versiona.
+        return sorted(resumen)
+
     def http_get(self, url: str) -> tuple[int, str]:
         request = urllib.request.Request(
             url,
@@ -1218,16 +1264,36 @@ class Verifier:
                 return FAIL, "No existe docker-compose.yml."
 
             code, output = self.run_command(
-                ["docker", "compose", "ps"],
+                ["docker", "compose", "ps", "--format", "json"],
                 timeout=max(self.timeout, 30),
             )
             if code != 0:
                 return FAIL, output
-            if not output.strip():
+
+            servicios = self.parse_compose_ps(output)
+
+            if servicios is None:
+                # --format json no esta soportado o cambio de forma. Se cae a
+                # la tabla de texto: es ruidosa, pero siempre esta.
+                code, output = self.run_command(
+                    ["docker", "compose", "ps"],
+                    timeout=max(self.timeout, 30),
+                )
+                if code != 0:
+                    return FAIL, output
+                if not output.strip():
+                    return WARN, "Docker Compose no reporta servicios."
+                if "Up" not in output and "running" not in output.lower():
+                    return WARN, "No se confirmó que los servicios estén activos:\n" + output
+                return PASS, output[:4000]
+
+            if not servicios:
                 return WARN, "Docker Compose no reporta servicios."
-            if "Up" not in output and "running" not in output.lower():
-                return WARN, "No se confirmó que los servicios estén activos:\n" + output
-            return PASS, output[:4000]
+
+            detalle = ", ".join(servicios)
+            if not any("running" in servicio for servicio in servicios):
+                return WARN, "No se confirmó que los servicios estén activos: " + detalle
+            return PASS, detalle
 
         self.check(
             phase,

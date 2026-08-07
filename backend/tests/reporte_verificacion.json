@@ -47,7 +47,7 @@
       "description": "Sintaxis de Docker Compose",
       "status": "PASS",
       "detail": "docker-compose.yml es sintácticamente válido.",
-      "duration_ms": 62
+      "duration_ms": 45
     },
     {
       "phase": 1,
@@ -87,7 +87,7 @@
       "description": "Sintaxis Python",
       "status": "PASS",
       "detail": "Compilación sintáctica correcta con /home/tsuki/Downloads/React-Native/backend/venv/bin/python.",
-      "duration_ms": 46
+      "duration_ms": 47
     },
     {
       "phase": 2,
@@ -135,7 +135,7 @@
       "description": "Integridad del corpus",
       "status": "PASS",
       "detail": "20 archivos JSON válidos.",
-      "duration_ms": 8
+      "duration_ms": 6
     },
     {
       "phase": 3,
@@ -151,7 +151,7 @@
       "description": "Consistencia del modelo de embeddings",
       "status": "PASS",
       "detail": "Modelo detectado: gemini-embedding-2",
-      "duration_ms": 11
+      "duration_ms": 10
     },
     {
       "phase": 3,
@@ -183,7 +183,7 @@
       "description": "Grounding y abstención",
       "status": "PASS",
       "detail": "Política de abstención detectada:\nbackend/app/application/use_cases/chat_use_cases.py:20: \"No cuento con información suficiente en la base oficial de la UNSAAC \"\nbackend/app/application/use_cases/chat_use_cases.py:615: \"1. No inventes normas, fechas, procedimientos, autoridades o requisitos institucionales de la UNSAAC.\\n\"\nbackend/app/application/use_cases/chat_use_cases.py:619: \"   'No cuento con información suficiente en la base oficial de la UNSAAC para responder con certeza.'\\n\\n\"",
-      "duration_ms": 9
+      "duration_ms": 12
     },
     {
       "phase": 4,
@@ -199,7 +199,7 @@
       "description": "URL dinámica del backend",
       "status": "PASS",
       "detail": "No se detectaron IP privadas hardcodeadas.",
-      "duration_ms": 10
+      "duration_ms": 11
     },
     {
       "phase": 4,
@@ -207,7 +207,7 @@
       "description": "Cliente API autenticado",
       "status": "PASS",
       "detail": "Autorización JWT e interceptores detectados.",
-      "duration_ms": 7
+      "duration_ms": 8
     },
     {
       "phase": 4,
@@ -231,7 +231,7 @@
       "description": "Comprobación TypeScript",
       "status": "PASS",
       "detail": "TypeScript no reportó errores.",
-      "duration_ms": 4021
+      "duration_ms": 3953
     },
     {
       "phase": 4,
@@ -239,7 +239,7 @@
       "description": "Lint del frontend",
       "status": "PASS",
       "detail": "> my-app@1.0.0 lint\n> expo lint",
-      "duration_ms": 1159
+      "duration_ms": 1151
     },
     {
       "phase": 5,
@@ -286,8 +286,8 @@
       "code": "F6-001",
       "description": "Servicios Docker",
       "status": "PASS",
-      "detail": "NAME              IMAGE                    COMMAND                  SERVICE   CREATED      STATUS                    PORTS\ntutoria_backend   react-native-backend     \"/bin/sh /app/docker…\"   backend   4 days ago   Up 59 minutes             0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp\ntutoria_db        pgvector/pgvector:pg16   \"docker-entrypoint.s…\"   db        4 days ago   Up 59 minutes (healthy)   0.0.0.0:5433->5432/tcp, [::]:5433->5432/tcp",
-      "duration_ms": 51
+      "detail": "backend: running, db: running (healthy)",
+      "duration_ms": 49
     },
     {
       "phase": 6,
@@ -303,7 +303,7 @@
       "description": "Configuración Expo",
       "status": "PASS",
       "detail": "Expo pudo resolver la configuración pública.",
-      "duration_ms": 349
+      "duration_ms": 344
     },
     {
       "phase": 6,
