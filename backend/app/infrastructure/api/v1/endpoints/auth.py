@@ -2,10 +2,10 @@ from fastapi import APIRouter, Depends, status, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 
 from app.infrastructure.api.dependencies import get_current_user, get_auth_use_case
-from app.domain.entities.user import UserCreate, UserOut, UserUpdate, PasswordChange
+from app.domain.entities.user import UserCreate, UserOut, UserSelfUpdate, PasswordChange
 from app.domain.entities.auth import Token, LoginRequest, ForgotPasswordRequest, ResetPasswordRequest
 from app.infrastructure.database.models.user import User
-from app.application.use_cases.auth_use_cases import AuthUseCase
+from app.application.use_cases.auth_use_cases import AuthUseCase, RESET_REQUEST_ACK
 
 router = APIRouter()
 
@@ -46,7 +46,7 @@ async def read_current_user(current_user: User = Depends(get_current_user)):
 
 @router.put("/profile", response_model=UserOut)
 async def update_profile(
-    user_in: UserUpdate,
+    user_in: UserSelfUpdate,
     current_user: User = Depends(get_current_user),
     auth_use_case: AuthUseCase = Depends(get_auth_use_case)
 ):
@@ -66,8 +66,10 @@ async def forgot_password(
     request: ForgotPasswordRequest,
     auth_use_case: AuthUseCase = Depends(get_auth_use_case)
 ):
+    # Respuesta identica exista o no la cuenta: distinguirlas convertia este endpoint
+    # publico en un verificador de correos registrados.
     await auth_use_case.generate_reset_token(email=request.email)
-    return {"status": "success", "message": "Código de recuperación enviado con éxito."}
+    return {"status": "success", "message": RESET_REQUEST_ACK}
 
 @router.post("/reset-password", response_model=dict)
 async def reset_password(

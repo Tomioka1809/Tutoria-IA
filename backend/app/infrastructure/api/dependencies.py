@@ -102,6 +102,7 @@ from app.infrastructure.database.repositories.calendar_repository import Calenda
 from app.infrastructure.database.repositories.session_repository import SessionRepository
 from app.infrastructure.database.repositories.streak_repository import StreakRepository
 from app.infrastructure.database.repositories.notification_repository import NotificationRepository
+from app.infrastructure.database.repositories.password_reset_repository import PasswordResetTokenRepository
 from app.infrastructure.database.transaction import SqlAlchemyTransaction
 from app.infrastructure.security.security_adapter import PasswordHasher, TokenService, DevelopmentPasswordResetNotifier
 
@@ -110,7 +111,10 @@ def get_auth_use_case(db: AsyncSession = Depends(get_db)) -> AuthUseCase:
     password_hasher = PasswordHasher()
     token_service = TokenService()
     notifier = DevelopmentPasswordResetNotifier()
-    return AuthUseCase(user_repo, password_hasher, token_service, notifier)
+    reset_token_repo = PasswordResetTokenRepository(db)
+    return AuthUseCase(
+        user_repo, password_hasher, token_service, notifier, reset_token_repo
+    )
 
 def get_session_use_case(db: AsyncSession = Depends(get_db)) -> SessionUseCase:
     streak_repo = StreakRepository(db)

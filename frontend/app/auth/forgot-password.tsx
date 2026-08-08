@@ -27,7 +27,7 @@ export default function ForgotPasswordScreen() {
 
       Alert.alert(
         'Código Enviado',
-        'Hemos generado un código de recuperación de 6 dígitos. Por seguridad, revise la consola del backend para ver el código generado en este entorno de desarrollo.',
+        'Si el correo corresponde a una cuenta registrada, se generó un código de recuperación de 6 dígitos. En este entorno de desarrollo, revise la consola del backend para verlo.',
         [
           {
             text: 'Entendido',
@@ -41,11 +41,11 @@ export default function ForgotPasswordScreen() {
         ]
       );
     } catch (e: any) {
+      // Sin rama para 404: el backend responde igual exista o no la cuenta, y
+      // delatarlo aca reabriria la enumeracion de correos registrados.
       let errorMessage = 'Hubo un error al procesar tu solicitud.';
       if (!e.response) {
         errorMessage = 'No se pudo conectar con el servidor. Verifica tu conexión a internet.';
-      } else if (e.response.status === 404) {
-        errorMessage = 'No existe ninguna cuenta registrada con este correo electrónico.';
       } else if (e.response.data?.detail) {
         errorMessage = e.response.data.detail;
       }

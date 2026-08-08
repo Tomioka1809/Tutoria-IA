@@ -1,3 +1,4 @@
+import logging
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -7,10 +8,32 @@ from app.infrastructure.database.session import validate_database_security
 from app.infrastructure.api.exception_handlers import setup_exception_handlers
 
 
+def configure_logging(app_env: str) -> None:
+    """Hace visibles los logs de la aplicacion bajo uvicorn.
+
+    Uvicorn configura sus propios loggers y deja el root sin handlers, asi que el
+    arbol 'app.*' quedaba en WARNING por defecto: todo logger.info del codigo se
+    descartaba en silencio. Eso volvia inservible al notificador de recuperacion de
+    contraseña, cuya unica funcion es escribir el codigo en la consola del backend.
+
+    En produccion se mantiene en WARNING: ahi los INFO son ruido, y ademas es donde
+    no debe existir un notificador que escriba codigos.
+    """
+    nivel = logging.WARNING if app_env == "production" else logging.INFO
+    app_logger = logging.getLogger("app")
+    app_logger.setLevel(nivel)
+
+    if not app_logger.handlers:
+        handler = logging.StreamHandler()
+        handler.setFormatter(logging.Formatter("%(levelname)s:     %(name)s - %(message)s"))
+        app_logger.addHandler(handler)
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     validate_runtime_security()
     validate_database_security(settings.APP_ENV)
+    configure_logging(settings.APP_ENV)
     yield
 
 

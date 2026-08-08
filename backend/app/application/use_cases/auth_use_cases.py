@@ -1,12 +1,15 @@
 import secrets
-from datetime import datetime, timedelta
-from app.application.ports.repository_ports import UserRepositoryPort
+from datetime import datetime, timedelta, timezone
+from app.application.ports.repository_ports import (
+    UserRepositoryPort,
+    PasswordResetTokenRepositoryPort,
+)
 from app.application.ports.security_port import (
     PasswordHasherPort,
     TokenServicePort,
     PasswordResetNotifierPort,
 )
-from app.domain.entities.user import UserCreate, UserOut, UserUpdate
+from app.domain.entities.user import UserCreate, UserOut, UserSelfUpdate
 from app.domain.entities.auth import LoginRequest, Token
 from app.domain.exceptions import (
     UserAlreadyExistsError,
@@ -19,8 +22,16 @@ from app.domain.exceptions import (
     PasswordUpdateError,
 )
 
-# In-memory store for reset tokens (key: email, value: {"token": str, "expires": datetime})
-reset_tokens_cache = {}
+# Vida util del codigo de recuperacion.
+RESET_CODE_TTL_MINUTES = 15
+
+# Intentos fallidos antes de anular el codigo. Son seis digitos: sin un tope, un
+# atacante recorre el espacio completo dentro de la ventana de validez.
+MAX_RESET_ATTEMPTS = 5
+
+# Respuesta unica del pedido de recuperacion. No distingue si el correo existe:
+# responder distinto convertia el endpoint en un verificador de cuentas.
+RESET_REQUEST_ACK = "Si el correo corresponde a una cuenta, se envió un código de recuperación."
 
 
 class AuthUseCase:
@@ -30,11 +41,13 @@ class AuthUseCase:
         password_hasher: PasswordHasherPort,
         token_service: TokenServicePort,
         notifier: PasswordResetNotifierPort,
+        reset_token_repo: PasswordResetTokenRepositoryPort,
     ):
         self.user_repo = user_repo
         self.password_hasher = password_hasher
         self.token_service = token_service
         self.notifier = notifier
+        self.reset_token_repo = reset_token_repo
 
     async def register_user(self, user_in: UserCreate, is_active: bool = True) -> UserOut:
         existing_user = await self.user_repo.get_by_email(user_in.email)
@@ -55,7 +68,7 @@ class AuthUseCase:
         access_token = self.token_service.create_access_token(subject=str(user.id))
         return Token(access_token=access_token, token_type="bearer")
 
-    async def update_profile(self, user_id: int, user_in: UserUpdate) -> UserOut:
+    async def update_profile(self, user_id: int, user_in: UserSelfUpdate) -> UserOut:
         updated_user = await self.user_repo.update(user_id, user_in)
         if not updated_user:
             raise UserNotFoundError("User not found")
@@ -76,21 +89,29 @@ class AuthUseCase:
         return True
 
     async def generate_reset_token(self, email: str) -> None:
+        """Emite un codigo de recuperacion. No revela si el correo esta registrado.
+
+        Antes lanzaba UserNotFoundError, que el manejador traducia a 404 mientras
+        que un correo existente devolvia 200: el endpoint era publico, asi que
+        cualquiera podia averiguar que cuentas existen probando correos.
+        """
+        email_key = email.lower()
         user = await self.user_repo.get_by_email(email)
-        if not user:
-            raise UserNotFoundError("No existe ninguna cuenta registrada con este correo.")
 
-        # Generate a secure random 6-digit code
+        # El codigo se genera y se hashea siempre, exista el usuario o no. El hash
+        # domina el tiempo de respuesta, asi que hacerlo solo en una de las ramas
+        # dejaria abierta por reloj la misma pregunta que se acaba de cerrar.
         code = str(secrets.randbelow(900000) + 100000)
-        expires = datetime.now() + timedelta(minutes=15)
+        code_hash = self.password_hasher.get_password_hash(code)
 
-        # Save in memory cache
-        reset_tokens_cache[email.lower()] = {
-            "token": code,
-            "expires": expires
-        }
+        if not user:
+            return
 
-        # Send via notifier port
+        # Con zona horaria: la columna es timestamptz y PostgreSQL devuelve datetimes
+        # con tzinfo, que no se pueden comparar contra uno naive.
+        expires = datetime.now(timezone.utc) + timedelta(minutes=RESET_CODE_TTL_MINUTES)
+        await self.reset_token_repo.replace_for_email(email_key, code_hash, expires)
+
         self.notifier.send_reset_code(
             email=email,
             code=code,
@@ -99,18 +120,32 @@ class AuthUseCase:
 
     async def reset_password_with_token(self, email: str, token: str, new_password: str) -> bool:
         email_key = email.lower()
-        if email_key not in reset_tokens_cache:
-            raise InvalidTokenError("No se ha solicitado la recuperación de contraseña para este correo.")
+        record = await self.reset_token_repo.get_active(email_key)
 
-        cached_data = reset_tokens_cache[email_key]
-        if cached_data["token"] != token:
+        # Mismo mensaje para "nunca se pidio" y "ya no sirve": diferenciarlos vuelve
+        # a decir si la cuenta existe.
+        if not record:
+            raise InvalidTokenError(
+                "El código de recuperación no es válido o ya expiró. Solicita uno nuevo."
+            )
+
+        if datetime.now(timezone.utc) > record.expires_at:
+            await self.reset_token_repo.invalidate(record.id)
+            raise InvalidTokenError(
+                "El código de recuperación ha expirado. Por favor, solicita uno nuevo."
+            )
+
+        if not self.password_hasher.verify_password(token, record.code_hash):
+            attempts = await self.reset_token_repo.register_failed_attempt(record.id)
+            if attempts >= MAX_RESET_ATTEMPTS:
+                await self.reset_token_repo.invalidate(record.id)
+                raise InvalidTokenError(
+                    "Demasiados intentos fallidos. El código fue anulado; solicita uno nuevo."
+                )
             raise InvalidTokenError("El código de recuperación ingresado es incorrecto.")
 
-        if datetime.now() > cached_data["expires"]:
-            # Delete expired token
-            del reset_tokens_cache[email_key]
-            raise InvalidTokenError("El código de recuperación ha expirado. Por favor, solicita uno nuevo.")
-
+        # A partir de aca el codigo es correcto. Un fallo posterior no lo consume:
+        # obligar a pedir uno nuevo por escribir una contraseña corta seria hostil.
         if len(new_password) < 6:
             raise PasswordValidationError("La contraseña debe tener al menos 6 caracteres.")
 
@@ -123,6 +158,6 @@ class AuthUseCase:
         if not success:
             raise PasswordUpdateError("No se pudo actualizar la contraseña.")
 
-        # Clean cached token ONLY after successful password update
-        del reset_tokens_cache[email_key]
+        # El codigo se anula recien despues de que la contraseña quedo escrita.
+        await self.reset_token_repo.invalidate(record.id)
         return True

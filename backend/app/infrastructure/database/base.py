@@ -13,3 +13,4 @@ from app.infrastructure.database.models.message import Message  # noqa
 from app.infrastructure.database.models.corpus_chunk import CorpusChunk  # noqa
 from app.infrastructure.database.models.profiles import StudentProfile, TutorProfile, AdminProfile  # noqa
 from app.infrastructure.database.models.motivational_quote import MotivationalQuote  # noqa
+from app.infrastructure.database.models.password_reset_token import PasswordResetToken  # noqa

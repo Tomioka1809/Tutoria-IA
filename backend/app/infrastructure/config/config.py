@@ -6,6 +6,31 @@ load_dotenv()
 
 DEFAULT_DEV_SECRET_KEY = "a74e0cd1eceda53ff0b1cd99e67a7e0269cce9eca7a27be3de248d58be9ff54d"
 ALLOWED_ENVIRONMENTS = {"development", "test", "production"}
+
+# Admin que se crea solo al levantar el proyecto, cuando la base todavia no tiene
+# ninguno. Estan aca y no solo en el .env para que un clon recien hecho arranque con
+# un administrador utilizable: el roster siembra tutores y estudiantes, y sin esto no
+# quedaba nadie que pudiera entrar al panel.
+#
+# Son credenciales publicas: viven en el repositorio. Solo se aplican fuera de
+# produccion, y validate_admin_password_for_environment impide que lleguen alli.
+DEFAULT_ADMIN_EMAIL = "admin@unsaac.edu.pe"
+DEFAULT_ADMIN_PASSWORD = "admin123"
+DEFAULT_ADMIN_NAME = "Administrador"
+
+KNOWN_INSECURE_ADMIN_PASSWORDS = {
+    DEFAULT_ADMIN_PASSWORD,
+    "admin",
+    "admin1234",
+    "administrador",
+    "changeme",
+    "change_me",
+    "password",
+    "123456",
+    "12345678",
+    "contrasena",
+    "secret",
+}
 KNOWN_INSECURE_PLACEHOLDERS = {
     "changeme",
     "change_me",
@@ -83,6 +108,87 @@ def resolve_cors_origins(app_env: str, raw_origins: str | None) -> list[str]:
 
 
 
+def resolve_admin_bootstrap(app_env: str) -> tuple[str, str, str] | None:
+    """Credenciales del admin inicial, o None si no corresponde crearlo.
+
+    Fuera de produccion cae a los valores por defecto del repositorio, para que
+    ``docker compose up`` deje el panel accesible sin editar el .env a mano.
+
+    En produccion no hay valores por defecto: si el .env no los declara, devuelve
+    None y el admin se crea a mano con ``python -m app.create_superuser``.
+    """
+    env_clean = validate_environment_name(app_env)
+    en_produccion = env_clean == "production"
+
+    email = (os.getenv("ADMIN_EMAIL") or "").strip()
+    name = (os.getenv("ADMIN_NAME") or "").strip()
+
+    # La contraseña no se recorta: los espacios al borde pueden ser parte de ella.
+    # Pero una que es solo espacios equivale a no haberla declarado.
+    password = os.getenv("ADMIN_PASSWORD") or ""
+    if not password.strip():
+        password = ""
+
+    if not en_produccion:
+        email = email or DEFAULT_ADMIN_EMAIL
+        password = password or DEFAULT_ADMIN_PASSWORD
+        name = name or DEFAULT_ADMIN_NAME
+
+    if not email or not password:
+        return None
+
+    validate_admin_password_for_environment(env_clean, password)
+    return email, password, name or DEFAULT_ADMIN_NAME
+
+
+def validate_admin_password_for_environment(app_env: str, admin_password: str | None) -> None:
+    """Impide que la contraseña de desarrollo del admin llegue a produccion.
+
+    'admin123' esta escrita en el repositorio, asi que en produccion equivale a no
+    tener contraseña. Se comprueba igual que SECRET_KEY y DB_PASSWORD: fallando al
+    arrancar, no cuando alguien entra con ella.
+    """
+    if validate_environment_name(app_env) != "production":
+        return
+
+    if admin_password is None or not str(admin_password).strip():
+        # Sin credenciales no se crea ningun admin automatico: es seguro.
+        return
+
+    pwd = str(admin_password).strip()
+
+    if pwd.lower() in KNOWN_INSECURE_ADMIN_PASSWORDS:
+        raise ValueError(
+            "ADMIN_PASSWORD usa una contraseña conocida o de desarrollo, que está "
+            "publicada en el repositorio. Elija otra para producción."
+        )
+
+    if len(pwd) < 12:
+        raise ValueError(
+            "ADMIN_PASSWORD debe tener al menos 12 caracteres en producción."
+        )
+
+
+def validate_password_reset_notifier(app_env: str) -> None:
+    """En produccion tiene que haber un notificador real, y todavia no hay ninguno.
+
+    El unico adaptador implementado escribe el codigo de recuperacion en el log del
+    backend: es lo que permite probar el flujo sin servidor de correo, y es entregar
+    las cuentas a cualquiera que lea los logs. Se comprueba al arrancar, igual que
+    SECRET_KEY y CORS, para que el problema aparezca al desplegar y no la primera vez
+    que alguien olvida su contraseña.
+
+    Cuando exista un adaptador SMTP, esta funcion pasa a verificar que este
+    configurado en vez de rechazar produccion de plano.
+    """
+    if validate_environment_name(app_env) == "production":
+        raise ValueError(
+            "No hay un notificador de recuperación de contraseña apto para producción: "
+            "el único implementado escribe los códigos en el log del backend. "
+            "Implemente un adaptador de correo real antes de desplegar."
+        )
+
+
 class Settings:
     PROJECT_NAME: str = "TutorIA API"
     API_V1_STR: str = "/api/v1"
@@ -119,3 +225,7 @@ def validate_runtime_security() -> None:
     resolve_cors_origins(
         current_env, os.getenv("CORS_ALLOWED_ORIGINS", settings.CORS_ALLOWED_ORIGINS)
     )
+    # Falla al arrancar si el unico notificador disponible filtraria los codigos.
+    validate_password_reset_notifier(current_env)
+    # Falla al arrancar si el admin de produccion usa la contraseña del repositorio.
+    validate_admin_password_for_environment(current_env, os.getenv("ADMIN_PASSWORD"))

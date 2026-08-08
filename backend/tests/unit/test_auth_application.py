@@ -2,16 +2,19 @@ import unittest
 import os
 import ast
 import inspect
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
-from app.application.use_cases.auth_use_cases import AuthUseCase, reset_tokens_cache
-from app.application.ports.repository_ports import UserRepositoryPort
+from app.application.use_cases.auth_use_cases import AuthUseCase, MAX_RESET_ATTEMPTS
+from app.application.ports.repository_ports import (
+    UserRepositoryPort,
+    PasswordResetTokenRepositoryPort,
+)
 from app.application.ports.security_port import (
     PasswordHasherPort,
     TokenServicePort,
     PasswordResetNotifierPort,
 )
-from app.domain.entities.user import UserCreate, UserUpdate, PasswordChange
+from app.domain.entities.user import UserCreate, UserSelfUpdate, PasswordChange
 from app.domain.entities.auth import LoginRequest
 from app.domain.exceptions import (
     UserAlreadyExistsError,
@@ -69,7 +72,7 @@ class FakeUserRepository(UserRepositoryPort):
         self.users_by_id[user.id] = user
         return user
 
-    async def update(self, user_id: int, user_in: UserUpdate):
+    async def update(self, user_id: int, user_in: UserSelfUpdate):
         user = self.users_by_id.get(user_id)
         if not user:
             return None
@@ -107,6 +110,46 @@ class FakeTokenService(TokenServicePort):
         return token
 
 
+class FakeResetTokenRecord:
+    def __init__(self, id, email, code_hash, expires_at):
+        self.id = id
+        self.email = email
+        self.code_hash = code_hash
+        self.expires_at = expires_at
+        self.attempts = 0
+        self.is_active = True
+
+
+class FakePasswordResetTokenRepository(PasswordResetTokenRepositoryPort):
+    def __init__(self):
+        self.tokens = {}
+        self.counter = 1
+
+    async def replace_for_email(self, email, code_hash, expires_at):
+        # El adaptador real guarda en una columna timestamptz y devuelve datetimes con
+        # tzinfo. Si el doble aceptara naive seria mas permisivo que produccion, que es
+        # justo como se colo un TypeError que las pruebas no vieron.
+        assert expires_at.tzinfo is not None, "expires_at debe llevar zona horaria"
+        for t in self.tokens.values():
+            if t.email == email:
+                t.is_active = False
+        token = FakeResetTokenRecord(self.counter, email, code_hash, expires_at)
+        self.tokens[self.counter] = token
+        self.counter += 1
+        return token
+
+    async def get_active(self, email):
+        activos = [t for t in self.tokens.values() if t.email == email and t.is_active]
+        return activos[-1] if activos else None
+
+    async def register_failed_attempt(self, token_id):
+        self.tokens[token_id].attempts += 1
+        return self.tokens[token_id].attempts
+
+    async def invalidate(self, token_id):
+        self.tokens[token_id].is_active = False
+
+
 class FakePasswordResetNotifier(PasswordResetNotifierPort):
     def __init__(self):
         self.sent_notifications = []
@@ -122,20 +165,18 @@ class FakePasswordResetNotifier(PasswordResetNotifierPort):
 class TestAuthApplication(unittest.IsolatedAsyncioTestCase):
 
     def setUp(self):
-        reset_tokens_cache.clear()
         self.user_repo = FakeUserRepository()
         self.password_hasher = FakePasswordHasher()
         self.token_service = FakeTokenService()
         self.notifier = FakePasswordResetNotifier()
+        self.reset_token_repo = FakePasswordResetTokenRepository()
         self.auth_use_case = AuthUseCase(
             user_repo=self.user_repo,
             password_hasher=self.password_hasher,
             token_service=self.token_service,
             notifier=self.notifier,
+            reset_token_repo=self.reset_token_repo,
         )
-
-    def tearDown(self):
-        reset_tokens_cache.clear()
 
     async def test_register_user_success(self):
         user_in = UserCreate(
@@ -215,12 +256,12 @@ class TestAuthApplication(unittest.IsolatedAsyncioTestCase):
         )
         created = await self.auth_use_case.register_user(user_in)
 
-        update_in = UserUpdate(full_name="Nombre Nuevo")
+        update_in = UserSelfUpdate(full_name="Nombre Nuevo")
         updated = await self.auth_use_case.update_profile(created.id, update_in)
         self.assertEqual(updated.full_name, "Nombre Nuevo")
 
     async def test_update_profile_user_not_found(self):
-        update_in = UserUpdate(full_name="Nombre Nuevo")
+        update_in = UserSelfUpdate(full_name="Nombre Nuevo")
         with self.assertRaises(UserNotFoundError):
             await self.auth_use_case.update_profile(999, update_in)
 
@@ -286,9 +327,23 @@ class TestAuthApplication(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(len(code), 6)
         self.assertTrue(code.isdigit())
 
-    async def test_generate_reset_token_user_not_found(self):
-        with self.assertRaises(UserNotFoundError):
-            await self.auth_use_case.generate_reset_token("nonexistent@unsaac.edu.pe")
+    async def test_generate_reset_token_no_revela_si_la_cuenta_existe(self):
+        """Regresion: antes lanzaba UserNotFoundError -> 404, y un correo real daba 200.
+
+        Ese par de respuestas convertia un endpoint publico en un verificador de
+        cuentas registradas.
+        """
+        await self.auth_use_case.generate_reset_token("nonexistent@unsaac.edu.pe")
+
+        self.assertEqual(
+            self.notifier.sent_notifications,
+            [],
+            "No debe enviarse ningun codigo para una cuenta inexistente.",
+        )
+        self.assertIsNone(
+            await self.reset_token_repo.get_active("nonexistent@unsaac.edu.pe"),
+            "No debe quedar un token guardado para una cuenta inexistente.",
+        )
 
     async def test_reset_password_unrequested_code(self):
         with self.assertRaises(InvalidTokenError):
@@ -317,8 +372,9 @@ class TestAuthApplication(unittest.IsolatedAsyncioTestCase):
         await self.auth_use_case.register_user(user_in)
         await self.auth_use_case.generate_reset_token("expired@unsaac.edu.pe")
 
-        # Manually expire the token in cache
-        reset_tokens_cache["expired@unsaac.edu.pe"]["expires"] = datetime.now() - timedelta(minutes=1)
+        # Se vence el token a mano
+        registro = await self.reset_token_repo.get_active("expired@unsaac.edu.pe")
+        registro.expires_at = datetime.now(timezone.utc) - timedelta(minutes=1)
 
         with self.assertRaises(InvalidTokenError):
             await self.auth_use_case.reset_password_with_token("expired@unsaac.edu.pe", self.notifier.sent_notifications[0]["code"], "newpass123")
@@ -337,8 +393,8 @@ class TestAuthApplication(unittest.IsolatedAsyncioTestCase):
         with self.assertRaises(PasswordValidationError):
             await self.auth_use_case.reset_password_with_token("shortpass@unsaac.edu.pe", code, "12345")
 
-        # Verify token is still retained in cache after password validation error
-        self.assertIn("shortpass@unsaac.edu.pe", reset_tokens_cache)
+        # El codigo era correcto: una contraseña corta no debe obligar a pedir otro.
+        self.assertIsNotNone(await self.reset_token_repo.get_active("shortpass@unsaac.edu.pe"))
 
     async def test_reset_password_success_updates_hash_and_removes_token(self):
         user_in = UserCreate(
@@ -353,7 +409,10 @@ class TestAuthApplication(unittest.IsolatedAsyncioTestCase):
 
         res = await self.auth_use_case.reset_password_with_token("reset_success@unsaac.edu.pe", code, "newsecurepass")
         self.assertTrue(res)
-        self.assertNotIn("reset_success@unsaac.edu.pe", reset_tokens_cache)
+        self.assertIsNone(
+            await self.reset_token_repo.get_active("reset_success@unsaac.edu.pe"),
+            "El codigo debe quedar anulado despues de usarse.",
+        )
 
         # Login with new password
         login_in = LoginRequest(username="reset_success@unsaac.edu.pe", password="newsecurepass")
@@ -376,8 +435,8 @@ class TestAuthApplication(unittest.IsolatedAsyncioTestCase):
         with self.assertRaises(PasswordUpdateError):
             await self.auth_use_case.reset_password_with_token("reset_fail_repo@unsaac.edu.pe", code, "newsecurepass")
 
-        # Verify token was NOT deleted from cache upon repository update failure
-        self.assertIn("reset_fail_repo@unsaac.edu.pe", reset_tokens_cache)
+        # Si la escritura de la contraseña fallo, el codigo sigue sirviendo.
+        self.assertIsNotNone(await self.reset_token_repo.get_active("reset_fail_repo@unsaac.edu.pe"))
 
     def test_architectural_decoupling_and_legacy_removal(self):
         use_case_path = os.path.join(

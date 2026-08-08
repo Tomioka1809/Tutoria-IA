@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy.orm import selectinload
 from app.application.ports.repository_ports import UserRepositoryPort
-from app.domain.entities.user import UserCreate, UserUpdate
+from app.domain.entities.user import UserCreate, UserSelfUpdate
 from app.infrastructure.database.models.user import User
 from app.infrastructure.database.models.profiles import StudentProfile, TutorProfile, AdminProfile
 
@@ -86,18 +86,18 @@ class UserRepository(UserRepositoryPort):
             await self.db.rollback()
             raise e
 
-    async def update(self, user_id: int, user_in: UserUpdate) -> Optional[User]:
+    async def update(self, user_id: int, user_in: UserSelfUpdate) -> Optional[User]:
         user = await self.get_by_id(user_id)
         if not user:
             return None
             
         update_data = user_in.model_dump(exclude_unset=True)
-        
+
         # Update User Base
+        # 'role' e 'is_active' no se aplican aca aunque vengan en el payload: esta es
+        # la ruta de autoservicio y copiarlos a ciegas permitia auto-ascenderse a admin.
         if 'email' in update_data: user.email = update_data['email']
-        if 'role' in update_data: user.role = update_data['role']
-        if 'is_active' in update_data: user.is_active = update_data['is_active']
-        
+
         # Update specific profiles
         if user.role == "estudiante" and user.student_profile:
             if 'full_name' in update_data: user.student_profile.full_name = update_data['full_name']

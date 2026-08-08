@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List, Optional, Any
 from datetime import datetime
-from app.domain.entities.user import UserCreate, UserUpdate
+from app.domain.entities.user import UserCreate, UserSelfUpdate
 from app.application.dtos.chat_tool_dtos import (
     AssignedTutorDTO,
     AssignedStudentDTO,
@@ -22,12 +22,45 @@ class UserRepositoryPort(ABC):
         pass
 
     @abstractmethod
-    async def update(self, user_id: int, user_in: UserUpdate) -> Optional[Any]:
+    async def update(self, user_id: int, user_in: UserSelfUpdate) -> Optional[Any]:
         pass
 
     @abstractmethod
     async def update_password(self, user_id: int, new_password_hash: str) -> bool:
         pass
+
+class PasswordResetTokenRepositoryPort(ABC):
+    """Almacen compartido de los codigos de recuperacion.
+
+    Es un puerto y no un diccionario en memoria porque el contador de intentos solo
+    limita algo si sobrevive al reinicio del proceso y es el mismo para todos los
+    workers.
+    """
+
+    @abstractmethod
+    async def replace_for_email(self, email: str, code_hash: str, expires_at: datetime) -> Any:
+        """Invalida los codigos vigentes de ese correo y guarda el nuevo.
+
+        Pedir un codigo nuevo tiene que anular el anterior: si convivieran, cada
+        solicitud sumaria una ventana de intentos mas sobre la misma cuenta.
+        """
+        pass
+
+    @abstractmethod
+    async def get_active(self, email: str) -> Optional[Any]:
+        """Codigo vigente de ese correo, o None si no hay ninguno."""
+        pass
+
+    @abstractmethod
+    async def register_failed_attempt(self, token_id: int) -> int:
+        """Suma un intento fallido y devuelve el total acumulado."""
+        pass
+
+    @abstractmethod
+    async def invalidate(self, token_id: int) -> None:
+        """Marca el codigo como inservible (consumido, expirado o sin intentos)."""
+        pass
+
 
 class ChatRepositoryPort(ABC):
     @abstractmethod
