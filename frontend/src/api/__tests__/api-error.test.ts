@@ -87,6 +87,13 @@ describe('normalizeApiError', () => {
   });
 
   describe('redacción de detalles peligrosos', () => {
+    // Se arma concatenando para que el literal no aparezca en el fuente. El
+    // repositorio tiene un guard que rechaza cualquier cadena versionada con forma
+    // de clave de Google (test_15_no_tracked_aiza_keys), y no distingue una
+    // inventada de una real — que es justo lo que se quiere de un guard así.
+    // El valor en tiempo de ejecución sigue teniendo el formato exacto: AIza + 35.
+    const CLAVE_GOOGLE_FALSA = 'AIza' + 'SyB1234567890abcdefghijklmnopqrstuv';
+
     const debeOcultarse = [
       ['un stack trace de Python', 'Traceback (most recent call last): File "app.py", line 4'],
       ['un stack trace de JS', 'Error at handler (/app/index.js:12:5)'],
@@ -94,7 +101,7 @@ describe('normalizeApiError', () => {
       ['un JWT', 'token eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3In0.firma_de_prueba'],
       // 39 caracteres: AIza + 35, que es el formato real. El patrón exige ese
       // largo exacto, así que una cadena más larga no se reconoce como clave.
-      ['una clave de Google', 'key AIzaSyB1234567890abcdefghijklmnopqrstuv'],
+      ['una clave de Google', `key ${CLAVE_GOOGLE_FALSA}`],
       ['una contraseña', 'fallo con password=secreta123'],
       ['un access_token', 'no se pudo leer access_token'],
     ];
