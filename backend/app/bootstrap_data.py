@@ -11,6 +11,7 @@ import os
 from sqlalchemy import func, select
 
 import app.infrastructure.database.base  # noqa: F401  registra todos los modelos
+from app.infrastructure.config.config import DEFAULT_ADMIN_PASSWORD, resolve_admin_bootstrap
 from app.infrastructure.database.models.corpus_chunk import CorpusChunk
 from app.infrastructure.database.models.profiles import AdminProfile
 from app.infrastructure.database.models.user import User
@@ -26,20 +27,33 @@ async def _count(db, model, *conditions) -> int:
 
 
 async def ensure_admin() -> None:
-    """Crea el admin inicial desde variables de entorno si todavia no hay ninguno."""
+    """Crea el admin inicial si la base todavia no tiene ninguno.
+
+    Fuera de produccion no hace falta configurar nada: cae a las credenciales por
+    defecto del repositorio. Antes dependia de que el .env declarara ADMIN_EMAIL y
+    ADMIN_PASSWORD, y como .env.example los trae vacios, un clon recien levantado
+    quedaba con el roster de tutores y estudiantes pero sin nadie que pudiera entrar
+    al panel de administracion.
+    """
     async with SessionLocal() as db:
         if await _count(db, User, User.role == "admin"):
             print("[bootstrap] Ya existe al menos un admin, no se crea otro.")
             return
 
-        email = os.getenv("ADMIN_EMAIL")
-        password = os.getenv("ADMIN_PASSWORD")
-        if not email or not password:
+        app_env = os.getenv("APP_ENV", "development")
+        # La validacion vive aca ademas de en validate_runtime_security porque el
+        # entrypoint siembra antes de arrancar la app: sin esto, produccion podria
+        # crear el admin debil y recien despues fallar al levantar uvicorn.
+        credenciales = resolve_admin_bootstrap(app_env)
+
+        if credenciales is None:
             print(
-                "[bootstrap] No hay admin y faltan ADMIN_EMAIL/ADMIN_PASSWORD. "
+                "[bootstrap] No hay admin y no se declararon ADMIN_EMAIL/ADMIN_PASSWORD. "
                 "Crealo a mano con: python -m app.create_superuser"
             )
             return
+
+        email, password, full_name = credenciales
 
         admin = User(
             email=email,
@@ -48,12 +62,18 @@ async def ensure_admin() -> None:
             is_active=True,
         )
         admin.admin_profile = AdminProfile(
-            full_name=os.getenv("ADMIN_NAME", "Administrador"),
+            full_name=full_name,
             administrative_position="Superadmin",
         )
         db.add(admin)
         await db.commit()
         print(f"[bootstrap] Admin '{email}' creado.")
+
+        if password == DEFAULT_ADMIN_PASSWORD:
+            print(
+                "[bootstrap] ATENCION: se uso la contraseña por defecto del repositorio. "
+                "Cambiala antes de exponer este backend fuera de tu maquina."
+            )
 
 
 async def ensure_users() -> None:
