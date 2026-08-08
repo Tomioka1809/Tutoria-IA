@@ -3,10 +3,9 @@ import { View, TextInput, Text, Pressable, ActivityIndicator, KeyboardAvoidingVi
 import { useRouter, Link } from 'expo-router';
 import { useAuthStore } from '../../src/store/auth';
 import client from '../../src/api/client';
-import { ThemedText } from '../../components/themed-text';
-import { ThemedView } from '../../components/themed-view';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '@/src/theme/ThemeContext';
+import { TutorIAAvatar } from '@/src/components/tutoria/TutorIAAvatar';
 
 export default function LoginScreen() {
   const { t } = useTranslation();
@@ -76,7 +75,9 @@ export default function LoginScreen() {
     >
       <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }} className="px-6">
         <View className="items-center mb-8">
-          <Text className="text-5xl mb-2">🦖</Text>
+          <View style={{ marginBottom: 12 }}>
+            <TutorIAAvatar size={72} />
+          </View>
           <Text style={{ color: colors.text, fontSize: 30, fontWeight: 'bold' }}>TutorIA</Text>
           <Text style={{ color: colors.primary, fontSize: 14, textAlign: 'center', marginTop: 4 }}>
             {t('auth.login.subtitle') || 'Tu tutor inteligente en tu bolsillo'}

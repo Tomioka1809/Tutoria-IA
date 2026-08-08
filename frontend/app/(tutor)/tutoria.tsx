@@ -1,7 +1,7 @@
 // app/(tutor)/tutoria.tsx
 import React, { useEffect, useRef, useState } from 'react';
 import { useTheme } from '@/src/theme/ThemeContext';
-import { View, Text, KeyboardAvoidingView, Platform, TextInput, Keyboard } from 'react-native';
+import { KeyboardAvoidingView, Platform, TextInput, Keyboard } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
 import { useTutoria } from '@/src/components/tutoria/useTutoria';
@@ -16,7 +16,6 @@ export default function TutoriaScreen() {
   const {
     user,
     conversation,
-    fetchConversation,
     isLoading,
     isSending,
     inputText,
@@ -25,6 +24,9 @@ export default function TutoriaScreen() {
     handleSend,
     handleQuickAction,
     resetConversation,
+    editingMessageId,
+    startEditing,
+    cancelEditing,
   } = useTutoria();
 
   const inputRef = useRef<TextInput>(null);
@@ -74,6 +76,8 @@ export default function TutoriaScreen() {
         conversation={conversation}
         isLoading={isLoading}
         isSending={isSending}
+        onEditMessage={startEditing}
+        editingMessageId={editingMessageId}
       />
 
       <QuickActionsPanel onActionPress={handleQuickAction} userRole={user?.role} />
@@ -84,6 +88,8 @@ export default function TutoriaScreen() {
         onSend={handleSend}
         isSending={isSending}
         inputRef={inputRef}
+        isEditing={editingMessageId !== null}
+        onCancelEdit={cancelEditing}
       />
     </KeyboardAvoidingView>
   );

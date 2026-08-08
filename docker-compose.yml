@@ -14,7 +14,18 @@ services:
       - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
 
+  # OJO: esta configuracion es de DESARROLLO, no de despliegue. El bind mount monta
+  # el codigo del host encima de la imagen y el comando activa --reload, que vigila
+  # el sistema de archivos y reinicia el proceso ante cada cambio. La imagen en si
+  # (backend/Dockerfile) si es desplegable: arranca sin --reload y como usuario sin
+  # privilegios.
   backend:
     build: ./backend
     container_name: tutoria_backend
@@ -29,8 +40,16 @@ services:
       - "8000:8000"
     volumes:
       - ./backend:/app
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8000/', timeout=5).status==200 else 1)\""]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
 volumes:
   postgres_data:

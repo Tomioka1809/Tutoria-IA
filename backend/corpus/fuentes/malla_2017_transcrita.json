@@ -1,0 +1,572 @@
+{
+  "plan": "2017",
+  "url_fuente": "https://in.unsaac.edu.pe/wp-content/uploads/2025/03/malla-curricular-ing-informatica-2017.jpg",
+  "nota": "Transcripcion de la imagen oficial de la malla curricular 2017 publicada por la Escuela Profesional. Los casilleros sin nombre en la imagen se transcriben con un codigo sintetico (ELECTIVO-n, EXTRA-n) porque la imagen no los identifica; el catalogo del Centro de Computo si los nombra y esta en corpus/fuentes/catalogo_2017.json. Cinco codigos de la imagen no coinciden con el catalogo: ver discrepancias_con_la_malla.",
+  "total_asignaturas": 62,
+  "total_creditos": 219,
+  "ciclos": [
+    {
+      "ciclo": 1,
+      "creditos_totales": 21,
+      "cursos": [
+        {
+          "codigo": "FP901",
+          "nombre": "FILOSOFIA Y ETICA",
+          "creditos": 3,
+          "categoria": "estudios_generales",
+          "requisitos": []
+        },
+        {
+          "codigo": "DR901",
+          "nombre": "CONSTITUCIÓN POLITICA Y DD.HH.",
+          "creditos": 3,
+          "categoria": "estudios_generales",
+          "requisitos": [],
+          "codigo_catalogo": "DE901"
+        },
+        {
+          "codigo": "AS901",
+          "nombre": "SOCIEDAD Y CULTURA",
+          "creditos": 3,
+          "categoria": "estudios_generales",
+          "requisitos": []
+        },
+        {
+          "codigo": "ME901",
+          "nombre": "MATEMATICA I",
+          "creditos": 4,
+          "categoria": "estudios_generales",
+          "requisitos": []
+        },
+        {
+          "codigo": "ED901",
+          "nombre": "ESTRATEGIAS DE APRENDIZAJE AUTONOMO",
+          "creditos": 4,
+          "categoria": "estudios_generales",
+          "requisitos": []
+        },
+        {
+          "codigo": "LC901",
+          "nombre": "REDACCION DE TEXTOS",
+          "creditos": 4,
+          "categoria": "estudios_generales",
+          "requisitos": []
+        }
+      ]
+    },
+    {
+      "ciclo": 2,
+      "creditos_totales": 22,
+      "cursos": [
+        {
+          "codigo": "IF468",
+          "nombre": "FUNDAMENTOS DE PROGRAMACIÓN",
+          "creditos": 4,
+          "categoria": "estudios_especificos",
+          "requisitos": []
+        },
+        {
+          "codigo": "ME307",
+          "nombre": "MATEMATICAS DISCRETAS I",
+          "creditos": 4,
+          "categoria": "estudios_especificos",
+          "requisitos": []
+        },
+        {
+          "codigo": "FI902",
+          "nombre": "FISICA I",
+          "creditos": 4,
+          "categoria": "estudios_generales",
+          "requisitos": []
+        },
+        {
+          "codigo": "ME903",
+          "nombre": "CALCULO I",
+          "creditos": 4,
+          "categoria": "estudios_generales",
+          "requisitos": [
+            "ME901"
+          ]
+        },
+        {
+          "codigo": "IF902",
+          "nombre": "TECNOLOGIA DE LA INFORMACIÓN Y COMUNICACIÓN",
+          "creditos": 3,
+          "categoria": "estudios_generales",
+          "requisitos": []
+        },
+        {
+          "codigo": "FP902",
+          "nombre": "LIDERAZGO Y HABILIDADES SOCIALES",
+          "creditos": 3,
+          "categoria": "estudios_generales",
+          "requisitos": []
+        }
+      ]
+    },
+    {
+      "ciclo": 3,
+      "creditos_totales": 22,
+      "cursos": [
+        {
+          "codigo": "IF450",
+          "nombre": "ABSTRACCIÓN DE DATOS Y OBJETOS",
+          "creditos": 4,
+          "categoria": "estudios_especificos",
+          "requisitos": [
+            "IF468"
+          ]
+        },
+        {
+          "codigo": "IF351",
+          "nombre": "ALGEBRA LINEAL COMPUTACIONAL",
+          "creditos": 4,
+          "categoria": "estudios_especificos",
+          "requisitos": [
+            "ME307"
+          ],
+          "codigo_catalogo": "ME351"
+        },
+        {
+          "codigo": "IF370",
+          "nombre": "FISICA APLICADA A LA INFORMATICA",
+          "creditos": 4,
+          "categoria": "estudios_especificos",
+          "requisitos": [
+            "FI902"
+          ],
+          "codigo_catalogo": "FI370"
+        },
+        {
+          "codigo": "ME350",
+          "nombre": "CALCULO II",
+          "creditos": 4,
+          "categoria": "estudios_especificos",
+          "requisitos": [
+            "ME903"
+          ]
+        },
+        {
+          "codigo": "ME352",
+          "nombre": "PROBABILIDADES Y ESTADISTICA",
+          "creditos": 4,
+          "categoria": "estudios_especificos",
+          "requisitos": []
+        },
+        {
+          "codigo": "IF451",
+          "nombre": "PROGRAMACION I",
+          "creditos": 2,
+          "categoria": "estudios_especificos",
+          "requisitos": []
+        }
+      ]
+    },
+    {
+      "ciclo": 4,
+      "creditos_totales": 22,
+      "cursos": [
+        {
+          "codigo": "IF452",
+          "nombre": "ALGORITMOS Y ESTRUCTURA DE DATOS",
+          "creditos": 4,
+          "categoria": "estudios_especificos",
+          "requisitos": [
+            "IF450"
+          ]
+        },
+        {
+          "codigo": "ME354",
+          "nombre": "INVESTIGACION OPERATIVA",
+          "creditos": 4,
+          "categoria": "estudios_especificos",
+          "requisitos": [
+            "IF351"
+          ]
+        },
+        {
+          "codigo": "ME355",
+          "nombre": "MATEMATICA DISCRETA II",
+          "creditos": 4,
+          "categoria": "estudios_especificos",
+          "requisitos": []
+        },
+        {
+          "codigo": "LI371",
+          "nombre": "ELECTRONICA Y DISEÑO DIGITAL",
+          "creditos": 3,
+          "categoria": "estudios_especificos",
+          "requisitos": [
+            "IF370"
+          ],
+          "codigo_catalogo": "EL371"
+        },
+        {
+          "codigo": "IF480",
+          "nombre": "ADMINISTRACION DE TECNOLOGIAS DE LA INFORMACION",
+          "creditos": 3,
+          "categoria": "estudios_especificos",
+          "requisitos": []
+        },
+        {
+          "codigo": "IF453",
+          "nombre": "PROGRAMACION II",
+          "creditos": 2,
+          "categoria": "estudios_especificos",
+          "requisitos": [
+            "IF451"
+          ]
+        },
+        {
+          "codigo": "EXTRA-1",
+          "nombre": "ACTIVIDADES EXTRACURRICULARES",
+          "creditos": 2,
+          "categoria": "actividades_extracurriculares",
+          "requisitos": []
+        }
+      ]
+    },
+    {
+      "ciclo": 5,
+      "creditos_totales": 22,
+      "cursos": [
+        {
+          "codigo": "IF650",
+          "nombre": "MODELOS PROBABILISTICOS",
+          "creditos": 4,
+          "categoria": "estudios_especificos",
+          "requisitos": [
+            "IF452",
+            "ME352"
+          ]
+        },
+        {
+          "codigo": "IF454",
+          "nombre": "TEORIA DE LA COMPUTACION",
+          "creditos": 3,
+          "categoria": "estudios_especificos",
+          "requisitos": [
+            "ME355"
+          ]
+        },
+        {
+          "codigo": "IF610",
+          "nombre": "ANALISIS Y DISEÑO DE SISTEMAS DE INFORMACION",
+          "creditos": 4,
+          "categoria": "estudios_especificos",
+          "requisitos": [
+            "IF453"
+          ]
+        },
+        {
+          "codigo": "IF550",
+          "nombre": "ORGANIZACION Y ARQUITECTURA DEL COMPUTADOR",
+          "creditos": 4,
+          "categoria": "estudios_especificos",
+          "requisitos": [
+            "LI371"
+          ]
+        },
+        {
+          "codigo": "IF481",
+          "nombre": "INGENIERIA ECONOMICA",
+          "creditos": 3,
+          "categoria": "estudios_especificos",
+          "requisitos": [
+            "IF480"
+          ]
+        },
+        {
+          "codigo": "ME359",
+          "nombre": "ECUACIONES DIFERENCIALES",
+          "creditos": 4,
+          "categoria": "estudios_especificos",
+          "requisitos": [
+            "ME350"
+          ],
+          "codigo_catalogo": "ME356"
+        }
+      ]
+    },
+    {
+      "ciclo": 6,
+      "creditos_totales": 22,
+      "cursos": [
+        {
+          "codigo": "IF455",
+          "nombre": "ALGORITMOS PARALELOS Y DISTRIBUIDOS",
+          "creditos": 4,
+          "categoria": "estudios_especificos",
+          "requisitos": [
+            "IF650",
+            "IF454"
+          ]
+        },
+        {
+          "codigo": "IF611",
+          "nombre": "METODOLOGIA DE DESARROLLO DE SOFTWARE",
+          "creditos": 3,
+          "categoria": "estudios_especificos",
+          "requisitos": [
+            "IF610"
+          ]
+        },
+        {
+          "codigo": "IF612",
+          "nombre": "FUNDAMENTOS Y DISEÑO DE BASES DE DATOS",
+          "creditos": 4,
+          "categoria": "estudios_especificos",
+          "requisitos": [
+            "IF610"
+          ]
+        },
+        {
+          "codigo": "IF551",
+          "nombre": "SISTEMAS OPERATIVOS",
+          "creditos": 4,
+          "categoria": "estudios_especificos",
+          "requisitos": [
+            "IF550"
+          ]
+        },
+        {
+          "codigo": "IF457",
+          "nombre": "METODOS NUMERICOS",
+          "creditos": 3,
+          "categoria": "estudios_especificos",
+          "requisitos": [
+            "ME359"
+          ]
+        },
+        {
+          "codigo": "ELECTIVO-1",
+          "nombre": "ASIGNATURA DE ESPECIALIDAD",
+          "creditos": 4,
+          "categoria": "estudios_especialidad",
+          "requisitos": []
+        }
+      ]
+    },
+    {
+      "ciclo": 7,
+      "creditos_totales": 22,
+      "cursos": [
+        {
+          "codigo": "IF456",
+          "nombre": "ALGORITMOS AVANZADOS",
+          "creditos": 4,
+          "categoria": "estudios_especificos",
+          "requisitos": [
+            "IF455"
+          ]
+        },
+        {
+          "codigo": "IF651",
+          "nombre": "INTELIGENCIA ARTIFICIAL",
+          "creditos": 4,
+          "categoria": "estudios_especificos",
+          "requisitos": [
+            "IF455"
+          ]
+        },
+        {
+          "codigo": "IF613",
+          "nombre": "DESARROLLO DE SOFTWARE I",
+          "creditos": 2,
+          "categoria": "estudios_especificos",
+          "requisitos": [
+            "IF611",
+            "IF612"
+          ]
+        },
+        {
+          "codigo": "IF552",
+          "nombre": "REDES DE COMPUTADORAS I",
+          "creditos": 4,
+          "categoria": "estudios_especificos",
+          "requisitos": [
+            "IF551"
+          ]
+        },
+        {
+          "codigo": "ELECTIVO-2",
+          "nombre": "ASIGNATURA DE ESPECIALIDAD",
+          "creditos": 3,
+          "categoria": "estudios_especialidad",
+          "requisitos": []
+        },
+        {
+          "codigo": "ELECTIVO-3",
+          "nombre": "ASIGNATURA DE ESPECIALIDAD",
+          "creditos": 3,
+          "categoria": "estudios_especialidad",
+          "requisitos": []
+        },
+        {
+          "codigo": "EXTRA-2",
+          "nombre": "ACTIVIDADES EXTRACURRICULARES",
+          "creditos": 2,
+          "categoria": "actividades_extracurriculares",
+          "requisitos": []
+        }
+      ]
+    },
+    {
+      "ciclo": 8,
+      "creditos_totales": 22,
+      "cursos": [
+        {
+          "codigo": "IF710",
+          "nombre": "SEMINARIO DE INVESTIGACION I",
+          "creditos": 3,
+          "categoria": "estudios_especificos",
+          "requisitos": [
+            "IF456"
+          ]
+        },
+        {
+          "codigo": "IF652",
+          "nombre": "APRENDIZAJE AUTOMATICO",
+          "creditos": 4,
+          "categoria": "estudios_especificos",
+          "requisitos": [
+            "IF651"
+          ]
+        },
+        {
+          "codigo": "IF614",
+          "nombre": "INGENIERIA DE SOFTWARE I",
+          "creditos": 4,
+          "categoria": "estudios_especificos",
+          "requisitos": [
+            "IF613"
+          ]
+        },
+        {
+          "codigo": "IF482",
+          "nombre": "PLANEAMIENTO Y DIRECCION ESTRATEGICA DE TI",
+          "creditos": 3,
+          "categoria": "estudios_especificos",
+          "requisitos": [
+            "IF613"
+          ]
+        },
+        {
+          "codigo": "ELECTIVO-4",
+          "nombre": "ASIGNATURA DE ESPECIALIDAD",
+          "creditos": 4,
+          "categoria": "estudios_especialidad",
+          "requisitos": []
+        },
+        {
+          "codigo": "ELECTIVO-5",
+          "nombre": "ASIGNATURA DE ESPECIALIDAD",
+          "creditos": 4,
+          "categoria": "estudios_especialidad",
+          "requisitos": []
+        }
+      ]
+    },
+    {
+      "ciclo": 9,
+      "creditos_totales": 22,
+      "cursos": [
+        {
+          "codigo": "IF483",
+          "nombre": "FORMULACION DE PROYECTOS TI",
+          "creditos": 3,
+          "categoria": "estudios_especificos",
+          "requisitos": [
+            "IF710",
+            "IF482"
+          ]
+        },
+        {
+          "codigo": "ELECTIVO-6",
+          "nombre": "ASIGNATURA DE ESPECIALIDAD",
+          "creditos": 3,
+          "categoria": "estudios_especialidad",
+          "requisitos": []
+        },
+        {
+          "codigo": "ELECTIVO-7",
+          "nombre": "ASIGNATURA DE ESPECIALIDAD",
+          "creditos": 3,
+          "categoria": "estudios_especialidad",
+          "requisitos": []
+        },
+        {
+          "codigo": "ELECTIVO-8",
+          "nombre": "ASIGNATURA DE ESPECIALIDAD",
+          "creditos": 4,
+          "categoria": "estudios_especialidad",
+          "requisitos": []
+        },
+        {
+          "codigo": "ELECTIVO-9",
+          "nombre": "ASIGNATURA DE ESPECIALIDAD",
+          "creditos": 3,
+          "categoria": "estudios_especialidad",
+          "requisitos": []
+        },
+        {
+          "codigo": "ELECTIVO-10",
+          "nombre": "ASIGNATURA DE ESPECIALIDAD",
+          "creditos": 4,
+          "categoria": "estudios_especialidad",
+          "requisitos": []
+        },
+        {
+          "codigo": "EXTRA-3",
+          "nombre": "ACTIVIDADES EXTRACURRICULARES",
+          "creditos": 2,
+          "categoria": "actividades_extracurriculares",
+          "requisitos": []
+        }
+      ]
+    },
+    {
+      "ciclo": 10,
+      "creditos_totales": 22,
+      "cursos": [
+        {
+          "codigo": "IF711",
+          "nombre": "SEMINARIO DE INVESTIGACION II",
+          "creditos": 3,
+          "categoria": "estudios_especificos",
+          "requisitos": [
+            "IF483"
+          ]
+        },
+        {
+          "codigo": "ELECTIVO-11",
+          "nombre": "ASIGNATURA DE ESPECIALIDAD",
+          "creditos": 4,
+          "categoria": "estudios_especialidad",
+          "requisitos": []
+        },
+        {
+          "codigo": "ELECTIVO-12",
+          "nombre": "ASIGNATURA DE ESPECIALIDAD",
+          "creditos": 3,
+          "categoria": "estudios_especialidad",
+          "requisitos": []
+        },
+        {
+          "codigo": "ELECTIVO-13",
+          "nombre": "ASIGNATURA DE ESPECIALIDAD",
+          "creditos": 3,
+          "categoria": "estudios_especialidad",
+          "requisitos": []
+        },
+        {
+          "codigo": "IF",
+          "nombre": "PRACTICA PRE PROFESIONAL",
+          "creditos": 9,
+          "categoria": "practicas_pre_profesionales",
+          "requisitos": []
+        }
+      ]
+    }
+  ]
+}

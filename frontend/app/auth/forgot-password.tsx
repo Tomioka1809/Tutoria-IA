@@ -4,6 +4,7 @@ import { useRouter } from 'expo-router';
 import client from '../../src/api/client';
 import { useTheme } from '@/src/theme/ThemeContext';
 import { Feather } from '@expo/vector-icons';
+import { TutorIAAvatar } from '@/src/components/tutoria/TutorIAAvatar';
 
 export default function ForgotPasswordScreen() {
   const { colors } = useTheme();
@@ -20,13 +21,13 @@ export default function ForgotPasswordScreen() {
     setError('');
     setIsLoading(true);
     try {
-      const response = await client.post('/auth/forgot-password', {
+      await client.post('/auth/forgot-password', {
         email: email.trim().toLowerCase()
       });
 
       Alert.alert(
         'Código Enviado',
-        'Hemos generado un código de recuperación de 6 dígitos. Por seguridad, revise la consola del backend para ver el código generado en este entorno de desarrollo.',
+        'Si el correo corresponde a una cuenta registrada, se generó un código de recuperación de 6 dígitos. En este entorno de desarrollo, revise la consola del backend para verlo.',
         [
           {
             text: 'Entendido',
@@ -40,11 +41,11 @@ export default function ForgotPasswordScreen() {
         ]
       );
     } catch (e: any) {
+      // Sin rama para 404: el backend responde igual exista o no la cuenta, y
+      // delatarlo aca reabriria la enumeracion de correos registrados.
       let errorMessage = 'Hubo un error al procesar tu solicitud.';
       if (!e.response) {
         errorMessage = 'No se pudo conectar con el servidor. Verifica tu conexión a internet.';
-      } else if (e.response.status === 404) {
-        errorMessage = 'No existe ninguna cuenta registrada con este correo electrónico.';
       } else if (e.response.data?.detail) {
         errorMessage = e.response.data.detail;
       }
@@ -73,7 +74,9 @@ export default function ForgotPasswordScreen() {
         </Pressable>
 
         <View className="items-center mb-8">
-          <Text className="text-5xl mb-2">🦖</Text>
+          <View style={{ marginBottom: 12 }}>
+            <TutorIAAvatar size={72} />
+          </View>
           <Text style={{ color: colors.text, fontSize: 30, fontWeight: 'bold' }}>TutorIA</Text>
           <Text style={{ color: colors.primary, fontSize: 14, textAlign: 'center', marginTop: 4 }}>
             Recuperación de Contraseña

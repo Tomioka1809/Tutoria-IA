@@ -1,0 +1,820 @@
+{
+  "procedencia": {
+    "documento": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC",
+    "tipo": "malla",
+    "universidad": "UNSAAC",
+    "resolucion": null,
+    "anio": 2017,
+    "url": "http://ccomputo.unsaac.edu.pe/index.php?op=planes&escprof=IN&curric=2",
+    "base_legal": []
+  },
+  "fragmentos": [
+    {
+      "id": "plan_estudios_2017#semestre-1",
+      "titulo": "Primer semestre - Plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Primer semestre del plan de estudios 2017 de Ingeniería Informática y de Sistemas UNSAAC según el catálogo del Centro de Cómputo: 6 asignaturas, 21 créditos.\n\n- ME901 MATEMÁTICA I: 4 créditos (estudios generales), sin requisitos.\n- LC901 REDACCIÓN DE TEXTOS: 4 créditos (estudios generales), sin requisitos.\n- AS901 SOCIEDAD Y CULTURA: 3 créditos (estudios generales), sin requisitos.\n- DE901 CONSTITUCIÓN POLÍTICA Y DERECHOS HUMANOS: 3 créditos (estudios generales), sin requisitos.\n- ED901 ESTRATEGIAS DE APRENDIZAJE AUTÓNOMO: 4 créditos (estudios generales), sin requisitos.\n- FP901 FILOSOFÍA Y ÉTICA: 3 créditos (estudios generales), sin requisitos.",
+      "seccion": [
+        "plan_estudios_2017",
+        "semestre_1"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "ME901",
+        "LC901",
+        "AS901",
+        "DE901",
+        "ED901",
+        "FP901"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#semestre-2",
+      "titulo": "Segundo semestre - Plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Segundo semestre del plan de estudios 2017 de Ingeniería Informática y de Sistemas UNSAAC según el catálogo del Centro de Cómputo: 6 asignaturas, 22 créditos.\n\n- FP902 LIDERAZGO Y HABILIDADES SOCIALES: 3 créditos (estudios generales), requisito: 15 créditos.\n- FI902 FÍSICA I: 4 créditos (estudios generales del área técnica), requisito: 15 créditos.\n- IF468 FUNDAMENTOS DE PROGRAMACIÓN: 4 créditos (estudios específicos), sin requisitos.\n- ME307 MATEMÁTICAS DISCRETAS I: 4 créditos (estudios específicos), sin requisitos.\n- ME903 CÁLCULO I: 4 créditos (estudios generales del área técnica), requisito: ME901 MATEMÁTICA I.\n- IF902 TECNOLOGÍAS DE LA INFORMACIÓN Y LA COMUNICACIÓN: 3 créditos (estudios generales), requisito: 15 créditos.",
+      "seccion": [
+        "plan_estudios_2017",
+        "semestre_2"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "FP902",
+        "FI902",
+        "IF468",
+        "ME307",
+        "ME903",
+        "IF902"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#semestre-3",
+      "titulo": "Tercer semestre - Plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Tercer semestre del plan de estudios 2017 de Ingeniería Informática y de Sistemas UNSAAC según el catálogo del Centro de Cómputo: 6 asignaturas, 22 créditos.\n\n- ME350 CÁLCULO II: 4 créditos (estudios específicos), requisito: ME903 CÁLCULO I.\n- ME351 ÁLGEBRA LINEAL: 4 créditos (estudios específicos), requisito: ME307 MATEMÁTICAS DISCRETAS I.\n- ME352 PROBABILIDADES Y ESTADÍSTICA: 4 créditos (estudios específicos), requisito: ME903 CÁLCULO I.\n- FI370 FÍSICA APLICADA: 4 créditos (estudios específicos), requisito: FI902 FÍSICA I.\n- IF450 ABSTRACCIÓN DE DATOS Y OBJETOS: 4 créditos (estudios específicos), requisito: IF468 FUNDAMENTOS DE PROGRAMACIÓN.\n- IF451 PROGRAMACIÓN I: 2 créditos (estudios específicos), requisito: IF468 FUNDAMENTOS DE PROGRAMACIÓN.",
+      "seccion": [
+        "plan_estudios_2017",
+        "semestre_3"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "ME350",
+        "ME351",
+        "ME352",
+        "FI370",
+        "IF450",
+        "IF451"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#semestre-4",
+      "titulo": "Cuarto semestre - Plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Cuarto semestre del plan de estudios 2017 de Ingeniería Informática y de Sistemas UNSAAC según el catálogo del Centro de Cómputo: 7 asignaturas, 22 créditos.\n\n- IF452 ALGORITMOS Y ESTRUCTURAS DE DATOS: 4 créditos (estudios específicos), requisito: IF450 ABSTRACCIÓN DE DATOS Y OBJETOS.\n- IF453 PROGRAMACIÓN II: 2 créditos (estudios específicos), requisito: IF451 PROGRAMACIÓN I.\n- EL371 ELECTRÓNICA Y DISEÑO DIGITAL: 3 créditos (estudios específicos), requisito: FI370 FÍSICA APLICADA.\n- IF480 ADMINISTRACIÓN DE TECNOLOGÍAS DE INFORMACIÓN: 3 créditos (estudios específicos), requisito: ME352 PROBABILIDADES Y ESTADÍSTICA.\n- IF060 MÚSICA: 2 créditos (actividades extracurriculares), requisito: 60 créditos.\n- ME354 INVESTIGACIÓN OPERATIVA: 4 créditos (estudios específicos), requisito: ME351 ÁLGEBRA LINEAL.\n- ME355 MATEMÁTICAS DISCRETAS II: 4 créditos (estudios específicos), requisito: ME307 MATEMÁTICAS DISCRETAS I.",
+      "seccion": [
+        "plan_estudios_2017",
+        "semestre_4"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "IF452",
+        "IF453",
+        "EL371",
+        "IF480",
+        "IF060",
+        "ME354",
+        "ME355"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#semestre-5",
+      "titulo": "Quinto semestre - Plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Quinto semestre del plan de estudios 2017 de Ingeniería Informática y de Sistemas UNSAAC según el catálogo del Centro de Cómputo: 6 asignaturas, 22 créditos.\n\n- ME356 ECUACIONES DIFERENCIALES: 4 créditos (estudios específicos), requisito: ME350 CÁLCULO II.\n- IF650 MODELOS PROBABILÍSTICOS: 4 créditos (estudios específicos), requisito: ME352 PROBABILIDADES Y ESTADÍSTICA.\n- IF610 ANÁLISIS Y DISEÑO DE SISTEMAS DE INFORMACIÓN: 4 créditos (estudios específicos), requisito: IF450 ABSTRACCIÓN DE DATOS Y OBJETOS, IF480 ADMINISTRACIÓN DE TECNOLOGÍAS DE INFORMACIÓN.\n- IF481 INGENIERÍA ECONÓMICA: 3 créditos (estudios específicos), requisito: IF480 ADMINISTRACIÓN DE TECNOLOGÍAS DE INFORMACIÓN.\n- IF550 ORGANIZACIÓN Y ARQUITECTURA DEL COMPUTADOR: 4 créditos (estudios específicos), requisito: EL371 ELECTRÓNICA Y DISEÑO DIGITAL.\n- IF454 TEORÍA DE LA COMPUTACIÓN: 3 créditos (estudios específicos), requisito: IF452 ALGORITMOS Y ESTRUCTURAS DE DATOS, ME355 MATEMÁTICAS DISCRETAS II.",
+      "seccion": [
+        "plan_estudios_2017",
+        "semestre_5"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "ME356",
+        "IF650",
+        "IF610",
+        "IF481",
+        "IF550",
+        "IF454"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#semestre-6",
+      "titulo": "Sexto semestre - Plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Sexto semestre del plan de estudios 2017 de Ingeniería Informática y de Sistemas UNSAAC según el catálogo del Centro de Cómputo: 6 asignaturas, 22 créditos.\n\n- IF455 ALGORITMOS PARALELOS Y DISTRIBUIDOS: 4 créditos (estudios específicos), requisito: IF452 ALGORITMOS Y ESTRUCTURAS DE DATOS.\n- IF551 SISTEMAS OPERATIVOS: 4 créditos (estudios específicos), requisito: IF550 ORGANIZACIÓN Y ARQUITECTURA DEL COMPUTADOR.\n- IF611 METODOLOGÍA DE DESARROLLO DE SOFTWARE: 3 créditos (estudios específicos), requisito: IF610 ANÁLISIS Y DISEÑO DE SISTEMAS DE INFORMACIÓN.\n- IF612 FUNDAMENTOS Y DISEÑO DE BASES DE DATOS: 4 créditos (estudios específicos), requisito: IF610 ANÁLISIS Y DISEÑO DE SISTEMAS DE INFORMACIÓN.\n- IF457 MÉTODOS NUMÉRICOS: 3 créditos (estudios específicos), requisito: ME356 ECUACIONES DIFERENCIALES.\n- IF458 COMPUTACIÓN GRÁFICA I: 4 créditos (estudios de especialidad), requisito: IF452 ALGORITMOS Y ESTRUCTURAS DE DATOS, ME351 ÁLGEBRA LINEAL.",
+      "seccion": [
+        "plan_estudios_2017",
+        "semestre_6"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "IF455",
+        "IF551",
+        "IF611",
+        "IF612",
+        "IF457",
+        "IF458"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#semestre-7",
+      "titulo": "Séptimo semestre - Plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Séptimo semestre del plan de estudios 2017 de Ingeniería Informática y de Sistemas UNSAAC según el catálogo del Centro de Cómputo: 7 asignaturas, 22 créditos.\n\n- IF651 INTELIGENCIA ARTIFICIAL: 4 créditos (estudios específicos), requisito: IF650 MODELOS PROBABILÍSTICOS, IF612 FUNDAMENTOS Y DISEÑO DE BASES DE DATOS.\n- IF613 DESARROLLO DE SOFTWARE I: 2 créditos (estudios específicos), requisito: IF612 FUNDAMENTOS Y DISEÑO DE BASES DE DATOS.\n- IF552 REDES DE COMPUTADORAS I: 4 créditos (estudios específicos), requisito: IF551 SISTEMAS OPERATIVOS.\n- IF466 COMPILADORES: 3 créditos (estudios de especialidad), requisito: IF454 TEORÍA DE LA COMPUTACIÓN.\n- IF467 ANÁLISIS Y DISEÑO DE ALGORITMOS: 3 créditos (estudios de especialidad), requisito: IF452 ALGORITMOS Y ESTRUCTURAS DE DATOS, IF453 PROGRAMACIÓN II.\n- IF456 ALGORITMOS AVANZADOS: 4 créditos (estudios específicos), requisito: IF454 TEORÍA DE LA COMPUTACIÓN.\n- IF063 QUECHUA: 2 créditos (actividades extracurriculares), requisito: 100 créditos.",
+      "seccion": [
+        "plan_estudios_2017",
+        "semestre_7"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "IF651",
+        "IF613",
+        "IF552",
+        "IF466",
+        "IF467",
+        "IF456",
+        "IF063"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#semestre-8",
+      "titulo": "Octavo semestre - Plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Octavo semestre del plan de estudios 2017 de Ingeniería Informática y de Sistemas UNSAAC según el catálogo del Centro de Cómputo: 6 asignaturas, 22 créditos.\n\n- IF669 MODELADO Y SIMULACIÓN: 4 créditos (estudios de especialidad), requisito: IF650 MODELOS PROBABILÍSTICOS.\n- IF710 SEMINARIO DE INVESTIGACIÓN I: 3 créditos (estudios específicos), requisito: 150 créditos.\n- IF482 PLANEAMIENTO Y DIRECCIÓN ESTRATÉGICA DE TECNOLOGÍA DE INFORMACIÓN: 3 créditos (estudios específicos), requisito: 140 créditos.\n- IF614 INGENIERÍA DE SOFTWARE I: 4 créditos (estudios específicos), requisito: IF611 METODOLOGÍA DE DESARROLLO DE SOFTWARE, IF613 DESARROLLO DE SOFTWARE I.\n- IF652 APRENDIZAJE AUTOMÁTICO: 4 créditos (estudios específicos), requisito: IF651 INTELIGENCIA ARTIFICIAL.\n- IF664 BIOINFORMÁTICA: 4 créditos (estudios de especialidad), requisito: IF650 MODELOS PROBABILÍSTICOS.",
+      "seccion": [
+        "plan_estudios_2017",
+        "semestre_8"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "IF669",
+        "IF710",
+        "IF482",
+        "IF614",
+        "IF652",
+        "IF664"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#semestre-9",
+      "titulo": "Noveno semestre - Plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Noveno semestre del plan de estudios 2017 de Ingeniería Informática y de Sistemas UNSAAC según el catálogo del Centro de Cómputo: 8 asignaturas, 29 créditos.\n\n- IF656 PROCESAMIENTO DEL LENGUAJE NATURAL: 4 créditos (estudios de especialidad), requisito: IF651 INTELIGENCIA ARTIFICIAL.\n- IF657 VISIÓN COMPUTACIONAL: 4 créditos (estudios de especialidad), requisito: IF651 INTELIGENCIA ARTIFICIAL.\n- IF654 ROBÓTICA: 4 créditos (estudios de especialidad), requisito: IF651 INTELIGENCIA ARTIFICIAL.\n- IF459 COMPUTACIÓN GRÁFICA II: 4 créditos (estudios de especialidad), requisito: IF458 COMPUTACIÓN GRÁFICA I.\n- IF617 INGENIERÍA DE SOFTWARE II: 4 créditos (estudios de especialidad), requisito: IF614 INGENIERÍA DE SOFTWARE I.\n- IF557 ARQUITECTURAS DE ALTO RENDIMIENTO: 4 créditos (estudios de especialidad), requisito: IF554 REDES DE COMPUTADORAS II.\n- IF483 FORMULACIÓN DE PROYECTOS DE TECNOLOGÍA DE INFORMACIÓN: 3 créditos (estudios específicos), requisito: IF482 PLANEAMIENTO Y DIRECCIÓN ESTRATÉGICA DE TECNOLOGÍA DE INFORMACIÓN.\n- IF062 DANZA MODERNA: 2 créditos (actividades extracurriculares), requisito: 100 créditos.",
+      "seccion": [
+        "plan_estudios_2017",
+        "semestre_9"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "IF656",
+        "IF657",
+        "IF654",
+        "IF459",
+        "IF617",
+        "IF557",
+        "IF483",
+        "IF062"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#semestre-10",
+      "titulo": "Décimo semestre - Plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Décimo semestre del plan de estudios 2017 de Ingeniería Informática y de Sistemas UNSAAC según el catálogo del Centro de Cómputo: 1 asignaturas, 3 créditos.\n\n- IF711 SEMINARIO DE INVESTIGACIÓN II: 3 créditos (estudios específicos), requisito: IF710 SEMINARIO DE INVESTIGACIÓN I, 190 créditos.",
+      "seccion": [
+        "plan_estudios_2017",
+        "semestre_10"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "IF711"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#especialidad-indice",
+      "titulo": "Qué asignaturas de especialidad ofrece el plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Qué asignaturas de especialidad ofrece el plan 2017\n¿Qué asignaturas de especialidad se llevan bajo la malla curricular 2017? ¿Qué cursos electivos de especialidad hay en el plan 2017?\nEl plan 2017 exige 45 créditos de estudios de especialidad. La imagen de la malla curricular los muestra como quince casilleros rotulados \"ASIGNATURA DE ESPECIALIDAD\" sin nombre. El catálogo del Centro de Cómputo sí los nombra: ofrece 37 asignaturas de especialidad en total. Las 11 que el catálogo ubica en un semestre concreto son:\n\nIF458 COMPUTACIÓN GRÁFICA I, IF466 COMPILADORES, IF467 ANÁLISIS Y DISEÑO DE ALGORITMOS, IF669 MODELADO Y SIMULACIÓN, IF664 BIOINFORMÁTICA, IF656 PROCESAMIENTO DEL LENGUAJE NATURAL, IF657 VISIÓN COMPUTACIONAL, IF654 ROBÓTICA, IF459 COMPUTACIÓN GRÁFICA II, IF617 INGENIERÍA DE SOFTWARE II, IF557 ARQUITECTURAS DE ALTO RENDIMIENTO.",
+      "seccion": [
+        "plan_estudios_2017",
+        "asignaturas_de_especialidad"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "asignatura de especialidad",
+        "electivo",
+        "EEEP",
+        "45 créditos"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#especialidad-indice-electivos-1",
+      "titulo": "Asignaturas de especialidad electivas del plan 2017 (1 de 2)",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Asignaturas de especialidad electivas (1 de 2)\n¿Qué asignaturas electivas de especialidad se pueden llevar bajo la malla curricular 2017?\nAdemás de las que ubica en un semestre, el catálogo del plan 2017 ofrece 26 asignaturas de especialidad en el bloque de cursos electivos y/o complementarios, sin semestre fijo. El estudiante elige entre ellas hasta completar los 45 créditos de estudios de especialidad. Parte 1 de 2 de la lista:\n\nIF460 COMPUTACIÓN CUÁNTICA, IF464 COMPUTACIÓN SIMBÓLICA, IF465 GEOMETRÍA COMPUTACIONAL, IF484 EMPRENDIMIENTO E INNOVACIÓN, IF485 CONTROL Y AUDITORÍA DE SISTEMAS, IF553 LENGUAJE ENSAMBLADOR, IF554 REDES DE COMPUTADORAS II, IF555 TÓPICOS AVANZADOS EN REDES, IF556 SISTEMAS EMBEBIDOS, IF616 DESARROLLO DE SOFTWARE II, IF618 TÓPICOS AVANZADOS EN INGENIERÍA DE SOFTWARE, IF619 ANÁLISIS DE DATOS EMPRESARIALES, IF653 MINERÍA DE DATOS.",
+      "seccion": [
+        "plan_estudios_2017",
+        "asignaturas_de_especialidad"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "electivo",
+        "complementario",
+        "EEEP",
+        "45 créditos"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#especialidad-indice-electivos-2",
+      "titulo": "Asignaturas de especialidad electivas del plan 2017 (2 de 2)",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Asignaturas de especialidad electivas (2 de 2)\n¿Qué asignaturas electivas de especialidad se pueden llevar bajo la malla curricular 2017?\nAdemás de las que ubica en un semestre, el catálogo del plan 2017 ofrece 26 asignaturas de especialidad en el bloque de cursos electivos y/o complementarios, sin semestre fijo. El estudiante elige entre ellas hasta completar los 45 créditos de estudios de especialidad. Parte 2 de 2 de la lista:\n\nIF655 PROCESAMIENTO DIGITAL DE SEÑALES, IF658 REDES NEURONALES ARTIFICIALES, IF659 REDES BAYESIANAS, IF661 BÚSQUEDA HEURÍSTICA Y METAHEURÍSTICA, IF662 DEEP LEARNING, IF663 INTERACCIÓN PERSONA COMPUTADORA, IF665 MODELOS Y SIMULACIÓN DE ESTRUCTURAS BIOMOLECULARES, IF666 ESTADÍSTICA PARA BIOINFORMÁTICA Y DISEÑO EXPERIMENTAL, IF667 ANÁLISIS DE IMÁGENES BIOMÉDICAS EN 2D Y 3D, IF668 ANÁLISIS DE DATOS DE EXPRESIÓN GENÉTICA, ME357 MATEMÁTICAS AVANZADAS PARA INGENIERÍA, ME358 ESTADÍSTICA INFERENCIAL, ME359 ESTADÍSTICA APLICADA.",
+      "seccion": [
+        "plan_estudios_2017",
+        "asignaturas_de_especialidad"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "electivo",
+        "complementario",
+        "EEEP",
+        "45 créditos"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#especialidad-if458",
+      "titulo": "IF458 COMPUTACIÓN GRÁFICA I - asignatura de especialidad, plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Asignatura de especialidad IF458\nIF458 COMPUTACIÓN GRÁFICA I es una asignatura de especialidad (categoría EEEP) del plan de estudios 2017 de Ingeniería Informática y de Sistemas UNSAAC. Vale 4 créditos y tiene requisito: IF452 ALGORITMOS Y ESTRUCTURAS DE DATOS, ME351 ÁLGEBRA LINEAL. El catálogo la ubica en el semestre 6 del plan de estudios. Cuenta para los 45 créditos de estudios de especialidad que exige el plan.",
+      "seccion": [
+        "plan_estudios_2017",
+        "asignaturas_de_especialidad"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "IF458",
+        "COMPUTACIÓN GRÁFICA I"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#especialidad-if466",
+      "titulo": "IF466 COMPILADORES - asignatura de especialidad, plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Asignatura de especialidad IF466\nIF466 COMPILADORES es una asignatura de especialidad (categoría EEEP) del plan de estudios 2017 de Ingeniería Informática y de Sistemas UNSAAC. Vale 3 créditos y tiene requisito: IF454 TEORÍA DE LA COMPUTACIÓN. El catálogo la ubica en el semestre 7 del plan de estudios. Cuenta para los 45 créditos de estudios de especialidad que exige el plan.",
+      "seccion": [
+        "plan_estudios_2017",
+        "asignaturas_de_especialidad"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "IF466",
+        "COMPILADORES"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#especialidad-if467",
+      "titulo": "IF467 ANÁLISIS Y DISEÑO DE ALGORITMOS - asignatura de especialidad, plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Asignatura de especialidad IF467\nIF467 ANÁLISIS Y DISEÑO DE ALGORITMOS es una asignatura de especialidad (categoría EEEP) del plan de estudios 2017 de Ingeniería Informática y de Sistemas UNSAAC. Vale 3 créditos y tiene requisito: IF452 ALGORITMOS Y ESTRUCTURAS DE DATOS, IF453 PROGRAMACIÓN II. El catálogo la ubica en el semestre 7 del plan de estudios. Cuenta para los 45 créditos de estudios de especialidad que exige el plan.",
+      "seccion": [
+        "plan_estudios_2017",
+        "asignaturas_de_especialidad"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "IF467",
+        "ANÁLISIS Y DISEÑO DE ALGORITMOS"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#especialidad-if669",
+      "titulo": "IF669 MODELADO Y SIMULACIÓN - asignatura de especialidad, plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Asignatura de especialidad IF669\nIF669 MODELADO Y SIMULACIÓN es una asignatura de especialidad (categoría EEEP) del plan de estudios 2017 de Ingeniería Informática y de Sistemas UNSAAC. Vale 4 créditos y tiene requisito: IF650 MODELOS PROBABILÍSTICOS. El catálogo la ubica en el semestre 8 del plan de estudios. Cuenta para los 45 créditos de estudios de especialidad que exige el plan.",
+      "seccion": [
+        "plan_estudios_2017",
+        "asignaturas_de_especialidad"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "IF669",
+        "MODELADO Y SIMULACIÓN"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#especialidad-if664",
+      "titulo": "IF664 BIOINFORMÁTICA - asignatura de especialidad, plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Asignatura de especialidad IF664\nIF664 BIOINFORMÁTICA es una asignatura de especialidad (categoría EEEP) del plan de estudios 2017 de Ingeniería Informática y de Sistemas UNSAAC. Vale 4 créditos y tiene requisito: IF650 MODELOS PROBABILÍSTICOS. El catálogo la ubica en el semestre 8 del plan de estudios. Cuenta para los 45 créditos de estudios de especialidad que exige el plan.",
+      "seccion": [
+        "plan_estudios_2017",
+        "asignaturas_de_especialidad"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "IF664",
+        "BIOINFORMÁTICA"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#especialidad-if656",
+      "titulo": "IF656 PROCESAMIENTO DEL LENGUAJE NATURAL - asignatura de especialidad, plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Asignatura de especialidad IF656\nIF656 PROCESAMIENTO DEL LENGUAJE NATURAL es una asignatura de especialidad (categoría EEEP) del plan de estudios 2017 de Ingeniería Informática y de Sistemas UNSAAC. Vale 4 créditos y tiene requisito: IF651 INTELIGENCIA ARTIFICIAL. El catálogo la ubica en el semestre 9 del plan de estudios. Cuenta para los 45 créditos de estudios de especialidad que exige el plan.",
+      "seccion": [
+        "plan_estudios_2017",
+        "asignaturas_de_especialidad"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "IF656",
+        "PROCESAMIENTO DEL LENGUAJE NATURAL"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#especialidad-if657",
+      "titulo": "IF657 VISIÓN COMPUTACIONAL - asignatura de especialidad, plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Asignatura de especialidad IF657\nIF657 VISIÓN COMPUTACIONAL es una asignatura de especialidad (categoría EEEP) del plan de estudios 2017 de Ingeniería Informática y de Sistemas UNSAAC. Vale 4 créditos y tiene requisito: IF651 INTELIGENCIA ARTIFICIAL. El catálogo la ubica en el semestre 9 del plan de estudios. Cuenta para los 45 créditos de estudios de especialidad que exige el plan.",
+      "seccion": [
+        "plan_estudios_2017",
+        "asignaturas_de_especialidad"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "IF657",
+        "VISIÓN COMPUTACIONAL"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#especialidad-if654",
+      "titulo": "IF654 ROBÓTICA - asignatura de especialidad, plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Asignatura de especialidad IF654\nIF654 ROBÓTICA es una asignatura de especialidad (categoría EEEP) del plan de estudios 2017 de Ingeniería Informática y de Sistemas UNSAAC. Vale 4 créditos y tiene requisito: IF651 INTELIGENCIA ARTIFICIAL. El catálogo la ubica en el semestre 9 del plan de estudios. Cuenta para los 45 créditos de estudios de especialidad que exige el plan.",
+      "seccion": [
+        "plan_estudios_2017",
+        "asignaturas_de_especialidad"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "IF654",
+        "ROBÓTICA"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#especialidad-if459",
+      "titulo": "IF459 COMPUTACIÓN GRÁFICA II - asignatura de especialidad, plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Asignatura de especialidad IF459\nIF459 COMPUTACIÓN GRÁFICA II es una asignatura de especialidad (categoría EEEP) del plan de estudios 2017 de Ingeniería Informática y de Sistemas UNSAAC. Vale 4 créditos y tiene requisito: IF458 COMPUTACIÓN GRÁFICA I. El catálogo la ubica en el semestre 9 del plan de estudios. Cuenta para los 45 créditos de estudios de especialidad que exige el plan.",
+      "seccion": [
+        "plan_estudios_2017",
+        "asignaturas_de_especialidad"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "IF459",
+        "COMPUTACIÓN GRÁFICA II"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#especialidad-if617",
+      "titulo": "IF617 INGENIERÍA DE SOFTWARE II - asignatura de especialidad, plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Asignatura de especialidad IF617\nIF617 INGENIERÍA DE SOFTWARE II es una asignatura de especialidad (categoría EEEP) del plan de estudios 2017 de Ingeniería Informática y de Sistemas UNSAAC. Vale 4 créditos y tiene requisito: IF614 INGENIERÍA DE SOFTWARE I. El catálogo la ubica en el semestre 9 del plan de estudios. Cuenta para los 45 créditos de estudios de especialidad que exige el plan.",
+      "seccion": [
+        "plan_estudios_2017",
+        "asignaturas_de_especialidad"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "IF617",
+        "INGENIERÍA DE SOFTWARE II"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#especialidad-if557",
+      "titulo": "IF557 ARQUITECTURAS DE ALTO RENDIMIENTO - asignatura de especialidad, plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Asignatura de especialidad IF557\nIF557 ARQUITECTURAS DE ALTO RENDIMIENTO es una asignatura de especialidad (categoría EEEP) del plan de estudios 2017 de Ingeniería Informática y de Sistemas UNSAAC. Vale 4 créditos y tiene requisito: IF554 REDES DE COMPUTADORAS II. El catálogo la ubica en el semestre 9 del plan de estudios. Cuenta para los 45 créditos de estudios de especialidad que exige el plan.",
+      "seccion": [
+        "plan_estudios_2017",
+        "asignaturas_de_especialidad"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "IF557",
+        "ARQUITECTURAS DE ALTO RENDIMIENTO"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#especialidad-if460",
+      "titulo": "IF460 COMPUTACIÓN CUÁNTICA - asignatura de especialidad, plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Asignatura de especialidad IF460\nIF460 COMPUTACIÓN CUÁNTICA es una asignatura de especialidad (categoría EEEP) del plan de estudios 2017 de Ingeniería Informática y de Sistemas UNSAAC. Vale 4 créditos y tiene requisito: IF456 ALGORITMOS AVANZADOS. El catálogo la ofrece en el bloque de cursos electivos y/o complementarios, sin semestre fijo. Cuenta para los 45 créditos de estudios de especialidad que exige el plan.",
+      "seccion": [
+        "plan_estudios_2017",
+        "asignaturas_de_especialidad"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "IF460",
+        "COMPUTACIÓN CUÁNTICA"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#especialidad-if464",
+      "titulo": "IF464 COMPUTACIÓN SIMBÓLICA - asignatura de especialidad, plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Asignatura de especialidad IF464\nIF464 COMPUTACIÓN SIMBÓLICA es una asignatura de especialidad (categoría EEEP) del plan de estudios 2017 de Ingeniería Informática y de Sistemas UNSAAC. Vale 4 créditos y tiene requisito: IF466 COMPILADORES. El catálogo la ofrece en el bloque de cursos electivos y/o complementarios, sin semestre fijo. Cuenta para los 45 créditos de estudios de especialidad que exige el plan.",
+      "seccion": [
+        "plan_estudios_2017",
+        "asignaturas_de_especialidad"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "IF464",
+        "COMPUTACIÓN SIMBÓLICA"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#especialidad-if465",
+      "titulo": "IF465 GEOMETRÍA COMPUTACIONAL - asignatura de especialidad, plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Asignatura de especialidad IF465\nIF465 GEOMETRÍA COMPUTACIONAL es una asignatura de especialidad (categoría EEEP) del plan de estudios 2017 de Ingeniería Informática y de Sistemas UNSAAC. Vale 4 créditos y tiene requisito: IF458 COMPUTACIÓN GRÁFICA I. El catálogo la ofrece en el bloque de cursos electivos y/o complementarios, sin semestre fijo. Cuenta para los 45 créditos de estudios de especialidad que exige el plan.",
+      "seccion": [
+        "plan_estudios_2017",
+        "asignaturas_de_especialidad"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "IF465",
+        "GEOMETRÍA COMPUTACIONAL"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#especialidad-if484",
+      "titulo": "IF484 EMPRENDIMIENTO E INNOVACIÓN - asignatura de especialidad, plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Asignatura de especialidad IF484\nIF484 EMPRENDIMIENTO E INNOVACIÓN es una asignatura de especialidad (categoría EEEP) del plan de estudios 2017 de Ingeniería Informática y de Sistemas UNSAAC. Vale 3 créditos y tiene requisito: IF482 PLANEAMIENTO Y DIRECCIÓN ESTRATÉGICA DE TECNOLOGÍA DE INFORMACIÓN. El catálogo la ofrece en el bloque de cursos electivos y/o complementarios, sin semestre fijo. Cuenta para los 45 créditos de estudios de especialidad que exige el plan.",
+      "seccion": [
+        "plan_estudios_2017",
+        "asignaturas_de_especialidad"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "IF484",
+        "EMPRENDIMIENTO E INNOVACIÓN"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#especialidad-if485",
+      "titulo": "IF485 CONTROL Y AUDITORÍA DE SISTEMAS - asignatura de especialidad, plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Asignatura de especialidad IF485\nIF485 CONTROL Y AUDITORÍA DE SISTEMAS es una asignatura de especialidad (categoría EEEP) del plan de estudios 2017 de Ingeniería Informática y de Sistemas UNSAAC. Vale 3 créditos y tiene requisito: IF483 FORMULACIÓN DE PROYECTOS DE TECNOLOGÍA DE INFORMACIÓN. El catálogo la ofrece en el bloque de cursos electivos y/o complementarios, sin semestre fijo. Cuenta para los 45 créditos de estudios de especialidad que exige el plan.",
+      "seccion": [
+        "plan_estudios_2017",
+        "asignaturas_de_especialidad"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "IF485",
+        "CONTROL Y AUDITORÍA DE SISTEMAS"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#especialidad-if553",
+      "titulo": "IF553 LENGUAJE ENSAMBLADOR - asignatura de especialidad, plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Asignatura de especialidad IF553\nIF553 LENGUAJE ENSAMBLADOR es una asignatura de especialidad (categoría EEEP) del plan de estudios 2017 de Ingeniería Informática y de Sistemas UNSAAC. Vale 3 créditos y tiene requisito: IF550 ORGANIZACIÓN Y ARQUITECTURA DEL COMPUTADOR. El catálogo la ofrece en el bloque de cursos electivos y/o complementarios, sin semestre fijo. Cuenta para los 45 créditos de estudios de especialidad que exige el plan.",
+      "seccion": [
+        "plan_estudios_2017",
+        "asignaturas_de_especialidad"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "IF553",
+        "LENGUAJE ENSAMBLADOR"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#especialidad-if554",
+      "titulo": "IF554 REDES DE COMPUTADORAS II - asignatura de especialidad, plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Asignatura de especialidad IF554\nIF554 REDES DE COMPUTADORAS II es una asignatura de especialidad (categoría EEEP) del plan de estudios 2017 de Ingeniería Informática y de Sistemas UNSAAC. Vale 4 créditos y tiene requisito: IF552 REDES DE COMPUTADORAS I. El catálogo la ofrece en el bloque de cursos electivos y/o complementarios, sin semestre fijo. Cuenta para los 45 créditos de estudios de especialidad que exige el plan.",
+      "seccion": [
+        "plan_estudios_2017",
+        "asignaturas_de_especialidad"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "IF554",
+        "REDES DE COMPUTADORAS II"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#especialidad-if555",
+      "titulo": "IF555 TÓPICOS AVANZADOS EN REDES - asignatura de especialidad, plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Asignatura de especialidad IF555\nIF555 TÓPICOS AVANZADOS EN REDES es una asignatura de especialidad (categoría EEEP) del plan de estudios 2017 de Ingeniería Informática y de Sistemas UNSAAC. Vale 4 créditos y tiene requisito: IF554 REDES DE COMPUTADORAS II. El catálogo la ofrece en el bloque de cursos electivos y/o complementarios, sin semestre fijo. Cuenta para los 45 créditos de estudios de especialidad que exige el plan.",
+      "seccion": [
+        "plan_estudios_2017",
+        "asignaturas_de_especialidad"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "IF555",
+        "TÓPICOS AVANZADOS EN REDES"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#especialidad-if556",
+      "titulo": "IF556 SISTEMAS EMBEBIDOS - asignatura de especialidad, plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Asignatura de especialidad IF556\nIF556 SISTEMAS EMBEBIDOS es una asignatura de especialidad (categoría EEEP) del plan de estudios 2017 de Ingeniería Informática y de Sistemas UNSAAC. Vale 4 créditos y tiene requisito: IF551 SISTEMAS OPERATIVOS. El catálogo la ofrece en el bloque de cursos electivos y/o complementarios, sin semestre fijo. Cuenta para los 45 créditos de estudios de especialidad que exige el plan.",
+      "seccion": [
+        "plan_estudios_2017",
+        "asignaturas_de_especialidad"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "IF556",
+        "SISTEMAS EMBEBIDOS"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#especialidad-if616",
+      "titulo": "IF616 DESARROLLO DE SOFTWARE II - asignatura de especialidad, plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Asignatura de especialidad IF616\nIF616 DESARROLLO DE SOFTWARE II es una asignatura de especialidad (categoría EEEP) del plan de estudios 2017 de Ingeniería Informática y de Sistemas UNSAAC. Vale 2 créditos y tiene requisito: IF614 INGENIERÍA DE SOFTWARE I. El catálogo la ofrece en el bloque de cursos electivos y/o complementarios, sin semestre fijo. Cuenta para los 45 créditos de estudios de especialidad que exige el plan.",
+      "seccion": [
+        "plan_estudios_2017",
+        "asignaturas_de_especialidad"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "IF616",
+        "DESARROLLO DE SOFTWARE II"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#especialidad-if618",
+      "titulo": "IF618 TÓPICOS AVANZADOS EN INGENIERÍA DE SOFTWARE - asignatura de especialidad, plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Asignatura de especialidad IF618\nIF618 TÓPICOS AVANZADOS EN INGENIERÍA DE SOFTWARE es una asignatura de especialidad (categoría EEEP) del plan de estudios 2017 de Ingeniería Informática y de Sistemas UNSAAC. Vale 4 créditos y tiene requisito: IF614 INGENIERÍA DE SOFTWARE I. El catálogo la ofrece en el bloque de cursos electivos y/o complementarios, sin semestre fijo. Cuenta para los 45 créditos de estudios de especialidad que exige el plan.",
+      "seccion": [
+        "plan_estudios_2017",
+        "asignaturas_de_especialidad"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "IF618",
+        "TÓPICOS AVANZADOS EN INGENIERÍA DE SOFTWARE"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#especialidad-if619",
+      "titulo": "IF619 ANÁLISIS DE DATOS EMPRESARIALES - asignatura de especialidad, plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Asignatura de especialidad IF619\nIF619 ANÁLISIS DE DATOS EMPRESARIALES es una asignatura de especialidad (categoría EEEP) del plan de estudios 2017 de Ingeniería Informática y de Sistemas UNSAAC. Vale 3 créditos y tiene requisito: ME352 PROBABILIDADES Y ESTADÍSTICA, IF612 FUNDAMENTOS Y DISEÑO DE BASES DE DATOS. El catálogo la ofrece en el bloque de cursos electivos y/o complementarios, sin semestre fijo. Cuenta para los 45 créditos de estudios de especialidad que exige el plan.",
+      "seccion": [
+        "plan_estudios_2017",
+        "asignaturas_de_especialidad"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "IF619",
+        "ANÁLISIS DE DATOS EMPRESARIALES"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#especialidad-if653",
+      "titulo": "IF653 MINERÍA DE DATOS - asignatura de especialidad, plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Asignatura de especialidad IF653\nIF653 MINERÍA DE DATOS es una asignatura de especialidad (categoría EEEP) del plan de estudios 2017 de Ingeniería Informática y de Sistemas UNSAAC. Vale 4 créditos y tiene requisito: IF652 APRENDIZAJE AUTOMÁTICO. El catálogo la ofrece en el bloque de cursos electivos y/o complementarios, sin semestre fijo. Cuenta para los 45 créditos de estudios de especialidad que exige el plan.",
+      "seccion": [
+        "plan_estudios_2017",
+        "asignaturas_de_especialidad"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "IF653",
+        "MINERÍA DE DATOS"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#especialidad-if655",
+      "titulo": "IF655 PROCESAMIENTO DIGITAL DE SEÑALES - asignatura de especialidad, plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Asignatura de especialidad IF655\nIF655 PROCESAMIENTO DIGITAL DE SEÑALES es una asignatura de especialidad (categoría EEEP) del plan de estudios 2017 de Ingeniería Informática y de Sistemas UNSAAC. Vale 4 créditos y tiene requisito: IF651 INTELIGENCIA ARTIFICIAL. El catálogo la ofrece en el bloque de cursos electivos y/o complementarios, sin semestre fijo. Cuenta para los 45 créditos de estudios de especialidad que exige el plan.",
+      "seccion": [
+        "plan_estudios_2017",
+        "asignaturas_de_especialidad"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "IF655",
+        "PROCESAMIENTO DIGITAL DE SEÑALES"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#especialidad-if658",
+      "titulo": "IF658 REDES NEURONALES ARTIFICIALES - asignatura de especialidad, plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Asignatura de especialidad IF658\nIF658 REDES NEURONALES ARTIFICIALES es una asignatura de especialidad (categoría EEEP) del plan de estudios 2017 de Ingeniería Informática y de Sistemas UNSAAC. Vale 4 créditos y tiene requisito: IF652 APRENDIZAJE AUTOMÁTICO. El catálogo la ofrece en el bloque de cursos electivos y/o complementarios, sin semestre fijo. Cuenta para los 45 créditos de estudios de especialidad que exige el plan.",
+      "seccion": [
+        "plan_estudios_2017",
+        "asignaturas_de_especialidad"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "IF658",
+        "REDES NEURONALES ARTIFICIALES"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#especialidad-if659",
+      "titulo": "IF659 REDES BAYESIANAS - asignatura de especialidad, plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Asignatura de especialidad IF659\nIF659 REDES BAYESIANAS es una asignatura de especialidad (categoría EEEP) del plan de estudios 2017 de Ingeniería Informática y de Sistemas UNSAAC. Vale 4 créditos y tiene requisito: IF652 APRENDIZAJE AUTOMÁTICO. El catálogo la ofrece en el bloque de cursos electivos y/o complementarios, sin semestre fijo. Cuenta para los 45 créditos de estudios de especialidad que exige el plan.",
+      "seccion": [
+        "plan_estudios_2017",
+        "asignaturas_de_especialidad"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "IF659",
+        "REDES BAYESIANAS"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#especialidad-if661",
+      "titulo": "IF661 BÚSQUEDA HEURÍSTICA Y METAHEURÍSTICA - asignatura de especialidad, plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Asignatura de especialidad IF661\nIF661 BÚSQUEDA HEURÍSTICA Y METAHEURÍSTICA es una asignatura de especialidad (categoría EEEP) del plan de estudios 2017 de Ingeniería Informática y de Sistemas UNSAAC. Vale 4 créditos y tiene requisito: IF651 INTELIGENCIA ARTIFICIAL. El catálogo la ofrece en el bloque de cursos electivos y/o complementarios, sin semestre fijo. Cuenta para los 45 créditos de estudios de especialidad que exige el plan.",
+      "seccion": [
+        "plan_estudios_2017",
+        "asignaturas_de_especialidad"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "IF661",
+        "BÚSQUEDA HEURÍSTICA Y METAHEURÍSTICA"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#especialidad-if662",
+      "titulo": "IF662 DEEP LEARNING - asignatura de especialidad, plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Asignatura de especialidad IF662\nIF662 DEEP LEARNING es una asignatura de especialidad (categoría EEEP) del plan de estudios 2017 de Ingeniería Informática y de Sistemas UNSAAC. Vale 4 créditos y tiene requisito: IF652 APRENDIZAJE AUTOMÁTICO. El catálogo la ofrece en el bloque de cursos electivos y/o complementarios, sin semestre fijo. Cuenta para los 45 créditos de estudios de especialidad que exige el plan.",
+      "seccion": [
+        "plan_estudios_2017",
+        "asignaturas_de_especialidad"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "IF662",
+        "DEEP LEARNING"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#especialidad-if663",
+      "titulo": "IF663 INTERACCIÓN PERSONA COMPUTADORA - asignatura de especialidad, plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Asignatura de especialidad IF663\nIF663 INTERACCIÓN PERSONA COMPUTADORA es una asignatura de especialidad (categoría EEEP) del plan de estudios 2017 de Ingeniería Informática y de Sistemas UNSAAC. Vale 4 créditos y tiene requisito: IF651 INTELIGENCIA ARTIFICIAL. El catálogo la ofrece en el bloque de cursos electivos y/o complementarios, sin semestre fijo. Cuenta para los 45 créditos de estudios de especialidad que exige el plan.",
+      "seccion": [
+        "plan_estudios_2017",
+        "asignaturas_de_especialidad"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "IF663",
+        "INTERACCIÓN PERSONA COMPUTADORA"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#especialidad-if665",
+      "titulo": "IF665 MODELOS Y SIMULACIÓN DE ESTRUCTURAS BIOMOLECULARES - asignatura de especialidad, plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Asignatura de especialidad IF665\nIF665 MODELOS Y SIMULACIÓN DE ESTRUCTURAS BIOMOLECULARES es una asignatura de especialidad (categoría EEEP) del plan de estudios 2017 de Ingeniería Informática y de Sistemas UNSAAC. Vale 4 créditos y tiene requisito: IF664 BIOINFORMÁTICA. El catálogo la ofrece en el bloque de cursos electivos y/o complementarios, sin semestre fijo. Cuenta para los 45 créditos de estudios de especialidad que exige el plan.",
+      "seccion": [
+        "plan_estudios_2017",
+        "asignaturas_de_especialidad"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "IF665",
+        "MODELOS Y SIMULACIÓN DE ESTRUCTURAS BIOMOLECULARES"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#especialidad-if666",
+      "titulo": "IF666 ESTADÍSTICA PARA BIOINFORMÁTICA Y DISEÑO EXPERIMENTAL - asignatura de especialidad, plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Asignatura de especialidad IF666\nIF666 ESTADÍSTICA PARA BIOINFORMÁTICA Y DISEÑO EXPERIMENTAL es una asignatura de especialidad (categoría EEEP) del plan de estudios 2017 de Ingeniería Informática y de Sistemas UNSAAC. Vale 4 créditos y tiene requisito: IF664 BIOINFORMÁTICA. El catálogo la ofrece en el bloque de cursos electivos y/o complementarios, sin semestre fijo. Cuenta para los 45 créditos de estudios de especialidad que exige el plan.",
+      "seccion": [
+        "plan_estudios_2017",
+        "asignaturas_de_especialidad"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "IF666",
+        "ESTADÍSTICA PARA BIOINFORMÁTICA Y DISEÑO EXPERIMENTAL"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#especialidad-if667",
+      "titulo": "IF667 ANÁLISIS DE IMÁGENES BIOMÉDICAS EN 2D Y 3D - asignatura de especialidad, plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Asignatura de especialidad IF667\nIF667 ANÁLISIS DE IMÁGENES BIOMÉDICAS EN 2D Y 3D es una asignatura de especialidad (categoría EEEP) del plan de estudios 2017 de Ingeniería Informática y de Sistemas UNSAAC. Vale 4 créditos y tiene requisito: IF664 BIOINFORMÁTICA. El catálogo la ofrece en el bloque de cursos electivos y/o complementarios, sin semestre fijo. Cuenta para los 45 créditos de estudios de especialidad que exige el plan.",
+      "seccion": [
+        "plan_estudios_2017",
+        "asignaturas_de_especialidad"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "IF667",
+        "ANÁLISIS DE IMÁGENES BIOMÉDICAS EN 2D Y 3D"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#especialidad-if668",
+      "titulo": "IF668 ANÁLISIS DE DATOS DE EXPRESIÓN GENÉTICA - asignatura de especialidad, plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Asignatura de especialidad IF668\nIF668 ANÁLISIS DE DATOS DE EXPRESIÓN GENÉTICA es una asignatura de especialidad (categoría EEEP) del plan de estudios 2017 de Ingeniería Informática y de Sistemas UNSAAC. Vale 4 créditos y tiene requisito: IF664 BIOINFORMÁTICA. El catálogo la ofrece en el bloque de cursos electivos y/o complementarios, sin semestre fijo. Cuenta para los 45 créditos de estudios de especialidad que exige el plan.",
+      "seccion": [
+        "plan_estudios_2017",
+        "asignaturas_de_especialidad"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "IF668",
+        "ANÁLISIS DE DATOS DE EXPRESIÓN GENÉTICA"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#especialidad-me357",
+      "titulo": "ME357 MATEMÁTICAS AVANZADAS PARA INGENIERÍA - asignatura de especialidad, plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Asignatura de especialidad ME357\nME357 MATEMÁTICAS AVANZADAS PARA INGENIERÍA es una asignatura de especialidad (categoría EEEP) del plan de estudios 2017 de Ingeniería Informática y de Sistemas UNSAAC. Vale 4 créditos y tiene requisito: ME350 CÁLCULO II. El catálogo la ofrece en el bloque de cursos electivos y/o complementarios, sin semestre fijo. Cuenta para los 45 créditos de estudios de especialidad que exige el plan.",
+      "seccion": [
+        "plan_estudios_2017",
+        "asignaturas_de_especialidad"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "ME357",
+        "MATEMÁTICAS AVANZADAS PARA INGENIERÍA"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#especialidad-me358",
+      "titulo": "ME358 ESTADÍSTICA INFERENCIAL - asignatura de especialidad, plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Asignatura de especialidad ME358\nME358 ESTADÍSTICA INFERENCIAL es una asignatura de especialidad (categoría EEEP) del plan de estudios 2017 de Ingeniería Informática y de Sistemas UNSAAC. Vale 4 créditos y tiene requisito: ME352 PROBABILIDADES Y ESTADÍSTICA. El catálogo la ofrece en el bloque de cursos electivos y/o complementarios, sin semestre fijo. Cuenta para los 45 créditos de estudios de especialidad que exige el plan.",
+      "seccion": [
+        "plan_estudios_2017",
+        "asignaturas_de_especialidad"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "ME358",
+        "ESTADÍSTICA INFERENCIAL"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#especialidad-me359",
+      "titulo": "ME359 ESTADÍSTICA APLICADA - asignatura de especialidad, plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Asignatura de especialidad ME359\nME359 ESTADÍSTICA APLICADA es una asignatura de especialidad (categoría EEEP) del plan de estudios 2017 de Ingeniería Informática y de Sistemas UNSAAC. Vale 4 créditos y tiene requisito: ME352 PROBABILIDADES Y ESTADÍSTICA. El catálogo la ofrece en el bloque de cursos electivos y/o complementarios, sin semestre fijo. Cuenta para los 45 créditos de estudios de especialidad que exige el plan.",
+      "seccion": [
+        "plan_estudios_2017",
+        "asignaturas_de_especialidad"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "ME359",
+        "ESTADÍSTICA APLICADA"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#actividades-extracurriculares",
+      "titulo": "Actividades extracurriculares - Plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Actividades extracurriculares\nEl plan 2017 exige 6 créditos de actividades extracurriculares, que se cursan en tres bloques de 2 créditos. La imagen de la malla los ubica en los ciclos 4, 7 y 9 sin nombrarlos; el catálogo los identifica así:\n\n- IF060 MÚSICA: 2 créditos (actividades extracurriculares), requisito: 60 créditos.\n- IF063 QUECHUA: 2 créditos (actividades extracurriculares), requisito: 100 créditos.\n- IF062 DANZA MODERNA: 2 créditos (actividades extracurriculares), requisito: 100 créditos.\n- IF061 CORO: 2 créditos (actividades extracurriculares), requisito: 60 créditos.\n- IF064 TALLER DE DEBATE: 2 créditos (actividades extracurriculares), requisito: 170 créditos.\n- IF065 TALLER DE CREATIVIDAD MUSICAL: 2 créditos (actividades extracurriculares), requisito: 170 créditos.\n- IF066 TEATRO: 2 créditos (actividades extracurriculares), requisito: 170 créditos.",
+      "seccion": [
+        "plan_estudios_2017",
+        "actividades_extracurriculares"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "actividades extracurriculares",
+        "música",
+        "quechua",
+        "danza",
+        "teatro"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#practicas-pre-profesionales",
+      "titulo": "Prácticas pre profesionales - Plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Prácticas pre profesionales\nLas prácticas pre profesionales del plan 2017 valen 9 créditos y la imagen de la malla las ubica en el décimo ciclo con el código incompleto \"IF\". El catálogo del Centro de Cómputo las registra así:\n\n- IF020 PRÁCTICAS PRE-PROFESIONALES: 9 créditos (prácticas pre profesionales), requisito: 200 créditos.",
+      "seccion": [
+        "plan_estudios_2017",
+        "practicas_pre_profesionales"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "prácticas pre profesionales",
+        "IF020"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#creditos-y-egreso",
+      "titulo": "Créditos totales y condición de egreso - Plan 2017",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Créditos totales y condición de egreso\nEl plan de estudios 2017 de Ingeniería Informática y de Sistemas exige 219 créditos para egresar, repartidos así: estudios específicos 124 créditos, estudios de especialidad 45 créditos, estudios generales 27 créditos, prácticas pre profesionales 9 créditos, estudios generales del área técnica 8 créditos, actividades extracurriculares 6 créditos. Créditos mínimos exigidos para hacer uso del Artículo 8 (inciso 8.2.4) del Reglamento Académico de la UNSAAC: 180 créditos. Créditos mínimos exigidos para ser egresado: 219.",
+      "seccion": [
+        "plan_estudios_2017",
+        "creditos_y_egreso"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "créditos",
+        "egresar",
+        "egresado",
+        "219"
+      ]
+    },
+    {
+      "id": "plan_estudios_2017#discrepancias-de-codigo",
+      "titulo": "Diferencias de código entre la imagen de la malla 2017 y el catálogo",
+      "texto": "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC > Diferencias de código entre la imagen de la malla y el catálogo\nLa imagen de la malla curricular 2017 publicada por la Escuela Profesional y el catálogo de asignaturas del Centro de Cómputo usan códigos distintos para cinco asignaturas. Vale el código del catálogo, que es el registro contra el que se matricula:\n\n- ÁLGEBRA LINEAL COMPUTACIONAL: el catálogo la registra como ME351; la imagen de la malla la muestra como IF351.\n- FÍSICA APLICADA A LA INFORMÁTICA: el catálogo la registra como FI370; la imagen de la malla la muestra como IF370.\n- ELECTRÓNICA Y DISEÑO DIGITAL: el catálogo la registra como EL371; la imagen de la malla la muestra como LI371.\n- ECUACIONES DIFERENCIALES: el catálogo la registra como ME356; la imagen de la malla la muestra como ME359. En el catálogo ME359 corresponde a ESTADÍSTICA APLICADA, que es una asignatura electiva de especialidad.\n- CONSTITUCIÓN POLÍTICA Y DERECHOS HUMANOS: el catálogo la registra como DE901; la imagen de la malla la muestra como DR901.",
+      "seccion": [
+        "plan_estudios_2017",
+        "discrepancias"
+      ],
+      "articulo": null,
+      "palabras_clave": [
+        "código",
+        "malla 2017",
+        "catálogo"
+      ]
+    }
+  ]
+}

@@ -1,50 +1,85 @@
-# Welcome to your Expo app 👋
+# App Móvil TutorIA (React Native + Expo SDK 54) 👋
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Aplicación móvil del sistema **TutorIA** desarrollada con Expo, Expo Router (v6), NativeWind y Zustand.
 
-## Get started
+---
 
-1. Install dependencies
+## ⚙️ Configuración del Cliente API Backend
 
+Todas las peticiones HTTP del frontend utilizan un cliente centralizado de **Axios** con interceptores de autenticación JWT.
+
+### Resolución de la URL Base del Backend (`API_URL`)
+
+El cliente resuelve la URL base en el siguiente orden de prioridad:
+
+1. **`EXPO_PUBLIC_API_URL`**: Variable de entorno configurada en `.env` (solo admite protocolo `http://` o `https://`, ej: `http://localhost:8000/api/v1`).
+2. **Detección Dinámica de Expo (`expoConfig.hostUri`)**: Cuando la app se ejecuta con Expo Go en un dispositivo físico conectado a la misma red Wi-Fi, detecta automáticamente la IP LAN del host (ej: `http://<IP_LAN_DEL_EQUIPO>:8000/api/v1`).
+3. **`localhost`**: Fallback por defecto (`http://localhost:8000/api/v1`).
+
+### Configuración para Dispositivo Físico
+- Crea un archivo `.env` local basándote en `.env.example`:
+  ```bash
+  EXPO_PUBLIC_API_URL=http://<IP_LAN_DEL_EQUIPO>:8000/api/v1
+  ```
+- **Nota:** El archivo `.env` real **nunca se versiona en Git**.
+
+---
+
+## 🚀 Inicio Rápido
+
+1. Instalar dependencias:
    ```bash
    npm install
    ```
 
-2. Start the app
+2. Verificar la capa API:
+   ```bash
+   npm run verify:api
+   ```
 
+3. Iniciar el servidor de desarrollo de Expo:
    ```bash
    npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+---
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## 🧪 Comandos de Calidad
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- `npm run verify:api`: Ejecuta la verificación estática y funcional de la capa API.
+- `npm run verify:errors`: Ejecuta la verificación estática y funcional del sistema centralizado de errores.
+- `npm run verify:calendar`: Ejecuta la verificación estática y funcional del módulo de calendario.
+- `npm run verify:data`: Ejecuta la verificación estática de integridad de datos reales del frontend.
+- `npm run verify:quality`: Ejecuta la verificación estática automatizada de calidad (ESLint con `--max-warnings=0`, ausencia de comentarios de supresión e integridad documental).
+- `npm run lint`: Ejecuta ESLint sobre el proyecto.
 
-## Get a fresh project
+El proyecto exige una política de **0 errores y 0 warnings** en TypeScript y ESLint completo.
 
-When you're ready, run:
+---
 
-```bash
-npm run reset-project
-```
+## 🛡️ Sistema Centralizado de Errores HTTP
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+El frontend implementa una normalización y clasificación pura de errores (`src/api/api-error.ts`) combinada con un servicio de retroalimentación (`src/services/error-feedback.ts`):
 
-## Learn more
+- **Normalización Pura:** Clasifica fallos en tipos semánticos (`network`, `timeout`, `unauthorized`, `forbidden`, `not_found`, `conflict`, `validation`, `server`, `unknown`).
+- **Detalle Seguro:** Conserva `detail` únicamente para respuestas HTTP 400, 409 y 422. Filtra automáticamente credenciales, tokens Bearer/JWT, cookies y trazas de pila (*stack traces*), imponiendo un límite de 240 caracteres.
+- **Retroalimentación Configurable (`notify`):** Presenta alertas visuales mediante `Alert.alert` utilizando el botón `errors.close`. Admite la opción `{ notify: false }` para silenciar alertas automáticas en operaciones cuyos consumidores/pantallas ya muestran su propia notificación visual.
+- **Deduplicación por Mapa:** Mantiene un registro de huellas semánticas en un `Map` para evitar mostrar alertas duplicadas dentro de un intervalo de 1500 ms.
 
-To learn more about developing your project with Expo, look at the following resources:
+---
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## 📅 Gestión del Calendario y Separación Funcional
 
-## Join the community
+El módulo de calendario desacopla conceptual y técnicamente los recordatorios locales de las tutorías académicas:
 
-Join our community of developers creating universal apps.
+- **Recordatorios Locales:** Almacenados en `useActivityStore` (`AsyncStorage`). Representan tareas/recordatorios privados del dispositivo.
+- **Tutorías Persistidas:** Consumidas desde `/sessions/` a través de `useSessionStore` con persistencia en PostgreSQL.
+- **Proyección Backend (`/events/`):** El backend vincula eventos a cada sesión de forma automática. El frontend no consume `/events/` directamente para prevenir la duplicación de tutorías.
+- **Modelo Puro (`src/components/calendar/calendar-items.ts`):** Normaliza y ordena elementos asignando identificadores estables `activity:<id>` y `session:<id>`, aplicando análisis numérico seguro de fechas locales.
+- **Conservación de Datos y Notificaciones:** Actividades locales inválidas se retienen en `AsyncStorage` (`shouldRetainStoredActivity`), excluyéndolas únicamente de las vistas. Las notificaciones del backend y recordatorios locales provienen de fuentes independientes sin duplicación sintética.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+---
+
+## 👤 Política de Integridad de Datos Reales y Estados Vacíos
+
+Todo contenido mostrado en la interfaz procede del usuario autenticado, respuestas de endpoints reales respaldados por el backend o estado local del usuario. La asignación de tutor utiliza la función resolutora determinista `resolveAssignedTutor()` que clasifica la respuesta en `none` (ausencia), `available` (unívoco) y `ambiguous` (múltiple ambigüedad), mientras que `useProfile` diferencia fallos de carga (`assignedTutorLoadError`). Si un dato no está disponible o existe un error de red, la app presenta un estado explícito y localizado en lugar de utilizar datos o personas ficticias.

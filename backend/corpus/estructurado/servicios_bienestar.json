@@ -1,0 +1,70 @@
+{
+  "procedencia": {
+    "documento": "Servicios de Bienestar Universitario y Comedor UNSAAC",
+    "tipo": "servicio",
+    "universidad": "UNSAAC",
+    "resolucion": null,
+    "anio": null,
+    "url": null,
+    "base_legal": [
+      "Ley Universitaria 30220",
+      "Estatuto de la Universidad Nacional de San Antonio Abad del Cusco"
+    ]
+  },
+  "fragmentos": [
+    {
+      "id": "servicios_bienestar#preguntas-frecuentes-que-servicios-medicos-puedo-encontrar-en-la-universidad",
+      "titulo": "Preguntas frecuentes > ¿Qué servicios médicos puedo encontrar en la universidad?",
+      "texto": "Preguntas frecuentes > ¿Qué servicios médicos puedo encontrar en la universidad?\nPregunta: ¿Qué servicios médicos puedo encontrar en la universidad?. Respuesta: La Unidad de Salud y Psicopedagogía te ofrece atención gratuita en Medicina General, Odontología, Psicología, Obstetricia y Tópico/Enfermería.",
+      "seccion": [
+        "preguntas_frecuentes",
+        "¿Qué servicios médicos puedo encontrar en la universidad?"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "servicios_bienestar#preguntas-frecuentes-es-obligatorio-el-examen-medico-si-soy-ingresante",
+      "titulo": "Preguntas frecuentes > ¿Es obligatorio el examen médico si soy ingresante?",
+      "texto": "Preguntas frecuentes > ¿Es obligatorio el examen médico si soy ingresante?\nPregunta: ¿Es obligatorio el examen médico si soy ingresante?. Respuesta: Sí, realizar los exámenes médicos, odontológicos y psicológicos es obligatorio para todos los ingresantes y es una función primordial de nuestra unidad de salud.",
+      "seccion": [
+        "preguntas_frecuentes",
+        "¿Es obligatorio el examen médico si soy ingresante?"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "servicios_bienestar#preguntas-frecuentes-a-donde-acudo-si-me-siento-muy-estresado-o-ansioso-por-mis-c",
+      "titulo": "Preguntas frecuentes > ¿A dónde acudo si me siento muy estresado o ansioso por mis cursos?",
+      "texto": "Preguntas frecuentes > ¿A dónde acudo si me siento muy estresado o ansioso por mis cursos?\nPregunta: ¿A dónde acudo si me siento muy estresado o ansioso por mis cursos?. Respuesta: Puedes acercarte al Servicio de Psicología y Psicopedagogía de la Dirección de Bienestar Universitario. Ellos te brindarán orientación, soporte emocional y técnicas de manejo de estrés.",
+      "seccion": [
+        "preguntas_frecuentes",
+        "¿A dónde acudo si me siento muy estresado o ansioso por mis cursos?"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "servicios_bienestar#preguntas-frecuentes-puedo-utilizar-el-estadio-universitario-si-no-soy-de-la-sele",
+      "titulo": "Preguntas frecuentes > ¿Puedo utilizar el Estadio Universitario si no soy de la selección?",
+      "texto": "Preguntas frecuentes > ¿Puedo utilizar el Estadio Universitario si no soy de la selección?\nPregunta: ¿Puedo utilizar el Estadio Universitario si no soy de la selección?. Respuesta: Sí, las instalaciones deportivas, como el Estadio Universitario, están disponibles para la recreación y los campeonatos de toda la comunidad universitaria, previa coordinación con la Unidad de Deportes.",
+      "seccion": [
+        "preguntas_frecuentes",
+        "¿Puedo utilizar el Estadio Universitario si no soy de la selección?"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "servicios_bienestar#glosario",
+      "titulo": "Glosario",
+      "texto": "Glosario\nBienestar universitario: Órgano universitario encargado de promover la salud integral, el bienestar social y el desarrollo físico y cultural de los estudiantes.. Estudiante invicto: Aquel alumno que ha aprobado la totalidad de sus asignaturas matriculadas en el semestre anterior; condición prioritaria para acceder a los beneficios del comedor universitario.. Evaluacion socioeconomica: Estudio realizado por las asistentas sociales para determinar el nivel de vulnerabilidad de un estudiante y su aptitud para recibir subsidios o raciones alimentarias.. Psicopedagogia: Área de la psicología enfocada en optimizar los procesos de enseñanza-aprendizaje y resolver dificultades cognitivas o vocacionales del alumno.. Examen medico de ingresante: Evaluación de salud integral (medicina, odontología, psicología y laboratorio) que todo nuevo alumno debe superar al iniciar su vida universitaria.",
+      "seccion": [
+        "glosario"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    }
+  ]
+}

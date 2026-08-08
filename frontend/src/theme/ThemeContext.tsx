@@ -24,7 +24,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     const isDarkNow = theme === 'system' ? systemColorScheme === 'dark' : theme === 'dark';
     setIsDark(isDarkNow);
     setColorScheme(isDarkNow ? 'dark' : 'light');
-  }, [theme, systemColorScheme]);
+  }, [theme, systemColorScheme, setColorScheme]);
 
   const colors = isDark ? darkTheme : lightTheme;
 

@@ -1,11 +1,12 @@
 import { create } from 'zustand';
 import client from '../api/client';
 import { Session } from '../types';
+import { reportApiError } from '../services/error-feedback';
 
 interface SessionState {
   sessions: Session[];
   isLoading: boolean;
-  fetchSessions: () => Promise<void>;
+  fetchSessions: () => Promise<boolean>;
   createSession: (sessionData: {
     student_id?: number;
     tutor_id: number;
@@ -23,16 +24,18 @@ interface SessionState {
   ) => Promise<void>;
 }
 
-export const useSessionStore = create<SessionState>((set, get) => ({
+export const useSessionStore = create<SessionState>((set) => ({
   sessions: [],
   isLoading: false,
-  fetchSessions: async () => {
+  fetchSessions: async (): Promise<boolean> => {
     set({ isLoading: true });
     try {
       const response = await client.get<Session[]>('/sessions/');
       set({ sessions: response.data });
+      return true;
     } catch (error) {
-      console.error('Failed to fetch sessions:', error);
+      reportApiError(error, 'errors.loadSessions', { notify: false });
+      return false;
     } finally {
       set({ isLoading: false });
     }
@@ -44,7 +47,7 @@ export const useSessionStore = create<SessionState>((set, get) => ({
       set((state) => ({ sessions: [response.data, ...state.sessions] }));
       return response.data;
     } catch (error) {
-      console.error('Failed to create session:', error);
+      reportApiError(error, 'errors.createSession', { notify: false });
       throw error;
     } finally {
       set({ isLoading: false });
@@ -63,7 +66,7 @@ export const useSessionStore = create<SessionState>((set, get) => ({
         ),
       }));
     } catch (error) {
-      console.error('Failed to update session status:', error);
+      reportApiError(error, 'errors.updateSession', { notify: false });
       throw error;
     } finally {
       set({ isLoading: false });

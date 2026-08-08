@@ -3,24 +3,22 @@ import React from 'react';
 import { useTheme } from '@/src/theme/ThemeContext';
 import { useTranslation } from 'react-i18next';
 import { View, Text, Pressable } from 'react-native';
+import Feather from '@expo/vector-icons/Feather';
+import { TutorIAAvatar } from '@/src/components/tutoria/TutorIAAvatar';
 
 interface TutoriaHeaderProps {
   onRefresh: () => void;
   onBackPress?: () => void;
 }
 
-export function TutoriaHeader({ onRefresh, onBackPress }: TutoriaHeaderProps) {
+export function TutoriaHeader({ onRefresh }: TutoriaHeaderProps) {
   const { colors } = useTheme();
   const { t } = useTranslation();
   return (
     <View style={{ backgroundColor: colors.surface }} className=" border-b border-border px-6 pt-16 pb-4 flex-row items-center justify-between">
       <View className="flex-row items-center flex-1">
-        <Pressable onPress={onBackPress} className="mr-3 p-1">
-          <Text className="text-xl" style={{ color: colors.text }}>←</Text>
-        </Pressable>
-
         <View className="w-10 h-10 rounded-full bg-primary/10 items-center justify-center border border-primary/25 mr-3">
-          <Text className="text-xl">🦖</Text>
+          <TutorIAAvatar size={36} />
         </View>
 
         <View className="flex-1">
@@ -32,8 +30,14 @@ export function TutoriaHeader({ onRefresh, onBackPress }: TutoriaHeaderProps) {
         </View>
       </View>
 
-      <Pressable onPress={onRefresh} className="p-2">
-        <Text className="text-lg" style={{ color: colors.text }}>↻</Text>
+      <Pressable
+        onPress={onRefresh}
+        hitSlop={8}
+        accessibilityRole="button"
+        accessibilityLabel={t('tutoring.restartConversation')}
+        className="p-2 active:opacity-60"
+      >
+        <Feather name="refresh-cw" size={18} color={colors.text} />
       </Pressable>
     </View>
   );

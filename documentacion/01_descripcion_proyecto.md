@@ -29,8 +29,8 @@ El sistema implementa una separación estricta de responsabilidades entre el cli
              ▼                                          ▼
 +--------------------------+              +--------------------------+
 |  POSTGRESQL + PGVECTOR   |              |    GOOGLE GEMINI API     |
-| (Vectores, Usuarios, DB) |              | (gemini-2.5-flash &      |
-+--------------------------+              |  gemini-embedding-001)   |
+| (Vectores, Usuarios, DB) |              | (gemini-3.5-flash-lite & |
++--------------------------+              |  gemini-embedding-2)   |
                                           +--------------------------+
 ```
 
@@ -92,10 +92,10 @@ sequenceDiagram
     participant Client as Axios API Client (React Native)
     participant API as FastAPI Endpoint (/api/v1/chat/message)
     participant UC as ChatUseCase (Application)
-    participant Embed as LLMPort / GeminiAdapter (text-embedding-004)
+    participant Embed as LLMPort / GeminiAdapter (gemini-embedding-2)
     participant VectorDB as CorpusRepository (pgvector / Coseno)
     participant Tools as Runtime DB Tools (get_assigned_tutors/events)
-    participant Gemini as Gemini 2.5 Flash (LLM)
+    participant Gemini as Gemini 3.5 Flash Lite (LLM)
     participant DB as PostgreSQL (Chat History)
 
     User->>Client: Escribe mensaje ("¿Quién es mi tutor y cuál es el trámite de tutoría?")

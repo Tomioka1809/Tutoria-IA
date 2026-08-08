@@ -1,0 +1,24 @@
+# El Dockerfile hace "COPY . ." desde backend/. Sin este archivo, el entorno virtual
+# del host terminaba dentro de la imagen: 305 MB de binarios compilados para otra
+# plataforma, que ademas quedan ocultos por el bind mount de docker-compose.
+#
+# No se excluyen ni corpus/ ni tests/ (3.6 MB entre ambos): los scripts que el README
+# documenta correr dentro del contenedor los necesitan, y el ahorro no lo justifica.
+venv/
+.venv/
+
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Secretos: llegan por env_file en tiempo de ejecucion, no horneados en la imagen.
+.env
+.env.local
+
+.git/
+.gitignore

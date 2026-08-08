@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, ConfigDict, EmailStr, Field
 from typing import Optional
 
 # Shared properties
@@ -26,9 +26,17 @@ class UserCreate(UserBase):
     administrative_position: Optional[str] = None
 
 # Properties to receive on user update
-class UserUpdate(BaseModel):
+class UserSelfUpdate(BaseModel):
+    """Campos que un usuario puede cambiar sobre su propia cuenta.
+
+    No declara ``role`` ni ``is_active`` a proposito: los recibia y el repositorio
+    los escribia, asi que un estudiante se ascendia a administrador con un solo
+    PUT /auth/profile. La proteccion es que el campo no exista en el contrato de
+    entrada, no un filtro en el endpoint. Si alguna vez hace falta que un admin
+    cambie el rol de otro, va por una ruta de admin con su propio DTO.
+    """
+
     email: Optional[EmailStr] = None
-    role: Optional[str] = None
     full_name: Optional[str] = None
     student_code: Optional[str] = None
     tutor_code: Optional[str] = None
@@ -37,7 +45,6 @@ class UserUpdate(BaseModel):
     office_location: Optional[str] = None
     current_semester: Optional[int] = None
     academic_status: Optional[str] = None
-    is_active: Optional[bool] = None
 
 class PasswordChange(BaseModel):
     current_password: str
@@ -55,5 +62,4 @@ class UserOut(UserBase):
     current_semester: Optional[int] = None
     academic_status: Optional[str] = None
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

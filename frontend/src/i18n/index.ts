@@ -1,8 +1,10 @@
-import i18n from 'i18next';
+import * as i18nextModule from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import en from './locales/en.json';
 import es from './locales/es.json';
 import { usePreferencesStore } from '../store/preferences';
+
+const i18n = i18nextModule.default || i18nextModule;
 
 const resources = {
   en: { translation: en },

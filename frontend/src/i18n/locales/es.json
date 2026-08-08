@@ -64,6 +64,9 @@
     "no": "No",
     "loading": "Cargando...",
     "notSpecified": "No especificado",
+    "retry": "Reintentar",
+    "showMore": "Ver más",
+    "showLess": "Ver menos",
     "version": "Versión {{version}}"
   },
   "dashboard": {
@@ -71,8 +74,11 @@
     "subtitle": "¿Qué quieres aprender hoy?",
     "servicesTitle": "Explora servicios",
     "academicTutoring": "Tutoría Académica",
+    "academicTutoringPrompt": "¿En qué consiste la tutoría académica según el reglamento de la UNSAAC?",
     "personalTutoring": "Tutoría Personal",
+    "personalTutoringPrompt": "¿En qué consiste la tutoría personal según el reglamento de la UNSAAC?",
     "professionalTutoring": "Tutoría Profesional",
+    "professionalTutoringPrompt": "¿En qué consiste la tutoría profesional según el reglamento de la UNSAAC?",
     "psychologicalSupport": "Apoyo Psicológico",
     "studentWelfare": "Bienestar Universitario",
     "internships": "Prácticas Preprofesionales",
@@ -95,6 +101,7 @@
   "profile": {
     "title": "Perfil",
     "code": "Código: {{code}}",
+    "codeLabel": "Código",
     "semester": "Semestre: {{semester}}",
     "myTutor": "Mi tutor",
     "settings": "Configuración",
@@ -104,7 +111,12 @@
     "assignedTutor": "Tutor asignado",
     "noTutor": "Aún no tienes un tutor asignado",
     "tutorTeacher": "Docente Tutor",
-    "viewProfile": "Ver perfil"
+    "viewProfile": "Ver perfil",
+    "noAssignedTutor": "Sin tutor asignado",
+    "noAssignedTutorDescription": "Actualmente no tienes un tutor asignado.",
+    "tutorUnavailable": "Tutor no disponible",
+    "tutorAssignmentAmbiguous": "Asignación de tutor por confirmar",
+    "tutorAssignmentAmbiguousDescription": "Se encontraron varias asignaciones y no es posible determinar un único tutor."
   },
   "notifications": {
     "title": "Notificaciones",
@@ -184,7 +196,10 @@
     "scheduledSuccess": "¡Tutoría programada con éxito!",
     "scheduledError": "Hubo un error al programar la tutoría.",
     "statusSuccess": "¡Estado actualizado con éxito!",
-    "statusError": "Hubo un error al actualizar el estado."
+    "statusError": "Hubo un error al actualizar el estado.",
+    "localActivity": "Actividad Personal",
+    "tutoringSession": "Sesión de Tutoría",
+    "invalidActivityDate": "Fecha u hora de actividad no válida"
   },
   "tutoring": {
     "online": "En línea",
@@ -197,14 +212,23 @@
     "mySessions": "Mis tutorías",
     "curriculum": "Malla curricular",
     "sessions": "Tutorías",
-    "regulations": "Reglamentos",
+    "regulations": "Reglamento de tutoría",
     "studentOnly": "El chatbot TutorIA está disponible exclusivamente para estudiantes con el fin de resolver consultas académicas.",
     "myStudentsPrompt": "¿Cuáles son mis estudiantes asignados?",
     "mySessionsPrompt": "¿Qué tutorías tengo hoy?",
     "curriculumPrompt": "Dame información de mi malla curricular",
     "sessionsPrompt": "¿Cuándo es mi próxima tutoría?",
-    "regulationsPrompt": "¿Cuáles son los reglamentos de tutoría y de intercambio estudiantil?",
-    "voicePending": "Entrada de voz (micrófono) en desarrollo para la siguiente versión."
+    "regulationsPrompt": "¿Qué dice el reglamento de tutoría de la UNSAAC?",
+    "voicePending": "Entrada de voz (micrófono) en desarrollo para la siguiente versión.",
+    "editingMessage": "Editando mensaje",
+    "editHint": "Mantén presionado un mensaje tuyo para editarlo",
+    "restartConversation": "Reiniciar la conversación",
+    "cancelEdit": "Cancelar edición",
+    "saveEdit": "Guardar",
+    "editWarningTitle": "Se descartarán los mensajes siguientes",
+    "editWarningBody": "Al guardar, TutorIA volverá a responder y se borrará lo que venga después de este mensaje.",
+    "editConfirm": "Editar",
+    "editCancel": "Cancelar"
   },
   "settings": {
     "title": "Configuración",
@@ -331,22 +355,14 @@
     "viewResults": "Ver resultados"
   },
   "explore": {
-    "title": "Explorar",
-    "intro": "Esta aplicación incluye código de ejemplo para ayudarte a comenzar.",
-    "routing": "Navegación basada en archivos",
-    "screens": "Esta aplicación tiene dos pantallas:",
-    "and": "y",
-    "layout": "El archivo de diseño configura el navegador de pestañas.",
-    "learnMore": "Más información",
-    "platforms": "Compatibilidad con Android, iOS y web",
-    "platformsBody": "Puedes abrir este proyecto en Android, iOS y la web. Para abrir la versión web, presiona w en la terminal que ejecuta el proyecto.",
-    "images": "Imágenes",
-    "imagesBody": "Para imágenes estáticas, puedes usar los sufijos @2x y @3x para proporcionar archivos para diferentes densidades de pantalla.",
-    "themes": "Componentes para modo claro y oscuro",
-    "themesBody": "Esta plantilla admite los modos claro y oscuro. El hook useColorScheme() permite consultar el esquema de color actual y ajustar la interfaz.",
-    "animations": "Animaciones",
-    "animationsBody": "Esta plantilla incluye un componente animado de ejemplo. HelloWave.tsx usa react-native-reanimated para crear una animación.",
-    "parallax": "ParallaxScrollView.tsx proporciona un efecto parallax para la imagen del encabezado."
+    "title": "Servicios y Recursos",
+    "intro": "Accede a las herramientas y servicios académicos de TutorIA.",
+    "studentDescription": "Accede rápidamente a tus servicios académicos y personales de TutorIA.",
+    "tutorDescription": "Gestión de tutorías, estudiantes asignados y recursos académicos.",
+    "openChat": "Chat Asistente IA",
+    "openCalendar": "Calendario",
+    "openProfile": "Mi Perfil",
+    "profileDescription": "Consulta y administra la información de tu perfil."
   },
   "admin": {
     "welcome": "Bienvenido, {{name}}",
@@ -441,5 +457,33 @@
     "access": "Acceso",
     "logout": "Cerrar Sesión",
     "logoutDescription": "Salir de la cuenta de administrador"
+  },
+  "errors": {
+    "title": "Error",
+    "close": "Cerrar",
+    "network": "No fue posible conectarse con el servidor. Revisa tu conexión a internet.",
+    "timeout": "La operación tardó demasiado tiempo. Intenta de nuevo.",
+    "unauthorized": "Tu sesión ha expirado. Por favor, inicia sesión nuevamente.",
+    "forbidden": "No tienes permisos para realizar esta acción.",
+    "notFound": "El recurso solicitado no fue encontrado.",
+    "conflict": "Existe un conflicto con la solicitud actual.",
+    "validation": "Los datos ingresados son incorrectos o están incompletos.",
+    "server": "El servidor no pudo completar la operación. Intenta más tarde.",
+    "unknown": "Ocurrió un error inesperado. Intenta de nuevo.",
+    "loadSessions": "No se pudieron cargar las tutorías programadas.",
+    "createSession": "No se pudo agendar la tutoría.",
+    "updateSession": "No se pudo actualizar la tutoría.",
+    "loadConversation": "No se pudo cargar la conversación.",
+    "sendMessage": "No se pudo enviar el mensaje.",
+    "editMessage": "No se pudo editar el mensaje.",
+    "resetConversation": "No se pudo reiniciar la conversación.",
+    "loadNotifications": "No se pudieron cargar las notificaciones.",
+    "markNotification": "No se pudo marcar la notificación como leída.",
+    "updateProfile": "No se pudo actualizar la información del perfil.",
+    "changePassword": "No se pudo cambiar la contraseña.",
+    "loadStreak": "No se pudo obtener la racha actual.",
+    "loadServiceTypes": "No se pudieron cargar los tipos de servicio.",
+    "loadTutorData": "No se pudo cargar la lista de estudiantes.",
+    "loadAssignedTutor": "No se pudo cargar la información del tutor asignado."
   }
 }

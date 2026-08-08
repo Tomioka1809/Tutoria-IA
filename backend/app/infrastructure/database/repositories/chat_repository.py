@@ -1,4 +1,5 @@
 from typing import List, Any
+from sqlalchemy import delete
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy.orm import selectinload
@@ -62,10 +63,44 @@ class ChatRepository(ChatRepositoryPort):
         await self.db.refresh(msg)
         return msg
 
-    async def get_history(self, conversation_id: int) -> List[Message]:
+    async def get_history(self, conversation_id: int, limit: int | None = None) -> List[Message]:
+        if limit is None:
+            result = await self.db.execute(
+                select(Message)
+                .where(Message.conversation_id == conversation_id)
+                .order_by(Message.sent_at.asc())
+            )
+            return list(result.scalars().all())
+
+        # Los ultimos N se obtienen ordenando descendente en la base de datos y revirtiendo
+        # despues, para no traer la conversacion completa solo para descartarla.
         result = await self.db.execute(
             select(Message)
             .where(Message.conversation_id == conversation_id)
-            .order_by(Message.sent_at.asc())
+            .order_by(Message.sent_at.desc(), Message.id.desc())
+            .limit(limit)
         )
-        return list(result.scalars().all())
+        return list(reversed(result.scalars().all()))
+
+    async def get_message(self, message_id: int) -> Message | None:
+        result = await self.db.execute(select(Message).where(Message.id == message_id))
+        return result.scalars().first()
+
+    async def edit_message_and_truncate(self, message_id: int, content: str) -> Message:
+        msg = await self.get_message(message_id)
+        if msg is None:
+            raise ValueError(f"No existe el mensaje {message_id}")
+
+        # El corte usa el id y no sent_at: dos mensajes guardados dentro del
+        # mismo segundo comparten timestamp, y ordenar solo por fecha dejaria
+        # vivo alguno de los que hay que descartar.
+        await self.db.execute(
+            delete(Message).where(
+                Message.conversation_id == msg.conversation_id,
+                Message.id > message_id,
+            )
+        )
+        msg.content = content
+        await self.db.commit()
+        await self.db.refresh(msg)
+        return msg

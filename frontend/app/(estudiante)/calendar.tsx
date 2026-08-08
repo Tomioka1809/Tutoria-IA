@@ -8,6 +8,7 @@ import { CalendarMonthView } from '@/src/components/calendar/CalendarMonthView';
 import { CalendarActivitiesList } from '@/src/components/calendar/CalendarActivitiesList';
 import { AddActivityModal } from '@/src/components/calendar/AddActivityModal';
 import { ActivityDetailsModal } from '@/src/components/calendar/ActivityDetailsModal';
+import { CalendarLoadState } from '@/src/components/calendar/CalendarLoadState';
 import { useTranslation } from 'react-i18next';
 
 interface UnifiedActivity {
@@ -43,6 +44,9 @@ export default function CalendarScreen() {
     deleteActivity,
     changeBackendSessionStatus,
     students,
+    isDataLoading,
+    loadError,
+    retryLoad,
     fetchTutorData,
   } = useCalendar();
 
@@ -70,29 +74,31 @@ export default function CalendarScreen() {
       <View className="flex-1" style={{ opacity: isAnyModalOpen ? 0.35 : 1 }}>
         <CalendarHeader />
 
-        <CalendarMonthView
-          currentMonth={currentMonth}
-          prevMonth={prevMonth}
-          nextMonth={nextMonth}
-          weekDays={weekDays}
-          days={days}
-          selectedDate={selectedDate}
-          setSelectedDate={setSelectedDate}
-          hasActivities={hasActivities}
-        />
+        <CalendarLoadState isLoading={isDataLoading} error={loadError} onRetry={retryLoad}>
+          <CalendarMonthView
+            currentMonth={currentMonth}
+            prevMonth={prevMonth}
+            nextMonth={nextMonth}
+            weekDays={weekDays}
+            days={days}
+            selectedDate={selectedDate}
+            setSelectedDate={setSelectedDate}
+            hasActivities={hasActivities}
+          />
 
-        <CalendarActivitiesList
-          activities={filteredActivities}
-          userRole={user?.role}
-          onAddPress={() => {
-            if (user?.role === 'tutor' || user?.role === 'admin') {
-              fetchTutorData();
-            }
-            setIsAddModalOpen(true);
-          }}
-          onViewPress={(activity) => setActivityToView(activity)}
-          onDeletePress={(activity) => setActivityToDelete(activity)}
-        />
+          <CalendarActivitiesList
+            activities={filteredActivities}
+            userRole={user?.role}
+            onAddPress={() => {
+              if (user?.role === 'tutor' || user?.role === 'admin') {
+                fetchTutorData();
+              }
+              setIsAddModalOpen(true);
+            }}
+            onViewPress={(activity) => setActivityToView(activity)}
+            onDeletePress={(activity) => setActivityToDelete(activity)}
+          />
+        </CalendarLoadState>
       </View>
 
       {/* Modal para añadir actividad */}

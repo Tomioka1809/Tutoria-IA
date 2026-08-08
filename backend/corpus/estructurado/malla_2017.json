@@ -1,0 +1,134 @@
+{
+  "procedencia": {
+    "documento": "Malla Curricular 2017 - Ingeniería Informática y de Sistemas UNSAAC",
+    "tipo": "malla",
+    "universidad": "UNSAAC",
+    "resolucion": null,
+    "anio": 2017,
+    "url": "https://in.unsaac.edu.pe/wp-content/uploads/2025/03/malla-curricular-ing-informatica-2017.jpg",
+    "base_legal": []
+  },
+  "fragmentos": [
+    {
+      "id": "malla_2017#ciclo-1",
+      "titulo": "Primer ciclo - Malla 2017",
+      "texto": "¿Qué cursos se llevan en el primer semestre bajo la malla curricular 2017? ¿Qué cursos llevo en el primer ciclo del plan 2017?\nPrimer ciclo (semestre 1) de la malla curricular 2017 de Ingeniería Informática y de Sistemas UNSAAC: 6 asignaturas, 21 créditos.\n\n- FP901 FILOSOFIA Y ETICA: 3 créditos (estudios generales), sin requisitos.\n- DR901 CONSTITUCIÓN POLITICA Y DD.HH.: 3 créditos (estudios generales), sin requisitos. Ojo: el catálogo del Centro de Cómputo la registra como DE901, que es el código con el que se matricula.\n- AS901 SOCIEDAD Y CULTURA: 3 créditos (estudios generales), sin requisitos.\n- ME901 MATEMATICA I: 4 créditos (estudios generales), sin requisitos.\n- ED901 ESTRATEGIAS DE APRENDIZAJE AUTONOMO: 4 créditos (estudios generales), sin requisitos.\n- LC901 REDACCION DE TEXTOS: 4 créditos (estudios generales), sin requisitos.",
+      "seccion": [
+        "malla_curricular",
+        "ciclo_1"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_2017#ciclo-2",
+      "titulo": "Segundo ciclo - Malla 2017",
+      "texto": "¿Qué cursos se llevan en el segundo semestre bajo la malla curricular 2017? ¿Qué cursos llevo en el segundo ciclo del plan 2017?\nSegundo ciclo (semestre 2) de la malla curricular 2017 de Ingeniería Informática y de Sistemas UNSAAC: 6 asignaturas, 22 créditos.\n\n- IF468 FUNDAMENTOS DE PROGRAMACIÓN: 4 créditos (estudios específicos), sin requisitos.\n- ME307 MATEMATICAS DISCRETAS I: 4 créditos (estudios específicos), sin requisitos.\n- FI902 FISICA I: 4 créditos (estudios generales), sin requisitos.\n- ME903 CALCULO I: 4 créditos (estudios generales), requisito: ME901 MATEMATICA I.\n- IF902 TECNOLOGIA DE LA INFORMACIÓN Y COMUNICACIÓN: 3 créditos (estudios generales), sin requisitos.\n- FP902 LIDERAZGO Y HABILIDADES SOCIALES: 3 créditos (estudios generales), sin requisitos.",
+      "seccion": [
+        "malla_curricular",
+        "ciclo_2"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_2017#ciclo-3",
+      "titulo": "Tercer ciclo - Malla 2017",
+      "texto": "¿Qué cursos se llevan en el tercer semestre bajo la malla curricular 2017? ¿Qué cursos llevo en el tercer ciclo del plan 2017?\nTercer ciclo (semestre 3) de la malla curricular 2017 de Ingeniería Informática y de Sistemas UNSAAC: 6 asignaturas, 22 créditos.\n\n- IF450 ABSTRACCIÓN DE DATOS Y OBJETOS: 4 créditos (estudios específicos), requisito: IF468 FUNDAMENTOS DE PROGRAMACIÓN.\n- IF351 ALGEBRA LINEAL COMPUTACIONAL: 4 créditos (estudios específicos), requisito: ME307 MATEMATICAS DISCRETAS I. Ojo: el catálogo del Centro de Cómputo la registra como ME351, que es el código con el que se matricula.\n- IF370 FISICA APLICADA A LA INFORMATICA: 4 créditos (estudios específicos), requisito: FI902 FISICA I. Ojo: el catálogo del Centro de Cómputo la registra como FI370, que es el código con el que se matricula.\n- ME350 CALCULO II: 4 créditos (estudios específicos), requisito: ME903 CALCULO I.\n- ME352 PROBABILIDADES Y ESTADISTICA: 4 créditos (estudios específicos), sin requisitos.\n- IF451 PROGRAMACION I: 2 créditos (estudios específicos), sin requisitos.",
+      "seccion": [
+        "malla_curricular",
+        "ciclo_3"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_2017#ciclo-4",
+      "titulo": "Cuarto ciclo - Malla 2017",
+      "texto": "¿Qué cursos se llevan en el cuarto semestre bajo la malla curricular 2017? ¿Qué cursos llevo en el cuarto ciclo del plan 2017?\nCuarto ciclo (semestre 4) de la malla curricular 2017 de Ingeniería Informática y de Sistemas UNSAAC: 7 asignaturas, 22 créditos.\n\n- IF452 ALGORITMOS Y ESTRUCTURA DE DATOS: 4 créditos (estudios específicos), requisito: IF450 ABSTRACCIÓN DE DATOS Y OBJETOS.\n- ME354 INVESTIGACION OPERATIVA: 4 créditos (estudios específicos), requisito: IF351 ALGEBRA LINEAL COMPUTACIONAL.\n- ME355 MATEMATICA DISCRETA II: 4 créditos (estudios específicos), sin requisitos.\n- LI371 ELECTRONICA Y DISEÑO DIGITAL: 3 créditos (estudios específicos), requisito: IF370 FISICA APLICADA A LA INFORMATICA. Ojo: el catálogo del Centro de Cómputo la registra como EL371, que es el código con el que se matricula.\n- IF480 ADMINISTRACION DE TECNOLOGIAS DE LA INFORMACION: 3 créditos (estudios específicos), sin requisitos.\n- IF453 PROGRAMACION II: 2 créditos (estudios específicos), requisito: IF451 PROGRAMACION I.\n- ACTIVIDADES EXTRACURRICULARES: 2 créditos (actividades extracurriculares), sin requisitos.\n\nLa imagen de la malla no nombra estas asignaturas de especialidad ni las actividades extracurriculares: solo indica cuántos créditos ocupan. Sus nombres y códigos están en el catálogo de asignaturas del Plan Curricular 2017.",
+      "seccion": [
+        "malla_curricular",
+        "ciclo_4"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_2017#ciclo-5",
+      "titulo": "Quinto ciclo - Malla 2017",
+      "texto": "¿Qué cursos se llevan en el quinto semestre bajo la malla curricular 2017? ¿Qué cursos llevo en el quinto ciclo del plan 2017?\nQuinto ciclo (semestre 5) de la malla curricular 2017 de Ingeniería Informática y de Sistemas UNSAAC: 6 asignaturas, 22 créditos.\n\n- IF650 MODELOS PROBABILISTICOS: 4 créditos (estudios específicos), requisito: IF452 ALGORITMOS Y ESTRUCTURA DE DATOS, ME352 PROBABILIDADES Y ESTADISTICA.\n- IF454 TEORIA DE LA COMPUTACION: 3 créditos (estudios específicos), requisito: ME355 MATEMATICA DISCRETA II.\n- IF610 ANALISIS Y DISEÑO DE SISTEMAS DE INFORMACION: 4 créditos (estudios específicos), requisito: IF453 PROGRAMACION II.\n- IF550 ORGANIZACION Y ARQUITECTURA DEL COMPUTADOR: 4 créditos (estudios específicos), requisito: LI371 ELECTRONICA Y DISEÑO DIGITAL.\n- IF481 INGENIERIA ECONOMICA: 3 créditos (estudios específicos), requisito: IF480 ADMINISTRACION DE TECNOLOGIAS DE LA INFORMACION.\n- ME359 ECUACIONES DIFERENCIALES: 4 créditos (estudios específicos), requisito: ME350 CALCULO II. Ojo: el catálogo del Centro de Cómputo la registra como ME356, que es el código con el que se matricula.",
+      "seccion": [
+        "malla_curricular",
+        "ciclo_5"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_2017#ciclo-6",
+      "titulo": "Sexto ciclo - Malla 2017",
+      "texto": "¿Qué cursos se llevan en el sexto semestre bajo la malla curricular 2017? ¿Qué cursos llevo en el sexto ciclo del plan 2017?\nSexto ciclo (semestre 6) de la malla curricular 2017 de Ingeniería Informática y de Sistemas UNSAAC: 6 asignaturas, 22 créditos.\n\n- IF455 ALGORITMOS PARALELOS Y DISTRIBUIDOS: 4 créditos (estudios específicos), requisito: IF650 MODELOS PROBABILISTICOS, IF454 TEORIA DE LA COMPUTACION.\n- IF611 METODOLOGIA DE DESARROLLO DE SOFTWARE: 3 créditos (estudios específicos), requisito: IF610 ANALISIS Y DISEÑO DE SISTEMAS DE INFORMACION.\n- IF612 FUNDAMENTOS Y DISEÑO DE BASES DE DATOS: 4 créditos (estudios específicos), requisito: IF610 ANALISIS Y DISEÑO DE SISTEMAS DE INFORMACION.\n- IF551 SISTEMAS OPERATIVOS: 4 créditos (estudios específicos), requisito: IF550 ORGANIZACION Y ARQUITECTURA DEL COMPUTADOR.\n- IF457 METODOS NUMERICOS: 3 créditos (estudios específicos), requisito: ME359 ECUACIONES DIFERENCIALES.\n- ASIGNATURA DE ESPECIALIDAD: 4 créditos (estudios de especialidad), sin requisitos.\n\nLa imagen de la malla no nombra estas asignaturas de especialidad ni las actividades extracurriculares: solo indica cuántos créditos ocupan. Sus nombres y códigos están en el catálogo de asignaturas del Plan Curricular 2017.",
+      "seccion": [
+        "malla_curricular",
+        "ciclo_6"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_2017#ciclo-7",
+      "titulo": "Séptimo ciclo - Malla 2017",
+      "texto": "¿Qué cursos se llevan en el séptimo semestre bajo la malla curricular 2017? ¿Qué cursos llevo en el séptimo ciclo del plan 2017?\nSéptimo ciclo (semestre 7) de la malla curricular 2017 de Ingeniería Informática y de Sistemas UNSAAC: 7 asignaturas, 22 créditos.\n\n- IF456 ALGORITMOS AVANZADOS: 4 créditos (estudios específicos), requisito: IF455 ALGORITMOS PARALELOS Y DISTRIBUIDOS.\n- IF651 INTELIGENCIA ARTIFICIAL: 4 créditos (estudios específicos), requisito: IF455 ALGORITMOS PARALELOS Y DISTRIBUIDOS.\n- IF613 DESARROLLO DE SOFTWARE I: 2 créditos (estudios específicos), requisito: IF611 METODOLOGIA DE DESARROLLO DE SOFTWARE, IF612 FUNDAMENTOS Y DISEÑO DE BASES DE DATOS.\n- IF552 REDES DE COMPUTADORAS I: 4 créditos (estudios específicos), requisito: IF551 SISTEMAS OPERATIVOS.\n- ASIGNATURA DE ESPECIALIDAD: 3 créditos (estudios de especialidad), sin requisitos.\n- ASIGNATURA DE ESPECIALIDAD: 3 créditos (estudios de especialidad), sin requisitos.\n- ACTIVIDADES EXTRACURRICULARES: 2 créditos (actividades extracurriculares), sin requisitos.\n\nLa imagen de la malla no nombra estas asignaturas de especialidad ni las actividades extracurriculares: solo indica cuántos créditos ocupan. Sus nombres y códigos están en el catálogo de asignaturas del Plan Curricular 2017.",
+      "seccion": [
+        "malla_curricular",
+        "ciclo_7"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_2017#ciclo-8",
+      "titulo": "Octavo ciclo - Malla 2017",
+      "texto": "¿Qué cursos se llevan en el octavo semestre bajo la malla curricular 2017? ¿Qué cursos llevo en el octavo ciclo del plan 2017?\nOctavo ciclo (semestre 8) de la malla curricular 2017 de Ingeniería Informática y de Sistemas UNSAAC: 6 asignaturas, 22 créditos.\n\n- IF710 SEMINARIO DE INVESTIGACION I: 3 créditos (estudios específicos), requisito: IF456 ALGORITMOS AVANZADOS.\n- IF652 APRENDIZAJE AUTOMATICO: 4 créditos (estudios específicos), requisito: IF651 INTELIGENCIA ARTIFICIAL.\n- IF614 INGENIERIA DE SOFTWARE I: 4 créditos (estudios específicos), requisito: IF613 DESARROLLO DE SOFTWARE I.\n- IF482 PLANEAMIENTO Y DIRECCION ESTRATEGICA DE TI: 3 créditos (estudios específicos), requisito: IF613 DESARROLLO DE SOFTWARE I.\n- ASIGNATURA DE ESPECIALIDAD: 4 créditos (estudios de especialidad), sin requisitos.\n- ASIGNATURA DE ESPECIALIDAD: 4 créditos (estudios de especialidad), sin requisitos.\n\nLa imagen de la malla no nombra estas asignaturas de especialidad ni las actividades extracurriculares: solo indica cuántos créditos ocupan. Sus nombres y códigos están en el catálogo de asignaturas del Plan Curricular 2017.",
+      "seccion": [
+        "malla_curricular",
+        "ciclo_8"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_2017#ciclo-9",
+      "titulo": "Noveno ciclo - Malla 2017",
+      "texto": "¿Qué cursos se llevan en el noveno semestre bajo la malla curricular 2017? ¿Qué cursos llevo en el noveno ciclo del plan 2017?\nNoveno ciclo (semestre 9) de la malla curricular 2017 de Ingeniería Informática y de Sistemas UNSAAC: 7 asignaturas, 22 créditos.\n\n- IF483 FORMULACION DE PROYECTOS TI: 3 créditos (estudios específicos), requisito: IF710 SEMINARIO DE INVESTIGACION I, IF482 PLANEAMIENTO Y DIRECCION ESTRATEGICA DE TI.\n- ASIGNATURA DE ESPECIALIDAD: 3 créditos (estudios de especialidad), sin requisitos.\n- ASIGNATURA DE ESPECIALIDAD: 3 créditos (estudios de especialidad), sin requisitos.\n- ASIGNATURA DE ESPECIALIDAD: 4 créditos (estudios de especialidad), sin requisitos.\n- ASIGNATURA DE ESPECIALIDAD: 3 créditos (estudios de especialidad), sin requisitos.\n- ASIGNATURA DE ESPECIALIDAD: 4 créditos (estudios de especialidad), sin requisitos.\n- ACTIVIDADES EXTRACURRICULARES: 2 créditos (actividades extracurriculares), sin requisitos.\n\nLa imagen de la malla no nombra estas asignaturas de especialidad ni las actividades extracurriculares: solo indica cuántos créditos ocupan. Sus nombres y códigos están en el catálogo de asignaturas del Plan Curricular 2017.",
+      "seccion": [
+        "malla_curricular",
+        "ciclo_9"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_2017#ciclo-10",
+      "titulo": "Décimo ciclo - Malla 2017",
+      "texto": "¿Qué cursos se llevan en el décimo semestre bajo la malla curricular 2017? ¿Qué cursos llevo en el décimo ciclo del plan 2017?\nDécimo ciclo (semestre 10) de la malla curricular 2017 de Ingeniería Informática y de Sistemas UNSAAC: 5 asignaturas, 22 créditos.\n\n- IF711 SEMINARIO DE INVESTIGACION II: 3 créditos (estudios específicos), requisito: IF483 FORMULACION DE PROYECTOS TI.\n- ASIGNATURA DE ESPECIALIDAD: 4 créditos (estudios de especialidad), sin requisitos.\n- ASIGNATURA DE ESPECIALIDAD: 3 créditos (estudios de especialidad), sin requisitos.\n- ASIGNATURA DE ESPECIALIDAD: 3 créditos (estudios de especialidad), sin requisitos.\n- IF PRACTICA PRE PROFESIONAL: 9 créditos (prácticas pre profesionales), sin requisitos.\n\nLa imagen de la malla no nombra estas asignaturas de especialidad ni las actividades extracurriculares: solo indica cuántos créditos ocupan. Sus nombres y códigos están en el catálogo de asignaturas del Plan Curricular 2017.",
+      "seccion": [
+        "malla_curricular",
+        "ciclo_10"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    },
+    {
+      "id": "malla_2017#resumen",
+      "titulo": "Resumen de la malla curricular 2017",
+      "texto": "La malla curricular 2017 de Ingeniería Informática y de Sistemas de la UNSAAC comprende 10 ciclos, 62 asignaturas y 219 créditos necesarios para completar el plan de estudios. Créditos por categoría: Estudios específicos: 124 créditos. Estudios de especialidad: 45 créditos. Estudios generales: 35 créditos. Prácticas pre profesionales: 9 créditos. Actividades extracurriculares: 6 créditos. Ciclo 1: 21 créditos. Ciclo 2: 22 créditos. Ciclo 3: 22 créditos. Ciclo 4: 22 créditos. Ciclo 5: 22 créditos. Ciclo 6: 22 créditos. Ciclo 7: 22 créditos. Ciclo 8: 22 créditos. Ciclo 9: 22 créditos. Ciclo 10: 22 créditos.",
+      "seccion": [
+        "malla_curricular",
+        "resumen"
+      ],
+      "articulo": null,
+      "palabras_clave": []
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 // app/(estudiante)/editar-perfil.tsx
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   View,
   Text,
@@ -12,8 +12,7 @@ import {
   ActivityIndicator,
   StyleSheet,
 } from 'react-native';
-import { useFocusEffect } from 'expo-router';
-import { useRouter } from 'expo-router';
+import { useFocusEffect, useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Feather from '@expo/vector-icons/Feather';
 import * as ImagePicker from 'expo-image-picker';
@@ -27,8 +26,12 @@ export default function EditarPerfilScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const paddingTop = Math.max(insets.top, 16);
-  // Bottom tab bar height — keep button above it
-  const tabBarHeight = Platform.OS === 'ios' ? 88 : 76;
+  const minimumBottomPadding = Platform.OS === 'ios' ? 24 : 12;
+  const bottomPadding = Math.max(insets.bottom, minimumBottomPadding);
+  const tabBarBaseHeight = 62;
+  const totalTabBarHeight = tabBarBaseHeight + bottomPadding;
+  const extraPadding = 24;
+  const scrollBottomPadding = totalTabBarHeight + extraPadding;
 
   const { user, updateUser, profileImage, setProfileImage } = useAuthStore();
 
@@ -46,7 +49,7 @@ export default function EditarPerfilScreen() {
   useFocusEffect(
     useCallback(() => {
       setNombre(user?.full_name ?? 'Sebastián Quispe');
-      setCodigo(user?.student_code ?? '2123456');
+      setCodigo(user?.student_code ?? '');
       setCarrera(user?.school ?? 'Ingeniería Informática y de Sistemas');
       setSemestre(user?.semester ?? 'VI Semestre');
       setPendingImage(profileImage);
@@ -119,7 +122,7 @@ export default function EditarPerfilScreen() {
     <View style={{ flex: 1, backgroundColor: colors.background }}>
       <ScrollView
         contentContainerStyle={{
-          paddingBottom: tabBarHeight + 24,
+          paddingBottom: scrollBottomPadding,
         }}
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
@@ -264,6 +267,11 @@ export default function EditarPerfilScreen() {
           {/* ── Botones de acción ─────────────────────────────── */}
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 8 }}>
             <Pressable
+              // NativeWind aplana el `style` inline para fusionarlo con las
+              // clases, y en ese paso una funcion se convierte en {}: sin esto
+              // el boton se queda sin fondo ni borde. Este Pressable no usa
+              // className, asi que sacarlo de la interop no cuesta nada.
+              cssInterop={false}
               onPress={() => router.replace('/(estudiante)/configuracion' as any)}
               disabled={saving}
               style={({ pressed }) => ({
@@ -292,6 +300,9 @@ export default function EditarPerfilScreen() {
             </Pressable>
 
             <Pressable
+              // Idem: el fondo depende de `pressed`, asi que el `style` tiene
+              // que llegar como funcion al Pressable de React Native.
+              cssInterop={false}
               onPress={handleSave}
               disabled={saving}
               style={({ pressed }) => ({

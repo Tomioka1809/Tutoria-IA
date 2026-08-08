@@ -14,6 +14,11 @@ from app.domain.exceptions import (
     PasswordUpdateError,
     TutorAssignmentRequiredError,
     StreakUnavailableForRoleError,
+    LLMServiceError,
+    LLMAuthenticationError,
+    LLMQuotaError,
+    LLMTimeoutError,
+    LLMNetworkError,
 )
 
 def setup_exception_handlers(app: FastAPI) -> None:
@@ -101,6 +106,46 @@ def setup_exception_handlers(app: FastAPI) -> None:
         return JSONResponse(
             status_code=status.HTTP_403_FORBIDDEN,
             content={"detail": str(exc) or "Not authorized"},
+        )
+
+    # Los fallos del proveedor de IA no son culpa de la peticion: sin estos
+    # manejadores caian en el DomainException generico y salian como 400, o como
+    # 500 opaco, sin distinguir "se agoto la cuota, reintenta" de "hay un bug".
+    @app.exception_handler(LLMQuotaError)
+    async def llm_quota_handler(request: Request, exc: LLMQuotaError):
+        return JSONResponse(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            content={"detail": str(exc) or "Se agotó la cuota del servicio de IA. Intenta más tarde."},
+        )
+
+    @app.exception_handler(LLMTimeoutError)
+    async def llm_timeout_handler(request: Request, exc: LLMTimeoutError):
+        return JSONResponse(
+            status_code=status.HTTP_504_GATEWAY_TIMEOUT,
+            content={"detail": str(exc) or "El servicio de IA tardó demasiado en responder."},
+        )
+
+    @app.exception_handler(LLMNetworkError)
+    async def llm_network_handler(request: Request, exc: LLMNetworkError):
+        return JSONResponse(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            content={"detail": str(exc) or "No se pudo contactar al servicio de IA."},
+        )
+
+    @app.exception_handler(LLMAuthenticationError)
+    async def llm_auth_handler(request: Request, exc: LLMAuthenticationError):
+        # 502 y no 401: el problema es la credencial del servidor con Gemini, no la
+        # del usuario. Devolver 401 haria que el cliente cerrara la sesion sin motivo.
+        return JSONResponse(
+            status_code=status.HTTP_502_BAD_GATEWAY,
+            content={"detail": "El servicio de IA no está correctamente configurado."},
+        )
+
+    @app.exception_handler(LLMServiceError)
+    async def llm_service_handler(request: Request, exc: LLMServiceError):
+        return JSONResponse(
+            status_code=status.HTTP_502_BAD_GATEWAY,
+            content={"detail": str(exc) or "El servicio de IA no pudo completar la solicitud."},
         )
 
     @app.exception_handler(DomainException)

@@ -1,0 +1,645 @@
+{
+  "schema_version": "2.0",
+  "descripcion": "Golden set ampliado a los siete dominios que la aplicacion debe cubrir. No reemplaza a golden_set.json, que queda congelado como registro de la evaluacion publicada (run fase5c) y esta protegido por hashes en verify_evaluation_integrity.py.",
+  "cambios_respecto_v1": [
+    "Se agrega el campo 'dominio' para medir cobertura por area y no solo global.",
+    "Se agrega 'fuente' con el documento verificado del que sale la respuesta.",
+    "Se agrega 'estado': verificado | pendiente_documento. Los pendientes son preguntas dentro del alcance cuyo documento fuente todavia no se consiguio, y no deben contar como fallo de recuperacion.",
+    "Se corrigen citas de articulos inexistentes: el Reglamento de Tutoria (CU-0220-2017) llega hasta el Art. 16, pero la v1 citaba Art. 18, 22, 23, 25 y 30.",
+    "Se corrige la cita del limite de tutorados: esta en el Art. 14 numeral 2, no en el Art. 13.",
+    "Se corrige la cita del deber de confidencialidad: el Art. 15 trata confidencialidad, no obligaciones del tutorado.",
+    "Se agregan los dominios 'escuela' (identidad, autoridades, aniversario, circulos de estudio y eventos de la carrera) y los casos de becas y plan 2017. El caso 114 (reserva de cupo de comedor) pasa de pendiente_documento a verificado: el manual oficial ya esta en el corpus."
+  ],
+  "documentos_fuente": {
+    "reglamento_tutoria": "ReglamentoTutoriaAcademica.pdf (CU-0220-2017-UNSAAC, Art. 1-16)",
+    "reglamento_academico": "000_RegAcademicoUNSAAC2017.pdf (CU-093-2017-UNSAAC)",
+    "estatuto": "EstatutoUniversitario_UNSAAC.pdf",
+    "tupa": "Exp 01.36.0051-004-2025 TUPA.pdf",
+    "calendario_2026": "CRONOGRAMA-CV-2026-CU-014-2026C.pdf (CU-014-2026, escaneado)",
+    "rof": "ROF2024_UNSAAC.pdf (AU-008-2024, reemplaza al ROF 2019)",
+    "plan_estudios_2025": "plan-estudios-semestralizado-ing-informatica-2025.pdf",
+    "reglamento_vivienda_estudiantil": "CU-372-2020-reglamento-vivienda-estudiantil.pdf (CU-372-2020, Art. 1-33)",
+    "reglamento_movilidad_academica": "CU-349-2026-reglamento-movilidad-academica.pdf (CU-349-2026, escaneado + OCR es, Art. 1-25)",
+    "reglamento_subvenciones": "CU-667-2025-reglamento-subvenciones-economicas.pdf (CU-667-2025, escaneado + OCR es, Art. 1-27)",
+    "escuela_informatica": "Portal in.unsaac.edu.pe y vrin.unsaac.edu.pe (consultado 2026-08-06)",
+    "plan_estudios_2017": "Catalogo de asignaturas del Plan Curricular 2017, Centro de Computo UNSAAC",
+    "becas_y_comedor": "Estatuto, ROF 2024, Reglamento del Instituto de Idiomas (CU-281-2020) y Manual de reserva de cupo del comedor",
+    "reglamento_idiomas": "CU-281-2020-reglamento-instituto-idiomas.pdf (CU-281-2020, Art. 1-124)"
+  },
+  "casos": [
+    {
+      "id": 101,
+      "dominio": "tutoria",
+      "categoria": "facil",
+      "pregunta": "¿Cuántos estudiantes como máximo se le pueden asignar a un tutor?",
+      "respuesta_esperada": "El número de tutorados por cada profesor, en la medida de lo posible, no supera los veinticinco (25) estudiantes. Si por el número de estudiantes no fuese posible, puede aumentarse la cifra o recurrir a docentes becarios bajo supervisión de un profesor ordinario.",
+      "articulos_referencia": [
+        "Art. 14 num. 2 - Reglamento de Tutoría Académica UNSAAC"
+      ],
+      "palabras_clave_esperadas": [
+        "veinticinco",
+        "25",
+        "tutorados",
+        "profesor"
+      ],
+      "fuente": "reglamento_tutoria",
+      "estado": "verificado"
+    },
+    {
+      "id": 102,
+      "dominio": "tutoria",
+      "categoria": "facil",
+      "pregunta": "¿Cuál es la naturaleza y alcance del Reglamento de Tutoría?",
+      "respuesta_esperada": "El reglamento regula la actividad tutorial académica en la Universidad Nacional de San Antonio Abad del Cusco.",
+      "articulos_referencia": [
+        "Art. 1 - Reglamento de Tutoría Académica UNSAAC"
+      ],
+      "palabras_clave_esperadas": [
+        "regula",
+        "actividad tutorial",
+        "académica"
+      ],
+      "fuente": "reglamento_tutoria",
+      "estado": "verificado"
+    },
+    {
+      "id": 103,
+      "dominio": "tutoria",
+      "categoria": "facil",
+      "pregunta": "¿Mi tutor puede compartir lo que le cuento en una sesión de tutoría?",
+      "respuesta_esperada": "No. Los Tutores Académicos tienen deber de confidencialidad respecto de la información que reciban de los estudiantes, salvo la estrictamente necesaria para el desarrollo de sus funciones.",
+      "articulos_referencia": [
+        "Art. 15 - Reglamento de Tutoría Académica UNSAAC"
+      ],
+      "palabras_clave_esperadas": [
+        "confidencialidad",
+        "información",
+        "estudiantes"
+      ],
+      "fuente": "reglamento_tutoria",
+      "estado": "verificado"
+    },
+    {
+      "id": 104,
+      "dominio": "tutoria",
+      "categoria": "ambiguo",
+      "pregunta": "¿Hasta cuándo me acompaña el mismo tutor?",
+      "respuesta_esperada": "Los estudiantes son asignados a sus correspondientes tutores en el primer semestre de sus estudios y hasta la culminación del plan curricular de la escuela profesional.",
+      "articulos_referencia": [
+        "Art. 14 - Reglamento de Tutoría Académica UNSAAC"
+      ],
+      "palabras_clave_esperadas": [
+        "primer semestre",
+        "culminación",
+        "plan curricular"
+      ],
+      "fuente": "reglamento_tutoria",
+      "estado": "verificado"
+    },
+    {
+      "id": 105,
+      "dominio": "tutoria",
+      "categoria": "ambiguo",
+      "pregunta": "¿Quién evalúa si el programa de tutoría está funcionando?",
+      "respuesta_esperada": "El Comité Tutorial de la Escuela Profesional realiza evaluaciones del programa de tutorías al finalizar el año académico, analizando el cumplimiento de los objetivos generales y específicos.",
+      "articulos_referencia": [
+        "Art. 16 - Reglamento de Tutoría Académica UNSAAC"
+      ],
+      "palabras_clave_esperadas": [
+        "Comité Tutorial",
+        "año académico",
+        "objetivos"
+      ],
+      "fuente": "reglamento_tutoria",
+      "estado": "verificado"
+    },
+    {
+      "id": 106,
+      "dominio": "trayectoria_academica",
+      "categoria": "facil",
+      "pregunta": "¿Cuántos créditos necesito para ser considerado estudiante regular?",
+      "respuesta_esperada": "Es estudiante regular quien registra matrícula en doce (12) créditos o más. Quien se matricula en menos de doce créditos es estudiante no regular, condición que no puede exceder tres semestres consecutivos.",
+      "articulos_referencia": [
+        "Art. 3 - Reglamento Académico UNSAAC (CU-093-2017)"
+      ],
+      "palabras_clave_esperadas": [
+        "doce",
+        "12",
+        "créditos",
+        "regular"
+      ],
+      "fuente": "reglamento_academico",
+      "estado": "verificado"
+    },
+    {
+      "id": 107,
+      "dominio": "trayectoria_academica",
+      "categoria": "facil",
+      "pregunta": "Si tengo buen promedio, ¿puedo llevar más créditos de lo normal?",
+      "respuesta_esperada": "Sí. El estudiante con promedio ponderado igual o mayor a dieciséis (16) puntos tiene derecho a matricularse hasta en veintiséis (26) créditos.",
+      "articulos_referencia": [
+        "Art. 9 - Reglamento Académico UNSAAC (CU-093-2017)"
+      ],
+      "palabras_clave_esperadas": [
+        "dieciséis",
+        "veintiséis",
+        "créditos"
+      ],
+      "fuente": "reglamento_academico",
+      "estado": "verificado"
+    },
+    {
+      "id": 108,
+      "dominio": "trayectoria_academica",
+      "categoria": "ambiguo",
+      "pregunta": "¿Cuánto tiempo puedo seguir siendo estudiante no regular?",
+      "respuesta_esperada": "La condición de estudiante no regular no puede ser indefinida: el plazo máximo permitido es de tres (3) semestres consecutivos.",
+      "articulos_referencia": [
+        "Art. 3 - Reglamento Académico UNSAAC (CU-093-2017)"
+      ],
+      "palabras_clave_esperadas": [
+        "tres",
+        "3",
+        "semestres consecutivos"
+      ],
+      "fuente": "reglamento_academico",
+      "estado": "verificado"
+    },
+    {
+      "id": 127,
+      "dominio": "trayectoria_academica",
+      "categoria": "facil",
+      "pregunta": "¿Cuántos créditos como máximo puedo matricular por semestre?",
+      "respuesta_esperada": "El estudiante regular puede matricularse en un máximo de veintidós (22) créditos y un mínimo de doce (12) ofrecidos en el catálogo para el semestre académico correspondiente.",
+      "articulos_referencia": [
+        "Art. 9 - Reglamento Académico UNSAAC (CU-093-2017)"
+      ],
+      "palabras_clave_esperadas": [
+        "veintidós",
+        "créditos",
+        "mínimo",
+        "doce"
+      ],
+      "fuente": "reglamento_academico",
+      "estado": "verificado"
+    },
+    {
+      "id": 109,
+      "dominio": "trayectoria_academica",
+      "categoria": "facil",
+      "pregunta": "¿Qué cursos llevo en el primer semestre del plan 2025 de Ingeniería Informática?",
+      "respuesta_esperada": "El primer semestre del plan 2025 incluye Química General, entre otras asignaturas, con sus créditos, horas teóricas y prácticas y requisitos indicados en el plan semestralizado.",
+      "articulos_referencia": [
+        "Plan de Estudios Semestralizado 2025 - Ingeniería Informática y de Sistemas"
+      ],
+      "palabras_clave_esperadas": [
+        "primer semestre",
+        "créditos",
+        "asignatura"
+      ],
+      "fuente": "plan_estudios_2025",
+      "estado": "verificado"
+    },
+    {
+      "id": 110,
+      "dominio": "apoyos",
+      "categoria": "facil",
+      "pregunta": "¿Qué servicios de apoyo al estudiante ofrece la universidad?",
+      "respuesta_esperada": "La Dirección de Bienestar Universitario es responsable de los servicios de salud, alimentación, deporte, cultura, asistencia social y atención de personas con discapacidad.",
+      "articulos_referencia": [
+        "Art. 246 - Estatuto Universitario UNSAAC"
+      ],
+      "palabras_clave_esperadas": [
+        "salud",
+        "alimentación",
+        "deporte",
+        "asistencia social"
+      ],
+      "fuente": "estatuto",
+      "estado": "verificado"
+    },
+    {
+      "id": 111,
+      "dominio": "apoyos",
+      "categoria": "facil",
+      "pregunta": "¿Qué oficina se encarga del bienestar de los estudiantes?",
+      "respuesta_esperada": "La Dirección de Bienestar Universitario, encargada de planificar, organizar, dirigir, gestionar y controlar las acciones orientadas al bienestar de la comunidad universitaria.",
+      "articulos_referencia": [
+        "Art. 104 - Reglamento de Organización y Funciones UNSAAC",
+        "Art. 245 - Estatuto Universitario UNSAAC"
+      ],
+      "palabras_clave_esperadas": [
+        "Dirección de Bienestar Universitario",
+        "planificar",
+        "comunidad universitaria"
+      ],
+      "fuente": "estatuto",
+      "estado": "verificado"
+    },
+    {
+      "id": 112,
+      "dominio": "apoyos",
+      "categoria": "ambiguo",
+      "pregunta": "¿La universidad apoya a estudiantes con discapacidad?",
+      "respuesta_esperada": "Sí. La UNSAAC atiende con preferencia la necesidad de libros y materiales de estudio, incluyendo espacios y materiales para personas con discapacidad, y organiza una oficina responsable de su atención.",
+      "articulos_referencia": [
+        "Art. 244 - Estatuto Universitario UNSAAC",
+        "Art. 246 - Estatuto Universitario UNSAAC"
+      ],
+      "palabras_clave_esperadas": [
+        "discapacidad",
+        "materiales",
+        "atención"
+      ],
+      "fuente": "estatuto",
+      "estado": "verificado"
+    },
+    {
+      "id": 113,
+      "dominio": "apoyos",
+      "categoria": "ambiguo",
+      "pregunta": "¿Cuáles son los requisitos para postular a una beca de comedor universitario?",
+      "respuesta_esperada": "Pendiente: requiere el Reglamento de Subsidios y Becas de la UNSAAC, que no está publicado en el portal de transparencia.",
+      "articulos_referencia": [
+        "Reglamento de Subsidios y Becas UNSAAC"
+      ],
+      "palabras_clave_esperadas": [
+        "requisitos",
+        "beca",
+        "comedor"
+      ],
+      "fuente": null,
+      "estado": "pendiente_documento"
+    },
+    {
+      "id": 114,
+      "dominio": "apoyos",
+      "categoria": "facil",
+      "pregunta": "¿Cómo reservo un cupo para el comedor universitario?",
+      "respuesta_esperada": "En el sistema de reserva de cupos de la Dirección de Bienestar Universitario (bienestar.unsaac.edu.pe), ingresando el código de estudiante de seis dígitos y la clave del semestre en curso que figura en el voucher de pago de matrícula.",
+      "articulos_referencia": [
+        "Guía de becas, apoyos económicos y comedor universitario UNSAAC"
+      ],
+      "palabras_clave_esperadas": [
+        "reserva",
+        "cupo",
+        "comedor",
+        "código"
+      ],
+      "fuente": "becas_y_comedor",
+      "estado": "verificado"
+    },
+    {
+      "id": 115,
+      "dominio": "movilidad",
+      "categoria": "facil",
+      "pregunta": "Si vengo por movilidad estudiantil, ¿cuántos créditos puedo matricular?",
+      "respuesta_esperada": "La matrícula por movilidad estudiantil permite llevar asignaturas hasta en veintidós (22) créditos por semestre y da derecho sólo a certificado de estudios; no genera carné universitario ni uso del comedor universitario.",
+      "articulos_referencia": [
+        "Art. 8 - Reglamento Académico UNSAAC (CU-093-2017)"
+      ],
+      "palabras_clave_esperadas": [
+        "movilidad estudiantil",
+        "veintidós",
+        "22",
+        "certificado de estudios"
+      ],
+      "fuente": "reglamento_academico",
+      "estado": "verificado"
+    },
+    {
+      "id": 116,
+      "dominio": "movilidad",
+      "categoria": "facil",
+      "pregunta": "¿Qué es un estudiante especial por convenio de movilidad?",
+      "respuesta_esperada": "Es quien, acreditando seguir estudios profesionales en una universidad del país pública o privada, cursa estudios en la UNSAAC por convenio de movilidad.",
+      "articulos_referencia": [
+        "Art. 3 - Reglamento Académico UNSAAC (CU-093-2017)"
+      ],
+      "palabras_clave_esperadas": [
+        "estudiante especial",
+        "convenio",
+        "movilidad"
+      ],
+      "fuente": "reglamento_academico",
+      "estado": "verificado"
+    },
+    {
+      "id": 117,
+      "dominio": "movilidad",
+      "categoria": "ambiguo",
+      "pregunta": "¿Qué requisitos necesito para postular a un intercambio académico?",
+      "respuesta_esperada": "Tener matrícula regular vigente en la UNSAAC, pertenecer al tercio, quinto o décimo superior, estar comprendido entre el quinto y octavo semestre de estudios, reunir los requisitos de la universidad de destino, no tener compromisos económicos pendientes con la UNSAAC y contar con pasaporte vigente y seguro médico. Los trámites se realizan en la Oficina de Cooperación y Relaciones Internacionales (OCRI).",
+      "articulos_referencia": [
+        "Art. 7 - Reglamento del Programa de Movilidad Académica Estudiantil y Docente UNSAAC"
+      ],
+      "palabras_clave_esperadas": [
+        "requisitos",
+        "tercio",
+        "semestre",
+        "matrícula"
+      ],
+      "fuente": "reglamento_movilidad_academica",
+      "estado": "verificado"
+    },
+    {
+      "id": 118,
+      "dominio": "movilidad",
+      "categoria": "ambiguo",
+      "pregunta": "¿Hay apoyo económico para viajar a un intercambio o congreso?",
+      "respuesta_esperada": "Sí. La UNSAAC subvenciona la movilidad académica estudiantil, el intercambio estudiantil nacional e internacional, las pasantías o estancias y los eventos académicos (congresos, foros, conferencias, simposios, talleres y seminarios) acreditados. Los montos máximos los fijan la Oficina de Planeamiento y Presupuesto junto con los vicerrectorados, según disponibilidad presupuestal.",
+      "articulos_referencia": [
+        "Art. 6 - Reglamento para el Otorgamiento de Subvenciones Económicas UNSAAC"
+      ],
+      "palabras_clave_esperadas": [
+        "subvención",
+        "intercambio",
+        "congreso",
+        "movilidad"
+      ],
+      "fuente": "reglamento_subvenciones",
+      "estado": "verificado"
+    },
+    {
+      "id": 119,
+      "dominio": "tramites",
+      "categoria": "facil",
+      "pregunta": "¿Dónde consulto los requisitos y el costo de un trámite en la universidad?",
+      "respuesta_esperada": "En el Texto Único de Procedimientos Administrativos (TUPA) de la UNSAAC, que detalla cada procedimiento con sus requisitos y derechos de tramitación.",
+      "articulos_referencia": [
+        "TUPA UNSAAC"
+      ],
+      "palabras_clave_esperadas": [
+        "TUPA",
+        "procedimientos",
+        "requisitos"
+      ],
+      "fuente": "tupa",
+      "estado": "verificado"
+    },
+    {
+      "id": 120,
+      "dominio": "calendario",
+      "categoria": "facil",
+      "pregunta": "¿Cuándo es la matrícula de estudiantes regulares para el semestre 2026-I?",
+      "respuesta_esperada": "Del 02 al 06 de marzo de 2026, según el calendario académico 2026 aprobado por Resolución CU-014-2026-UNSAAC.",
+      "articulos_referencia": [
+        "Calendario Académico 2026 - CU-014-2026-UNSAAC"
+      ],
+      "palabras_clave_esperadas": [
+        "matrícula",
+        "marzo",
+        "2026"
+      ],
+      "fuente": "calendario_2026",
+      "estado": "verificado"
+    },
+    {
+      "id": 121,
+      "dominio": "calendario",
+      "categoria": "ambiguo",
+      "pregunta": "Reinicié mis estudios, ¿cuándo me matriculo?",
+      "respuesta_esperada": "La matrícula de reinicio de estudios es del 20 al 27 de febrero de 2026, presentando la resolución que autoriza el reinicio.",
+      "articulos_referencia": [
+        "Calendario Académico 2026 - CU-014-2026-UNSAAC"
+      ],
+      "palabras_clave_esperadas": [
+        "reinicio",
+        "febrero",
+        "resolución"
+      ],
+      "fuente": "calendario_2026",
+      "estado": "verificado"
+    },
+    {
+      "id": 122,
+      "dominio": "enrutamiento",
+      "categoria": "ambiguo",
+      "pregunta": "¿A qué oficina debo ir si tengo un problema económico o social?",
+      "respuesta_esperada": "A la Dirección de Bienestar Universitario, que es el órgano responsable de asistencia social y de los servicios de apoyo al estudiante.",
+      "articulos_referencia": [
+        "Art. 105 - Reglamento de Organización y Funciones UNSAAC",
+        "Art. 246 - Estatuto Universitario UNSAAC"
+      ],
+      "palabras_clave_esperadas": [
+        "Dirección de Bienestar",
+        "asistencia social"
+      ],
+      "fuente": "rof",
+      "estado": "verificado"
+    },
+    {
+      "id": 123,
+      "dominio": "enrutamiento",
+      "categoria": "ambiguo",
+      "pregunta": "¿Quién supervisa la actividad de tutoría en la universidad?",
+      "respuesta_esperada": "La actividad tutorial, sea de los tutores o de los comités tutoriales, es objeto de supervisión por el Vicerrectorado Académico, que solicita informes y emite directivas e indicaciones.",
+      "articulos_referencia": [
+        "Art. 11 - Reglamento de Tutoría Académica UNSAAC"
+      ],
+      "palabras_clave_esperadas": [
+        "Vicerrectorado Académico",
+        "supervisión",
+        "informes"
+      ],
+      "fuente": "reglamento_tutoria",
+      "estado": "verificado"
+    },
+    {
+      "id": 124,
+      "dominio": "fuera_de_alcance",
+      "categoria": "fuera_de_alcance",
+      "pregunta": "¿Cuál es la receta tradicional del cuy chactado cusqueño?",
+      "respuesta_esperada": "No cuento con información suficiente en la base oficial de la UNSAAC para responder con certeza.",
+      "articulos_referencia": [
+        "NO_APLICA"
+      ],
+      "palabras_clave_esperadas": [],
+      "fuente": null,
+      "estado": "verificado"
+    },
+    {
+      "id": 125,
+      "dominio": "fuera_de_alcance",
+      "categoria": "fuera_de_alcance",
+      "pregunta": "¿Cómo tramito mi pasaporte en Migraciones del Perú?",
+      "respuesta_esperada": "No cuento con información suficiente en la base oficial de la UNSAAC para responder con certeza.",
+      "articulos_referencia": [
+        "NO_APLICA"
+      ],
+      "palabras_clave_esperadas": [],
+      "fuente": null,
+      "estado": "verificado"
+    },
+    {
+      "id": 126,
+      "dominio": "fuera_de_alcance",
+      "categoria": "fuera_de_alcance",
+      "pregunta": "¿Cuánto cuesta la matrícula en la Universidad Nacional de San Agustín de Arequipa?",
+      "respuesta_esperada": "No cuento con información suficiente en la base oficial de la UNSAAC para responder con certeza.",
+      "articulos_referencia": [
+        "NO_APLICA"
+      ],
+      "palabras_clave_esperadas": [],
+      "fuente": null,
+      "estado": "verificado"
+    },
+    {
+      "id": 128,
+      "dominio": "escuela",
+      "categoria": "facil",
+      "pregunta": "¿Cuál es la misión de la carrera de Ingeniería Informática?",
+      "respuesta_esperada": "Formar profesionales líderes con sólida preparación científica, tecnológica y humanística, con valores y principios éticos y con responsabilidad social, capaces de generar soluciones tecnológicas innovadoras.",
+      "articulos_referencia": [
+        "Portal institucional de la Escuela Profesional de Ingeniería Informática y de Sistemas UNSAAC"
+      ],
+      "palabras_clave_esperadas": [
+        "misión",
+        "soluciones tecnológicas",
+        "responsabilidad social"
+      ],
+      "fuente": "escuela_informatica",
+      "estado": "verificado"
+    },
+    {
+      "id": 129,
+      "dominio": "escuela",
+      "categoria": "facil",
+      "pregunta": "¿Quiénes son las autoridades de Ingeniería Informática y de Sistemas?",
+      "respuesta_esperada": "La Directora de la Escuela Profesional es la Dra. Yeshica Isela Ormeño Ayala, el Director del Departamento Académico de Ingeniería Informática es el Mgt. Lino Prisciliano Flores Pachecho y el Decano de la Facultad es el Dr. Lauro Enciso Rodas.",
+      "articulos_referencia": [
+        "Portal institucional de la Escuela Profesional de Ingeniería Informática y de Sistemas UNSAAC"
+      ],
+      "palabras_clave_esperadas": [
+        "Ormeño",
+        "director",
+        "decano",
+        "Enciso"
+      ],
+      "fuente": "escuela_informatica",
+      "estado": "verificado"
+    },
+    {
+      "id": 130,
+      "dominio": "escuela",
+      "categoria": "ambiguo",
+      "pregunta": "¿Cuándo es el aniversario de la carrera de Ingeniería Informática?",
+      "respuesta_esperada": "La Escuela Profesional celebra su aniversario en diciembre. El portal declara como fecha de creación el 13 de diciembre de 1971 (Resolución CG-110-71) y la reapertura el 22 de enero de 1993 (Resolución CU-009-93); no consta una resolución que fije el día exacto de la celebración.",
+      "articulos_referencia": [
+        "Portal institucional de la Escuela Profesional de Ingeniería Informática y de Sistemas UNSAAC"
+      ],
+      "palabras_clave_esperadas": [
+        "aniversario",
+        "diciembre",
+        "1971",
+        "1993"
+      ],
+      "fuente": "escuela_informatica",
+      "estado": "verificado"
+    },
+    {
+      "id": 131,
+      "dominio": "escuela",
+      "categoria": "facil",
+      "pregunta": "¿Qué círculos de estudio hay en la carrera de Ingeniería Informática?",
+      "respuesta_esperada": "El ACM-UNSAAC Student Chapter, círculo de estudios de la carrera reconocido por Resolución N° D-2161-2025-FIEEIM-UNSAAC, fundado en 2010 como capítulo estudiantil de la Association for Computing Machinery.",
+      "articulos_referencia": [
+        "Portal institucional de la Escuela Profesional de Ingeniería Informática y de Sistemas UNSAAC"
+      ],
+      "palabras_clave_esperadas": [
+        "círculo de estudios",
+        "ACM",
+        "capítulo"
+      ],
+      "fuente": "escuela_informatica",
+      "estado": "verificado"
+    },
+    {
+      "id": 132,
+      "dominio": "escuela",
+      "categoria": "facil",
+      "pregunta": "¿Qué eventos organiza la carrera de Ingeniería Informática?",
+      "respuesta_esperada": "Entre otros, el CUSCONTEST (concurso de programación), el NEUROKUP (concurso de inteligencia artificial organizado por ACM.AI), el Seminario en Infraestructura Tecnológica y charlas informativas sobre movilidad estudiantil.",
+      "articulos_referencia": [
+        "Portal institucional de la Escuela Profesional de Ingeniería Informática y de Sistemas UNSAAC"
+      ],
+      "palabras_clave_esperadas": [
+        "CUSCONTEST",
+        "NEUROKUP",
+        "seminario",
+        "concurso"
+      ],
+      "fuente": "escuela_informatica",
+      "estado": "verificado"
+    },
+    {
+      "id": 133,
+      "dominio": "apoyos",
+      "categoria": "ambiguo",
+      "pregunta": "¿Qué becas existen en la universidad?",
+      "respuesta_esperada": "La UNSAAC otorga comedor universitario, vivienda estudiantil, asistencia socioeconómica, becas integrales y medias becas del Instituto de Idiomas, subvenciones económicas y movilidad académica. Además, sus estudiantes pueden postular a becas del Estado que administra PRONABEC, como Beca Permanencia y Beca 18.",
+      "articulos_referencia": [
+        "Guía de becas, apoyos económicos y comedor universitario UNSAAC"
+      ],
+      "palabras_clave_esperadas": [
+        "beca",
+        "comedor",
+        "idiomas",
+        "PRONABEC"
+      ],
+      "fuente": "becas_y_comedor",
+      "estado": "verificado"
+    },
+    {
+      "id": 134,
+      "dominio": "trayectoria_academica",
+      "categoria": "ambiguo",
+      "pregunta": "¿Qué asignaturas de especialidad puedo llevar en la malla 2017?",
+      "respuesta_esperada": "El plan 2017 exige 45 créditos de estudios de especialidad. La imagen de la malla no las nombra, pero el catálogo del Centro de Cómputo sí: incluye Computación Gráfica I y II, Compiladores, Bioinformática, Minería de Datos, Deep Learning, Redes Neuronales Artificiales, Robótica, Visión Computacional y Procesamiento del Lenguaje Natural, entre otras.",
+      "articulos_referencia": [
+        "Plan de Estudios 2017 (catálogo oficial) - Ingeniería Informática y de Sistemas UNSAAC"
+      ],
+      "palabras_clave_esperadas": [
+        "especialidad",
+        "45 créditos",
+        "electivo"
+      ],
+      "fuente": "plan_estudios_2017",
+      "estado": "verificado"
+    },
+    {
+      "id": 135,
+      "dominio": "escuela",
+      "categoria": "facil",
+      "pregunta": "¿Cuál es la visión de la carrera de Ingeniería Informática?",
+      "respuesta_esperada": "Ser reconocido como un programa líder en formación de ciudadanos-profesionales que impulsan la transformación digital con innovación, responsabilidad social y compromiso con el desarrollo sostenible.",
+      "articulos_referencia": [
+        "Portal institucional de la Escuela Profesional de Ingeniería Informática y de Sistemas UNSAAC"
+      ],
+      "palabras_clave_esperadas": [
+        "visión",
+        "transformación digital",
+        "sostenible"
+      ],
+      "fuente": "escuela_informatica",
+      "estado": "verificado"
+    },
+    {
+      "id": 136,
+      "dominio": "apoyos",
+      "categoria": "facil",
+      "pregunta": "¿Quiénes pueden recibir una beca integral del Instituto de Idiomas?",
+      "respuesta_esperada": "Los dos mejores estudiantes de cada carrera profesional mientras mantengan ese privilegio, los estudiantes calificados como caso social por la Oficina de Bienestar Universitario, los deportistas calificados con Resolución Rectoral y, excepcionalmente, extrauniversitarios previa Resolución Rectoral.",
+      "articulos_referencia": [
+        "Art. 108 - Reglamento del Instituto de Idiomas UNSAAC"
+      ],
+      "palabras_clave_esperadas": [
+        "beca integral",
+        "caso social",
+        "deportistas"
+      ],
+      "fuente": "reglamento_idiomas",
+      "estado": "verificado"
+    }
+  ]
+}

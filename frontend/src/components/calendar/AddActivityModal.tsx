@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Modal, Pressable, ScrollView, Platform } from 'react-native';
+import { View, Text, TextInput, Modal, Pressable, ScrollView } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
@@ -33,7 +33,7 @@ export function AddActivityModal({
   students,
   onAdd,
 }: AddActivityModalProps) {
-  const { colors, isDark } = useTheme();
+  const { colors } = useTheme();
   const { t } = useTranslation();
   const isTutor = userRole === 'tutor' || userRole === 'admin';
 
@@ -44,31 +44,34 @@ export function AddActivityModal({
   const [notes, setNotes] = useState('');
   const [location, setLocation] = useState('');
 
-  // studentId === null means "A todos"
   const [selectedStudentId, setSelectedStudentId] = useState<number | null>(null);
   const [studentSearch, setStudentSearch] = useState('');
 
-  // Date and Time
-  const [date, setDate] = useState(selectedDate);
-  const [time, setTime] = useState(new Date(selectedDate.setHours(10, 0, 0, 0)));
+  const [date, setDate] = useState(() => new Date(selectedDate));
+  const [time, setTime] = useState(() => {
+    const initTime = new Date(selectedDate);
+    initTime.setHours(10, 0, 0, 0);
+    return initTime;
+  });
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
 
-  // Sync on open
   React.useEffect(() => {
     if (isOpen) {
       const initDate = new Date(selectedDate);
       setDate(initDate);
-      setTime(new Date(initDate.setHours(10, 0, 0, 0)));
+      const initTime = new Date(selectedDate);
+      initTime.setHours(10, 0, 0, 0);
+      setTime(initTime);
       setType(isTutor ? 'Tutoría Académica' : 'Trabajos');
       setStatus('pendiente');
       setNotes('');
       setLocation('');
       setName('');
       setStudentSearch('');
-      setSelectedStudentId(null); // Defaults to "A todos"
+      setSelectedStudentId(null);
     }
-  }, [isOpen, selectedDate]);
+  }, [isOpen, selectedDate, isTutor]);
 
   const handleSubmit = () => {
     if (!name.trim()) {
@@ -99,14 +102,14 @@ export function AddActivityModal({
     onClose();
   };
 
-  const onDateChange = (event: any, selectedValue?: Date) => {
+  const onDateChange = (_event: any, selectedValue?: Date) => {
     setShowDatePicker(false);
     if (selectedValue) {
       setDate(selectedValue);
     }
   };
 
-  const onTimeChange = (event: any, selectedValue?: Date) => {
+  const onTimeChange = (_event: any, selectedValue?: Date) => {
     setShowTimePicker(false);
     if (selectedValue) {
       setTime(selectedValue);
@@ -119,10 +122,10 @@ export function AddActivityModal({
   });
 
   const typesConfig = [
-    { id: 'Tutoría Académica' as const, label: t('calendar.academicShort'), icon: 'book-open', bgColor: 'bg-[#F3E8FF]', activeBgColor: 'bg-primary', textColor: 'text-primary', visible: isTutor },
-    { id: 'Tutoría Personal' as const, label: t('calendar.personalShort'), icon: 'user', bgColor: 'bg-[#FCE7F3]', activeBgColor: 'bg-[#ec4899]', textColor: 'text-[#ec4899]', visible: isTutor },
-    { id: 'Tutoría Profesional' as const, label: t('calendar.professionalShort'), icon: 'briefcase', bgColor: 'bg-[#E0E7FF]', activeBgColor: 'bg-[#4F46E5]', textColor: 'text-[#4F46E5]', visible: isTutor },
-    { id: 'Trabajos' as const, label: t('calendar.work'), icon: 'file-text', bgColor: 'bg-[#F5F3FF]', activeBgColor: 'bg-[#7c3aed]', textColor: 'text-[#7c3aed]', visible: true },
+    { id: 'Tutoría Académica' as const, label: t('calendar.academicShort'), icon: 'book-open', visible: isTutor },
+    { id: 'Tutoría Personal' as const, label: t('calendar.personalShort'), icon: 'user', visible: isTutor },
+    { id: 'Tutoría Profesional' as const, label: t('calendar.professionalShort'), icon: 'briefcase', visible: isTutor },
+    { id: 'Trabajos' as const, label: t('calendar.work'), icon: 'file-text', visible: true },
   ];
 
   return (
@@ -130,56 +133,55 @@ export function AddActivityModal({
       <View className="flex-1 bg-black/45 justify-end">
         <Pressable className="absolute inset-0" onPress={onClose} />
         
-        <View style={{ backgroundColor: colors.surface }} className=" rounded-t-[40px] px-6 pt-8 pb-10 shadow-2xl border border-gray-100 max-h-[90%]">
-          <View className="w-12 h-1 bg-gray-300 rounded-full align-self-center mx-auto mb-6" />
+        <View style={{ backgroundColor: colors.surface, borderColor: colors.border }} className="rounded-t-[40px] px-6 pt-8 pb-10 shadow-2xl border max-h-[90%]">
+          <View style={{ backgroundColor: colors.border }} className="w-12 h-1 rounded-full align-self-center mx-auto mb-6" />
           
           <View className="flex-row justify-between items-center mb-6">
-            <Text style={{ color: colors.text }} className="text-xl font-bold ">{t('calendar.addActivity')}</Text>
+            <Text style={{ color: colors.text }} className="text-xl font-bold">{t('calendar.addActivity')}</Text>
             <Pressable onPress={onClose}>
-              <Text className="text-primary font-bold text-sm">{t('common.cancel')}</Text>
+              <Text className="font-bold text-sm" style={{ color: colors.primary }}>{t('common.cancel')}</Text>
             </Pressable>
           </View>
 
           <ScrollView showsVerticalScrollIndicator={false}>
-            {/* Input: Nombre */}
             <View className="mb-4">
-              <Text className="text-xs font-bold text-textSecondary mb-2 uppercase tracking-wider">{t('calendar.activityName')}</Text>
+              <Text style={{ color: colors.textSecondary }} className="text-xs font-bold mb-2 uppercase tracking-wider">{t('calendar.activityName')}</Text>
               <TextInput
                 value={name}
                 onChangeText={setName}
                 placeholder={t('calendar.activityNamePlaceholder')}
-                placeholderTextColor="#A1A1AA"
-                style={{ color: colors.text, backgroundColor: colors.surface }} className=" border border-gray-200 rounded-2xl px-4 py-3.5  font-semibold"
+                placeholderTextColor={colors.textSecondary}
+                style={{ color: colors.text, backgroundColor: colors.surface, borderColor: colors.border }}
+                className="border rounded-2xl px-4 py-3.5 font-semibold"
               />
             </View>
 
-            {/* Selector: Tipo de Actividad */}
             <View className="mb-4">
-              <Text className="text-xs font-bold text-textSecondary mb-2 uppercase tracking-wider">{t('calendar.activityType')}</Text>
+              <Text style={{ color: colors.textSecondary }} className="text-xs font-bold mb-2 uppercase tracking-wider">{t('calendar.activityType')}</Text>
               <View className="flex-row flex-wrap justify-between">
                 {typesConfig
-                  .filter((t) => t.visible)
+                  .filter((tConfig) => tConfig.visible)
                   .map((item) => {
                     const isActive = type === item.id;
                     return (
                       <Pressable
                         key={item.id}
                         onPress={() => setType(item.id)}
-                        className={`p-3 rounded-2xl mb-3 flex-row items-center border w-[48%] ${
-                          isActive
-                            ? `${item.activeBgColor} border-transparent`
-                            : `${item.bgColor} border-gray-100`
-                        }`}
+                        style={{
+                          backgroundColor: isActive ? colors.primary : colors.surface,
+                          borderColor: isActive ? colors.primary : colors.border,
+                        }}
+                        className="p-3 rounded-2xl mb-3 flex-row items-center border w-[48%]"
                       >
                         <View className="mr-2">
                           <Feather
                             name={item.icon as any}
                             size={14}
-                            color={isActive ? '#FFFFFF' : '#4B5563'}
+                            color={isActive ? '#FFFFFF' : colors.textSecondary}
                           />
                         </View>
                         <Text
-                          className={`text-[11px] font-bold flex-1`}
+                          className="text-[11px] font-bold flex-1"
                           style={{ color: isActive ? '#FFFFFF' : colors.text }}
                         >
                           {item.label}
@@ -190,42 +192,48 @@ export function AddActivityModal({
               </View>
             </View>
 
-            {/* Apartado para seleccionar estudiante */}
             {type.includes('Tutoría') && isTutor && (
-              <View className="mb-4 bg-[#F5F3FF] border border-primary/20 rounded-2xl p-4">
-                <Text style={{ color: isDark ? '#FFFFFF' : colors.primary }} className="text-xs font-bold mb-2 uppercase tracking-wider">
+              <View style={{ backgroundColor: colors.background, borderColor: colors.border }} className="mb-4 border rounded-2xl p-4">
+                <Text style={{ color: colors.text }} className="text-xs font-bold mb-2 uppercase tracking-wider">
                   {t('calendar.assignStudent')}
                 </Text>
                 
-                {/* Buscador de estudiantes */}
-                <View style={{ backgroundColor: colors.surface }} className="flex-row items-center  border border-gray-200 rounded-xl px-3 py-1.5 mb-3 shadow-sm">
+                <View style={{ backgroundColor: colors.surface, borderColor: colors.border }} className="flex-row items-center border rounded-xl px-3 py-1.5 mb-3 shadow-sm">
                   <Feather name="search" size={14} color={colors.textSecondary} className="mr-2" />
                   <TextInput
                     value={studentSearch}
                     onChangeText={setStudentSearch}
                     placeholder={t('calendar.searchStudent')}
-                    placeholderTextColor="#A1A1AA"
-                    style={{ color: colors.text }} className="flex-1 text-xs font-semibold  p-0"
+                    placeholderTextColor={colors.textSecondary}
+                    style={{ color: colors.text }}
+                    className="flex-1 text-xs font-semibold p-0"
                   />
                 </View>
 
-                {/* Lista de estudiantes */}
                 <ScrollView 
                   style={{ maxHeight: 110 }} 
                   nestedScrollEnabled={true}
-                  className="bg-surface/70 rounded-xl p-1"
+                  className="rounded-xl p-1"
                 >
                   <Pressable
                     onPress={() => setSelectedStudentId(null)}
-                    className={`flex-row items-center justify-between p-2.5 rounded-lg mb-1 ${
-                      selectedStudentId === null ? 'bg-primary/10' : 'bg-transparent'
-                    }`}
+                    style={{
+                      backgroundColor: selectedStudentId === null ? colors.primary : colors.surface,
+                      borderColor: selectedStudentId === null ? colors.primary : colors.border,
+                    }}
+                    className="flex-row items-center justify-between p-2.5 rounded-lg mb-1 border"
                   >
-                    <Text className={`text-xs font-semibold`} style={{ color: selectedStudentId === null ? (isDark ? '#FFFFFF' : colors.primary) : colors.text, fontWeight: selectedStudentId === null ? 'bold' : 'normal' }}>
+                    <Text
+                      className="text-xs font-semibold"
+                      style={{
+                        color: selectedStudentId === null ? '#FFFFFF' : colors.text,
+                        fontWeight: selectedStudentId === null ? 'bold' : 'normal',
+                      }}
+                    >
                       {t('calendar.allGroup')}
                     </Text>
                     {selectedStudentId === null && (
-                      <Feather name="users" size={12} color={colors.primary} />
+                      <Feather name="users" size={12} color="#FFFFFF" />
                     )}
                   </Pressable>
 
@@ -236,21 +244,29 @@ export function AddActivityModal({
                         <Pressable
                           key={student.id}
                           onPress={() => setSelectedStudentId(student.id)}
-                          className={`flex-row items-center justify-between p-2.5 rounded-lg mb-1 ${
-                            isSelected ? 'bg-primary/10' : 'bg-transparent'
-                          }`}
+                          style={{
+                            backgroundColor: isSelected ? colors.primary : colors.surface,
+                            borderColor: isSelected ? colors.primary : colors.border,
+                          }}
+                          className="flex-row items-center justify-between p-2.5 rounded-lg mb-1 border"
                         >
-                          <Text className={`text-xs font-semibold`} style={{ color: isSelected ? (isDark ? '#FFFFFF' : colors.primary) : colors.text, fontWeight: isSelected ? 'bold' : 'normal' }}>
+                          <Text
+                            className="text-xs font-semibold"
+                            style={{
+                              color: isSelected ? '#FFFFFF' : colors.text,
+                              fontWeight: isSelected ? 'bold' : 'normal',
+                            }}
+                          >
                             {student.full_name}
                           </Text>
                           {isSelected && (
-                            <Feather name="check" size={12} color={colors.primary} />
+                            <Feather name="check" size={12} color="#FFFFFF" />
                           )}
                         </Pressable>
                       );
                     })
                   ) : (
-                    <Text className="text-center text-[11px] text-textSecondary py-4">
+                    <Text style={{ color: colors.textSecondary }} className="text-center text-[11px] py-4">
                       {t('calendar.noMoreStudents')}
                     </Text>
                   )}
@@ -258,15 +274,15 @@ export function AddActivityModal({
               </View>
             )}
 
-            {/* Grid: Fecha y Hora con Selectores */}
             <View className="flex-row justify-between mb-4">
               <View className="w-[48%]">
-                <Text className="text-xs font-bold text-textSecondary mb-2 uppercase tracking-wider">{t('calendar.date')}</Text>
+                <Text style={{ color: colors.textSecondary }} className="text-xs font-bold mb-2 uppercase tracking-wider">{t('calendar.date')}</Text>
                 <Pressable
                   onPress={() => setShowDatePicker(true)}
-                  style={{ backgroundColor: colors.surface }} className=" border border-gray-200 rounded-2xl px-4 py-3.5 flex-row justify-between items-center"
+                  style={{ backgroundColor: colors.surface, borderColor: colors.border }}
+                  className="border rounded-2xl px-4 py-3.5 flex-row justify-between items-center"
                 >
-                  <Text style={{ color: colors.text }} className=" font-semibold">
+                  <Text style={{ color: colors.text }} className="font-semibold">
                     {date.toLocaleDateString()}
                   </Text>
                   <Feather name="calendar" size={16} color={colors.textSecondary} />
@@ -282,12 +298,13 @@ export function AddActivityModal({
               </View>
 
               <View className="w-[48%]">
-                <Text className="text-xs font-bold text-textSecondary mb-2 uppercase tracking-wider">{t('calendar.time')}</Text>
+                <Text style={{ color: colors.textSecondary }} className="text-xs font-bold mb-2 uppercase tracking-wider">{t('calendar.time')}</Text>
                 <Pressable
                   onPress={() => setShowTimePicker(true)}
-                  style={{ backgroundColor: colors.surface }} className=" border border-gray-200 rounded-2xl px-4 py-3.5 flex-row justify-between items-center"
+                  style={{ backgroundColor: colors.surface, borderColor: colors.border }}
+                  className="border rounded-2xl px-4 py-3.5 flex-row justify-between items-center"
                 >
-                  <Text style={{ color: colors.text }} className=" font-semibold">
+                  <Text style={{ color: colors.text }} className="font-semibold">
                     {time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </Text>
                   <Feather name="clock" size={16} color={colors.textSecondary} />
@@ -304,11 +321,10 @@ export function AddActivityModal({
               </View>
             </View>
 
-            {/* Estado y Lugar */}
             <View className="flex-row justify-between mb-4">
               <View className="w-[48%]">
-                <Text className="text-xs font-bold text-textSecondary mb-2 uppercase tracking-wider">{t('calendar.status')}</Text>
-                <View style={{ backgroundColor: colors.surface }} className=" border border-gray-200 rounded-2xl overflow-hidden">
+                <Text style={{ color: colors.textSecondary }} className="text-xs font-bold mb-2 uppercase tracking-wider">{t('calendar.status')}</Text>
+                <View style={{ backgroundColor: colors.surface, borderColor: colors.border }} className="border rounded-2xl overflow-hidden">
                   <Picker
                     selectedValue={status}
                     onValueChange={(itemValue) => setStatus(itemValue)}
@@ -322,36 +338,37 @@ export function AddActivityModal({
                 </View>
               </View>
               <View className="w-[48%]">
-                <Text className="text-xs font-bold text-textSecondary mb-2 uppercase tracking-wider">{t('calendar.location')}</Text>
+                <Text style={{ color: colors.textSecondary }} className="text-xs font-bold mb-2 uppercase tracking-wider">{t('calendar.location')}</Text>
                 <TextInput
                   value={location}
                   onChangeText={setLocation}
                   placeholder={t('calendar.locationPlaceholder')}
-                  placeholderTextColor="#A1A1AA"
-                  style={{ color: colors.text, backgroundColor: colors.surface }} className=" border border-gray-200 rounded-2xl px-4 py-[13px]  font-semibold h-[50px]"
+                  placeholderTextColor={colors.textSecondary}
+                  style={{ color: colors.text, backgroundColor: colors.surface, borderColor: colors.border }}
+                  className="border rounded-2xl px-4 py-[13px] font-semibold h-[50px]"
                 />
               </View>
             </View>
 
-            {/* Notas */}
             <View className="mb-6">
-              <Text className="text-xs font-bold text-textSecondary mb-2 uppercase tracking-wider">{t('calendar.notes')}</Text>
+              <Text style={{ color: colors.textSecondary }} className="text-xs font-bold mb-2 uppercase tracking-wider">{t('calendar.notes')}</Text>
               <TextInput
                 value={notes}
                 onChangeText={setNotes}
                 placeholder={t('calendar.notesPlaceholder')}
-                placeholderTextColor="#A1A1AA"
+                placeholderTextColor={colors.textSecondary}
                 multiline
                 numberOfLines={3}
                 textAlignVertical="top"
-                style={{ color: colors.text, backgroundColor: colors.surface }} className=" border border-gray-200 rounded-2xl px-4 py-3.5  font-semibold h-24"
+                style={{ color: colors.text, backgroundColor: colors.surface, borderColor: colors.border }}
+                className="border rounded-2xl px-4 py-3.5 font-semibold h-24"
               />
             </View>
 
-            {/* Botón de Submit */}
             <Pressable
               onPress={handleSubmit}
-              className="bg-primary rounded-2xl py-4 items-center justify-center shadow-lg shadow-[#9A3BEE]/25 mb-4"
+              style={{ backgroundColor: colors.primary }}
+              className="rounded-2xl py-4 items-center justify-center mb-4 shadow-md"
             >
               <Text className="text-white font-bold text-base">{t('calendar.saveActivity')}</Text>
             </Pressable>

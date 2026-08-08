@@ -1,0 +1,585 @@
+{
+  "casos_en_alcance": 20,
+  "cubierto": 19,
+  "parcial": 1,
+  "ausente": 0,
+  "techo_alcanzable": 0.95,
+  "casos_que_citan_articulado": 16,
+  "documentos_citados_ausentes": {},
+  "detalle": [
+    {
+      "id": 101,
+      "categoria": "facil",
+      "pregunta": "¿Cuántos estudiantes como máximo se le pueden asignar a un tutor?",
+      "veredicto": "CUBIERTO",
+      "ratio": 1.0,
+      "dominio": "tutoria",
+      "ratio_corpus": 1.0,
+      "mejor_unidad": "reglamento_tutoria#art-14-1",
+      "palabras_halladas": [
+        "veinticinco",
+        "25",
+        "tutorados",
+        "profesor"
+      ],
+      "palabras_faltantes": [],
+      "documentos_citados": [
+        "Art. 14 num. 2 - Reglamento de Tutoría Académica UNSAAC"
+      ],
+      "documentos_ausentes": [],
+      "articulos_citados": [
+        "Art. 14 num. 2 - Reglamento de Tutoría Académica UNSAAC"
+      ]
+    },
+    {
+      "id": 102,
+      "categoria": "facil",
+      "pregunta": "¿Cuál es la naturaleza y alcance del Reglamento de Tutoría?",
+      "veredicto": "CUBIERTO",
+      "ratio": 1.0,
+      "dominio": "tutoria",
+      "ratio_corpus": 1.0,
+      "mejor_unidad": "reglamento_academico#art-32",
+      "palabras_halladas": [
+        "regula",
+        "actividad tutorial",
+        "académica"
+      ],
+      "palabras_faltantes": [],
+      "documentos_citados": [
+        "Art. 1 - Reglamento de Tutoría Académica UNSAAC"
+      ],
+      "documentos_ausentes": [],
+      "articulos_citados": [
+        "Art. 1 - Reglamento de Tutoría Académica UNSAAC"
+      ]
+    },
+    {
+      "id": 103,
+      "categoria": "facil",
+      "pregunta": "¿Mi tutor puede compartir lo que le cuento en una sesión de tutoría?",
+      "veredicto": "CUBIERTO",
+      "ratio": 1.0,
+      "dominio": "tutoria",
+      "ratio_corpus": 1.0,
+      "mejor_unidad": "reglamento_tutoria#art-15",
+      "palabras_halladas": [
+        "confidencialidad",
+        "información",
+        "estudiantes"
+      ],
+      "palabras_faltantes": [],
+      "documentos_citados": [
+        "Art. 15 - Reglamento de Tutoría Académica UNSAAC"
+      ],
+      "documentos_ausentes": [],
+      "articulos_citados": [
+        "Art. 15 - Reglamento de Tutoría Académica UNSAAC"
+      ]
+    },
+    {
+      "id": 104,
+      "categoria": "ambiguo",
+      "pregunta": "¿Hasta cuándo me acompaña el mismo tutor?",
+      "veredicto": "CUBIERTO",
+      "ratio": 1.0,
+      "dominio": "tutoria",
+      "ratio_corpus": 1.0,
+      "mejor_unidad": "reglamento_tutoria#art-14-1",
+      "palabras_halladas": [
+        "primer semestre",
+        "culminación",
+        "plan curricular"
+      ],
+      "palabras_faltantes": [],
+      "documentos_citados": [
+        "Art. 14 - Reglamento de Tutoría Académica UNSAAC"
+      ],
+      "documentos_ausentes": [],
+      "articulos_citados": [
+        "Art. 14 - Reglamento de Tutoría Académica UNSAAC"
+      ]
+    },
+    {
+      "id": 105,
+      "categoria": "ambiguo",
+      "pregunta": "¿Quién evalúa si el programa de tutoría está funcionando?",
+      "veredicto": "CUBIERTO",
+      "ratio": 1.0,
+      "dominio": "tutoria",
+      "ratio_corpus": 1.0,
+      "mejor_unidad": "reglamento_tutoria#art-16-1",
+      "palabras_halladas": [
+        "Comité Tutorial",
+        "año académico",
+        "objetivos"
+      ],
+      "palabras_faltantes": [],
+      "documentos_citados": [
+        "Art. 16 - Reglamento de Tutoría Académica UNSAAC"
+      ],
+      "documentos_ausentes": [],
+      "articulos_citados": [
+        "Art. 16 - Reglamento de Tutoría Académica UNSAAC"
+      ]
+    },
+    {
+      "id": 106,
+      "categoria": "facil",
+      "pregunta": "¿Cuántos créditos necesito para ser considerado estudiante regular?",
+      "veredicto": "CUBIERTO",
+      "ratio": 1.0,
+      "dominio": "trayectoria_academica",
+      "ratio_corpus": 1.0,
+      "mejor_unidad": "reglamento_academico#art-3",
+      "palabras_halladas": [
+        "doce",
+        "12",
+        "créditos",
+        "regular"
+      ],
+      "palabras_faltantes": [],
+      "documentos_citados": [
+        "Art. 3 - Reglamento Académico UNSAAC (CU-093-2017)"
+      ],
+      "documentos_ausentes": [],
+      "articulos_citados": [
+        "Art. 3 - Reglamento Académico UNSAAC (CU-093-2017)"
+      ]
+    },
+    {
+      "id": 107,
+      "categoria": "facil",
+      "pregunta": "Si tengo buen promedio, ¿puedo llevar más créditos de lo normal?",
+      "veredicto": "CUBIERTO",
+      "ratio": 1.0,
+      "dominio": "trayectoria_academica",
+      "ratio_corpus": 1.0,
+      "mejor_unidad": "reglamento_academico#art-9",
+      "palabras_halladas": [
+        "dieciséis",
+        "veintiséis",
+        "créditos"
+      ],
+      "palabras_faltantes": [],
+      "documentos_citados": [
+        "Art. 9 - Reglamento Académico UNSAAC (CU-093-2017)"
+      ],
+      "documentos_ausentes": [],
+      "articulos_citados": [
+        "Art. 9 - Reglamento Académico UNSAAC (CU-093-2017)"
+      ]
+    },
+    {
+      "id": 108,
+      "categoria": "ambiguo",
+      "pregunta": "¿Cuánto tiempo puedo seguir siendo estudiante no regular?",
+      "veredicto": "CUBIERTO",
+      "ratio": 1.0,
+      "dominio": "trayectoria_academica",
+      "ratio_corpus": 1.0,
+      "mejor_unidad": "reglamento_academico#art-3",
+      "palabras_halladas": [
+        "tres",
+        "3",
+        "semestres consecutivos"
+      ],
+      "palabras_faltantes": [],
+      "documentos_citados": [
+        "Art. 3 - Reglamento Académico UNSAAC (CU-093-2017)"
+      ],
+      "documentos_ausentes": [],
+      "articulos_citados": [
+        "Art. 3 - Reglamento Académico UNSAAC (CU-093-2017)"
+      ]
+    },
+    {
+      "id": 127,
+      "categoria": "facil",
+      "pregunta": "¿Cuántos créditos como máximo puedo matricular por semestre?",
+      "veredicto": "CUBIERTO",
+      "ratio": 1.0,
+      "dominio": "trayectoria_academica",
+      "ratio_corpus": 1.0,
+      "mejor_unidad": "reglamento_academico#art-9",
+      "palabras_halladas": [
+        "veintidós",
+        "créditos",
+        "mínimo",
+        "doce"
+      ],
+      "palabras_faltantes": [],
+      "documentos_citados": [
+        "Art. 9 - Reglamento Académico UNSAAC (CU-093-2017)"
+      ],
+      "documentos_ausentes": [],
+      "articulos_citados": [
+        "Art. 9 - Reglamento Académico UNSAAC (CU-093-2017)"
+      ]
+    },
+    {
+      "id": 109,
+      "categoria": "facil",
+      "pregunta": "¿Qué cursos llevo en el primer semestre del plan 2025 de Ingeniería Informática?",
+      "veredicto": "CUBIERTO",
+      "ratio": 1.0,
+      "dominio": "trayectoria_academica",
+      "ratio_corpus": 1.0,
+      "mejor_unidad": "plan_estudios_2025#semestre-1",
+      "palabras_halladas": [
+        "primer semestre",
+        "créditos",
+        "asignatura"
+      ],
+      "palabras_faltantes": [],
+      "documentos_citados": [
+        "Plan de Estudios Semestralizado 2025 - Ingeniería Informática y de Sistemas"
+      ],
+      "documentos_ausentes": [],
+      "articulos_citados": []
+    },
+    {
+      "id": 110,
+      "categoria": "facil",
+      "pregunta": "¿Qué servicios de apoyo al estudiante ofrece la universidad?",
+      "veredicto": "CUBIERTO",
+      "ratio": 1.0,
+      "dominio": "apoyos",
+      "ratio_corpus": 1.0,
+      "mejor_unidad": "estatuto#art-246",
+      "palabras_halladas": [
+        "salud",
+        "alimentación",
+        "deporte",
+        "asistencia social"
+      ],
+      "palabras_faltantes": [],
+      "documentos_citados": [
+        "Art. 246 - Estatuto Universitario UNSAAC"
+      ],
+      "documentos_ausentes": [],
+      "articulos_citados": [
+        "Art. 246 - Estatuto Universitario UNSAAC"
+      ]
+    },
+    {
+      "id": 111,
+      "categoria": "facil",
+      "pregunta": "¿Qué oficina se encarga del bienestar de los estudiantes?",
+      "veredicto": "CUBIERTO",
+      "ratio": 1.0,
+      "dominio": "apoyos",
+      "ratio_corpus": 1.0,
+      "mejor_unidad": "estatuto#art-245",
+      "palabras_halladas": [
+        "Dirección de Bienestar Universitario",
+        "planificar",
+        "comunidad universitaria"
+      ],
+      "palabras_faltantes": [],
+      "documentos_citados": [
+        "Art. 245 - Estatuto Universitario UNSAAC"
+      ],
+      "documentos_ausentes": [],
+      "articulos_citados": [
+        "Art. 245 - Estatuto Universitario UNSAAC"
+      ]
+    },
+    {
+      "id": 112,
+      "categoria": "ambiguo",
+      "pregunta": "¿La universidad apoya a estudiantes con discapacidad?",
+      "veredicto": "CUBIERTO",
+      "ratio": 1.0,
+      "dominio": "apoyos",
+      "ratio_corpus": 1.0,
+      "mejor_unidad": "estatuto#art-247",
+      "palabras_halladas": [
+        "discapacidad",
+        "materiales",
+        "atención"
+      ],
+      "palabras_faltantes": [],
+      "documentos_citados": [
+        "Art. 244 - Estatuto Universitario UNSAAC",
+        "Art. 246 - Estatuto Universitario UNSAAC"
+      ],
+      "documentos_ausentes": [],
+      "articulos_citados": [
+        "Art. 244 - Estatuto Universitario UNSAAC",
+        "Art. 246 - Estatuto Universitario UNSAAC"
+      ]
+    },
+    {
+      "id": 113,
+      "categoria": "ambiguo",
+      "pregunta": "¿Cuáles son los requisitos para postular a una beca de comedor universitario?",
+      "veredicto": "PENDIENTE_DOCUMENTO",
+      "ratio": 0.0,
+      "dominio": "apoyos",
+      "ratio_corpus": 0.0,
+      "mejor_unidad": "",
+      "palabras_halladas": [],
+      "palabras_faltantes": [],
+      "documentos_citados": [
+        "Reglamento de Subsidios y Becas UNSAAC"
+      ],
+      "documentos_ausentes": [],
+      "articulos_citados": []
+    },
+    {
+      "id": 114,
+      "categoria": "facil",
+      "pregunta": "¿Cómo reservo un cupo para el comedor universitario?",
+      "veredicto": "PENDIENTE_DOCUMENTO",
+      "ratio": 0.0,
+      "dominio": "apoyos",
+      "ratio_corpus": 0.0,
+      "mejor_unidad": "",
+      "palabras_halladas": [],
+      "palabras_faltantes": [],
+      "documentos_citados": [
+        "Manual de Usuario: Reservar cupo para atención en comedor UNSAAC"
+      ],
+      "documentos_ausentes": [],
+      "articulos_citados": []
+    },
+    {
+      "id": 115,
+      "categoria": "facil",
+      "pregunta": "Si vengo por movilidad estudiantil, ¿cuántos créditos puedo matricular?",
+      "veredicto": "PARCIAL",
+      "ratio": 0.75,
+      "dominio": "movilidad",
+      "ratio_corpus": 1.0,
+      "mejor_unidad": "reglamento_academico#art-8-2",
+      "palabras_halladas": [
+        "veintidós",
+        "22",
+        "certificado de estudios"
+      ],
+      "palabras_faltantes": [
+        "movilidad estudiantil"
+      ],
+      "documentos_citados": [
+        "Art. 8 - Reglamento Académico UNSAAC (CU-093-2017)"
+      ],
+      "documentos_ausentes": [],
+      "articulos_citados": [
+        "Art. 8 - Reglamento Académico UNSAAC (CU-093-2017)"
+      ]
+    },
+    {
+      "id": 116,
+      "categoria": "facil",
+      "pregunta": "¿Qué es un estudiante especial por convenio de movilidad?",
+      "veredicto": "CUBIERTO",
+      "ratio": 1.0,
+      "dominio": "movilidad",
+      "ratio_corpus": 1.0,
+      "mejor_unidad": "reglamento_academico#art-3",
+      "palabras_halladas": [
+        "estudiante especial",
+        "convenio",
+        "movilidad"
+      ],
+      "palabras_faltantes": [],
+      "documentos_citados": [
+        "Art. 3 - Reglamento Académico UNSAAC (CU-093-2017)"
+      ],
+      "documentos_ausentes": [],
+      "articulos_citados": [
+        "Art. 3 - Reglamento Académico UNSAAC (CU-093-2017)"
+      ]
+    },
+    {
+      "id": 117,
+      "categoria": "ambiguo",
+      "pregunta": "¿Qué requisitos necesito para postular a un intercambio académico?",
+      "veredicto": "PENDIENTE_DOCUMENTO",
+      "ratio": 0.0,
+      "dominio": "movilidad",
+      "ratio_corpus": 0.0,
+      "mejor_unidad": "",
+      "palabras_halladas": [],
+      "palabras_faltantes": [],
+      "documentos_citados": [
+        "Bases de Movilidad Estudiantil OCRI UNSAAC"
+      ],
+      "documentos_ausentes": [],
+      "articulos_citados": []
+    },
+    {
+      "id": 118,
+      "categoria": "ambiguo",
+      "pregunta": "¿Hay apoyo económico para viajar a un intercambio o congreso?",
+      "veredicto": "PENDIENTE_DOCUMENTO",
+      "ratio": 0.0,
+      "dominio": "movilidad",
+      "ratio_corpus": 0.0,
+      "mejor_unidad": "",
+      "palabras_halladas": [],
+      "palabras_faltantes": [],
+      "documentos_citados": [
+        "Directiva de subvenciones a estudiantes UNSAAC"
+      ],
+      "documentos_ausentes": [],
+      "articulos_citados": []
+    },
+    {
+      "id": 119,
+      "categoria": "facil",
+      "pregunta": "¿Dónde consulto los requisitos y el costo de un trámite en la universidad?",
+      "veredicto": "CUBIERTO",
+      "ratio": 1.0,
+      "dominio": "tramites",
+      "ratio_corpus": 1.0,
+      "mejor_unidad": "glosario#glosario-universitario-tupa",
+      "palabras_halladas": [
+        "TUPA",
+        "procedimientos",
+        "requisitos"
+      ],
+      "palabras_faltantes": [],
+      "documentos_citados": [
+        "TUPA UNSAAC"
+      ],
+      "documentos_ausentes": [],
+      "articulos_citados": []
+    },
+    {
+      "id": 120,
+      "categoria": "facil",
+      "pregunta": "¿Cuándo es la matrícula de estudiantes regulares para el semestre 2026-I?",
+      "veredicto": "CUBIERTO",
+      "ratio": 1.0,
+      "dominio": "calendario",
+      "ratio_corpus": 1.0,
+      "mejor_unidad": "calendario_2026#bloque-1",
+      "palabras_halladas": [
+        "matrícula",
+        "marzo",
+        "2026"
+      ],
+      "palabras_faltantes": [],
+      "documentos_citados": [
+        "Calendario Académico 2026 - CU-014-2026-UNSAAC"
+      ],
+      "documentos_ausentes": [],
+      "articulos_citados": []
+    },
+    {
+      "id": 121,
+      "categoria": "ambiguo",
+      "pregunta": "Reinicié mis estudios, ¿cuándo me matriculo?",
+      "veredicto": "CUBIERTO",
+      "ratio": 1.0,
+      "dominio": "calendario",
+      "ratio_corpus": 1.0,
+      "mejor_unidad": "calendario_2026#bloque-1",
+      "palabras_halladas": [
+        "reinicio",
+        "febrero",
+        "resolución"
+      ],
+      "palabras_faltantes": [],
+      "documentos_citados": [
+        "Calendario Académico 2026 - CU-014-2026-UNSAAC"
+      ],
+      "documentos_ausentes": [],
+      "articulos_citados": []
+    },
+    {
+      "id": 122,
+      "categoria": "ambiguo",
+      "pregunta": "¿A qué oficina debo ir si tengo un problema económico o social?",
+      "veredicto": "CUBIERTO",
+      "ratio": 1.0,
+      "dominio": "enrutamiento",
+      "ratio_corpus": 1.0,
+      "mejor_unidad": "estatuto#art-236",
+      "palabras_halladas": [
+        "Dirección de Bienestar",
+        "asistencia social"
+      ],
+      "palabras_faltantes": [],
+      "documentos_citados": [
+        "ROF UNSAAC (CU-210-2019)",
+        "Art. 246 - Estatuto Universitario UNSAAC"
+      ],
+      "documentos_ausentes": [],
+      "articulos_citados": [
+        "Art. 246 - Estatuto Universitario UNSAAC"
+      ]
+    },
+    {
+      "id": 123,
+      "categoria": "ambiguo",
+      "pregunta": "¿Quién supervisa la actividad de tutoría en la universidad?",
+      "veredicto": "CUBIERTO",
+      "ratio": 1.0,
+      "dominio": "enrutamiento",
+      "ratio_corpus": 1.0,
+      "mejor_unidad": "reglamento_tutoria#art-11",
+      "palabras_halladas": [
+        "Vicerrectorado Académico",
+        "supervisión",
+        "informes"
+      ],
+      "palabras_faltantes": [],
+      "documentos_citados": [
+        "Art. 11 - Reglamento de Tutoría Académica UNSAAC"
+      ],
+      "documentos_ausentes": [],
+      "articulos_citados": [
+        "Art. 11 - Reglamento de Tutoría Académica UNSAAC"
+      ]
+    },
+    {
+      "id": 124,
+      "categoria": "fuera_de_alcance",
+      "pregunta": "¿Cuál es la receta tradicional del cuy chactado cusqueño?",
+      "veredicto": "FUERA_DE_ALCANCE",
+      "ratio": 0.0,
+      "dominio": "fuera_de_alcance",
+      "ratio_corpus": 0.0,
+      "mejor_unidad": "",
+      "palabras_halladas": [],
+      "palabras_faltantes": [],
+      "documentos_citados": [],
+      "documentos_ausentes": [],
+      "articulos_citados": []
+    },
+    {
+      "id": 125,
+      "categoria": "fuera_de_alcance",
+      "pregunta": "¿Cómo tramito mi pasaporte en Migraciones del Perú?",
+      "veredicto": "FUERA_DE_ALCANCE",
+      "ratio": 0.0,
+      "dominio": "fuera_de_alcance",
+      "ratio_corpus": 0.0,
+      "mejor_unidad": "",
+      "palabras_halladas": [],
+      "palabras_faltantes": [],
+      "documentos_citados": [],
+      "documentos_ausentes": [],
+      "articulos_citados": []
+    },
+    {
+      "id": 126,
+      "categoria": "fuera_de_alcance",
+      "pregunta": "¿Cuánto cuesta la matrícula en la Universidad Nacional de San Agustín de Arequipa?",
+      "veredicto": "FUERA_DE_ALCANCE",
+      "ratio": 0.0,
+      "dominio": "fuera_de_alcance",
+      "ratio_corpus": 0.0,
+      "mejor_unidad": "",
+      "palabras_halladas": [],
+      "palabras_faltantes": [],
+      "documentos_citados": [],
+      "documentos_ausentes": [],
+      "articulos_citados": []
+    }
+  ],
+  "golden_set": "v2"
+}

@@ -12,7 +12,7 @@ from app.domain.entities.session import SessionBase, SessionCreate, SessionOut
 from app.domain.entities.streak import StreakOut
 from app.domain.entities.tutor_assignment import TutorAssignmentOut
 from app.domain.entities.user import (
-    UserBase, UserCreate, UserUpdate, PasswordChange, UserOut
+    UserBase, UserCreate, UserSelfUpdate, PasswordChange, UserOut
 )
 
 __all__ = [
@@ -24,5 +24,5 @@ __all__ = [
     "SessionBase", "SessionCreate", "SessionOut",
     "StreakOut",
     "TutorAssignmentOut",
-    "UserBase", "UserCreate", "UserUpdate", "PasswordChange", "UserOut"
+    "UserBase", "UserCreate", "UserSelfUpdate", "PasswordChange", "UserOut"
 ]
