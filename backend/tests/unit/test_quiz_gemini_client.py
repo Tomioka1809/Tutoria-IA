@@ -4,11 +4,24 @@ import json
 import os
 import ast
 import urllib.error
+import io
 
+from app.domain.exceptions import (
+    LLMNetworkError,
+    LLMQuotaError,
+    LLMServiceError,
+)
 from app.infrastructure.adapters.quiz_gemini_client import (
     call_gemini_sync,
     call_gemini_api,
 )
+
+
+def _respuesta(payload):
+    mock_response = MagicMock()
+    mock_response.read.return_value = json.dumps(payload).encode("utf-8")
+    mock_response.__enter__.return_value = mock_response
+    return mock_response
 
 
 class TestQuizGeminiClient(unittest.IsolatedAsyncioTestCase):
@@ -29,43 +42,51 @@ class TestQuizGeminiClient(unittest.IsolatedAsyncioTestCase):
         res = call_gemini_sync("fake_key", {"test": "payload"})
         self.assertEqual(res, '[{"question": "Q1"}]')
 
-    @patch("urllib.request.urlopen")
-    def test_response_without_candidates_returns_fallback(self, mock_urlopen):
-        mock_response = MagicMock()
-        mock_response.read.return_value = json.dumps({"candidates": []}).encode("utf-8")
-        mock_response.__enter__.return_value = mock_response
-        mock_urlopen.return_value = mock_response
-
-        res = call_gemini_sync("fake_key", {"test": "payload"})
-        self.assertEqual(res, "{}")
+    # Regresion: antes cualquiera de estos casos devolvia "{}" y el endpoint lo
+    # convertia en un 500 generico. La cuota agotada era indistinguible de un bug,
+    # y el cliente no tenia forma de saber que reintentar mas tarde servia.
 
     @patch("urllib.request.urlopen")
-    def test_response_without_parts_returns_fallback(self, mock_urlopen):
-        mock_response = MagicMock()
-        mock_response.read.return_value = json.dumps({
-            "candidates": [{"content": {"parts": []}}]
-        }).encode("utf-8")
-        mock_response.__enter__.return_value = mock_response
-        mock_urlopen.return_value = mock_response
+    def test_respuesta_sin_candidatos_propaga_error(self, mock_urlopen):
+        mock_urlopen.return_value = _respuesta({"candidates": []})
 
-        res = call_gemini_sync("fake_key", {"test": "payload"})
-        self.assertEqual(res, "{}")
+        with self.assertRaises(LLMServiceError):
+            call_gemini_sync("fake_key", {"test": "payload"})
 
     @patch("urllib.request.urlopen")
-    def test_network_or_http_error_returns_fallback(self, mock_urlopen):
+    def test_respuesta_sin_partes_propaga_error(self, mock_urlopen):
+        mock_urlopen.return_value = _respuesta({"candidates": [{"content": {"parts": []}}]})
+
+        with self.assertRaises(LLMServiceError):
+            call_gemini_sync("fake_key", {"test": "payload"})
+
+    @patch("urllib.request.urlopen")
+    def test_error_de_red_propaga_error_de_red(self, mock_urlopen):
         mock_urlopen.side_effect = urllib.error.URLError("Network Error")
-        res = call_gemini_sync("fake_key", {"test": "payload"})
-        self.assertEqual(res, "{}")
+
+        with self.assertRaises(LLMNetworkError):
+            call_gemini_sync("fake_key", {"test": "payload"})
 
     @patch("urllib.request.urlopen")
-    def test_invalid_json_returns_fallback(self, mock_urlopen):
+    def test_cuota_agotada_se_clasifica_como_cuota(self, mock_urlopen):
+        """El 429 tiene que llegar distinguible: es reintentable, un bug no."""
+        mock_urlopen.side_effect = urllib.error.HTTPError(
+            url="http://x", code=429, msg="Too Many Requests",
+            hdrs=None, fp=io.BytesIO(b"RESOURCE_EXHAUSTED"),
+        )
+
+        with self.assertRaises(LLMQuotaError):
+            call_gemini_sync("fake_key", {"test": "payload"})
+
+    @patch("urllib.request.urlopen")
+    def test_json_invalido_propaga_error(self, mock_urlopen):
         mock_response = MagicMock()
         mock_response.read.return_value = b"invalid json text"
         mock_response.__enter__.return_value = mock_response
         mock_urlopen.return_value = mock_response
 
-        res = call_gemini_sync("fake_key", {"test": "payload"})
-        self.assertEqual(res, "{}")
+        with self.assertRaises(LLMServiceError):
+            call_gemini_sync("fake_key", {"test": "payload"})
 
     @patch("urllib.request.urlopen")
     def test_uses_gemini_3_5_flash_lite_model(self, mock_urlopen):
@@ -80,7 +101,20 @@ class TestQuizGeminiClient(unittest.IsolatedAsyncioTestCase):
         req = mock_urlopen.call_args[0][0]
         self.assertIn("gemini-3.5-flash-lite:generateContent", req.full_url)
         self.assertNotIn("gemini-2.5-flash:generateContent", req.full_url)
-        self.assertIn("key=my_secret_key", req.full_url)
+
+    @patch("urllib.request.urlopen")
+    def test_la_clave_viaja_en_cabecera_y_no_en_la_url(self, mock_urlopen):
+        """Regresion: las query strings quedan en los logs de proxies, las cabeceras no."""
+        mock_urlopen.return_value = _respuesta(
+            {"candidates": [{"content": {"parts": [{"text": "OK"}]}}]}
+        )
+
+        call_gemini_sync("my_secret_key", {"test": "payload"})
+        req = mock_urlopen.call_args[0][0]
+
+        self.assertNotIn("my_secret_key", req.full_url)
+        self.assertNotIn("key=", req.full_url)
+        self.assertEqual(req.get_header("X-goog-api-key"), "my_secret_key")
 
     @patch("app.infrastructure.adapters.quiz_gemini_client.call_gemini_sync")
     async def test_async_call_delegates_to_sync_via_thread(self, mock_sync):
