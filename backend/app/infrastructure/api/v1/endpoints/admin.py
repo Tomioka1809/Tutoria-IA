@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy.orm import selectinload
@@ -19,6 +19,13 @@ from app.infrastructure.adapters.gemini_adapter import GeminiAdapter
 from app.infrastructure.config.config import settings
 
 router = APIRouter()
+
+# Paginacion de los listados de administracion. El padron ronda los 600 usuarios y el
+# corpus los 1370 fragmentos: devolverlos enteros en cada carga de pantalla es varios
+# MB contra una app movil.
+DEFAULT_PAGE_SIZE = 100
+MAX_PAGE_SIZE = 500
+
 
 class AdminStats(BaseModel):
     total_students: int
@@ -99,21 +106,48 @@ async def get_admin_stats(db: AsyncSession = Depends(get_db), _: User = Depends(
     )
 
 @router.get("/users", response_model=List[AdminUserOut])
-async def get_all_users(db: AsyncSession = Depends(get_db), _: User = Depends(get_current_active_admin)):
+async def get_all_users(
+    response: Response,
+    limit: int = Query(DEFAULT_PAGE_SIZE, ge=1, le=MAX_PAGE_SIZE),
+    offset: int = Query(0, ge=0),
+    db: AsyncSession = Depends(get_db),
+    _: User = Depends(get_current_active_admin),
+):
+    """Usuarios paginados, con la carga actual de cada tutor.
+
+    Devolvia el padron completo en una sola respuesta. El total se publica en la
+    cabecera X-Total-Count para no cambiar la forma del cuerpo, que sigue siendo un
+    arreglo.
+    """
+    total_res = await db.execute(
+        select(func.count(User.id)).where(User.role.in_(["estudiante", "tutor", "admin"]))
+    )
+    response.headers["X-Total-Count"] = str(total_res.scalar() or 0)
+
     result = await db.execute(
         select(User).options(selectinload(User.student_profile), selectinload(User.tutor_profile), selectinload(User.admin_profile))
         .where(User.role.in_(["estudiante", "tutor", "admin"]))
         .order_by(User.id.desc())
+        .limit(limit)
+        .offset(offset)
     )
     users = list(result.scalars().all())
-    
+
+    # Una sola consulta agrupada en vez de una por tutor dentro del bucle: con el
+    # padron completo eso eran cientos de viajes a la base por cada carga de pantalla.
+    tutor_ids = [u.id for u in users if u.role == "tutor"]
+    cargas = {}
+    if tutor_ids:
+        cargas_res = await db.execute(
+            select(TutorAssignment.tutor_id, func.count(TutorAssignment.id))
+            .where(TutorAssignment.tutor_id.in_(tutor_ids))
+            .group_by(TutorAssignment.tutor_id)
+        )
+        cargas = {tutor_id: count for tutor_id, count in cargas_res.all()}
+
     for u in users:
-        if u.role == "tutor":
-            load_res = await db.execute(select(func.count(TutorAssignment.id)).where(TutorAssignment.tutor_id == u.id))
-            setattr(u, 'current_load', load_res.scalar() or 0)
-        else:
-            setattr(u, 'current_load', 0)
-            
+        setattr(u, 'current_load', cargas.get(u.id, 0))
+
     return users
 
 @router.post("/users", response_model=AdminUserOut, status_code=status.HTTP_201_CREATED)
@@ -195,10 +229,43 @@ async def get_tutor_students(
 
 @router.post("/assignments", status_code=status.HTTP_201_CREATED)
 async def create_assignment(assignment_in: TutorAssignmentCreate, db: AsyncSession = Depends(get_db), _: User = Depends(get_current_active_admin)):
+    # Antes se insertaba sin comprobar nada: se aceptaban ids inexistentes, un tutor
+    # que en realidad era estudiante, y se pasaba por encima de max_capacity, que
+    # bulk_transfer y el sorteo si respetan.
+    estudiante_res = await db.execute(select(User).where(User.id == assignment_in.student_id))
+    estudiante = estudiante_res.scalars().first()
+    if not estudiante or estudiante.role != "estudiante":
+        raise HTTPException(status_code=404, detail="Estudiante no encontrado.")
+
+    tutor_res = await db.execute(
+        select(User).options(selectinload(User.tutor_profile)).where(User.id == assignment_in.tutor_id)
+    )
+    tutor = tutor_res.scalars().first()
+    if not tutor or tutor.role != "tutor":
+        raise HTTPException(status_code=404, detail="Tutor no encontrado.")
+    if not tutor.is_active:
+        raise HTTPException(status_code=400, detail="El tutor no está activo.")
+
     existing_res = await db.execute(
         select(TutorAssignment).where(TutorAssignment.student_id == assignment_in.student_id, TutorAssignment.academic_period == assignment_in.academic_period)
     )
     existing_assign = existing_res.scalars().first()
+
+    # Reasignar al mismo tutor no consume cupo; cambiar de tutor si.
+    if not existing_assign or existing_assign.tutor_id != assignment_in.tutor_id:
+        max_cap = tutor.tutor_profile.max_capacity if tutor.tutor_profile else 15
+        carga_res = await db.execute(
+            select(func.count(TutorAssignment.id)).where(
+                TutorAssignment.tutor_id == assignment_in.tutor_id,
+                TutorAssignment.academic_period == assignment_in.academic_period,
+            )
+        )
+        if (carga_res.scalar() or 0) >= max_cap:
+            raise HTTPException(
+                status_code=400,
+                detail=f"El tutor ya alcanzó su límite de {max_cap} alumnos en {assignment_in.academic_period}.",
+            )
+
     if existing_assign:
         existing_assign.tutor_id = assignment_in.tutor_id
     else:
@@ -307,8 +374,24 @@ async def execute_sorteo(period: str = "2026-I", db: AsyncSession = Depends(get_
     }
 
 @router.get("/corpus", response_model=List[CorpusChunkOut])
-async def get_corpus(db: AsyncSession = Depends(get_db), _: User = Depends(get_current_active_admin)):
-    result = await db.execute(select(CorpusChunk).order_by(CorpusChunk.id.desc()))
+async def get_corpus(
+    response: Response,
+    limit: int = Query(DEFAULT_PAGE_SIZE, ge=1, le=MAX_PAGE_SIZE),
+    offset: int = Query(0, ge=0),
+    db: AsyncSession = Depends(get_db),
+    _: User = Depends(get_current_active_admin),
+):
+    """Fragmentos del corpus, paginados.
+
+    Sin paginacion esto devolvia los ~1370 fragmentos con su texto completo en una
+    sola respuesta, varios MB contra una app movil.
+    """
+    total_res = await db.execute(select(func.count(CorpusChunk.id)))
+    response.headers["X-Total-Count"] = str(total_res.scalar() or 0)
+
+    result = await db.execute(
+        select(CorpusChunk).order_by(CorpusChunk.id.desc()).limit(limit).offset(offset)
+    )
     return list(result.scalars().all())
 
 @router.post("/corpus", response_model=CorpusChunkOut)
