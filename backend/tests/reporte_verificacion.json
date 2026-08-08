@@ -14,304 +14,266 @@
       "code": "F0-001",
       "description": "Estructura principal",
       "status": "PASS",
-      "detail": "La estructura principal del repositorio está presente.",
-      "duration_ms": 0
+      "detail": "La estructura principal del repositorio está presente."
     },
     {
       "phase": 0,
       "code": "F0-002",
       "description": "Configuración y dependencias",
       "status": "PASS",
-      "detail": "Archivos localizados: .env.example, backend/requirements.txt, frontend/package.json, backend/alembic.ini",
-      "duration_ms": 0
+      "detail": "Archivos localizados: .env.example, backend/requirements.txt, frontend/package.json, backend/alembic.ini"
     },
     {
       "phase": 0,
       "code": "F0-003",
       "description": "Protección de secretos",
       "status": "PASS",
-      "detail": "Los archivos .env están protegidos frente a Git.",
-      "duration_ms": 0
+      "detail": "Los archivos .env están protegidos frente a Git."
     },
     {
       "phase": 0,
       "code": "F0-004",
       "description": "Variables de entorno mínimas",
       "status": "PASS",
-      "detail": "Plantilla revisada: .env.example",
-      "duration_ms": 0
+      "detail": "Plantilla revisada: .env.example"
     },
     {
       "phase": 0,
       "code": "F0-005",
       "description": "Sintaxis de Docker Compose",
       "status": "PASS",
-      "detail": "docker-compose.yml es sintácticamente válido.",
-      "duration_ms": 0
+      "detail": "docker-compose.yml es sintácticamente válido."
     },
     {
       "phase": 1,
       "code": "F1-001",
       "description": "Stack del backend",
       "status": "PASS",
-      "detail": "Stack principal del backend detectado.",
-      "duration_ms": 0
+      "detail": "Stack principal del backend detectado."
     },
     {
       "phase": 1,
       "code": "F1-002",
       "description": "Stack del frontend",
       "status": "PASS",
-      "detail": "expo=~54.0.36, react-native=0.81.5, expo-router=~6.0.23, zustand=^5.0.14, axios=^1.17.0, i18next=^26.3.2, nativewind=^4.2.5",
-      "duration_ms": 0
+      "detail": "expo=~54.0.36, react-native=0.81.5, expo-router=~6.0.23, zustand=^5.0.14, axios=^1.17.0, i18next=^26.3.2, nativewind=^4.2.5"
     },
     {
       "phase": 1,
       "code": "F1-003",
       "description": "Navegación por roles",
       "status": "PASS",
-      "detail": "Rutas por rol: frontend/app/auth, frontend/app/(estudiante), frontend/app/(tutor), frontend/app/(admin)",
-      "duration_ms": 0
+      "detail": "Rutas por rol: frontend/app/auth, frontend/app/(estudiante), frontend/app/(tutor), frontend/app/(admin)"
     },
     {
       "phase": 1,
       "code": "F1-004",
       "description": "Documentación por fases",
       "status": "PASS",
-      "detail": "Se detectaron 12 documentos Markdown.",
-      "duration_ms": 0
+      "detail": "Se detectaron 12 documentos Markdown."
     },
     {
       "phase": 2,
       "code": "F2-001",
       "description": "Sintaxis Python",
       "status": "PASS",
-      "detail": "Compilación sintáctica correcta con /home/tsuki/Downloads/React-Native/backend/venv/bin/python.",
-      "duration_ms": 0
+      "detail": "Compilación sintáctica correcta con /home/tsuki/Downloads/React-Native/backend/venv/bin/python."
     },
     {
       "phase": 2,
       "code": "F2-002",
       "description": "Pureza de domain",
       "status": "PASS",
-      "detail": "domain no importa FastAPI, SQLAlchemy ni infrastructure.",
-      "duration_ms": 0
+      "detail": "domain no importa FastAPI, SQLAlchemy ni infrastructure."
     },
     {
       "phase": 2,
       "code": "F2-003",
       "description": "Aislamiento de application",
       "status": "PASS",
-      "detail": "application no importa frameworks ni infrastructure.",
-      "duration_ms": 0
+      "detail": "application no importa frameworks ni infrastructure."
     },
     {
       "phase": 2,
       "code": "F2-004",
       "description": "Esquemas y DTO",
       "status": "PASS",
-      "detail": "1 módulo(s) en domain/schemas.",
-      "duration_ms": 0
+      "detail": "1 módulo(s) en domain/schemas."
     },
     {
       "phase": 2,
       "code": "F2-005",
       "description": "Excepciones de dominio",
       "status": "PASS",
-      "detail": "Excepciones: DomainException, UserNotFoundError, NotAuthorizedError, ResourceNotFoundError, InvalidCredentialsError, UserAlreadyExistsError, AccountInactiveError, InvalidTokenError, PasswordMismatchError, PasswordValidationError, PasswordUpdateError, TutorAssignmentRequiredError",
-      "duration_ms": 0
+      "detail": "Excepciones: DomainException, UserNotFoundError, NotAuthorizedError, ResourceNotFoundError, InvalidCredentialsError, UserAlreadyExistsError, AccountInactiveError, InvalidTokenError, PasswordMismatchError, PasswordValidationError, PasswordUpdateError, TutorAssignmentRequiredError"
     },
     {
       "phase": 2,
       "code": "F2-006",
       "description": "Ejecución de pytest",
       "status": "SKIP",
-      "detail": "Use --integracion para ejecutar las pruebas.",
-      "duration_ms": 0
+      "detail": "Use --integracion para ejecutar las pruebas."
     },
     {
       "phase": 3,
       "code": "F3-001",
       "description": "Integridad del corpus",
       "status": "PASS",
-      "detail": "20 archivos JSON válidos.",
-      "duration_ms": 0
+      "detail": "20 archivos JSON válidos."
     },
     {
       "phase": 3,
       "code": "F3-002",
       "description": "Métrica vectorial",
       "status": "PASS",
-      "detail": "Recuperación por coseno detectada:\nbackend/app/infrastructure/database/repositories/corpus_repository.py:82: max_cosine_distance: float,\nbackend/app/infrastructure/database/repositories/corpus_repository.py:84: distancia = CorpusChunk.embedding.cosine_distance(query_embedding).label(\"distancia\")\nbackend/app/infrastructure/database/repositories/corpus_repository.py:88: .where(distancia <= max_cosine_distance)\nbackend/app/infrastructure/database/repositories/corpus_repository.py:126: max_cosine_distance: float,\nbackend/app/infrastructure/database/repositories/corpus_repository.py:135: vectoriales = await self._rama_vectorial(query_embedding, candidatos, max_cosine_distance)\nbackend/app/infrastructure/database/repositories/corpus_repository.py:185: cosine_distance=distancias.get(chunk_id),\nbackend/app/application/ports/repository_ports.py:77: max_cosine_distance: float,",
-      "duration_ms": 0
+      "detail": "Recuperación por coseno detectada:\nbackend/app/infrastructure/database/repositories/corpus_repository.py:82: max_cosine_distance: float,\nbackend/app/infrastructure/database/repositories/corpus_repository.py:84: distancia = CorpusChunk.embedding.cosine_distance(query_embedding).label(\"distancia\")\nbackend/app/infrastructure/database/repositories/corpus_repository.py:88: .where(distancia <= max_cosine_distance)\nbackend/app/infrastructure/database/repositories/corpus_repository.py:126: max_cosine_distance: float,\nbackend/app/infrastructure/database/repositories/corpus_repository.py:135: vectoriales = await self._rama_vectorial(query_embedding, candidatos, max_cosine_distance)\nbackend/app/infrastructure/database/repositories/corpus_repository.py:185: cosine_distance=distancias.get(chunk_id),\nbackend/app/application/ports/repository_ports.py:110: max_cosine_distance: float,"
     },
     {
       "phase": 3,
       "code": "F3-003",
       "description": "Consistencia del modelo de embeddings",
       "status": "PASS",
-      "detail": "Modelo detectado: gemini-embedding-2",
-      "duration_ms": 0
+      "detail": "Modelo detectado: gemini-embedding-2"
     },
     {
       "phase": 3,
       "code": "F3-004",
       "description": "Dimensionalidad vectorial",
       "status": "PASS",
-      "detail": "Dimensionalidad 768 detectada:\nbackend/app/infrastructure/database/models/corpus_chunk.py:22: # Embeddings configured with output_dimensionality=768.\nbackend/app/infrastructure/database/models/corpus_chunk.py:23: embedding: Mapped[list[float]] = mapped_column(Vector(768), nullable=True)",
-      "duration_ms": 0
+      "detail": "Dimensionalidad 768 detectada:\nbackend/app/infrastructure/database/models/corpus_chunk.py:22: # Embeddings configured with output_dimensionality=768.\nbackend/app/infrastructure/database/models/corpus_chunk.py:23: embedding: Mapped[list[float]] = mapped_column(Vector(768), nullable=True)"
     },
     {
       "phase": 3,
       "code": "F3-005",
       "description": "Umbral de recuperación",
-      "status": "WARN",
-      "detail": "No se detectó un umbral explícito de similitud.",
-      "duration_ms": 0
+      "status": "PASS",
+      "detail": "Umbral potencial detectado:\nbackend/app/infrastructure/api/dependencies.py:155: rag_policy = RAGRetrievalPolicy(limit=6, max_cosine_distance=0.34, keyword_fallback_limit=2)\nbackend/app/infrastructure/database/repositories/corpus_repository.py:82: max_cosine_distance: float,\nbackend/app/infrastructure/database/repositories/corpus_repository.py:88: .where(distancia <= max_cosine_distance)\nbackend/app/infrastructure/database/repositories/corpus_repository.py:126: max_cosine_distance: float,\nbackend/app/infrastructure/database/repositories/corpus_repository.py:135: vectoriales = await self._rama_vectorial(query_embedding, candidatos, max_cosine_distance)\nbackend/app/application/use_cases/chat_use_cases.py:537: max_cosine_distance=self.rag_policy.max_cosine_distance,\nbackend/app/application/use_cases/chat_use_cases.py:558: max_cosine_distance=self.rag_policy.max_cosine_distance,\nbackend/app/application/dtos/rag_dtos.py:24: max_cosine_distance: float = Field(default=0.34, ge=0.0, le=2.0)"
     },
     {
       "phase": 3,
       "code": "F3-006",
       "description": "Índice vectorial HNSW",
       "status": "PASS",
-      "detail": "Índice detectado:\nbackend/alembic/versions/6f892a019e42_add_hnsw_index_to_corpus_chunks.py:24: USING hnsw (embedding vector_cosine_ops)",
-      "duration_ms": 0
+      "detail": "Índice detectado:\nbackend/alembic/versions/6f892a019e42_add_hnsw_index_to_corpus_chunks.py:24: USING hnsw (embedding vector_cosine_ops)"
     },
     {
       "phase": 3,
       "code": "F3-007",
       "description": "Grounding y abstención",
       "status": "PASS",
-      "detail": "Política de abstención detectada:\nbackend/app/application/use_cases/chat_use_cases.py:20: \"No cuento con información suficiente en la base oficial de la UNSAAC \"\nbackend/app/application/use_cases/chat_use_cases.py:615: \"1. No inventes normas, fechas, procedimientos, autoridades o requisitos institucionales de la UNSAAC.\\n\"\nbackend/app/application/use_cases/chat_use_cases.py:619: \"   'No cuento con información suficiente en la base oficial de la UNSAAC para responder con certeza.'\\n\\n\"",
-      "duration_ms": 0
+      "detail": "Política de abstención detectada:\nbackend/app/application/use_cases/chat_use_cases.py:20: \"No cuento con información suficiente en la base oficial de la UNSAAC \"\nbackend/app/application/use_cases/chat_use_cases.py:615: \"1. No inventes normas, fechas, procedimientos, autoridades o requisitos institucionales de la UNSAAC.\\n\"\nbackend/app/application/use_cases/chat_use_cases.py:619: \"   'No cuento con información suficiente en la base oficial de la UNSAAC para responder con certeza.'\\n\\n\""
     },
     {
       "phase": 4,
       "code": "F4-001",
       "description": "Configuración npm/Expo",
       "status": "PASS",
-      "detail": "Scripts: android, ios, lint, start, verify:api, verify:calendar, verify:data, verify:errors, verify:quality, web",
-      "duration_ms": 0
+      "detail": "Scripts: android, ios, lint, start, test, test:watch, verify:api, verify:calendar, verify:data, verify:errors, verify:quality, web"
     },
     {
       "phase": 4,
       "code": "F4-002",
       "description": "URL dinámica del backend",
-      "status": "PASS",
-      "detail": "No se detectaron IP privadas hardcodeadas.",
-      "duration_ms": 0
+      "status": "WARN",
+      "detail": "IP privada hardcodeada:\nfrontend/src/api/__tests__/api-config.test.ts:24: expect(resolveApiUrl({ envUrl: 'http://192.168.1.5:8000/api/v1' })).toBe(\nfrontend/src/api/__tests__/api-config.test.ts:25: 'http://192.168.1.5:8000/api/v1'\nfrontend/src/api/__tests__/api-config.test.ts:45: 'http://192.168.1.5:8000/api/v1'\nfrontend/src/api/__tests__/api-config.test.ts:53: 'http://192.168.1.5:8000/api/v1'\nfrontend/src/api/__tests__/api-config.test.ts:59: 'http://10.0.0.7:8000/api/v1'\nfrontend/src/api/__tests__/api-config.test.ts:65: 'http://192.168.1.5:8000/api/v1'"
     },
     {
       "phase": 4,
       "code": "F4-003",
       "description": "Cliente API autenticado",
       "status": "PASS",
-      "detail": "Autorización JWT e interceptores detectados.",
-      "duration_ms": 0
+      "detail": "Autorización JWT e interceptores detectados."
     },
     {
       "phase": 4,
       "code": "F4-004",
       "description": "Llamadas HTTP fuera de Axios",
       "status": "PASS",
-      "detail": "No se detectaron llamadas fetch directas.",
-      "duration_ms": 0
+      "detail": "No se detectaron llamadas fetch directas."
     },
     {
       "phase": 4,
       "code": "F4-005",
       "description": "Paridad i18n ES/EN",
       "status": "PASS",
-      "detail": "Paridad confirmada para 468 claves.",
-      "duration_ms": 0
+      "detail": "Paridad confirmada para 468 claves."
     },
     {
       "phase": 4,
       "code": "F4-006",
       "description": "Comprobación TypeScript",
       "status": "PASS",
-      "detail": "TypeScript no reportó errores.",
-      "duration_ms": 1000
+      "detail": "TypeScript no reportó errores."
     },
     {
       "phase": 4,
       "code": "F4-007",
       "description": "Lint del frontend",
       "status": "PASS",
-      "detail": "> my-app@1.0.0 lint\n> expo lint",
-      "duration_ms": 1000
+      "detail": "> tutoria@1.0.0 lint\n> expo lint"
     },
     {
       "phase": 5,
       "code": "F5-001",
       "description": "Golden Dataset",
       "status": "PASS",
-      "detail": "Golden Set válido con 15 casos.",
-      "duration_ms": 0
+      "detail": "Golden Set válido con 15 casos."
     },
     {
       "phase": 5,
       "code": "F5-002",
       "description": "Suite de evaluación",
       "status": "PASS",
-      "detail": "Módulos de retrieval, generation y runner presentes.",
-      "duration_ms": 0
+      "detail": "Módulos de retrieval, generation y runner presentes."
     },
     {
       "phase": 5,
       "code": "F5-003",
       "description": "Artefactos de resultados",
       "status": "PASS",
-      "detail": "Resultados JSON y CSV presentes.",
-      "duration_ms": 0
+      "detail": "Resultados JSON y CSV presentes."
     },
     {
       "phase": 5,
       "code": "F5-004",
       "description": "Rango de métricas",
       "status": "PASS",
-      "detail": "Métricas detectadas: metricas_globales.precision_global=0.3333, metricas_globales.cobertura_global=0.3333, metricas_globales.pertinencia_global=0.3111, desglose_categoria.facil.precision=0.2857, desglose_categoria.facil.cobertura=0.2857, desglose_categoria.facil.pertinencia=0.3667, desglose_categoria.ambiguo.precision=0.0, desglose_categoria.ambiguo.cobertura=0.0, desglose_categoria.ambiguo.pertinencia=0.3, desglose_categoria.fuera_de_alcance.precision=1.0, desglose_categoria.fuera_de_alcance.cobertura=1.0, desglose_categoria.fuera_de_alcance.pertinencia=0.2",
-      "duration_ms": 0
+      "detail": "Métricas detectadas: metricas_globales.precision_global=0.3333, metricas_globales.cobertura_global=0.3333, metricas_globales.pertinencia_global=0.3111, desglose_categoria.facil.precision=0.2857, desglose_categoria.facil.cobertura=0.2857, desglose_categoria.facil.pertinencia=0.3667, desglose_categoria.ambiguo.precision=0.0, desglose_categoria.ambiguo.cobertura=0.0, desglose_categoria.ambiguo.pertinencia=0.3, desglose_categoria.fuera_de_alcance.precision=1.0, desglose_categoria.fuera_de_alcance.cobertura=1.0, desglose_categoria.fuera_de_alcance.pertinencia=0.2"
     },
     {
       "phase": 5,
       "code": "F5-005",
       "description": "Ejecución del benchmark RAG",
       "status": "SKIP",
-      "detail": "Use --integracion; esta prueba puede consumir Gemini.",
-      "duration_ms": 0
+      "detail": "Use --integracion; esta prueba puede consumir Gemini."
     },
     {
       "phase": 6,
       "code": "F6-001",
       "description": "Servicios Docker",
       "status": "PASS",
-      "detail": "backend: running, db: running (healthy)",
-      "duration_ms": 0
+      "detail": "backend: running (healthy), db: running (healthy)"
     },
     {
       "phase": 6,
       "code": "F6-002",
       "description": "Contrato OpenAPI",
       "status": "SKIP",
-      "detail": "Use --integracion para consultar el backend local.",
-      "duration_ms": 0
+      "detail": "Use --integracion para consultar el backend local."
     },
     {
       "phase": 6,
       "code": "F6-003",
       "description": "Configuración Expo",
       "status": "PASS",
-      "detail": "Expo pudo resolver la configuración pública.",
-      "duration_ms": 100
+      "detail": "Expo pudo resolver la configuración pública."
     },
     {
       "phase": 6,
       "code": "F6-004",
       "description": "Pendientes del reporte final",
       "status": "PASS",
-      "detail": "El reporte final no declara pendientes explícitos.",
-      "duration_ms": 0
+      "detail": "El reporte final no declara pendientes explícitos."
     }
   ]
 }

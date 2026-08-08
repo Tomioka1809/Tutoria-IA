@@ -39,12 +39,48 @@ Esta guía alcanza para levantar el proyecto desde cero sin conocerlo.
 | **Git** | Clonar el repositorio | Sí |
 | **Docker + Docker Compose** | Levantar base de datos y API sin instalar nada más | Recomendado |
 | **Node.js 18+ y npm** | Compilar y servir la app móvil | Sí |
-| **Python 3.12+** | Correr el backend o las pruebas fuera de Docker | Solo sin Docker |
+| **Python 3.12 o superior** | Correr el backend o las pruebas fuera de Docker | Solo sin Docker |
 | **Expo Go** (celular) o Android Studio / Xcode | Abrir la app | Sí, alguno |
 
 También necesitas una **clave de API de Google AI Studio**, gratuita, en
 [aistudio.google.com](https://aistudio.google.com). Sin ella el proyecto arranca
 igual, pero el chatbot no responde y el índice del RAG queda vacío.
+
+### 🪟 Si estás en Windows
+
+Toda la guía trae los comandos en dos variantes: **Linux / macOS** (bash o zsh)
+y **Windows** (PowerShell). Usa PowerShell, no `cmd.exe`: varios comandos de
+abajo no existen en el intérprete viejo.
+
+Estas cuatro cosas valen para todo el documento y no se repiten en cada bloque:
+
+| Tema | Qué cambia en Windows |
+|---|---|
+| **Docker** | Instala **Docker Desktop** con el backend **WSL 2** activado. `docker compose` se escribe igual |
+| **Entorno virtual** | Se activa con `.\venv\Scripts\Activate.ps1`, no con `source venv/bin/activate` |
+| **Ejecutables del venv** | Viven en `venv\Scripts\`, no en `venv/bin/` |
+| **Separador de rutas** | PowerShell acepta `/` en las rutas, así que `python backend/tests/verificar_tutoria.py` funciona tal cual. Solo los ejecutables del venv se escriben con `\` |
+
+> [!IMPORTANT]
+> Si PowerShell rechaza `Activate.ps1` con *"la ejecución de scripts está
+> deshabilitada"*, habilítalos una sola vez para tu usuario:
+>
+> ```powershell
+> Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
+> ```
+
+> [!WARNING]
+> **Clona el repositorio sin convertir los finales de línea.** El
+> [entrypoint del backend](backend/docker-entrypoint.sh) es un script de shell
+> que corre dentro de Linux: si Git lo convierte a CRLF al clonar, el contenedor
+> muere en el arranque con `'\r': command not found`. El
+> [`.gitattributes`](.gitattributes) del repositorio ya lo evita; si clonaste
+> antes de que existiera, arréglalo con:
+>
+> ```powershell
+> git rm --cached -r .
+> git reset --hard
+> ```
 
 ---
 
@@ -60,7 +96,13 @@ cd Tutoria-IA
 ### 2. Crear el archivo `.env`
 
 ```bash
+# Linux / macOS
 cp .env.example .env
+```
+
+```powershell
+# Windows (PowerShell)
+Copy-Item .env.example .env
 ```
 
 Abre el `.env` y completa al menos `GEMINI_API_KEY`. Estas son todas las
@@ -77,7 +119,7 @@ variables:
 | `ACCESS_TOKEN_EXPIRE_MINUTES` | Duración de la sesión | `60` |
 | `CORS_ALLOWED_ORIGINS` | Orígenes permitidos, separados por coma | vacío |
 | `GEMINI_API_KEY` | **Tu clave de Google AI Studio** | *(obligatoria)* |
-| `ADMIN_EMAIL` / `ADMIN_PASSWORD` / `ADMIN_NAME` | Admin que se crea solo en el primer arranque | los que quieras |
+| `ADMIN_EMAIL` / `ADMIN_PASSWORD` / `ADMIN_NAME` | Admin que se crea solo en el primer arranque. Fuera de `production` son opcionales | `admin@unsaac.edu.pe` / `admin123` |
 | `AUTO_BOOTSTRAP` | `0` desactiva toda la siembra automática | `1` |
 | `AUTO_SEED_CORPUS` | `0` evita generar embeddings al arrancar | `1` |
 
@@ -105,14 +147,24 @@ Esto arranca dos contenedores:
 | `tutoria_db` | PostgreSQL 16 con la extensión `pgvector` | `5433` |
 | `tutoria_backend` | La API FastAPI | `8000` |
 
+> [!IMPORTANT]
+> **`docker-compose.yml` es una configuración de desarrollo, no de despliegue.**
+> Monta el código del host encima de la imagen (`./backend:/app`) y arranca
+> uvicorn con `--reload`, que vigila el sistema de archivos y reinicia el
+> proceso ante cada cambio. La **imagen** ([`backend/Dockerfile`](backend/Dockerfile))
+> sí es desplegable: arranca sin `--reload` y como usuario sin privilegios.
+> Para desplegar, usa la imagen sin el bind mount ni el `command` de este
+> archivo.
+
 ### 4. Qué pasa solo en el primer arranque
 
 No hace falta correr migraciones a mano. El
 [entrypoint](backend/docker-entrypoint.sh) hace, en este orden:
 
 1. **Aplica las migraciones** (`alembic upgrade head`) en cada arranque.
-2. **Crea el usuario admin**, solo si todavía no existe ninguno con rol `admin`
-   y definiste `ADMIN_EMAIL` y `ADMIN_PASSWORD`.
+2. **Crea el usuario admin**, solo si todavía no existe ninguno con rol `admin`.
+   Fuera de `production` no hace falta configurar nada: usa
+   `admin@unsaac.edu.pe` / `admin123` si el `.env` no declara otras credenciales.
 3. **Carga el roster** de tutores y estudiantes, solo si la base no tiene
    ninguno.
 4. **Actualiza el índice del RAG** desde `backend/corpus/estructurado/`. La
@@ -134,14 +186,37 @@ uno necesita una llamada de embedding.
 ### 5. Comprobar que funciona
 
 ```bash
+# Linux / macOS
 curl http://localhost:8000/docs
+```
+
+```powershell
+# Windows (PowerShell): "curl" es un alias de Invoke-WebRequest y no acepta
+# las mismas banderas, así que se usa el nombre real.
+Invoke-WebRequest http://localhost:8000/docs
 ```
 
 O abre [http://localhost:8000/docs](http://localhost:8000/docs) en el navegador:
 es la documentación interactiva de la API.
 
-Si no definiste `ADMIN_EMAIL` / `ADMIN_PASSWORD` en el `.env`, crea el admin a
-mano:
+### 6. Entrar como administrador
+
+El primer arranque deja creado un administrador, para que el panel sea accesible
+sin configurar nada:
+
+| Campo | Valor |
+|---|---|
+| Correo | `admin@unsaac.edu.pe` |
+| Contraseña | `admin123` |
+
+> [!CAUTION]
+> Esta contraseña **está publicada en este repositorio**, así que sirve para
+> desarrollo local y nada más. Cambiala (`ADMIN_EMAIL` / `ADMIN_PASSWORD` en el
+> `.env`) antes de exponer el backend fuera de tu máquina. En `production` el
+> backend directamente **no arranca** con ella, ni con ninguna otra contraseña
+> conocida o de menos de 12 caracteres.
+
+Para crear otro administrador a mano, en cualquier momento:
 
 ```bash
 docker compose exec backend python -m app.create_superuser
@@ -155,6 +230,8 @@ Solo si prefieres correr el backend nativo. Necesitas un PostgreSQL con
 `pgvector` disponible por tu cuenta.
 
 ```bash
+# Linux / macOS
+
 # 1. Base de datos: lo más simple es usar solo el contenedor de PostgreSQL
 docker compose up -d db
 
@@ -165,7 +242,33 @@ docker compose up -d db
 # 3. Entorno virtual e instalación
 cd backend
 python -m venv venv
-source venv/bin/activate          # Windows PowerShell: .\venv\Scripts\Activate.ps1
+source venv/bin/activate
+pip install -r requirements.txt
+
+# 4. Migraciones
+alembic upgrade head
+
+# 5. Datos iniciales (admin, roster e índice del RAG)
+python -m app.bootstrap_data
+
+# 6. Servidor de desarrollo
+uvicorn app.main:app --reload
+```
+
+```powershell
+# Windows (PowerShell)
+
+# 1. Base de datos: lo más simple es usar solo el contenedor de PostgreSQL
+docker compose up -d db
+
+# 2. Ajusta el .env para salir del contenedor
+#    DB_HOST=localhost
+#    DB_PORT=5433
+
+# 3. Entorno virtual e instalación
+cd backend
+py -m venv venv
+.\venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 
 # 4. Migraciones
@@ -209,19 +312,35 @@ Después:
 > ([`frontend/src/api/client.ts`](frontend/src/api/client.ts)) detecta sola la
 > IP de tu máquina en la red local, para que el celular encuentre al backend.
 
+> [!NOTE]
+> **En Windows**, la primera vez que arranques Expo, el Firewall de Windows
+> pregunta si permites que Node acceda a la red: acepta al menos en **redes
+> privadas**, o el celular no verá ni al empaquetador de Expo ni al backend.
+> Si el QR igual no conecta, abre el puerto 8000 a mano:
+>
+> ```powershell
+> New-NetFirewallRule -DisplayName "TutorIA backend" -Direction Inbound `
+>   -Protocol TCP -LocalPort 8000 -Action Allow -Profile Private
+> ```
+
 ---
 
 ## 🧪 Ejecutar las pruebas
 
-### Backend — 505 pruebas unitarias
+### Backend — 535 pruebas unitarias
 
 Desde la **raíz del repositorio** (no desde `backend/`): el
 [`conftest.py`](conftest.py) de la raíz es el que pone `backend/` en el
 `sys.path`, y [`pytest.ini`](pytest.ini) apunta a `backend/tests`.
 
 ```bash
-# con el venv del backend activado, o:
+# Linux / macOS — con el venv del backend activado, o:
 backend/venv/bin/python -m pytest
+```
+
+```powershell
+# Windows (PowerShell) — con el venv del backend activado, o:
+backend\venv\Scripts\python -m pytest
 ```
 
 Son unitarias: **no necesitan base de datos ni clave de Gemini**, y tardan unos
@@ -253,6 +372,8 @@ requieren los servicios levantados. El reporte queda en
 
 ```bash
 cd frontend
+npm test             # pruebas unitarias con Jest (jest-expo)
+npm run test:watch   # las mismas, en modo vigilancia
 npx tsc --noEmit     # tipos
 npm run lint         # ESLint vía Expo
 npm run verify:api        # capa de API
@@ -321,6 +442,8 @@ los parámetros está en
 ```text
 Tutoria-IA/
 ├── .env.example                 # Plantilla de variables de entorno
+├── .gitattributes               # Finales de línea LF para los scripts de shell
+│                                #   (backend/.dockerignore deja el venv fuera de la imagen)
 ├── docker-compose.yml           # PostgreSQL (pgvector) + API FastAPI
 ├── conftest.py                  # Pone backend/ en sys.path para las pruebas
 ├── pytest.ini                   # testpaths = backend/tests
@@ -354,7 +477,7 @@ Tutoria-IA/
 │   ├── scripts/                 # Extracción, conversión, ingesta y calibración
 │   │
 │   └── tests/
-│       ├── unit/                # 505 pruebas unitarias
+│       ├── unit/                # 535 pruebas unitarias
 │       ├── dataset/             # Golden sets de evaluación (v1 congelado, v2 activo)
 │       ├── resultados/          # Informes JSON/CSV y gráficos de la evaluación
 │       ├── run_eval_v2.py       # Runner de evaluación contra el golden set
@@ -368,6 +491,7 @@ Tutoria-IA/
 │   │   └── (admin)/             #   Pantallas del rol administrador
 │   ├── src/
 │   │   ├── api/                 # Cliente Axios con autodetección de IP
+│   │   │   └── __tests__/       #   Pruebas de la capa de API
 │   │   ├── components/          # Componentes de interfaz
 │   │   ├── store/               # Estado global con Zustand
 │   │   ├── i18n/                # Español e inglés
@@ -426,7 +550,21 @@ docker compose logs -f db
 | `[bootstrap] Falta GEMINI_API_KEY` en los logs | El `.env` no tiene la clave | Complétala y reinicia con `docker compose up -d` |
 | La ingesta se corta a mitad | Se agotó la cuota diaria de Gemini | No pasa nada: es reanudable, vuelve a correrla más tarde |
 | `ModuleNotFoundError: app` al correr pytest | Estás ejecutando desde `backend/` | Córrelo desde la raíz del repositorio |
-| El backend no arranca en `production` | `SECRET_KEY` débil, `DB_PASSWORD` por defecto o falta `CORS_ALLOWED_ORIGINS` | Es a propósito; corrígelos en el `.env` |
+| El backend no arranca en `production` | `SECRET_KEY` débil, `DB_PASSWORD` por defecto, falta `CORS_ALLOWED_ORIGINS`, o no hay notificador de correo real | Es a propósito; corrígelos en el `.env` o implementa el adaptador que falte |
+| No llega el código de recuperación | En desarrollo no hay correo: se imprime en la consola | `docker compose logs -f backend` y busca `CÓDIGO DE RECUPERACIÓN` |
+| El quiz devuelve las mismas preguntas | Es a propósito: se cachean 10 minutos para no agotar la cuota de Gemini, que se comparte con el chatbot | Ajusta `QUIZ_CACHE_TTL` en `backend/app/infrastructure/api/v1/endpoints/quiz.py` |
+| El quiz responde `429` | Se agotó la cuota diaria de Gemini | Espera a que se renueve; antes esto salía como un `500` genérico |
+| `Demasiados intentos fallidos` al recuperar la contraseña | Se agotaron los 5 intentos del código | Pide uno nuevo desde la pantalla de recuperación |
+
+### 🪟 Solo en Windows
+
+| Síntoma | Causa probable | Solución |
+|---|---|---|
+| `tutoria_backend` reinicia en bucle y los logs dicen `'\r': command not found` | Git convirtió `docker-entrypoint.sh` a CRLF al clonar | Es lo que evita el [`.gitattributes`](.gitattributes). Si clonaste antes, corre `git rm --cached -r .` y `git reset --hard` |
+| `Activate.ps1 no se puede cargar porque la ejecución de scripts está deshabilitada` | Política de ejecución de PowerShell | `Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned` |
+| `docker compose up` falla con `error during connect` | Docker Desktop no está corriendo | Ábrelo y espera a que el ícono quede en verde |
+| El QR de Expo carga pero la app queda en blanco | El Firewall bloquea el puerto 8000 o Node | Acepta el aviso del Firewall en redes privadas, o abre el puerto ([ver arriba](#-levantar-la-app-móvil)) |
+| `curl: Se produjo un error...` con banderas tipo `-s` o `-X` | En PowerShell `curl` es un alias de `Invoke-WebRequest` | Usa `Invoke-WebRequest`, o instala curl real y llámalo como `curl.exe` |
 
 ---
 
@@ -437,7 +575,7 @@ docker compose logs -f db
 - **Fase 6B (Migración a Pydantic V2 y seguridad por entorno):** completada
 - **Fase 6C (Cierre documental):** completada
 - **Reconstrucción del RAG (Fases 0 a 4):** completada
-- **Suite de pruebas:** **505 aprobadas, 0 fallidas**
+- **Suite de pruebas:** **535 aprobadas, 0 fallidas**
 
 ### 🔒 Entornos y seguridad de configuración
 
@@ -447,8 +585,26 @@ docker compose logs -f db
   documentales.
 - En `production` se bloquean también las contraseñas de base de datos por
   defecto o inseguras.
+- En `production` el backend **no arranca** mientras el único notificador de
+  recuperación de contraseña sea el de desarrollo, que escribe los códigos en el
+  log. Es a propósito: quien lee los logs se apropia de las cuentas. Hay que
+  implementar un adaptador de correo real antes de desplegar.
 - En `development` y `test` se conservan los valores por defecto, para no
   estorbar el desarrollo local ni las pruebas.
+
+### 🔑 Recuperación de contraseña
+
+- `/auth/forgot-password` responde **siempre lo mismo**, exista o no la cuenta:
+  distinguirlo convertía un endpoint público en un verificador de correos
+  registrados.
+- El código es de 6 dígitos, dura 15 minutos y admite **5 intentos fallidos**;
+  al sexto se anula y hay que pedir uno nuevo. Pedir un código nuevo invalida el
+  anterior.
+- Los códigos se guardan **hasheados** en la tabla `password_reset_tokens`, no
+  en memoria del proceso: así sobreviven a un reinicio y el contador de intentos
+  es el mismo para todos los workers.
+- En desarrollo el código se imprime en la consola del backend
+  (`docker compose logs -f backend`), porque no hay servidor de correo.
 
 ---
 
@@ -491,7 +647,7 @@ métrica era imposible de satisfacer por construcción. Algunos artículos citad
 | Abstención fuera de alcance | rota (0/3) | **3/3** |
 | Fragmentos citables | 0 | **1369** |
 | Artículos indexados | 0 | **732** |
-| Pruebas automatizadas | 277 | **505** |
+| Pruebas automatizadas | 277 | **535** |
 
 Las métricas de recuperación (MRR 0.815, nDCG@6 0.775, Recall@6 0.875) y los
 ocho gráficos de la evaluación se explican en

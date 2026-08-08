@@ -1,0 +1,22 @@
+# Normaliza los finales de linea al guardar en el repositorio, sin importar
+# desde que sistema operativo se haga el commit.
+* text=auto
+
+# Estos archivos se ejecutan dentro de Linux (contenedor de Docker). Si Git los
+# entrega con CRLF en un checkout de Windows, /bin/sh falla al arrancar con
+# "'\r': command not found" y el contenedor del backend queda reiniciando.
+*.sh text eol=lf
+Dockerfile text eol=lf
+docker-compose.yml text eol=lf
+
+# Archivos que no son texto: Git no debe tocarlos.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.ttf binary
+*.otf binary
+*.woff binary
+*.woff2 binary
