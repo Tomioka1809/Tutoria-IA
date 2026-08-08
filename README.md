@@ -327,7 +327,7 @@ Después:
 
 ## 🧪 Ejecutar las pruebas
 
-### Backend — 535 pruebas unitarias
+### Backend — 590 pruebas unitarias
 
 Desde la **raíz del repositorio** (no desde `backend/`): el
 [`conftest.py`](conftest.py) de la raíz es el que pone `backend/` en el
@@ -477,7 +477,7 @@ Tutoria-IA/
 │   ├── scripts/                 # Extracción, conversión, ingesta y calibración
 │   │
 │   └── tests/
-│       ├── unit/                # 535 pruebas unitarias
+│       ├── unit/                # 590 pruebas unitarias
 │       ├── dataset/             # Golden sets de evaluación (v1 congelado, v2 activo)
 │       ├── resultados/          # Informes JSON/CSV y gráficos de la evaluación
 │       ├── run_eval_v2.py       # Runner de evaluación contra el golden set
@@ -575,7 +575,7 @@ docker compose logs -f db
 - **Fase 6B (Migración a Pydantic V2 y seguridad por entorno):** completada
 - **Fase 6C (Cierre documental):** completada
 - **Reconstrucción del RAG (Fases 0 a 4):** completada
-- **Suite de pruebas:** **535 aprobadas, 0 fallidas**
+- **Suite de pruebas:** **590 aprobadas, 0 fallidas**
 
 ### 🔒 Entornos y seguridad de configuración
 
@@ -645,9 +645,9 @@ métrica era imposible de satisfacer por construcción. Algunos artículos citad
 | Acierto de artículo | imposible de medir | **16/19 (84%)** |
 | Acierto de documento | — | **32/32 (100%)** |
 | Abstención fuera de alcance | rota (0/3) | **3/3** |
-| Fragmentos citables | 0 | **1369** |
+| Fragmentos citables | 0 | **1371** |
 | Artículos indexados | 0 | **732** |
-| Pruebas automatizadas | 277 | **535** |
+| Pruebas automatizadas | 277 | **590** |
 
 Las métricas de recuperación (MRR 0.815, nDCG@6 0.775, Recall@6 0.875) y los
 ocho gráficos de la evaluación se explican en
