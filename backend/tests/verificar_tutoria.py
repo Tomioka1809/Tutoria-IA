@@ -40,40 +40,6 @@ WARN = "WARN"
 FAIL = "FAIL"
 SKIP = "SKIP"
 
-# Por debajo de este valor, el tiempo de una comprobacion se guarda como 0.
-DURACION_RESOLUCION_MS = 100
-
-
-def redondear_duracion(duration_ms: int) -> int:
-    """Trunca el tiempo medido a su orden de magnitud, en milisegundos.
-
-        7 ms -> 0        (por debajo de la resolucion)
-      370 ms -> 100
-     4278 ms -> 1000
-     5300 ms -> 1000
-
-    El reporte esta versionado y el tiempo nunca se repite exacto entre dos
-    corridas: sin esto, cada comprobacion movia su linea aunque el resultado
-    fuera identico.
-
-    Se trunca por orden de magnitud y no a una escala fija porque una escala
-    fija no alcanza. La comprobacion de TypeScript, la mas lenta, se midio
-    entre 4.1 y 5.3 segundos en corridas seguidas: para que no mueva el archivo
-    hace falta un tramo que cubra ese rango entero, y a 100 ms de resolucion
-    seguia saltando. Un tramo por orden de magnitud lo absorbe.
-
-    El valor resultante es siempre una cota inferior de lo medido, nunca lo
-    infla. Sirve para ver si una comprobacion tarda milisegundos o segundos; el
-    numero exacto queda en la salida por consola.
-    """
-    if duration_ms < DURACION_RESOLUCION_MS:
-        return 0
-
-    tramo = DURACION_RESOLUCION_MS
-    while tramo * 10 <= duration_ms:
-        tramo *= 10
-    return tramo
-
 
 @dataclass
 class Result:
@@ -816,13 +782,17 @@ class Verifier:
                 for path in app_files
                 if any(
                     token in self.rel(path).lower()
-                    for token in ("chat", "corpus", "retriev")
+                    for token in ("chat", "corpus", "retriev", "rag", "dependencies")
                 )
             ]
+            # 'max_cosine_distance' es el nombre que este proyecto usa de verdad
+            # (dependencies.py, rag_dtos.py, corpus_repository.py). Faltaba en la
+            # lista, asi que la comprobacion avisaba de un umbral ausente que si
+            # existe: un WARN falso enseña a ignorar los WARN.
             matches = self.regex_matches(
                 candidates,
-                r"score_threshold|min_similarity|similarity_threshold|"
-                r"max_distance|distance_threshold",
+                r"max_cosine_distance|score_threshold|min_similarity|"
+                r"similarity_threshold|max_distance|distance_threshold",
             )
             if not matches:
                 return WARN, "No se detectó un umbral explícito de similitud."
@@ -1492,8 +1462,20 @@ class Verifier:
 
     @staticmethod
     def result_para_reporte(result: Result) -> dict[str, object]:
+        """Quita el tiempo medido antes de escribir el reporte versionado.
+
+        El tiempo no se repite nunca entre dos corridas, asi que el archivo se
+        movia aunque el resultado fuera identico. Antes se truncaba por orden de
+        magnitud, pero cualquier esquema de tramos tiene bordes: con la maquina
+        cargada, la comprobacion de TypeScript salto de 4.1 s a 11.5 s y cambio
+        de tramo igual.
+
+        El dato no se pierde: la salida por consola sigue imprimiendo el
+        milisegundo exacto, que es donde sirve para diagnosticar. Lo que no
+        aporta es tenerlo versionado en git.
+        """
         datos = asdict(result)
-        datos["duration_ms"] = redondear_duracion(result.duration_ms)
+        datos.pop("duration_ms", None)
         return datos
 
     def print_report(self) -> None:
