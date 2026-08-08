@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "my-app",
-    "slug": "my-app",
+    "name": "TutorIA",
+    "slug": "tutoria",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/tutoria-logo.png",
-    "scheme": "myapp",
+    "scheme": "tutoria",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
@@ -39,7 +39,8 @@
           }
         }
       ],
-      "@react-native-community/datetimepicker"
+      "@react-native-community/datetimepicker",
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true,

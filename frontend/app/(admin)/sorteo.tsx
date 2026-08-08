@@ -14,6 +14,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useState, useCallback } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import client from '../../src/api/client';
+import { fetchAllPages } from '@/src/api/paginated';
 import { useAuthStore } from '../../src/store/auth';
 import { useFocusEffect } from 'expo-router';
 import { useTheme } from '@/src/theme/ThemeContext';
@@ -58,10 +59,10 @@ export default function AsignacionesScreen() {
     setError(null);
     setLoading(true);
     try {
-      const res = await client.get('/admin/users', {
-        headers: { Authorization: `Bearer ${token}` }
+      const data = await fetchAllPages<any>('/admin/users', {
+        config: { headers: { Authorization: `Bearer ${token}` } },
       });
-      setUsers(res.data);
+      setUsers(data);
     } catch (error: unknown) {
       console.log('[AdminAssignments] No se pudieron cargar los datos:', getSafeErrorMessage(error));
       setError(

@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { User } from '../types';
+import { secureAuthStorage } from './secure-auth-storage';
 import client from '../api/client';
 import { configureApiAuth } from '../api/auth-session';
 import { reportApiError } from '../services/error-feedback';
@@ -52,7 +52,9 @@ export const useAuthStore = create<AuthState>()(
     }),
     {
       name: 'tutoria-auth-storage',
-      storage: createJSONStorage(() => AsyncStorage),
+      // El token viaja al Keychain/Keystore; el resto del estado sigue en
+      // AsyncStorage. Ver secure-auth-storage.ts para el porqué del reparto.
+      storage: createJSONStorage(() => secureAuthStorage),
     }
   )
 );

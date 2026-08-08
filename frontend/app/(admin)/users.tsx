@@ -2,6 +2,7 @@ import { View, Text, FlatList, Pressable, Alert, ActivityIndicator, Modal, TextI
 import { useState, useCallback } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import client from '../../src/api/client';
+import { fetchAllPages } from '@/src/api/paginated';
 import { useAuthStore } from '../../src/store/auth';
 import { useFocusEffect } from 'expo-router';
 import { Feather } from '@expo/vector-icons';
@@ -48,10 +49,10 @@ export default function UsersApprovalScreen() {
     setError(null);
     setLoading(true);
     try {
-      const res = await client.get('/admin/users', {
-        headers: { Authorization: `Bearer ${token}` }
+      const data = await fetchAllPages<any>('/admin/users', {
+        config: { headers: { Authorization: `Bearer ${token}` } },
       });
-      setUsers(res.data);
+      setUsers(data);
     } catch (error: unknown) {
       console.log('[AdminUsers] No se pudieron cargar los usuarios:', getSafeErrorMessage(error));
       setError(t('errors.network', {

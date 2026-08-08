@@ -13,6 +13,7 @@ import { useAuthStore } from '../../src/store/auth';
 import { useState, useCallback } from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import client from '../../src/api/client';
+import { fetchAllPages } from '@/src/api/paginated';
 import { useFocusEffect } from 'expo-router';
 import { Feather, Ionicons } from '@expo/vector-icons';
 import { useTheme } from '@/src/theme/ThemeContext';
@@ -74,11 +75,13 @@ export default function ContenidoScreen() {
     setError(null);
     setLoading(true);
     try {
-      const [resC, resQ] = await Promise.all([
-        client.get('/admin/corpus', { headers: { Authorization: `Bearer ${token}` } }),
+      const [corpusData, resQ] = await Promise.all([
+        fetchAllPages<any>('/admin/corpus', {
+          config: { headers: { Authorization: `Bearer ${token}` } },
+        }),
         client.get('/admin/quotes', { headers: { Authorization: `Bearer ${token}` } })
       ]);
-      setCorpus(resC.data);
+      setCorpus(corpusData);
       setQuotes(resQ.data);
     } catch (error: unknown) {
       console.log('[AdminContent] No se pudo cargar el contenido:', getSafeErrorMessage(error));
